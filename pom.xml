@@ -26,11 +26,11 @@
             <artifactId>selenide</artifactId>
             <version>6.12.3</version>
         </dependency>
-        <!--import slf4j simple-->
+        <!--import log4j-core-->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>2.0.5</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.17.1</version>
         </dependency>
         <!--import hutool-->
         <dependency>
