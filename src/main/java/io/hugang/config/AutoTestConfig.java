@@ -59,6 +59,10 @@ public class AutoTestConfig {
         if (inputMedia != null) {
             this.setInputMedia(inputMedia);
         }
+        String testCases = setting.get("xlsx.specific.testcases");
+        if (testCases != null) {
+            this.setTestCases(testCases);
+        }
     }
 
     // user profile path for browser
