@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- configuration file -->
+    <context:property-placeholder location="classpath:browser.properties"/>
+
+    <!-- main executor instance -->
+    <bean id="executor" class="io.hugang.BasicExecutor">
+        <property name="autoTestConfig" ref="autoTestConfig"/>
+    </bean>
+
+    <bean id="autoTestConfig" class="io.hugang.config.AutoTestConfig">
+        <!-- user profile path-->
+        <property name="userProfilePath" value="${user.profile.path}"/>
+        <!--browser driver name-->
+        <property name="webDriverName" value="${web.driver}"/>
+        <!--browser driver path-->
+        <property name="webDriverPath" value="${web.driver.path}"/>
+        <!--browser height-->
+        <property name="height" value="${browser.height}"/>
+        <!--browser width-->
+        <property name="width" value="${browser.width}"/>
+        <!-- input media-->
+        <property name="inputMedia" value="${input.media}"/>
+        <!--csv path-->
+        <property name="csvFilePath" value="${csv.file.path}"/>
+        <!--xlsx path-->
+        <property name="xlsxFilePath" value="${xlsx.file.path}"/>
+        <!--xlsx execute cases-->
+        <property name="testCases" value="${xlsx.specific.testcases}"/>
+        <!--side path-->
+        <property name="sideFilePath" value="${side.file.path}"/>
+        <!--download file path-->
+        <property name="fileDownloadPath" value="${file.download.path}"/>
+    </bean>
+</beans>
