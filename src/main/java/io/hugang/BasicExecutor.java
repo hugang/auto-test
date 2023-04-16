@@ -1,6 +1,7 @@
 package io.hugang;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
@@ -85,7 +86,10 @@ public class BasicExecutor {
      * method to execute the commands
      */
     public void execute() {
+        // read the user properties
         autoTestConfig.readUserProperties();
+        // prepare work directories
+        this.prepareWorkDirectories();
 
         // read csv from xlsx when xlsx file path is not null
         switch (autoTestConfig.getInputMedia()) {
@@ -139,6 +143,16 @@ public class BasicExecutor {
             // destroy the executor
             this.destroy();
         }
+    }
+
+    /**
+     * prepare work directories
+     */
+    private void prepareWorkDirectories() {
+        // create the download directory
+        FileUtil.mkdir(autoTestConfig.getFileDownloadPath());
+        // create the user profile directory
+        FileUtil.mkdir(autoTestConfig.getUserProfilePath());
     }
 
     /**
