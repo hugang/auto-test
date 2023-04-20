@@ -166,6 +166,7 @@ public class BasicExecutor {
      * method to execute the commands
      */
     public void executeCommands(Commands commands) {
+        boolean result;
         // loop through the commands
         for (Command command : commands.getCommands()) {
             // get the command executor
@@ -173,7 +174,10 @@ public class BasicExecutor {
             // execute the command
             assert executor != null;
             log.info("execute command: " + command);
-            executor.execute(command);
+            result = executor.execute(command);
+            if (result) {
+                throw new RuntimeException("execute command failed");
+            }
         }
     }
 
