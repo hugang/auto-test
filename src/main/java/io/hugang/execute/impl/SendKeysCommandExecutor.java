@@ -21,11 +21,7 @@ public class SendKeysCommandExecutor implements io.hugang.execute.CommandExecuto
      */
     @Override
     public boolean execute(Command command) {
-        SelenideElement $ = CommandExecuteUtil.getElement(command.getTarget());
-        if ($ == null) {
-            return false;
-        }
-        execute($, command.getValue());
+        execute(CommandExecuteUtil.getElement(command.getTarget()), command.getValue());
         return true;
     }
 

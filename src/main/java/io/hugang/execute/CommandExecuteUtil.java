@@ -1,5 +1,7 @@
 package io.hugang.execute;
 
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 
@@ -12,6 +14,8 @@ import static com.codeborne.selenide.Selenide.$;
  * @author hugang
  */
 public class CommandExecuteUtil {
+    private static final Log log = LogFactory.get();
+
     /**
      * get element by target
      *
@@ -22,21 +26,29 @@ public class CommandExecuteUtil {
         int indexOf = target.indexOf("=");
         String commandType = target.substring(0, indexOf);
         String commandValue = target.substring(indexOf + 1);
+        SelenideElement $ = null;
         switch (commandType) {
             case "id": {
-                return $("#"+commandValue);
+                $ = $("#" + commandValue);
+                break;
             }
             case "css":
             case "selector": {
-                return $(commandValue);
+                $ = $(commandValue);
+                break;
             }
             case "linkText": {
-                return $(By.linkText(commandValue));
+                $ = $(By.linkText(commandValue));
+                break;
             }
             case "xpath": {
-                return $(By.xpath(commandValue));
+                $ = $(By.xpath(commandValue));
+                break;
             }
         }
-        return null;
+        if ($ == null) {
+            log.info("can not find element by target: {}", target);
+        }
+        return $;
     }
 }

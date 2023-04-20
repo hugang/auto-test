@@ -22,11 +22,7 @@ public class ClickCommandExecutor implements CommandExecutor {
      */
     @Override
     public boolean execute(Command command) {
-        SelenideElement $ = CommandExecuteUtil.getElement(command.getTarget());
-        if ($ == null) {
-            return false;
-        }
-        execute($);
+        execute(CommandExecuteUtil.getElement(command.getTarget()));
         return true;
     }
 

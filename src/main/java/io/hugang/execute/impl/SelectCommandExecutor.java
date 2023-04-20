@@ -1,6 +1,5 @@
 package io.hugang.execute.impl;
 
-import com.codeborne.selenide.SelenideElement;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.execute.CommandExecutor;
@@ -21,11 +20,7 @@ public class SelectCommandExecutor implements CommandExecutor {
      */
     @Override
     public boolean execute(Command command) {
-        SelenideElement $ = CommandExecuteUtil.getElement(command.getTarget());
-        if ($ == null) {
-            return false;
-        }
-        $.selectOption(command.getValue());
+        CommandExecuteUtil.getElement(command.getTarget()).selectOption(command.getValue());
         return true;
     }
 }
