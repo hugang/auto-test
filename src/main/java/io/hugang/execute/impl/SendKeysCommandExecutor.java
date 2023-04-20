@@ -2,10 +2,8 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.SelenideElement;
 import io.hugang.bean.Command;
-import org.openqa.selenium.By;
+import io.hugang.execute.CommandExecuteUtil;
 import org.openqa.selenium.Keys;
-
-import static com.codeborne.selenide.Selenide.$;
 
 /**
  * send keys command executor
@@ -23,24 +21,11 @@ public class SendKeysCommandExecutor implements io.hugang.execute.CommandExecuto
      */
     @Override
     public boolean execute(Command command) {
-        int index = command.getTarget().indexOf("=");
-        String commandType = command.getTarget().substring(0, index);
-        String commandValue = command.getTarget().substring(index + 1);
-        switch (commandType) {
-            case "id": {
-                execute($("#" + commandValue), command.getValue());
-                break;
-            }
-            case "css":
-            case "selector": {
-                execute($(commandValue), command.getValue());
-                break;
-            }
-            case "linkText": {
-                execute($(By.linkText(commandValue)), command.getValue());
-                break;
-            }
+        SelenideElement $ = CommandExecuteUtil.getElement(command.getTarget());
+        if ($ == null) {
+            return false;
         }
+        execute($, command.getValue());
         return true;
     }
 
@@ -51,9 +36,9 @@ public class SendKeysCommandExecutor implements io.hugang.execute.CommandExecuto
      */
     private void execute(SelenideElement $, String keys) {
         if ($.isDisplayed() && $.isEnabled()) {
-            if (keys.startsWith("${KEY_") && keys.endsWith("}")){
+            if (keys.startsWith("${KEY_") && keys.endsWith("}")) {
                 $.sendKeys(Keys.valueOf(keys.replace("${KEY_", "").replace("}", "")));
-            }else {
+            } else {
                 $.sendKeys(keys);
             }
         }

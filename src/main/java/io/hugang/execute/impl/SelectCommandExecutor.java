@@ -1,9 +1,9 @@
 package io.hugang.execute.impl;
 
+import com.codeborne.selenide.SelenideElement;
 import io.hugang.bean.Command;
+import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.execute.CommandExecutor;
-
-import static com.codeborne.selenide.Selenide.$;
 
 /**
  * select command executor
@@ -21,15 +21,11 @@ public class SelectCommandExecutor implements CommandExecutor {
      */
     @Override
     public boolean execute(Command command) {
-        String[] split = command.getTarget().split("=");
-        if (split.length == 2) {
-            if (split[0].equals("selector")) {
-                $(split[1]).selectOption(command.getValue());
-            } else if (split[0].equals("id")) {
-                $("#" + split[1]).selectOption(command.getValue());
-            }
-            return true;
+        SelenideElement $ = CommandExecuteUtil.getElement(command.getTarget());
+        if ($ == null) {
+            return false;
         }
-        return false;
+        $.selectOption(command.getValue());
+        return true;
     }
 }

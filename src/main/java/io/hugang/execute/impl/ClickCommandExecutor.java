@@ -2,10 +2,10 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.SelenideElement;
 import io.hugang.bean.Command;
+import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.execute.CommandExecutor;
-import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Selenide.$;
+import java.util.Objects;
 
 /**
  * click command executor
@@ -24,24 +24,7 @@ public class ClickCommandExecutor implements CommandExecutor {
      */
     @Override
     public boolean execute(Command command) {
-        int index = command.getTarget().indexOf("=");
-        String commandType = command.getTarget().substring(0, index);
-        String commandValue = command.getTarget().substring(index + 1);
-        switch (commandType) {
-            case "id": {
-                execute($("#" + commandValue));
-                break;
-            }
-            case "css":
-            case "selector": {
-                execute($(commandValue));
-                break;
-            }
-            case "linkText": {
-                execute($(By.linkText(commandValue)));
-                break;
-            }
-        }
+        execute(Objects.requireNonNull(CommandExecuteUtil.getElement(command.getTarget())));
         return true;
     }
 
