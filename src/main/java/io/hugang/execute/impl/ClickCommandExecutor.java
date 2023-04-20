@@ -5,8 +5,6 @@ import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.execute.CommandExecutor;
 
-import java.util.Objects;
-
 /**
  * click command executor
  * <p>
@@ -24,7 +22,11 @@ public class ClickCommandExecutor implements CommandExecutor {
      */
     @Override
     public boolean execute(Command command) {
-        execute(Objects.requireNonNull(CommandExecuteUtil.getElement(command.getTarget())));
+        SelenideElement $ = CommandExecuteUtil.getElement(command.getTarget());
+        if ($ == null) {
+            return false;
+        }
+        execute($);
         return true;
     }
 
