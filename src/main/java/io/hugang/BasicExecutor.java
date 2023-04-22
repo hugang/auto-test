@@ -175,7 +175,7 @@ public class BasicExecutor {
             assert executor != null;
             log.info("execute command: " + command);
             result = executor.execute(command);
-            if (result) {
+            if (!result) {
                 throw new RuntimeException("execute command failed");
             }
         }

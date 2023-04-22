@@ -20,6 +20,6 @@ public class SleepCommandExecutor implements io.hugang.execute.CommandExecutor {
     @Override
     public boolean execute(Command command) {
         Selenide.sleep(Integer.parseInt(command.getValue()));
-        return false;
+        return true;
     }
 }
