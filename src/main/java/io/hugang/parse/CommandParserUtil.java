@@ -12,6 +12,7 @@ import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import io.hugang.bean.Command;
+import io.hugang.bean.CommandType;
 import io.hugang.bean.Commands;
 
 import java.io.BufferedReader;
@@ -93,7 +94,8 @@ public class CommandParserUtil {
         for (int i = 2; i < reader.getRowCount(); i++) {
             List<Object> valueRow = reader.readRow(i);
             // judge the value row is empty or not
-            if (ObjectUtil.isNotEmpty(valueRow) && ObjectUtil.isNotEmpty(valueRow.get(0)) && !valueRow.get(0).toString().equals(StrUtil.EMPTY)) {
+            String caseNo = valueRow.get(0).toString();
+            if (ObjectUtil.isNotEmpty(valueRow) && ObjectUtil.isNotEmpty(valueRow.get(0)) && !caseNo.equals(StrUtil.EMPTY)) {
                 // read the command row
                 Commands commands = new Commands();
                 List<Command> commandList = new ArrayList<>();
@@ -102,12 +104,14 @@ public class CommandParserUtil {
                     command.setCommand(commandRow.get(j).toString());
                     command.setTarget(targetRow.get(j).toString());
                     command.setValue(valueRow.get(j).toString());
-
+                    if (CommandType.parse(command.getCommand()) == CommandType.SCREENSHOT) {
+                        command.setTarget("caseNo_" + caseNo + "_" + command.getTarget());
+                    }
                     if (StrUtil.isNotEmpty(command.getValue())) {
                         commandList.add(command);
                     }
                 }
-                commands.setTestCase(valueRow.get(0).toString());
+                commands.setTestCase(caseNo);
                 commands.setCommands(commandList);
                 log.info("{}", commands);
                 if (ObjectUtil.isNotEmpty(commandList)) {
