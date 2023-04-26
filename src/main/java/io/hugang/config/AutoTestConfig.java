@@ -20,33 +20,28 @@ public class AutoTestConfig {
         }
         Setting setting = SettingUtil.get(file.getAbsolutePath());
         String userProfilePath = setting.get("user.profile.path");
-        if (userProfilePath != null) {
-            this.setUserProfilePath(userProfilePath);
-        }
+        setAbsolutePathOrRelativePath(userProfilePath);
+
         String webDriverName = setting.get("web.driver.name");
         if (webDriverName != null) {
             this.setWebDriverName(webDriverName);
         }
+
         String webDriverPath = setting.get("web.driver.path");
-        if (webDriverPath != null) {
-            this.setWebDriverPath(webDriverPath);
-        }
+        setAbsolutePathOrRelativePath(webDriverPath);
+
         String csvFilePath = setting.get("csv.file.path");
-        if (csvFilePath != null) {
-            this.setCsvFilePath(csvFilePath);
-        }
+        setAbsolutePathOrRelativePath(csvFilePath);
+
         String xlsxFilePath = setting.get("xlsx.file.path");
-        if (xlsxFilePath != null) {
-            this.setXlsxFilePath(xlsxFilePath);
-        }
+        setAbsolutePathOrRelativePath(xlsxFilePath);
+
         String sideFilePath = setting.get("side.file.path");
-        if (sideFilePath != null) {
-            this.setSideFilePath(sideFilePath);
-        }
+        setAbsolutePathOrRelativePath(sideFilePath);
+
         String fileDownloadPath = setting.get("file.download.path");
-        if (fileDownloadPath != null) {
-            this.setFileDownloadPath(fileDownloadPath);
-        }
+        setAbsolutePathOrRelativePath(fileDownloadPath);
+
         String width = setting.get("width");
         if (width != null) {
             this.setWidth(Integer.parseInt(width));
@@ -62,6 +57,21 @@ public class AutoTestConfig {
         String testCases = setting.get("xlsx.specific.testcases");
         if (testCases != null) {
             this.setTestCases(testCases);
+        }
+    }
+
+    /**
+     * set absolute path or relative path
+     *
+     * @param filePath file path
+     */
+    private void setAbsolutePathOrRelativePath(String filePath) {
+        if (filePath != null) {
+            if (FileUtil.isAbsolutePath(filePath)) {
+                this.setSideFilePath(filePath);
+            } else {
+                this.setSideFilePath(WORK_DIR + File.separator + filePath);
+            }
         }
     }
 
