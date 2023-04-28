@@ -2,7 +2,7 @@ package io.hugang;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class Main {
+public class RunAutoTest {
     public static void main(String[] args) {
         // read spring config file named applicationContext.xml
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");

@@ -13,8 +13,8 @@ public class AutoTestConfig {
      * read user properties
      */
     public void readUserProperties() {
-        // read user.properties
-        File file = FileUtil.file(WORK_DIR + "/conf/user.properties");
+        // read auto-test.properties
+        File file = FileUtil.file(WORK_DIR + "/conf/auto-test.properties");
         if (!file.exists()) {
             return;
         }
