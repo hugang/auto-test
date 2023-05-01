@@ -1,6 +1,7 @@
 package io.hugang.config;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
 
@@ -20,7 +21,7 @@ public class AutoTestConfig {
         }
         Setting setting = SettingUtil.get(file.getAbsolutePath());
         String userProfilePath = setting.get("user.profile.path");
-        setAbsolutePathOrRelativePath(userProfilePath);
+        this.setUserProfilePath(getAbsolutePath(userProfilePath));
 
         String webDriverName = setting.get("web.driver.name");
         if (webDriverName != null) {
@@ -28,19 +29,19 @@ public class AutoTestConfig {
         }
 
         String webDriverPath = setting.get("web.driver.path");
-        setAbsolutePathOrRelativePath(webDriverPath);
+        this.setWebDriverPath(getAbsolutePath(webDriverPath));
 
         String csvFilePath = setting.get("csv.file.path");
-        setAbsolutePathOrRelativePath(csvFilePath);
+        this.setCsvFilePath(getAbsolutePath(csvFilePath));
 
         String xlsxFilePath = setting.get("xlsx.file.path");
-        setAbsolutePathOrRelativePath(xlsxFilePath);
+        this.setXlsxFilePath(getAbsolutePath(xlsxFilePath));
 
         String sideFilePath = setting.get("side.file.path");
-        setAbsolutePathOrRelativePath(sideFilePath);
+        this.setSideFilePath(getAbsolutePath(sideFilePath));
 
         String fileDownloadPath = setting.get("file.download.path");
-        setAbsolutePathOrRelativePath(fileDownloadPath);
+        this.setFileDownloadPath(getAbsolutePath(fileDownloadPath));
 
         String width = setting.get("width");
         if (width != null) {
@@ -61,18 +62,20 @@ public class AutoTestConfig {
     }
 
     /**
-     * set absolute path or relative path
+     * get absolute path
      *
      * @param filePath file path
+     * @return absolute path
      */
-    private void setAbsolutePathOrRelativePath(String filePath) {
+    private String getAbsolutePath(String filePath) {
         if (filePath != null) {
             if (FileUtil.isAbsolutePath(filePath)) {
-                this.setSideFilePath(filePath);
+                return filePath;
             } else {
-                this.setSideFilePath(WORK_DIR + File.separator + filePath);
+                return WORK_DIR + File.separator + filePath;
             }
         }
+        return StrUtil.EMPTY;
     }
 
     // user profile path for browser

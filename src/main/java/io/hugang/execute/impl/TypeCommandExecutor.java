@@ -3,6 +3,7 @@ package io.hugang.execute.impl;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.execute.CommandExecutor;
+import org.openqa.selenium.Keys;
 
 /**
  * type command executor
@@ -20,7 +21,8 @@ public class TypeCommandExecutor implements CommandExecutor {
      */
     @Override
     public boolean execute(Command command) {
-        CommandExecuteUtil.getElement(command.getTarget()).setValue(command.getValue());
+        // replace \n to shift+enter
+        CommandExecuteUtil.getElement(command.getTarget()).setValue(command.getValue().replace("\\n", Keys.chord(Keys.SHIFT, Keys.ENTER)));
         return true;
     }
 }

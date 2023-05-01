@@ -2,6 +2,7 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.Selenide;
 import io.hugang.bean.Command;
+import io.hugang.execute.CommandExecutor;
 
 /**
  * sleep command executor
@@ -9,7 +10,7 @@ import io.hugang.bean.Command;
  *
  * @author hugang
  */
-public class SleepCommandExecutor implements io.hugang.execute.CommandExecutor {
+public class SleepCommandExecutor implements CommandExecutor {
     /**
      * sleep command executor
      * <p> target：sleep time, value：null

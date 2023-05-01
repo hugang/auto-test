@@ -22,7 +22,9 @@ public enum CommandType {
     // set window size
     SIZE("setWindowSize"),
     // sendKeys
-    SENDKEYS("sendKeys");
+    SENDKEYS("sendKeys"),
+    // wait for text
+    WAITFORTEXT("waitForText");
 
     CommandType(String command) {
         this.command = command;

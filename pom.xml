@@ -49,6 +49,12 @@
             <artifactId>jcommander</artifactId>
             <version>1.82</version>
         </dependency>
+        <!-- add commons-csv-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.10.0</version>
+        </dependency>
     </dependencies>
     <!-- add dependency plugin-->
     <build>

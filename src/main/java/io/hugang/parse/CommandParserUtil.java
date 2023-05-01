@@ -14,6 +14,9 @@ import cn.hutool.poi.excel.ExcelWriter;
 import io.hugang.bean.Command;
 import io.hugang.bean.CommandType;
 import io.hugang.bean.Commands;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,20 +37,20 @@ public class CommandParserUtil {
     /**
      * read one line and parse to command
      *
-     * @param line line
+     * @param record record
      * @return command
      */
-    public static Command getCommand(String line) {
+    public static Command getCommand(CSVRecord record) {
         Command command = new Command();
-        String[] split = line.split(StrUtil.COMMA);
-        command.setCommand(split[0]);
+
+        command.setCommand(record.get(0));
         // set the target when split length is 2
-        if (split.length > 1) {
-            command.setTarget(split[1]);
+        if (record.size() > 1) {
+            command.setTarget(record.get(1));
         }
         // set the target and value when split length is 3
-        if (split.length > 2) {
-            command.setValue(split[2]);
+        if (record.size() > 2) {
+            command.setValue(record.get(2));
         }
         return command;
     }
@@ -63,9 +66,9 @@ public class CommandParserUtil {
         Commands commands = new Commands();
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                commandList.add(CommandParserUtil.getCommand(line));
+            CSVParser csvRecords = new CSVParser(br, CSVFormat.DEFAULT.builder().setQuote('"').build());
+            for (CSVRecord csvRecord : csvRecords) {
+                commandList.add(CommandParserUtil.getCommand(csvRecord));
             }
         } catch (IOException e) {
             e.printStackTrace();

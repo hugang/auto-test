@@ -2,6 +2,7 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.bean.Command;
+import io.hugang.execute.CommandExecutor;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 
@@ -11,7 +12,7 @@ import org.openqa.selenium.WebDriver;
  *
  * @author hugang
  */
-public class SizeCommandExecutor implements io.hugang.execute.CommandExecutor {
+public class SizeCommandExecutor implements CommandExecutor {
     /**
      * execute set window size command
      *

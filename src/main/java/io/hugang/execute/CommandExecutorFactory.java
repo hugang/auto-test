@@ -61,6 +61,9 @@ public class CommandExecutorFactory {
                 case SENDKEYS:
                     EXECUTORS.put(commandType, new SendKeysCommandExecutor());
                     break;
+                case WAITFORTEXT:
+                    EXECUTORS.put(commandType, new WaitForTextCommandExecutor());
+                    break;
                 default:
                     break;
             }
