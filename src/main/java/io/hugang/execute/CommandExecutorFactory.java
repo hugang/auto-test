@@ -64,6 +64,9 @@ public class CommandExecutorFactory {
                 case WAITFORTEXT:
                     EXECUTORS.put(commandType, new WaitForTextCommandExecutor());
                     break;
+                case RUN:
+                    EXECUTORS.put(commandType, new RunCommandExecutor());
+                    break;
                 default:
                     break;
             }
