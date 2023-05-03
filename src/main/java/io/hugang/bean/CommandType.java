@@ -24,7 +24,9 @@ public enum CommandType {
     // sendKeys
     SENDKEYS("sendKeys"),
     // wait for text
-    WAITFORTEXT("waitForText");
+    WAITFORTEXT("waitForText"),
+    // run
+    RUN("run");
 
     CommandType(String command) {
         this.command = command;

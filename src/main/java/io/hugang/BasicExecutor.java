@@ -172,9 +172,12 @@ public class BasicExecutor {
             // get the command executor
             CommandExecutor executor = CommandExecutorFactory.getExecutor(command.getCommand());
             // execute the command
-            assert executor != null;
             log.info("execute command: " + command);
-            result = executor.execute(command);
+            if (executor != null) {
+                result = executor.execute(command);
+            } else {
+                throw new RuntimeException("command not supported");
+            }
             if (!result) {
                 throw new RuntimeException("execute command failed");
             }

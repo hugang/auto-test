@@ -34,7 +34,7 @@
             </PatternLayout>
             <Policies>
                 //　1kBに達したらローテーションのファイルを作成する
-                <SizeBasedTriggeringPolicy size="1KB"/>
+                <SizeBasedTriggeringPolicy size="5MB"/>
             </Policies>
             //　ローテーションのファイルは、3つ持つ
             <DefaultRolloverStrategy max="3"/>
@@ -44,8 +44,8 @@
     <Loggers>
         // trace以上のログを出力する
         <Root level="info">
-            <AppenderRef ref="Console" />
-            <AppenderRef ref="logfile001" />
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="logfile001"/>
         </Root>
     </Loggers>
 </Configuration>
