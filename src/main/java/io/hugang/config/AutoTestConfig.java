@@ -23,7 +23,7 @@ public class AutoTestConfig {
         String userProfilePath = setting.get("user.profile.path");
         this.setUserProfilePath(getAbsolutePath(userProfilePath));
 
-        String webDriverName = setting.get("web.driver.name");
+        String webDriverName = setting.get("web.driver");
         if (webDriverName != null) {
             this.setWebDriverName(webDriverName);
         }

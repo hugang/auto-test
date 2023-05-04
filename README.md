@@ -1,5 +1,10 @@
 ## how to use
 
+download webdriver, and put it in `driver` directory with auto-test.bat.
+
+- [chrome](https://chromedriver.chromium.org/downloads)
+- [edge](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
+
 there are 3 modes to run auto test.
 
 1. [side mode](doc/how-to.md)
