@@ -57,6 +57,6 @@ public class WaitForTextCommandExecutor implements CommandExecutor {
      * @return exist or not
      */
     private static boolean existValue(Command command, String value) {
-        return null != value && value.contains(command.getValue());
+        return null != value && value.contains(CommandExecuteUtil.render(command.getValue()));
     }
 }
