@@ -1,8 +1,11 @@
 package io.hugang.execute;
 
+import cn.hutool.extra.template.TemplateEngine;
+import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.SelenideElement;
+import io.hugang.BasicExecutor;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -15,6 +18,7 @@ import static com.codeborne.selenide.Selenide.$;
  */
 public class CommandExecuteUtil {
     private static final Log log = LogFactory.get();
+    private static final TemplateEngine ENGINE = TemplateUtil.createEngine();
 
     /**
      * get element by target
@@ -50,5 +54,66 @@ public class CommandExecuteUtil {
             log.info("can not find element by target: {}", target);
         }
         return $;
+    }
+
+    /**
+     * set variable
+     *
+     * @param key key
+     * @param $   selenide element
+     */
+    public static void setVariable(String key, SelenideElement $) {
+        BasicExecutor.variablesMap.put(key, CommandExecuteUtil.getElementValue($));
+    }
+
+    private static String getElementValue(SelenideElement $) {
+        String value = null;
+        if ($ != null) {
+            switch ($.getTagName()) {
+                case "input": {
+                    value = $.getValue();
+                    break;
+                }
+                case "select": {
+                    value = $.getSelectedOptionText();
+                    break;
+                }
+                default: {
+                    value = $.getText();
+                    break;
+                }
+            }
+        }
+        return value;
+    }
+
+    /**
+     * set variable
+     *
+     * @param key   key
+     * @param value value
+     */
+    public static void setVariable(String key, String value) {
+        BasicExecutor.variablesMap.put(key, value);
+    }
+
+    /**
+     * get variable
+     *
+     * @param key key
+     * @return variable
+     */
+    public static String getVariable(String key) {
+        return BasicExecutor.variablesMap.get(key);
+    }
+
+    /**
+     * render template
+     *
+     * @param value template
+     * @return rendered value
+     */
+    public static String render(String value) {
+        return ENGINE.getTemplate(value).render(BasicExecutor.variablesMap);
     }
 }

@@ -22,7 +22,7 @@ public class TypeCommandExecutor implements CommandExecutor {
     @Override
     public boolean execute(Command command) {
         // replace \n to shift+enter
-        CommandExecuteUtil.getElement(command.getTarget()).setValue(command.getValue().replace("\\n", Keys.chord(Keys.SHIFT, Keys.ENTER)));
+        CommandExecuteUtil.getElement(command.getTarget()).setValue(CommandExecuteUtil.render(command.getValue()).replace("\\n", Keys.chord(Keys.SHIFT, Keys.ENTER)));
         return true;
     }
 }

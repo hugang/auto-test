@@ -20,7 +20,7 @@ public class SelectCommandExecutor implements CommandExecutor {
      */
     @Override
     public boolean execute(Command command) {
-        CommandExecuteUtil.getElement(command.getTarget()).selectOption(command.getValue());
+        CommandExecuteUtil.getElement(command.getTarget()).selectOption(CommandExecuteUtil.render(command.getValue()));
         return true;
     }
 }

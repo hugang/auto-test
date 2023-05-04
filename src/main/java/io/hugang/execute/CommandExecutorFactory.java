@@ -58,14 +58,23 @@ public class CommandExecutorFactory {
                 case SIZE:
                     EXECUTORS.put(commandType, new SizeCommandExecutor());
                     break;
-                case SENDKEYS:
+                case SEND_KEYS:
                     EXECUTORS.put(commandType, new SendKeysCommandExecutor());
                     break;
-                case WAITFORTEXT:
+                case WAIT_FOR_TEXT:
                     EXECUTORS.put(commandType, new WaitForTextCommandExecutor());
                     break;
                 case RUN:
                     EXECUTORS.put(commandType, new RunCommandExecutor());
+                    break;
+                case SET_PROPERTY:
+                    EXECUTORS.put(commandType, new SetPropertyCommandExecutor());
+                    break;
+                case SET_ELEMENT_TO_PROPERTY:
+                    EXECUTORS.put(commandType, new SetElementToPropertyCommandExecutor());
+                    break;
+                case READ_PROPERTIES:
+                    EXECUTORS.put(commandType, new ReadPropertiesCommandExecutor());
                     break;
                 default:
                     break;
