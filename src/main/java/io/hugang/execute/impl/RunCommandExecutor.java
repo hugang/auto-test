@@ -1,5 +1,6 @@
 package io.hugang.execute.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import io.hugang.bean.Command;
@@ -19,7 +20,7 @@ import java.io.InputStreamReader;
 public class RunCommandExecutor implements CommandExecutor {
     // log
     private static final Log log = LogFactory.get();
-    private static final String BASH_CMD = "bash ";
+    private static final String BASH_CMD = "/usr/bin/bash";
     private static final String TYPE_CMD = "cmd";
     private static final String TYPE_BAT = "bat";
     private static final String TYPE_SH = "sh";
@@ -45,7 +46,7 @@ public class RunCommandExecutor implements CommandExecutor {
                     process = runtime.exec(value);
                     break;
                 case TYPE_SH:
-                    process = runtime.exec(BASH_CMD + value);
+                    process = runtime.exec(new String[]{BASH_CMD, FileUtil.file(value).getAbsolutePath()});
                     break;
                 default:
                     log.error("unknown command target: {}", command.getTarget());

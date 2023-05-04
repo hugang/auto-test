@@ -1,5 +1,6 @@
 package io.hugang.execute.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -26,7 +27,7 @@ public class ReadPropertiesCommandExecutor implements CommandExecutor {
     public boolean execute(Command command) {
 
         if ("json".equals(command.getTarget())) {
-            JSONObject json = (JSONObject) JSONUtil.readJSON(new File(command.getValue()), CharsetUtil.CHARSET_UTF_8);
+            JSONObject json = (JSONObject) JSONUtil.readJSON(FileUtil.file(command.getValue()), CharsetUtil.CHARSET_UTF_8);
             json.forEach((key, value) -> CommandExecuteUtil.setVariable(key, value.toString()));
         }
 
