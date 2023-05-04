@@ -22,11 +22,19 @@ public enum CommandType {
     // set window size
     SIZE("setWindowSize"),
     // sendKeys
-    SENDKEYS("sendKeys"),
+    SEND_KEYS("sendKeys"),
     // wait for text
-    WAITFORTEXT("waitForText"),
+    WAIT_FOR_TEXT("waitForText"),
     // run
-    RUN("run");
+    RUN("run"),
+    // set property
+    SET_PROPERTY("setProperty"),
+    // set element value to property
+    SET_ELEMENT_TO_PROPERTY("setElementToProperty"),
+    // read properties
+    READ_PROPERTIES("readProperties"),
+    // save properties
+    SAVE_PROPERTIES("saveProperties");
 
     CommandType(String command) {
         this.command = command;

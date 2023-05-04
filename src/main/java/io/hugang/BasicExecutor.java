@@ -38,6 +38,8 @@ public class BasicExecutor {
     private List<Commands> commandsList;
     // auto test config
     private AutoTestConfig autoTestConfig;
+    // map to storage variables
+    public static final Map<String, String> variablesMap = new HashMap<>();
 
     /**
      * initialize
@@ -199,4 +201,5 @@ public class BasicExecutor {
     public void setAutoTestConfig(AutoTestConfig autoTestConfig) {
         this.autoTestConfig = autoTestConfig;
     }
+
 }

@@ -1,14 +1,12 @@
 package io.hugang.execute.impl;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import io.hugang.bean.Command;
+import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.execute.CommandExecutor;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -21,9 +19,10 @@ import java.io.InputStreamReader;
 public class RunCommandExecutor implements CommandExecutor {
     // log
     private static final Log log = LogFactory.get();
-    public static final String BAT_SUFFIX = "bat";
-    public static final String SH_SUFFIX = "sh";
-    public static final String BASH_CMD = "bash ";
+    private static final String BASH_CMD = "bash ";
+    private static final String TYPE_CMD = "cmd";
+    private static final String TYPE_BAT = "bat";
+    private static final String TYPE_SH = "sh";
 
     /**
      * execute command
@@ -36,21 +35,23 @@ public class RunCommandExecutor implements CommandExecutor {
     @Override
     public boolean execute(Command command) {
         try {
-            // run bat file
-            boolean isFile = FileUtil.isFile(command.getTarget());
-            String type = StrUtil.EMPTY;
-            if (isFile) {
-                type = FileUtil.getType(new File(command.getTarget()));
-            }
             Runtime runtime = Runtime.getRuntime();
             Process process;
-            if (BAT_SUFFIX.equals(type)) {
-                process = runtime.exec(command.getTarget());
-            } else if (SH_SUFFIX.equals(type)) {
-                process = runtime.exec(BASH_CMD + command.getTarget());
-            } else {
-                process = runtime.exec(command.getTarget());
+
+            String value = CommandExecuteUtil.render(command.getValue());
+            switch (command.getTarget()) {
+                case TYPE_CMD:
+                case TYPE_BAT:
+                    process = runtime.exec(value);
+                    break;
+                case TYPE_SH:
+                    process = runtime.exec(BASH_CMD + value);
+                    break;
+                default:
+                    log.error("unknown command target: {}", command.getTarget());
+                    return false;
             }
+
             if (process != null) {
                 // get the input stream of the process
                 BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
