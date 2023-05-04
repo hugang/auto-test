@@ -1,4 +1,4 @@
-##             
+##                
 
 the xlsx seems like below:
 
@@ -22,3 +22,5 @@ every test data contains data structure
 | screenshot    | current page name                                               | number of screenshot <br> if the page is too long, it will page down and take again when the number bigger then 1 |
 | setWindowSize | window size that want to change                                 | skip when empty                                                                                                   |
 | sendKeys      | page element                                                    | send key to page element,skip when empty                                                                          |
+| run           | command, bat file or sh file                                    | skip when empty                                                                                                   |
+| waitForText   | page element                                                    | wait the element's text to be the value, skip when empty                                                          |

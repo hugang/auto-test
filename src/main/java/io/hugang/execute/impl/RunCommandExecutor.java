@@ -1,6 +1,7 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import io.hugang.bean.Command;
@@ -20,6 +21,9 @@ import java.io.InputStreamReader;
 public class RunCommandExecutor implements CommandExecutor {
     // log
     private static final Log log = LogFactory.get();
+    public static final String BAT_SUFFIX = "bat";
+    public static final String SH_SUFFIX = "sh";
+    public static final String BASH_CMD = "bash ";
 
     /**
      * execute command
@@ -33,14 +37,19 @@ public class RunCommandExecutor implements CommandExecutor {
     public boolean execute(Command command) {
         try {
             // run bat file
-            String type = FileUtil.getType(new File(command.getTarget()));
-            Runtime runtime = Runtime.getRuntime();
-            Process process = null;
-            if ("bat".equals(type)) {
-                process = runtime.exec(command.getTarget());
+            boolean isFile = FileUtil.isFile(command.getTarget());
+            String type = StrUtil.EMPTY;
+            if (isFile) {
+                type = FileUtil.getType(new File(command.getTarget()));
             }
-            if ("sh".equals(type)) {
-                process = runtime.exec("bash " + command.getTarget());
+            Runtime runtime = Runtime.getRuntime();
+            Process process;
+            if (BAT_SUFFIX.equals(type)) {
+                process = runtime.exec(command.getTarget());
+            } else if (SH_SUFFIX.equals(type)) {
+                process = runtime.exec(BASH_CMD + command.getTarget());
+            } else {
+                process = runtime.exec(command.getTarget());
             }
             if (process != null) {
                 // get the input stream of the process
