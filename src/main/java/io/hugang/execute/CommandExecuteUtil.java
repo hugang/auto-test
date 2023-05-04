@@ -108,6 +108,16 @@ public class CommandExecuteUtil {
     }
 
     /**
+     * has variable
+     *
+     * @param key key
+     * @return has or not
+     */
+    public static boolean hasVariable(String key) {
+        return BasicExecutor.variablesMap.containsKey(key);
+    }
+
+    /**
      * render template
      *
      * @param value template
