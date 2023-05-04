@@ -76,6 +76,9 @@ public class CommandExecutorFactory {
                 case READ_PROPERTIES:
                     EXECUTORS.put(commandType, new ReadPropertiesCommandExecutor());
                     break;
+                case SAVE_PROPERTIES:
+                    EXECUTORS.put(commandType, new SavePropertiesCommandExecutor());
+                    break;
                 default:
                     break;
             }
