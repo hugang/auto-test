@@ -1,13 +1,14 @@
 package io.hugang;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
+/**
+ * entry point
+ * <p>
+ * This class is the entry point of the program.
+ *
+ * @author hugang
+ */
 public class RunAutoTest {
     public static void main(String[] args) {
-        // read spring config file named applicationContext.xml
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        // get the bean from spring container named executor
-        BasicExecutor executor = context.getBean("executor", BasicExecutor.class);
-        executor.execute();
+        new BasicExecutor().execute();
     }
 }

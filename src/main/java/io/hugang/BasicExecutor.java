@@ -37,9 +37,12 @@ public class BasicExecutor {
     // commands list
     private List<Commands> commandsList;
     // auto test config
-    private AutoTestConfig autoTestConfig;
+    private final AutoTestConfig autoTestConfig = new AutoTestConfig();
     // map to storage variables
     public static final Map<String, String> variablesMap = new HashMap<>();
+
+    public BasicExecutor() {
+    }
 
     /**
      * initialize
@@ -94,9 +97,9 @@ public class BasicExecutor {
         this.prepareWorkDirectories();
 
         // read csv from xlsx when xlsx file path is not null
-        switch (autoTestConfig.getInputMedia()) {
+        switch (autoTestConfig.getTestMode()) {
             case "xlsx":
-                List<Commands> commandsFromXlsx = CommandParserUtil.getCommandsFromXlsx(autoTestConfig.getXlsxFilePath());
+                List<Commands> commandsFromXlsx = CommandParserUtil.getCommandsFromXlsx(autoTestConfig.getTestCasePath());
                 List<String> testCasesArray = new ArrayList<>();
                 if (StrUtil.isNotEmpty(autoTestConfig.getTestCases())) {
                     String[] testCaseArray = autoTestConfig.getTestCases().split(",");
@@ -125,15 +128,15 @@ public class BasicExecutor {
                 }
                 break;
             case "csv":
-                this.setCommandsList(CommandParserUtil.getCommandsFromCsv(autoTestConfig.getCsvFilePath()));
+                this.setCommandsList(CommandParserUtil.getCommandsFromCsv(autoTestConfig.getTestCasePath()));
                 break;
             case "side":
-                this.setCommandsList(CommandParserUtil.getCommandsFromSide(autoTestConfig.getSideFilePath()));
+                this.setCommandsList(CommandParserUtil.getCommandsFromSide(autoTestConfig.getTestCasePath()));
                 // save commandsList to a xlsx file
                 CommandParserUtil.saveCommandsListToXlsx(this.getCommandsList(), autoTestConfig.getFileDownloadPath());
                 break;
             default:
-                throw new RuntimeException("input media not supported");
+                throw new RuntimeException("test mode not supported");
         }
 
         // execute the commands
@@ -192,14 +195,6 @@ public class BasicExecutor {
 
     public void setCommandsList(List<Commands> commandsList) {
         this.commandsList = commandsList;
-    }
-
-    public AutoTestConfig getAutoTestConfig() {
-        return autoTestConfig;
-    }
-
-    public void setAutoTestConfig(AutoTestConfig autoTestConfig) {
-        this.autoTestConfig = autoTestConfig;
     }
 
 }

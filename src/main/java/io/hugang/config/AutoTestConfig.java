@@ -7,55 +7,61 @@ import cn.hutool.setting.SettingUtil;
 
 import java.io.File;
 
+/**
+ * auto test config
+ *
+ * @author hugang
+ */
 public class AutoTestConfig {
+    // the working path
     public static final String WORK_DIR = new File("").getAbsolutePath();
+    // config group of browser
+    public static final String GROUP_BROWSER = "browser";
+    // config group of test case
+    public static final String GROUP_TEST_CASE = "test-case";
+    // config group of output
+    public static final String GROUP_OUTPUT = "output";
 
     /**
      * read user properties
      */
     public void readUserProperties() {
         // read auto-test.properties
-        File file = FileUtil.file(WORK_DIR + "/conf/auto-test.properties");
+        File file = FileUtil.file(WORK_DIR + "/conf/auto-test.conf");
         if (!file.exists()) {
             return;
         }
         Setting setting = SettingUtil.get(file.getAbsolutePath());
-        String userProfilePath = setting.get("user.profile.path");
+        String userProfilePath = setting.get(GROUP_BROWSER, "user.profile.path");
         this.setUserProfilePath(getAbsolutePath(userProfilePath));
 
-        String webDriverName = setting.get("web.driver");
+        String webDriverName = setting.get(GROUP_BROWSER, "web.driver");
         if (webDriverName != null) {
             this.setWebDriverName(webDriverName);
         }
 
-        String webDriverPath = setting.get("web.driver.path");
+        String webDriverPath = setting.get(GROUP_BROWSER, "web.driver.path");
         this.setWebDriverPath(getAbsolutePath(webDriverPath));
 
-        String csvFilePath = setting.get("csv.file.path");
-        this.setCsvFilePath(getAbsolutePath(csvFilePath));
+        String testCasePath = setting.get(GROUP_TEST_CASE, "test.case.path");
+        this.setTestCasePath(getAbsolutePath(testCasePath));
 
-        String xlsxFilePath = setting.get("xlsx.file.path");
-        this.setXlsxFilePath(getAbsolutePath(xlsxFilePath));
-
-        String sideFilePath = setting.get("side.file.path");
-        this.setSideFilePath(getAbsolutePath(sideFilePath));
-
-        String fileDownloadPath = setting.get("file.download.path");
+        String fileDownloadPath = setting.get(GROUP_OUTPUT, "file.download.path");
         this.setFileDownloadPath(getAbsolutePath(fileDownloadPath));
 
-        String width = setting.get("width");
+        String width = setting.get(GROUP_BROWSER, "browser.width");
         if (width != null) {
             this.setWidth(Integer.parseInt(width));
         }
-        String height = setting.get("height");
+        String height = setting.get(GROUP_BROWSER, "browser.height");
         if (height != null) {
             this.setHeight(Integer.parseInt(height));
         }
-        String inputMedia = setting.get("input.media");
+        String inputMedia = setting.get(GROUP_TEST_CASE, "test.case.mode");
         if (inputMedia != null) {
-            this.setInputMedia(inputMedia);
+            this.setTestMode(inputMedia);
         }
-        String testCases = setting.get("xlsx.specific.testcases");
+        String testCases = setting.get(GROUP_TEST_CASE, "xlsx.specific.testcases");
         if (testCases != null) {
             this.setTestCases(testCases);
         }
@@ -84,10 +90,8 @@ public class AutoTestConfig {
     private String webDriverName;
     // web driver path
     private String webDriverPath;
-    // csv file path
-    private String csvFilePath;
     // xlsx file path
-    private String xlsxFilePath;
+    private String testCasePath;
     // test cases to be executed
     private String testCases;
     // file download path
@@ -97,9 +101,7 @@ public class AutoTestConfig {
     // browser height
     private int height;
     // input media
-    private String inputMedia;
-    // side file path
-    private String sideFilePath;
+    private String testMode;
 
 
     public String getUserProfilePath() {
@@ -126,20 +128,12 @@ public class AutoTestConfig {
         this.webDriverPath = webDriverPath;
     }
 
-    public String getCsvFilePath() {
-        return csvFilePath;
+    public String getTestCasePath() {
+        return testCasePath;
     }
 
-    public void setCsvFilePath(String csvFilePath) {
-        this.csvFilePath = csvFilePath;
-    }
-
-    public String getXlsxFilePath() {
-        return xlsxFilePath;
-    }
-
-    public void setXlsxFilePath(String xlsxFilePath) {
-        this.xlsxFilePath = xlsxFilePath;
+    public void setTestCasePath(String testCasePath) {
+        this.testCasePath = testCasePath;
     }
 
     public String getTestCases() {
@@ -174,19 +168,13 @@ public class AutoTestConfig {
         this.height = height;
     }
 
-    public String getInputMedia() {
-        return inputMedia;
+    public String getTestMode() {
+        return testMode;
     }
 
-    public void setInputMedia(String inputMedia) {
-        this.inputMedia = inputMedia;
+    public void setTestMode(String testMode) {
+        this.testMode = testMode;
     }
 
-    public String getSideFilePath() {
-        return sideFilePath;
-    }
 
-    public void setSideFilePath(String sideFilePath) {
-        this.sideFilePath = sideFilePath;
-    }
 }

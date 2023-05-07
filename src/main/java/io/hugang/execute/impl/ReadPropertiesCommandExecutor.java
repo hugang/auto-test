@@ -8,8 +8,6 @@ import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.execute.CommandExecutor;
 
-import java.io.File;
-
 /**
  * set property command executor
  * <p>
