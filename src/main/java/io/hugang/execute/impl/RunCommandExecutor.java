@@ -25,6 +25,11 @@ public class RunCommandExecutor implements CommandExecutor {
     private static final String TYPE_BAT = "bat";
     private static final String TYPE_SH = "sh";
 
+    @Override
+    public String getCommandName() {
+        return "run";
+    }
+
     /**
      * execute command
      * <p>

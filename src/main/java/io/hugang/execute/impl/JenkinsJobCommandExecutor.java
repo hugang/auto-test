@@ -21,6 +21,11 @@ public class JenkinsJobCommandExecutor implements CommandExecutor {
     // log
     private static final Log log = LogFactory.get();
 
+    @Override
+    public String getCommandName() {
+        return "jenkinsJob";
+    }
+
     /**
      * execute jenkins job command
      *

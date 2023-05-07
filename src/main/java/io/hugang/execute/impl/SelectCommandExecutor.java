@@ -11,6 +11,11 @@ import io.hugang.execute.CommandExecutor;
  * @author hugang
  */
 public class SelectCommandExecutor implements CommandExecutor {
+    @Override
+    public String getCommandName() {
+        return "select";
+    }
+
     /**
      * execute select command
      * <p> target：selector or id, value：option value

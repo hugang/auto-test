@@ -15,6 +15,11 @@ import io.hugang.execute.CommandExecutor;
  * @author hugang
  */
 public class ReadPropertiesCommandExecutor implements CommandExecutor {
+    @Override
+    public String getCommandName() {
+        return "readProperties";
+    }
+
     /**
      * read properties file and set to variable maps
      *

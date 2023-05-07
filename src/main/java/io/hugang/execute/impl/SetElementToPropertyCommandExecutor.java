@@ -3,6 +3,7 @@ package io.hugang.execute.impl;
 import com.codeborne.selenide.SelenideElement;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
+import io.hugang.execute.CommandExecutor;
 
 /**
  * set element to property command executor
@@ -10,7 +11,12 @@ import io.hugang.execute.CommandExecuteUtil;
  *
  * @author hugang
  */
-public class SetElementToPropertyCommandExecutor implements io.hugang.execute.CommandExecutor {
+public class SetElementToPropertyCommandExecutor implements CommandExecutor {
+    @Override
+    public String getCommandName() {
+        return "setElementToProperty";
+    }
+
     /**
      * set element to property
      *

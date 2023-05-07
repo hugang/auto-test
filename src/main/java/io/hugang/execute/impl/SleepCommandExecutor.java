@@ -11,6 +11,11 @@ import io.hugang.execute.CommandExecutor;
  * @author hugang
  */
 public class SleepCommandExecutor implements CommandExecutor {
+    @Override
+    public String getCommandName() {
+        return "sleep";
+    }
+
     /**
      * sleep command executor
      * <p> target：sleep time, value：null

@@ -1,8 +1,6 @@
 package io.hugang.execute;
 
-import cn.hutool.core.util.ObjectUtil;
-import io.hugang.bean.CommandType;
-import io.hugang.execute.impl.*;
+import cn.hutool.core.util.ClassUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +13,23 @@ import java.util.Map;
  */
 public class CommandExecutorFactory {
     // map to store command executor
-    private static final Map<CommandType, CommandExecutor> EXECUTORS = new HashMap<>();
+    private static final Map<String, CommandExecutor> EXECUTORS = new HashMap<>();
+
+    static {
+        // scan all class and get the class which implements CommandExecutor interface
+        // and put them into EXECUTORS map
+        ClassUtil.scanPackage("io.hugang.execute.impl", (clazz) -> {
+            if (CommandExecutor.class.isAssignableFrom(clazz)) {
+                try {
+                    CommandExecutor commandExecutor = (CommandExecutor) clazz.newInstance();
+                    EXECUTORS.put(commandExecutor.getCommandName(), commandExecutor);
+                } catch (InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            return false;
+        });
+    }
 
     /**
      * get command executor by command name
@@ -24,71 +38,7 @@ public class CommandExecutorFactory {
      * @return command executor
      */
     public static CommandExecutor getExecutor(String command) {
-        CommandType commandType = CommandType.parse(command);
-        return commandType == null ? null : getExecutorByCommandType(commandType);
+        return EXECUTORS.get(command);
     }
 
-    /**
-     * get command executor by command type
-     *
-     * @param commandType command type
-     * @return command executor
-     */
-    private static CommandExecutor getExecutorByCommandType(CommandType commandType) {
-        if (ObjectUtil.isEmpty(EXECUTORS.get(commandType))) {
-            switch (commandType) {
-                case OPEN:
-                    EXECUTORS.put(commandType, new OpenCommandExecutor());
-                    break;
-                case CLICK:
-                    EXECUTORS.put(commandType, new ClickCommandExecutor());
-                    break;
-                case TYPE:
-                    EXECUTORS.put(commandType, new TypeCommandExecutor());
-                    break;
-                case SCREENSHOT:
-                    EXECUTORS.put(commandType, new ScreenshotCommandExecutor());
-                    break;
-                case SLEEP:
-                    EXECUTORS.put(commandType, new SleepCommandExecutor());
-                    break;
-                case SELECT:
-                    EXECUTORS.put(commandType, new SelectCommandExecutor());
-                    break;
-                case SIZE:
-                    EXECUTORS.put(commandType, new SizeCommandExecutor());
-                    break;
-                case SEND_KEYS:
-                    EXECUTORS.put(commandType, new SendKeysCommandExecutor());
-                    break;
-                case WAIT_FOR_TEXT:
-                    EXECUTORS.put(commandType, new WaitForTextCommandExecutor());
-                    break;
-                case RUN:
-                    EXECUTORS.put(commandType, new RunCommandExecutor());
-                    break;
-                case SET_PROPERTY:
-                    EXECUTORS.put(commandType, new SetPropertyCommandExecutor());
-                    break;
-                case SET_ELEMENT_TO_PROPERTY:
-                    EXECUTORS.put(commandType, new SetElementToPropertyCommandExecutor());
-                    break;
-                case READ_PROPERTIES:
-                    EXECUTORS.put(commandType, new ReadPropertiesCommandExecutor());
-                    break;
-                case SAVE_PROPERTIES:
-                    EXECUTORS.put(commandType, new SavePropertiesCommandExecutor());
-                    break;
-                case JENKINS_JOB:
-                    EXECUTORS.put(commandType, new JenkinsJobCommandExecutor());
-                    break;
-                case INCREASE_NUMBER:
-                    EXECUTORS.put(commandType, new IncreaseNumberCommandExecutor());
-                    break;
-                default:
-                    break;
-            }
-        }
-        return EXECUTORS.get(commandType);
-    }
 }

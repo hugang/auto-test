@@ -13,6 +13,11 @@ import org.openqa.selenium.WebDriver;
  * @author hugang
  */
 public class SizeCommandExecutor implements CommandExecutor {
+    @Override
+    public String getCommandName() {
+        return "setWindowSize";
+    }
+
     /**
      * execute set window size command
      *

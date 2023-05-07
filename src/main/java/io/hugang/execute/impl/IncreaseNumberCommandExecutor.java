@@ -13,6 +13,11 @@ import io.hugang.execute.CommandExecutor;
  * @author hugang
  */
 public class IncreaseNumberCommandExecutor implements CommandExecutor {
+    @Override
+    public String getCommandName() {
+        return "increaseNumber";
+    }
+
     /**
      * execute command to increase number
      *

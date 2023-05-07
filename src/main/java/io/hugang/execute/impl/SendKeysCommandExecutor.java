@@ -13,6 +13,11 @@ import org.openqa.selenium.Keys;
  * @author hugang
  */
 public class SendKeysCommandExecutor implements CommandExecutor {
+    @Override
+    public String getCommandName() {
+        return "sendKeys";
+    }
+
     /**
      * execute send keys command
      * <p> target：keys

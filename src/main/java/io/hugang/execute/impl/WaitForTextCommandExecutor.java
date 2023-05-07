@@ -13,6 +13,11 @@ import io.hugang.execute.CommandExecutor;
  */
 public class WaitForTextCommandExecutor implements CommandExecutor {
 
+    @Override
+    public String getCommandName() {
+        return "waitForText";
+    }
+
     /**
      * execute wait for text command
      *

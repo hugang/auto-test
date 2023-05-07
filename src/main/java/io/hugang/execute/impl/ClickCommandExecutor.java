@@ -13,6 +13,11 @@ import io.hugang.execute.CommandExecutor;
  */
 public class ClickCommandExecutor implements CommandExecutor {
 
+    @Override
+    public String getCommandName() {
+        return "click";
+    }
+
     /**
      * execute click command
      * <p> target：selector=xxx or id=xxx

@@ -18,6 +18,11 @@ import java.util.Map;
  * @author hugang
  */
 public class SavePropertiesCommandExecutor implements CommandExecutor {
+    @Override
+    public String getCommandName() {
+        return "saveProperties";
+    }
+
     /**
      * execute save properties command
      *

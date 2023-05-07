@@ -18,6 +18,11 @@ import java.util.Map;
 public class SetPropertyCommandExecutor implements CommandExecutor {
     private static final Log log = LogFactory.get();
 
+    @Override
+    public String getCommandName() {
+        return "setProperty";
+    }
+
     /**
      * set property to variable maps
      *

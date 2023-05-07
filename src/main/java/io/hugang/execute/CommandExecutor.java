@@ -9,6 +9,12 @@ import io.hugang.bean.Command;
  * @author hugang
  */
 public interface CommandExecutor {
+    /**
+     * get command name
+     *
+     * @return command name
+     */
+    String getCommandName();
 
     /**
      * execute command

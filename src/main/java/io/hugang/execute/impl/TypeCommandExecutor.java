@@ -12,6 +12,11 @@ import org.openqa.selenium.Keys;
  * @author hugang
  */
 public class TypeCommandExecutor implements CommandExecutor {
+    @Override
+    public String getCommandName() {
+        return "type";
+    }
+
     /**
      * type command executor
      * <p> target：selector or id, value：input value

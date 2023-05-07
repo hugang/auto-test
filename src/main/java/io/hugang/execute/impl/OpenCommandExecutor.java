@@ -12,6 +12,11 @@ import static com.codeborne.selenide.Selenide.open;
  * @author hugang
  */
 public class OpenCommandExecutor implements CommandExecutor {
+    @Override
+    public String getCommandName() {
+        return "open";
+    }
+
     /**
      * execute open command
      * <p> target：url
