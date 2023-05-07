@@ -93,10 +93,19 @@ public class BasicExecutor {
      */
     public void execute() {
         // read the user properties
-        autoTestConfig.readUserProperties();
+        autoTestConfig.readConfigurations();
         // prepare work directories
         this.prepareWorkDirectories();
+        // parse input to commands list
+        parseCommandsList();
+        // run the commands list
+        runCommandsList();
+    }
 
+    /**
+     * method to parse input to commands list
+     */
+    private void parseCommandsList() {
         // read csv from xlsx when xlsx file path is not null
         switch (autoTestConfig.getTestMode()) {
             case "xlsx":
@@ -139,7 +148,12 @@ public class BasicExecutor {
             default:
                 throw new RuntimeException("test mode not supported");
         }
+    }
 
+    /**
+     * method to execute the commands
+     */
+    private void runCommandsList() {
         // execute the commands
         for (Commands commands : this.getCommandsList()) {
             // init the executor

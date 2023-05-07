@@ -23,10 +23,10 @@ public class AutoTestConfig {
     public static final String GROUP_OUTPUT = "output";
 
     /**
-     * read user properties
+     * read auto-test.conf
      */
-    public void readUserProperties() {
-        // read auto-test.properties
+    public void readConfigurations() {
+        // read auto-test.conf
         File file = FileUtil.file(WORK_DIR + "/conf/auto-test.conf");
         if (!file.exists()) {
             return;
