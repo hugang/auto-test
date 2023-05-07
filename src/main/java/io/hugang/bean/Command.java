@@ -3,7 +3,7 @@ package io.hugang.bean;
 /**
  * command
  * <p>
- *     a command unit to store the command information from input file
+ * a command unit to store the command information from input file
  *
  * @author hugang
  */

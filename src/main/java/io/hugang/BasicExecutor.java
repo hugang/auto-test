@@ -2,6 +2,7 @@ package io.hugang;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.cron.CronUtil;
 import cn.hutool.cron.task.Task;
@@ -22,6 +23,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,23 +70,46 @@ public class BasicExecutor {
 
         WebDriver driver;
         // create chrome webdriver
-        if (autoTestConfig.getWebDriverName().equals("chrome")) {
-            System.setProperty("webdriver.chrome.driver", autoTestConfig.getWebDriverPath());
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
-            options.addArguments("--remote-allow-origins=*");
-            options.setExperimentalOption("prefs", optionsMap);
-            driver = new ChromeDriver(options);
-        }
-        // create edge webdriver
-        else if (autoTestConfig.getWebDriverName().equals("edge")) {
-            System.setProperty("webdriver.edge.driver", autoTestConfig.getWebDriverPath());
-            EdgeOptions options = new EdgeOptions();
-            options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
-            options.setExperimentalOption("prefs", optionsMap);
-            driver = new EdgeDriver(options);
-        } else {
-            throw new RuntimeException("web driver not supported");
+        switch (autoTestConfig.getWebDriverName()) {
+            case "chrome": {
+                System.setProperty("webdriver.chrome.driver", autoTestConfig.getWebDriverPath());
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
+                // binary path
+                if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
+                    options.setBinary(autoTestConfig.getBrowserBinaryPath());
+                }
+                options.addArguments("--remote-allow-origins=*");
+                options.setExperimentalOption("prefs", optionsMap);
+                driver = new ChromeDriver(options);
+                break;
+            }
+            // create edge webdriver
+            case "edge": {
+                System.setProperty("webdriver.edge.driver", autoTestConfig.getWebDriverPath());
+                EdgeOptions options = new EdgeOptions();
+                options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
+                // binary path
+                if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
+                    options.setBinary(autoTestConfig.getBrowserBinaryPath());
+                }
+                options.setExperimentalOption("prefs", optionsMap);
+                driver = new EdgeDriver(options);
+                break;
+            }
+            // create firefox webdriver
+            case "firefox": {
+                System.setProperty("webdriver.gecko.driver", autoTestConfig.getWebDriverPath());
+                FirefoxOptions options = new FirefoxOptions();
+                // binary path
+                if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
+                    options.setBinary(autoTestConfig.getBrowserBinaryPath());
+                }
+                driver = new FirefoxDriver(options);
+                break;
+            }
+            default:
+                throw new RuntimeException("web driver not supported");
         }
         // set the browser size
         driver.manage().window().setSize(targetWindowSize);

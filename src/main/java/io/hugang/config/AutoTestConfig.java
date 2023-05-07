@@ -73,6 +73,10 @@ public class AutoTestConfig {
         if (cronExpression != null) {
             this.setCronExpression(cronExpression);
         }
+        String browserBinaryPath = setting.get(GROUP_BROWSER, "browser.binary.path");
+        if (browserBinaryPath != null) {
+            this.setBrowserBinaryPath(browserBinaryPath);
+        }
     }
 
     /**
@@ -114,6 +118,8 @@ public class AutoTestConfig {
     private boolean cronEnabled;
     // cron expression
     private String cronExpression;
+    // browser binary path
+    private String browserBinaryPath;
 
     public String getUserProfilePath() {
         return userProfilePath;
@@ -201,5 +207,13 @@ public class AutoTestConfig {
 
     public void setCronExpression(String cronExpression) {
         this.cronExpression = cronExpression;
+    }
+
+    public String getBrowserBinaryPath() {
+        return browserBinaryPath;
+    }
+
+    public void setBrowserBinaryPath(String browserBinaryPath) {
+        this.browserBinaryPath = browserBinaryPath;
     }
 }
