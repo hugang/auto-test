@@ -5,6 +5,8 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.execute.CommandExecutor;
@@ -16,6 +18,9 @@ import io.hugang.execute.CommandExecutor;
  * @author hugang
  */
 public class JenkinsJobCommandExecutor implements CommandExecutor {
+    // log
+    private static final Log log = LogFactory.get();
+
     /**
      * execute jenkins job command
      *
@@ -45,6 +50,7 @@ public class JenkinsJobCommandExecutor implements CommandExecutor {
         } else {
             jobUrl = jobUrl + "/build";
         }
+        log.info("job url: {}", jobUrl);
         return this.executeJob(jobUrl, userName, token) == 1;
     }
 
@@ -57,14 +63,15 @@ public class JenkinsJobCommandExecutor implements CommandExecutor {
      * @return execution id
      */
     private Integer executeJob(String jobUrl, String userName, String token) {
-
         try {
             HttpRequest httpRequest = HttpUtil.createPost(jobUrl).basicAuth(userName, token);
             String location;
             try (HttpResponse response = httpRequest.execute()) {
                 location = response.header("location");
             }
-            String executionUrl = this.waitForExecutionId(location, userName, token);
+            log.info("sequence url : {}", location);
+            String executionUrl = this.waitForExecutionUrl(location, userName, token);
+            log.info("execution url : {}", executionUrl);
             String result = this.waitForExecutionFinished(executionUrl, userName, token);
 
             if ("SUCCESS".equals(result)) {
@@ -76,7 +83,6 @@ public class JenkinsJobCommandExecutor implements CommandExecutor {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return 0;
     }
 
@@ -90,43 +96,58 @@ public class JenkinsJobCommandExecutor implements CommandExecutor {
      */
     private String waitForExecutionFinished(String executionUrl, String userName, String token) {
         do {
-            JSONObject jsonObject;
-            HttpRequest httpRequest = HttpUtil.createGet(executionUrl + "api/json").basicAuth(userName, token);
-            try (HttpResponse response = httpRequest.execute()) {
-                jsonObject = JSONUtil.parseObj(response.body());
-            }
-            Object executable = jsonObject.getByPath("result");
-            if (executable != null) {
-                String result = executable.toString();
-                if ("SUCCESS".equals(result) || "FAILURE".equals(result)) {
-                    return result;
+            try {
+                JSONObject jsonObject;
+                HttpRequest httpRequest = HttpUtil.createGet(executionUrl + "api/json").basicAuth(userName, token);
+                try (HttpResponse response = httpRequest.execute()) {
+                    jsonObject = JSONUtil.parseObj(response.body());
                 }
+                Object executable = jsonObject.getByPath("result");
+                if (executable != null) {
+                    String result = executable.toString();
+                    if ("SUCCESS".equals(result) || "FAILURE".equals(result)) {
+                        log.info("execution finished, result: {}", result);
+                        return result;
+                    }
+                }
+                log.info("wait for execution finished");
+                // wait for 1 second
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         } while (true);
     }
 
     /**
-     * wait for execution id
+     * wait for execution url
      *
      * @param sequencedUrl jenkins sequenced url
      * @param userName     jenkins user name
      * @param token        jenkins token
      * @return execution id
      */
-    private String waitForExecutionId(String sequencedUrl, String userName, String token) {
+    private String waitForExecutionUrl(String sequencedUrl, String userName, String token) {
         do {
-            JSONObject jsonObject;
-            HttpRequest httpRequest = HttpUtil.createGet(sequencedUrl + "api/json").basicAuth(userName, token);
-            try (HttpResponse response = httpRequest.execute()) {
-                jsonObject = JSONUtil.parseObj(response.body());
-            }
-            Object executable = jsonObject.get("executable");
-            if (executable != null) {
-                JSONObject executableJson = ((JSONObject) executable);
-                String url = (String) executableJson.get("url");
-                if (url != null) {
-                    return url;
+            try {
+                JSONObject jsonObject;
+                HttpRequest httpRequest = HttpUtil.createGet(sequencedUrl + "api/json").basicAuth(userName, token);
+                try (HttpResponse response = httpRequest.execute()) {
+                    jsonObject = JSONUtil.parseObj(response.body());
                 }
+                Object executable = jsonObject.get("executable");
+                if (executable != null) {
+                    JSONObject executableJson = ((JSONObject) executable);
+                    String url = (String) executableJson.get("url");
+                    if (url != null) {
+                        return url;
+                    }
+                }
+                log.info("wait for execution url");
+                // wait for 1 second
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         } while (true);
     }

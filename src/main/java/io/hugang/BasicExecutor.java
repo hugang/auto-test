@@ -3,6 +3,8 @@ package io.hugang;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.cron.CronUtil;
+import cn.hutool.cron.task.Task;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.Configuration;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static com.codeborne.selenide.Selenide.sleep;
 
@@ -96,10 +99,29 @@ public class BasicExecutor {
         autoTestConfig.readConfigurations();
         // prepare work directories
         this.prepareWorkDirectories();
-        // parse input to commands list
-        parseCommandsList();
-        // run the commands list
-        runCommandsList();
+
+        if (autoTestConfig.isCronEnabled()) {
+            ReentrantLock lock = new ReentrantLock();
+            CronUtil.schedule(autoTestConfig.getCronExpression(), (Task) () -> {
+                try {
+                    lock.lock();
+                    // parse input to commands list
+                    parseCommandsList();
+                    // run the commands list
+                    runCommandsList();
+                } finally {
+                    lock.unlock();
+                }
+            });
+            CronUtil.setMatchSecond(true);
+            CronUtil.start();
+        } else {
+            // parse input to commands list
+            parseCommandsList();
+            // run the commands list
+            runCommandsList();
+        }
+
     }
 
     /**

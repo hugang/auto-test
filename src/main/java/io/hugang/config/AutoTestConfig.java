@@ -19,8 +19,8 @@ public class AutoTestConfig {
     public static final String GROUP_BROWSER = "browser";
     // config group of test case
     public static final String GROUP_TEST_CASE = "test-case";
-    // config group of output
-    public static final String GROUP_OUTPUT = "output";
+    // config group of base
+    public static final String GROUP_BASE = "base";
 
     /**
      * read auto-test.conf
@@ -46,7 +46,7 @@ public class AutoTestConfig {
         String testCasePath = setting.get(GROUP_TEST_CASE, "test.case.path");
         this.setTestCasePath(getAbsolutePath(testCasePath));
 
-        String fileDownloadPath = setting.get(GROUP_OUTPUT, "file.download.path");
+        String fileDownloadPath = setting.get(GROUP_BASE, "file.download.path");
         this.setFileDownloadPath(getAbsolutePath(fileDownloadPath));
 
         String width = setting.get(GROUP_BROWSER, "browser.width");
@@ -64,6 +64,14 @@ public class AutoTestConfig {
         String testCases = setting.get(GROUP_TEST_CASE, "xlsx.specific.testcases");
         if (testCases != null) {
             this.setTestCases(testCases);
+        }
+        String cronEnabled = setting.get(GROUP_BASE, "cron.enabled");
+        if (cronEnabled != null) {
+            this.setCronEnabled(Boolean.parseBoolean(cronEnabled));
+        }
+        String cronExpression = setting.get(GROUP_BASE, "cron.expression");
+        if (cronExpression != null) {
+            this.setCronExpression(cronExpression);
         }
     }
 
@@ -100,9 +108,12 @@ public class AutoTestConfig {
     private int width;
     // browser height
     private int height;
-    // input media
+    // test mode
     private String testMode;
-
+    // cron enabled
+    private boolean cronEnabled;
+    // cron expression
+    private String cronExpression;
 
     public String getUserProfilePath() {
         return userProfilePath;
@@ -176,5 +187,19 @@ public class AutoTestConfig {
         this.testMode = testMode;
     }
 
+    public boolean isCronEnabled() {
+        return cronEnabled;
+    }
 
+    public void setCronEnabled(boolean cronEnabled) {
+        this.cronEnabled = cronEnabled;
+    }
+
+    public String getCronExpression() {
+        return cronExpression;
+    }
+
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
+    }
 }
