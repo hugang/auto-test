@@ -34,7 +34,12 @@ public enum CommandType {
     // read properties
     READ_PROPERTIES("readProperties"),
     // save properties
-    SAVE_PROPERTIES("saveProperties");
+    SAVE_PROPERTIES("saveProperties"),
+    // run jenkins job
+    JENKINS_JOB("jenkinsJob"),
+    // increase number
+    INCREASE_NUMBER("increaseNumber"),
+    ;
 
     CommandType(String command) {
         this.command = command;

@@ -1,4 +1,4 @@
-##                        
+##                         
 
 the xlsx seems like below:
 
@@ -28,3 +28,5 @@ every test data contains data structure
 | setElementToProperty | page element                                                    | property key which to be set, skip when empty                                                                     |
 | readProperties       | type,now only support json file                                 | json file type properties, skip when empty                                                                        |
 | saveProperties       | file name                                                       | keys which contain in properties map, split by ',', skip when empty                                               |
+| jenkinsJob           | jenkins job url                                                 | authentication information and parameters                                                                         |
+| increaseNumber       | property name                                                   | increase unit, result length, pad string                                                                          |

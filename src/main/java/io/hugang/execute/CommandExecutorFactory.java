@@ -79,6 +79,12 @@ public class CommandExecutorFactory {
                 case SAVE_PROPERTIES:
                     EXECUTORS.put(commandType, new SavePropertiesCommandExecutor());
                     break;
+                case JENKINS_JOB:
+                    EXECUTORS.put(commandType, new JenkinsJobCommandExecutor());
+                    break;
+                case INCREASE_NUMBER:
+                    EXECUTORS.put(commandType, new IncreaseNumberCommandExecutor());
+                    break;
                 default:
                     break;
             }
