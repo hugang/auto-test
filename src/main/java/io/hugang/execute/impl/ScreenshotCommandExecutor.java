@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import io.hugang.bean.Command;
+import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.execute.CommandExecutor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -34,7 +35,7 @@ public class ScreenshotCommandExecutor implements CommandExecutor {
             $(By.tagName("body")).sendKeys(Keys.HOME);
             sleep(200);
             for (int i = 0; i < screenshotNumber; i++) {
-                String screenshot = screenshot(command.getTarget() + (i + 1));
+                String screenshot = screenshot(CommandExecuteUtil.render(command.getTarget()) + (i + 1));
                 log.info("screenshot: {}", screenshot);
                 $(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
                 sleep(200);

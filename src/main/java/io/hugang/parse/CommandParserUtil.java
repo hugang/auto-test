@@ -12,7 +12,6 @@ import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import io.hugang.bean.Command;
-import io.hugang.bean.CommandType;
 import io.hugang.bean.Commands;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -107,14 +106,11 @@ public class CommandParserUtil {
                     command.setCommand(commandRow.get(j).toString());
                     command.setTarget(targetRow.get(j).toString());
                     command.setValue(valueRow.get(j).toString());
-                    if (CommandType.parse(command.getCommand()) == CommandType.SCREENSHOT) {
-                        command.setTarget("caseNo_" + caseNo + "_" + command.getTarget());
-                    }
                     if (StrUtil.isNotEmpty(command.getValue())) {
                         commandList.add(command);
                     }
                 }
-                commands.setTestCase(caseNo);
+                commands.setCaseId(caseNo);
                 commands.setCommands(commandList);
                 log.info("{}", commands);
                 if (ObjectUtil.isNotEmpty(commandList)) {
@@ -169,8 +165,10 @@ public class CommandParserUtil {
     public static void saveCommandsListToXlsx(List<Commands> commandsList, String fileDownloadPath) {
         for (int i = 0; i < commandsList.size(); i++) {
             // create excel writer
-            ExcelWriter writer = ExcelUtil.getWriter(fileDownloadPath
-                    + "/testcaseFromSide_" + System.currentTimeMillis() + "_" + (i + 1) + ".xlsx");
+            String destFilePath = fileDownloadPath + "/testcaseFromSide_" + System.currentTimeMillis() + "_" + (i + 1) + ".xlsx";
+            log.info("save to xlsx: {}", destFilePath);
+
+            ExcelWriter writer = ExcelUtil.getWriter(destFilePath);
             Commands commands = commandsList.get(i);
 
             writer.writeCellValue(0, 0, "TestCase");

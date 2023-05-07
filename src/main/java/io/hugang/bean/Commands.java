@@ -10,16 +10,16 @@ import java.util.List;
  */
 public class Commands {
     // test case id
-    String testCase;
+    String caseId;
     // command list
     List<Command> commands;
 
-    public String getTestCase() {
-        return testCase;
+    public String getCaseId() {
+        return caseId;
     }
 
-    public void setTestCase(String testCase) {
-        this.testCase = testCase;
+    public void setCaseId(String caseId) {
+        this.caseId = caseId;
     }
 
     public List<Command> getCommands() {
@@ -33,7 +33,7 @@ public class Commands {
     @Override
     public String toString() {
         return "Commands{" +
-                "testCase='" + testCase + '\'' +
+                "caseId='" + caseId + '\'' +
                 ", commands=" + commands +
                 '}';
     }

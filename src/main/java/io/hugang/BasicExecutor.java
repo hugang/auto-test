@@ -10,6 +10,7 @@ import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.bean.Command;
 import io.hugang.bean.Commands;
 import io.hugang.config.AutoTestConfig;
+import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.execute.CommandExecutor;
 import io.hugang.execute.CommandExecutorFactory;
 import io.hugang.parse.CommandParserUtil;
@@ -119,7 +120,7 @@ public class BasicExecutor {
                 if (CollUtil.isNotEmpty(testCasesArray)) {
                     this.setCommandsList(new ArrayList<>());
                     for (Commands fromXlsx : commandsFromXlsx) {
-                        if (testCasesArray.contains(fromXlsx.getTestCase())) {
+                        if (testCasesArray.contains(fromXlsx.getCaseId())) {
                             this.getCommandsList().add(fromXlsx);
                         }
                     }
@@ -143,6 +144,7 @@ public class BasicExecutor {
         for (Commands commands : this.getCommandsList()) {
             // init the executor
             this.init();
+            CommandExecuteUtil.setVariable("caseId", commands.getCaseId());
             this.executeCommands(commands);
             sleep(1000);
             // destroy the executor
