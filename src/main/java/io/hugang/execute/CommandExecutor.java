@@ -23,4 +23,11 @@ public interface CommandExecutor {
      * @return success or not
      */
     boolean execute(Command command);
+
+    default boolean _execute(Command command) {
+        if (CommandExecuteUtil.getTimes() > 1 && !command.getCommand().equals("end")) {
+            CommandExecuteUtil.addToTimesCommands(command);
+        }
+        return execute(command);
+    }
 }

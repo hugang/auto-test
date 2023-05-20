@@ -7,10 +7,12 @@ import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.BasicExecutor;
+import io.hugang.bean.Command;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -24,6 +26,8 @@ import static com.codeborne.selenide.Selenide.$;
 public class CommandExecuteUtil {
     private static final Log log = LogFactory.get();
     private static final TemplateEngine ENGINE = TemplateUtil.createEngine();
+    private static int TIMES = 1;
+    private static final List<Command> TIMES_COMMANDS = new ArrayList<>();
 
     /**
      * get element by target
@@ -161,5 +165,26 @@ public class CommandExecuteUtil {
      */
     public static String render(String value) {
         return ENGINE.getTemplate(value).render(BasicExecutor.variablesMap);
+    }
+
+    public static void setTimes(int times) {
+        TIMES = times;
+    }
+
+    public static int getTimes() {
+        return TIMES;
+    }
+
+    public static void addToTimesCommands(Command command) {
+        TIMES_COMMANDS.add(command);
+    }
+
+    public static List<Command> getTimesCommands() {
+        return TIMES_COMMANDS;
+    }
+
+    public static void clearTimes() {
+        TIMES_COMMANDS.clear();
+        TIMES = 1;
     }
 }

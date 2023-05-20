@@ -247,7 +247,7 @@ public class BasicExecutor {
             // execute the command
             log.info("execute command: " + command);
             if (executor != null) {
-                result = executor.execute(command);
+                result = executor._execute(command);
             } else {
                 throw new RuntimeException("command not supported");
             }
