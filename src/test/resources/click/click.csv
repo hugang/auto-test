@@ -1,0 +1,2 @@
+open,https://task.hugang.io/,
+click,selector=#account .login,

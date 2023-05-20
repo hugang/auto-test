@@ -11,7 +11,7 @@ import static com.codeborne.selenide.Selenide.open;
  *
  * @author hugang
  */
-public class OpenCommandExecutor implements CommandExecutor {
+public class Open implements CommandExecutor {
     @Override
     public String getCommandName() {
         return "open";

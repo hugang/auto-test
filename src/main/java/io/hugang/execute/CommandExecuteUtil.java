@@ -5,8 +5,13 @@ import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.BasicExecutor;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -47,6 +52,37 @@ public class CommandExecuteUtil {
             }
             case "xpath": {
                 $ = $(By.xpath(commandValue));
+                break;
+            }
+        }
+        if ($ == null) {
+            log.info("can not find element by target: {}", target);
+        }
+        return $;
+    }
+
+    public static List<WebElement> findElements(String target) {
+        int indexOf = target.indexOf("=");
+        String commandType = target.substring(0, indexOf);
+        String commandValue = target.substring(indexOf + 1);
+        WebDriver webDriver = WebDriverRunner.getWebDriver();
+        List<WebElement> $ = null;
+        switch (commandType) {
+            case "id": {
+                $ = webDriver.findElements(By.cssSelector("#" + commandValue));
+                break;
+            }
+            case "css":
+            case "selector": {
+                $ = webDriver.findElements(By.cssSelector(commandValue));
+                break;
+            }
+            case "linkText": {
+                $ = webDriver.findElements(By.linkText(commandValue));
+                break;
+            }
+            case "xpath": {
+                $ = webDriver.findElements(By.xpath(commandValue));
                 break;
             }
         }

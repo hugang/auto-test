@@ -18,7 +18,7 @@ import static com.codeborne.selenide.Selenide.*;
  *
  * @author hugang
  */
-public class ScreenshotCommandExecutor implements CommandExecutor {
+public class Screenshot implements CommandExecutor {
     private static final Log log = LogFactory.get();
 
     @Override

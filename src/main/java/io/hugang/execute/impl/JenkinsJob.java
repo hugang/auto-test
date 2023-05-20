@@ -17,7 +17,7 @@ import io.hugang.execute.CommandExecutor;
  *
  * @author hugang
  */
-public class JenkinsJobCommandExecutor implements CommandExecutor {
+public class JenkinsJob implements CommandExecutor {
     // log
     private static final Log log = LogFactory.get();
 

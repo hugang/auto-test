@@ -53,6 +53,12 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.32</version>
         </dependency>
+        <!-- add junit4-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+        </dependency>
     </dependencies>
     <!-- add dependency plugin-->
     <build>

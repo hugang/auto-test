@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
  *
  * @author hugang
  */
-public class RunCommandExecutor implements CommandExecutor {
+public class Run implements CommandExecutor {
     // log
     private static final Log log = LogFactory.get();
     private static final String BASH_CMD = "/usr/bin/bash";

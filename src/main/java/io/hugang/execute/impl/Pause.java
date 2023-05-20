@@ -10,10 +10,10 @@ import io.hugang.execute.CommandExecutor;
  *
  * @author hugang
  */
-public class SleepCommandExecutor implements CommandExecutor {
+public class Pause implements CommandExecutor {
     @Override
     public String getCommandName() {
-        return "sleep";
+        return "pause";
     }
 
     /**

@@ -11,7 +11,7 @@ import io.hugang.execute.CommandExecutor;
  *
  * @author hugang
  */
-public class WaitForTextCommandExecutor implements CommandExecutor {
+public class WaitForText implements CommandExecutor {
 
     @Override
     public String getCommandName() {

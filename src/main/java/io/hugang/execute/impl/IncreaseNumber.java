@@ -12,7 +12,7 @@ import io.hugang.execute.CommandExecutor;
  *
  * @author hugang
  */
-public class IncreaseNumberCommandExecutor implements CommandExecutor {
+public class IncreaseNumber implements CommandExecutor {
     @Override
     public String getCommandName() {
         return "increaseNumber";

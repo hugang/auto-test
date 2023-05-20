@@ -14,7 +14,7 @@ import io.hugang.execute.CommandExecutor;
  *
  * @author hugang
  */
-public class ReadPropertiesCommandExecutor implements CommandExecutor {
+public class ReadProperties implements CommandExecutor {
     @Override
     public String getCommandName() {
         return "readProperties";

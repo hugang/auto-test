@@ -11,7 +11,7 @@ import org.openqa.selenium.Keys;
  *
  * @author hugang
  */
-public class TypeCommandExecutor implements CommandExecutor {
+public class Type implements CommandExecutor {
     @Override
     public String getCommandName() {
         return "type";

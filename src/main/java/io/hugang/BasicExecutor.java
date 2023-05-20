@@ -49,6 +49,10 @@ public class BasicExecutor {
     public static final Map<String, String> variablesMap = new HashMap<>();
 
     public BasicExecutor() {
+        // read the user properties
+        autoTestConfig.readConfigurations();
+        // prepare work directories
+        this.prepareWorkDirectories();
     }
 
     /**
@@ -121,11 +125,6 @@ public class BasicExecutor {
      * method to execute the commands
      */
     public void execute() {
-        // read the user properties
-        autoTestConfig.readConfigurations();
-        // prepare work directories
-        this.prepareWorkDirectories();
-
         if (autoTestConfig.isCronEnabled()) {
             ReentrantLock lock = new ReentrantLock();
             CronUtil.schedule(autoTestConfig.getCronExpression(), (Task) () -> {
@@ -147,7 +146,12 @@ public class BasicExecutor {
             // run the commands list
             runCommandsList();
         }
+    }
 
+    public void execute(String mode, String path) {
+        this.autoTestConfig.setTestMode(mode);
+        this.autoTestConfig.setTestCasePath(path);
+        this.execute();
     }
 
     /**

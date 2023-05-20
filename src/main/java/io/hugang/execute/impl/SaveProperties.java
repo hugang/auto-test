@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * @author hugang
  */
-public class SavePropertiesCommandExecutor implements CommandExecutor {
+public class SaveProperties implements CommandExecutor {
     @Override
     public String getCommandName() {
         return "saveProperties";

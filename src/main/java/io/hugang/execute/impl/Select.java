@@ -10,7 +10,7 @@ import io.hugang.execute.CommandExecutor;
  *
  * @author hugang
  */
-public class SelectCommandExecutor implements CommandExecutor {
+public class Select implements CommandExecutor {
     @Override
     public String getCommandName() {
         return "select";

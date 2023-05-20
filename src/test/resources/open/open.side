@@ -1,0 +1,28 @@
+{
+  "id": "60773e89-27de-4cdd-ad34-cb56c9c528a6",
+  "version": "2.0",
+  "name": "a",
+  "url": "https://task.hugang.io",
+  "tests": [{
+    "id": "74a19ae6-7024-4ffc-bb6d-97e1db557f9d",
+    "name": "aa",
+    "commands": [{
+      "id": "5f201ca2-9fc6-4e33-b9bc-e64e78cd7e58",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "900122fa-3a08-4c4c-a4ce-43467ba6b288",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["74a19ae6-7024-4ffc-bb6d-97e1db557f9d"]
+  }],
+  "urls": ["https://task.hugang.io/"],
+  "plugins": []
+}

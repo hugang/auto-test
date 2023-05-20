@@ -11,7 +11,7 @@ import io.hugang.execute.CommandExecutor;
  *
  * @author hugang
  */
-public class SetElementToPropertyCommandExecutor implements CommandExecutor {
+public class SetElementToProperty implements CommandExecutor {
     @Override
     public String getCommandName() {
         return "setElementToProperty";

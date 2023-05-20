@@ -12,7 +12,7 @@ import org.openqa.selenium.Keys;
  *
  * @author hugang
  */
-public class SendKeysCommandExecutor implements CommandExecutor {
+public class SendKeys implements CommandExecutor {
     @Override
     public String getCommandName() {
         return "sendKeys";

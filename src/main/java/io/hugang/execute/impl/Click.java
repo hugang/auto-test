@@ -11,7 +11,7 @@ import io.hugang.execute.CommandExecutor;
  *
  * @author hugang
  */
-public class ClickCommandExecutor implements CommandExecutor {
+public class Click implements CommandExecutor {
 
     @Override
     public String getCommandName() {

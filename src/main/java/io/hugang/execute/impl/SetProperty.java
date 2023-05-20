@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * @author hugang
  */
-public class SetPropertyCommandExecutor implements CommandExecutor {
+public class SetProperty implements CommandExecutor {
     private static final Log log = LogFactory.get();
 
     @Override
