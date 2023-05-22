@@ -15,7 +15,7 @@ public class End implements CommandExecutor {
     public boolean execute(Command command) {
         int times = CommandExecuteUtil.getTimes();
 
-        while (times > 1) {
+        while (times > 0) {
             for (Command timesCommand : CommandExecuteUtil.getTimesCommands()) {
                 CommandExecutor executor = CommandExecutorFactory.getExecutor(timesCommand.getCommand());
                 executor.execute(timesCommand);

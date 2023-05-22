@@ -25,7 +25,7 @@ public class Pause implements CommandExecutor {
      */
     @Override
     public boolean execute(Command command) {
-        Selenide.sleep(Integer.parseInt(command.getValue()));
+        Selenide.sleep(Integer.parseInt(command.getTarget()));
         return true;
     }
 }

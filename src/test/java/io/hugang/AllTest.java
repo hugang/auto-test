@@ -8,9 +8,19 @@ import java.util.Objects;
 public class AllTest {
     @Test
     public void testClickXlsx() {
-        new BasicExecutor().execute("xlsx", Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("testcase1.xlsx")).getPath());
-    }    @Test
+        new BasicExecutor().execute("xlsx",
+                Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("testcase1.xlsx")).getPath());
+    }
+
+    @Test
     public void testTimesXlsx() {
-        new BasicExecutor().execute("xlsx", Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("testcase2.xlsx")).getPath());
+        new BasicExecutor().execute("xlsx",
+                Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("testcase2.xlsx")).getPath());
+    }
+
+    @Test
+    public void testNewXlsx() {
+        new BasicExecutor().execute("xlsx",
+                Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("testcase3.xlsx")).getPath());
     }
 }
