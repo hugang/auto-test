@@ -10,12 +10,10 @@ import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
-import io.hugang.bean.Command;
 import io.hugang.bean.Commands;
+import io.hugang.bean.ICommand;
 import io.hugang.config.AutoTestConfig;
 import io.hugang.execute.CommandExecuteUtil;
-import io.hugang.execute.CommandExecutor;
-import io.hugang.execute.CommandExecutorFactory;
 import io.hugang.parse.CommandParserUtil;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
@@ -241,20 +239,14 @@ public class BasicExecutor {
     public void executeCommands(Commands commands) {
         boolean result;
         // loop through the commands
-        for (Command command : commands.getCommands()) {
-            // get the command executor
-            CommandExecutor executor = CommandExecutorFactory.getExecutor(command.getCommand());
+        for (ICommand command : commands.getCommands()) {
             // execute the command
             log.info("execute command: " + command);
-            if (executor != null) {
-                result = executor._execute(command);
-            } else {
-                throw new RuntimeException("command not supported");
-            }
-            if (!result) {
+            if (!command.execute()) {
                 throw new RuntimeException("execute command failed");
             }
         }
+        System.out.println("execute commands success");
     }
 
     public List<Commands> getCommandsList() {

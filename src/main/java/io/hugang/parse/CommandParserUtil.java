@@ -11,8 +11,8 @@ import cn.hutool.log.LogFactory;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
-import io.hugang.bean.Command;
-import io.hugang.bean.Commands;
+import io.hugang.bean.*;
+import io.hugang.execute.impl.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -23,6 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * input command parser util
@@ -39,8 +40,8 @@ public class CommandParserUtil {
      * @param record record
      * @return command
      */
-    public static Command getCommand(CSVRecord record) {
-        Command command = new Command();
+    public static OriginalCommand getCommand(CSVRecord record) {
+        OriginalCommand command = new OriginalCommand();
 
         command.setCommand(record.get(0));
         // set the target when split length is 2
@@ -61,7 +62,7 @@ public class CommandParserUtil {
      */
     public static List<Commands> getCommandsFromCsv(String csvFilePath) {
         List<Commands> commandsList = new ArrayList<>();
-        List<Command> commandList = new ArrayList<>();
+        List<OriginalCommand> commandList = new ArrayList<>();
         Commands commands = new Commands();
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
@@ -72,7 +73,7 @@ public class CommandParserUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        commands.setCommands(commandList);
+        commands.setCommands(parseCommandToSubCommand(commandList));
         commandsList.add(commands);
         return commandsList;
     }
@@ -100,18 +101,20 @@ public class CommandParserUtil {
             if (ObjectUtil.isNotEmpty(valueRow) && ObjectUtil.isNotEmpty(valueRow.get(0)) && !caseNo.equals(StrUtil.EMPTY)) {
                 // read the command row
                 Commands commands = new Commands();
-                List<Command> commandList = new ArrayList<>();
+                List<OriginalCommand> commandList = new ArrayList<>();
                 for (int j = 1; j < commandRow.size(); j++) {
-                    Command command = new Command();
+                    OriginalCommand command = new OriginalCommand();
                     command.setCommand(commandRow.get(j).toString());
-                    command.setTarget(targetRow.get(j).toString());
-                    command.setValue(valueRow.get(j).toString());
-                    if (StrUtil.isNotEmpty(command.getValue())) {
-                        commandList.add(command);
+                    if (ObjectUtil.isNotEmpty(targetRow.get(j))) {
+                        command.setTarget(targetRow.get(j).toString());
                     }
+                    if (ObjectUtil.isNotEmpty(valueRow.get(j))) {
+                        command.setValue(valueRow.get(j).toString());
+                    }
+                    commandList.add(command);
                 }
                 commands.setCaseId(caseNo);
-                commands.setCommands(commandList);
+                commands.setCommands(parseCommandToSubCommand(commandList));
                 log.info("{}", commands);
                 if (ObjectUtil.isNotEmpty(commandList)) {
                     commandsList.add(commands);
@@ -119,6 +122,82 @@ public class CommandParserUtil {
             }
         }
         return commandsList;
+    }
+
+    private static List<ICommand> parseCommandToSubCommand(List<OriginalCommand> commandList) {
+        List<ICommand> commands = new ArrayList<>();
+        Stack<IConditionCommand> commandStack = new Stack<>();
+
+        for (OriginalCommand command : commandList) {
+            String commandName = command.getCommand();
+            switch (commandName) {
+                case "if":
+                    IfCommand ifCommand = new IfCommand(commandName, command.getTarget(), command.getValue());
+                    commandStack.push(ifCommand);
+                    break;
+                case "times":
+                    TimesCommand timesCommand = new TimesCommand(commandName, command.getTarget(), command.getValue());
+                    commandStack.push(timesCommand);
+                    break;
+                case "end":
+                    ICommand subCommand = commandStack.pop();
+                    if (!commandStack.empty()) {
+                        commandStack.peek().addSubCommand(subCommand);
+                    } else {
+                        commands.add(subCommand);
+                    }
+                    break;
+                default:
+                    ICommand normalCommand = parseOriginToCommand(command);
+
+                    if (!commandStack.empty()) {
+                        commandStack.peek().addSubCommand(normalCommand);
+                    } else {
+                        commands.add(normalCommand);
+                    }
+                    break;
+            }
+        }
+        return commands;
+    }
+
+    private static ICommand parseOriginToCommand(OriginalCommand command) {
+        String commandName = command.getCommand();
+        switch (commandName) {
+            case "click":
+                return new ClickCommand(commandName, command.getTarget(), command.getValue());
+            case "type":
+                return new TypeCommand(commandName, command.getTarget(), command.getValue());
+            case "select":
+                return new SelectCommand(commandName, command.getTarget(), command.getValue());
+            case "open":
+                return new OpenCommand(commandName, command.getTarget(), command.getValue());
+            case "run":
+                return new RunCommand(commandName, command.getTarget(), command.getValue());
+            case "echo":
+                return new EchoCommand(commandName, command.getTarget(), command.getValue());
+            case "setProperty":
+                return new SetPropertyCommand(commandName, command.getTarget(), command.getValue());
+            case "readProperties":
+                return new ReadPropertiesCommand(commandName, command.getTarget(), command.getValue());
+            case "saveProperties":
+                return new SavePropertiesCommand(commandName, command.getTarget(), command.getValue());
+            case "increaseNumber":
+                return new IncreaseNumberCommand(commandName, command.getTarget(), command.getValue());
+            case "setWindowSize":
+                return new SetWindowSizeCommand(commandName, command.getTarget(), command.getValue());
+            case "setElementToProperty":
+                return new SetElementToPropertyCommand(commandName, command.getTarget(), command.getValue());
+            case "waitForText":
+                return new WaitForTextCommand(commandName, command.getTarget(), command.getValue());
+            case "sendKeys":
+                return new SendKeysCommand(commandName, command.getTarget(), command.getValue());
+            case "screenshot":
+                return new ScreenshotCommand(commandName, command.getTarget(), command.getValue());
+            default:
+                break;
+        }
+        return null;
     }
 
     /**
@@ -137,10 +216,10 @@ public class CommandParserUtil {
         List<Commands> commandsList = new ArrayList<>();
         for (Object o : tests) {
             Commands commands = new Commands();
-            List<Command> commandList = new ArrayList<>();
+            List<OriginalCommand> commandList = new ArrayList<>();
             JSONArray test = (JSONArray) ((JSON) o).getByPath("commands");
             for (Object value : test) {
-                Command command = new Command();
+                OriginalCommand command = new OriginalCommand();
                 JSON jsonCommand = (JSON) value;
                 command.setCommand(jsonCommand.getByPath("command").toString());
                 command.setTarget(jsonCommand.getByPath("target").toString());
@@ -150,7 +229,7 @@ public class CommandParserUtil {
                 }
                 commandList.add(command);
             }
-            commands.setCommands(commandList);
+            commands.setCommands(parseCommandToSubCommand(commandList));
             commandsList.add(commands);
         }
         return commandsList;
@@ -175,7 +254,7 @@ public class CommandParserUtil {
             writer.writeCellValue(0, 2, i + 1);
 
             for (int i1 = 0; i1 < commands.getCommands().size(); i1++) {
-                Command command = commands.getCommands().get(i1);
+                Command command = (Command) commands.getCommands().get(i1);
                 // write command to first row
                 writer.writeCellValue(i1 + 1, 0, command.getCommand());
                 // write target to second row

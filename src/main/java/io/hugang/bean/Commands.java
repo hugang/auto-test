@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class Commands {
     // test case id
-    String caseId;
+    private String caseId;
     // command list
-    List<Command> commands;
+    private List<ICommand> commands;
 
     public String getCaseId() {
         return caseId;
@@ -22,19 +22,11 @@ public class Commands {
         this.caseId = caseId;
     }
 
-    public List<Command> getCommands() {
+    public List<ICommand> getCommands() {
         return commands;
     }
 
-    public void setCommands(List<Command> commands) {
+    public void setCommands(List<ICommand> commands) {
         this.commands = commands;
-    }
-
-    @Override
-    public String toString() {
-        return "Commands{" +
-                "caseId='" + caseId + '\'' +
-                ", commands=" + commands +
-                '}';
     }
 }
