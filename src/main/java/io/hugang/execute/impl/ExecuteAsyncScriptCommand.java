@@ -2,6 +2,7 @@ package io.hugang.execute.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.codeborne.selenide.WebDriverRunner;
+import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 import org.openqa.selenium.JavascriptExecutor;
@@ -24,12 +25,16 @@ public class ExecuteAsyncScriptCommand extends Command {
 
     @Override
     public boolean execute() {
-        JavascriptExecutor js = (JavascriptExecutor) WebDriverRunner.getWebDriver();
-        if (ObjectUtil.isNotEmpty(this.getValue())) {
-            CommandExecuteUtil.setVariable(this.getValue(), String.valueOf(js.executeAsyncScript(this.getTarget())));
-        } else {
-            js.executeAsyncScript(this.getTarget());
+        try {
+            JavascriptExecutor js = (JavascriptExecutor) WebDriverRunner.getWebDriver();
+            if (ObjectUtil.isNotEmpty(this.getValue())) {
+                CommandExecuteUtil.setVariable(this.getValue(), String.valueOf(js.executeAsyncScript(this.getTarget())));
+            } else {
+                js.executeAsyncScript(this.getTarget());
+            }
+            return true;
+        } catch (Exception e) {
+            throw new CommandExecuteException(e);
         }
-        return true;
     }
 }

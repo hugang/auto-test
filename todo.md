@@ -34,7 +34,7 @@ Confirm that an alert has been rendered with the provided text. The test will st
 - arguments
     - alert text: text to check
 
-## assert checked
+## assert checked [x]
 
 Confirm that the target element has been checked. The test will stop if the assert fails.
 
@@ -69,7 +69,7 @@ Confirm that the target element is not present anywhere on the page. The test wi
 - arguments
     - locator: An element locator.
 
-## assert not checked
+## assert not checked [x]
 
 Confirm that the target element has not been checked. The test will stop if the assert fails.
 

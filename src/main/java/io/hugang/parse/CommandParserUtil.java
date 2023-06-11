@@ -199,7 +199,26 @@ public class CommandParserUtil {
             case "submit":
                 return new SubmitCommand(commandName, command.getTarget(), command.getValue());
             case "pause":
+            case "wait":
                 return new PauseCommand(commandName, command.getTarget(), command.getValue());
+            case "assert":
+                return new AssertCommand(commandName, command.getTarget(), command.getValue());
+            case "assertAlert":
+                return new AssertAlertCommand(commandName, command.getTarget(), command.getValue());
+            case "assertElementPresent":
+                return new AssertElementPresentCommand(commandName, command.getTarget(), command.getValue());
+            case "assertElementNotPresent":
+                return new AssertElementNotPresentCommand(commandName, command.getTarget(), command.getValue());
+            case "assertChecked":
+                return new AssertCheckedCommand(commandName, command.getTarget(), command.getValue());
+            case "assertNotChecked":
+                return new AssertNotCheckedCommand(commandName, command.getTarget(), command.getValue());
+            case "clickAt":
+                return new ClickAtCommand(commandName, command.getTarget(), command.getValue());
+            case "doubleClickAt":
+                return new DoubleClickAtCommand(commandName, command.getTarget(), command.getValue());
+            case "doubleClick":
+                return new DoubleClickCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }
