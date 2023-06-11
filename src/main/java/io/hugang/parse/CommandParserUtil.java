@@ -174,6 +174,8 @@ public class CommandParserUtil {
                 return new OpenCommand(commandName, command.getTarget(), command.getValue());
             case "run":
                 return new RunCommand(commandName, command.getTarget(), command.getValue());
+            case "runScript":
+                return new RunScriptCommand(commandName, command.getTarget(), command.getValue());
             case "echo":
                 return new EchoCommand(commandName, command.getTarget(), command.getValue());
             case "setProperty":
@@ -194,6 +196,10 @@ public class CommandParserUtil {
                 return new SendKeysCommand(commandName, command.getTarget(), command.getValue());
             case "screenshot":
                 return new ScreenshotCommand(commandName, command.getTarget(), command.getValue());
+            case "submit":
+                return new SubmitCommand(commandName, command.getTarget(), command.getValue());
+            case "pause":
+                return new PauseCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }

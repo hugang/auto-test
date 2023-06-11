@@ -263,7 +263,7 @@ with the end command.
 - arguments
   conditional expression: JavaScript expression that returns a boolean result for use in control flow commands.
 
-## end
+## end [x]
 
 Terminates a control flow block for if, while, and times.
 
@@ -296,7 +296,7 @@ Create a loop that executes the proceeding commands for each item in a given col
     - iterator variable name: The name of the variable used when iterating over a collection in a looping control flow
       command (e.g., for each).
 
-## if
+## if [x]
 
 Create a conditional branch in your test. Terminate the branch with the end command.
 
@@ -389,14 +389,22 @@ starts the do loop over. Otherwise, it ends the loop.
 - arguments
     - conditional expression: JavaScript expression that returns a boolean result for use in control flow commands.
 
-## run
+## run [x]
 
+```
+# old
 Runs a test case from the current project.
 
 - arguments
     - test case: Test case name from the project.
+```
+Runs a windows bat file, or a shell script on OS X and Linux
 
-## run script
+- arguments
+  - type: The type of script to run, either "bat" or "sh" or "cmd".
+  - value: The path to the file to be executed, or script.
+
+## run script [x]
 
 Creates a new "script" tag in the body of the current test window, and adds the specified text into the body of the
 command. Beware that JS exceptions thrown in these script tags aren't managed by Selenium, so you should probably wrap
@@ -525,7 +533,7 @@ Gets the number of nodes that match the specified xpath (e.g. "//table" would gi
     - xpath: The xpath expression to evaluate.
     - variable name: The name of a variable without brackets.
 
-## submit
+## submit [x]
 
 Submit the specified form. This is particularly useful for forms without submit buttons, e.g. single-input "Search"
 forms.
@@ -533,7 +541,7 @@ forms.
 - arguments
     - form locator: An element locator for the form you want to submit.
 
-## times
+## times [x]
 
 Create a loop that executes the proceeding commands n number of times.
 
