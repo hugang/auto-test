@@ -200,6 +200,7 @@ public class CommandParserUtil {
                 return new SubmitCommand(commandName, command.getTarget(), command.getValue());
             case "pause":
             case "wait":
+            case "sleep":
                 return new PauseCommand(commandName, command.getTarget(), command.getValue());
             case "assert":
                 return new AssertCommand(commandName, command.getTarget(), command.getValue());

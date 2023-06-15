@@ -21,7 +21,7 @@ public class PauseCommand extends Command {
 
     @Override
     public boolean execute() {
-        Selenide.sleep(Integer.parseInt(this.getTarget()));
+        Selenide.sleep(Integer.parseInt(this.getValue()));
         return true;
     }
 }
