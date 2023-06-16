@@ -39,8 +39,6 @@ import static com.codeborne.selenide.Selenide.sleep;
  */
 public class BasicExecutor {
     private static final Log log = LogFactory.get();
-    // commands list
-    private List<Commands> commandsList;
     // auto test config
     private final AutoTestConfig autoTestConfig = new AutoTestConfig();
     // map to storage variables
@@ -129,9 +127,9 @@ public class BasicExecutor {
                 try {
                     lock.lock();
                     // parse input to commands list
-                    parseCommandsList();
+                    List<Commands> commands = parseCommandsList();
                     // run the commands list
-                    runCommandsList();
+                    runCommandsList(commands);
                 } finally {
                     lock.unlock();
                 }
@@ -140,9 +138,9 @@ public class BasicExecutor {
             CronUtil.start();
         } else {
             // parse input to commands list
-            parseCommandsList();
+            List<Commands> commands = parseCommandsList();
             // run the commands list
-            runCommandsList();
+            runCommandsList(commands);
         }
     }
 
@@ -155,7 +153,8 @@ public class BasicExecutor {
     /**
      * method to parse input to commands list
      */
-    private void parseCommandsList() {
+    private List<Commands> parseCommandsList() {
+        List<Commands> commandsList = new ArrayList<>();
         // read csv from xlsx when xlsx file path is not null
         switch (autoTestConfig.getTestMode()) {
             case "xlsx":
@@ -163,49 +162,53 @@ public class BasicExecutor {
                 List<String> testCasesArray = new ArrayList<>();
                 if (StrUtil.isNotEmpty(autoTestConfig.getTestCases())) {
                     String[] testCaseArray = autoTestConfig.getTestCases().split(",");
-                    for (String testCase : testCaseArray) {
-                        if (testCase.indexOf("-") > 0) {
-                            String[] testCaseRange = testCase.split("-");
-                            int start = Integer.parseInt(testCaseRange[0]);
-                            int end = Integer.parseInt(testCaseRange[1]);
-                            for (int i = start; i <= end; i++) {
-                                testCasesArray.add(String.valueOf(i));
-                            }
-                        } else {
-                            testCasesArray.add(testCase);
-                        }
-                    }
+                    getTestCases(testCasesArray, testCaseArray);
                 }
                 if (CollUtil.isNotEmpty(testCasesArray)) {
-                    this.setCommandsList(new ArrayList<>());
                     for (Commands fromXlsx : commandsFromXlsx) {
                         if (testCasesArray.contains(fromXlsx.getCaseId())) {
-                            this.getCommandsList().add(fromXlsx);
+                            commandsList.add(fromXlsx);
                         }
                     }
                 } else {
-                    this.setCommandsList(commandsFromXlsx);
+                    commandsList.addAll(commandsFromXlsx);
                 }
                 break;
             case "csv":
-                this.setCommandsList(CommandParserUtil.getCommandsFromCsv(autoTestConfig.getTestCasePath()));
+                commandsList.addAll(CommandParserUtil.getCommandsFromCsv(autoTestConfig.getTestCasePath()));
                 break;
             case "side":
-                this.setCommandsList(CommandParserUtil.getCommandsFromSide(autoTestConfig.getTestCasePath()));
+                commandsList.addAll(CommandParserUtil.getCommandsFromSide(autoTestConfig.getTestCasePath()));
                 // save commandsList to a xlsx file
-                CommandParserUtil.saveCommandsListToXlsx(this.getCommandsList(), autoTestConfig.getFileDownloadPath());
+                CommandParserUtil.saveCommandsListToXlsx(commandsList, autoTestConfig.getFileDownloadPath());
                 break;
             default:
                 throw new RuntimeException("test mode not supported");
+        }
+        return commandsList;
+    }
+
+    public static void getTestCases(List<String> testCasesArray, String[] testCaseArray) {
+        for (String testCase : testCaseArray) {
+            if (testCase.indexOf("-") > 0) {
+                String[] testCaseRange = testCase.split("-");
+                int start = Integer.parseInt(testCaseRange[0]);
+                int end = Integer.parseInt(testCaseRange[1]);
+                for (int i = start; i <= end; i++) {
+                    testCasesArray.add(String.valueOf(i));
+                }
+            } else {
+                testCasesArray.add(testCase);
+            }
         }
     }
 
     /**
      * method to execute the commands
      */
-    private void runCommandsList() {
+    private void runCommandsList(List<Commands> commandsList) {
         // execute the commands
-        for (Commands commands : this.getCommandsList()) {
+        for (Commands commands : commandsList) {
             // init the executor
             this.init();
             CommandExecuteUtil.setVariable("caseId", commands.getCaseId());
@@ -248,13 +251,4 @@ public class BasicExecutor {
         }
         System.out.println("execute commands success");
     }
-
-    public List<Commands> getCommandsList() {
-        return commandsList;
-    }
-
-    public void setCommandsList(List<Commands> commandsList) {
-        this.commandsList = commandsList;
-    }
-
 }

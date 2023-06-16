@@ -220,6 +220,8 @@ public class CommandParserUtil {
                 return new DoubleClickAtCommand(commandName, command.getTarget(), command.getValue());
             case "doubleClick":
                 return new DoubleClickCommand(commandName, command.getTarget(), command.getValue());
+            case "runCase":
+                return new RunCaseCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }
