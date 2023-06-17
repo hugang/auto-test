@@ -67,4 +67,12 @@ public abstract class Command implements ICommand {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "Command: " + this.getCommand() + "\t" +
+                "Description: " + this.getDescription() + "\t" +
+                "Target: " + this.getTarget() + "\t" +
+                "Value: " + this.getValue() + "\t";
+    }
 }

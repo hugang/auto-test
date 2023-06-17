@@ -115,7 +115,6 @@ public class CommandParserUtil {
                 }
                 commands.setCaseId(caseNo);
                 commands.setCommands(parseCommandToSubCommand(commandList));
-                log.info("{}", commands);
                 if (ObjectUtil.isNotEmpty(commandList)) {
                     commandsList.add(commands);
                 }

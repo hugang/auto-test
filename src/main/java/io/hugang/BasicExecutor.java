@@ -249,6 +249,6 @@ public class BasicExecutor {
                 throw new RuntimeException("execute command failed");
             }
         }
-        System.out.println("execute commands success");
+        log.info("execute commands success");
     }
 }
