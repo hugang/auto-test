@@ -123,7 +123,7 @@ public class CommandParserUtil {
         return commandsList;
     }
 
-    private static List<ICommand> parseCommandToSubCommand(List<OriginalCommand> commandList) {
+    public static List<ICommand> parseCommandToSubCommand(List<OriginalCommand> commandList) {
         List<ICommand> commands = new ArrayList<>();
         Stack<IConditionCommand> commandStack = new Stack<>();
 

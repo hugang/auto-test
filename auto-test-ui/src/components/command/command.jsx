@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Button, Modal, Form } from 'react-bootstrap';
 import { API_URL } from "../../util/Constants.jsx";
+import { useParams } from 'react-router-dom';
 
 function Command() {
+  const params = useParams();
   const [commands, setCommands] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editCommand, setEditCommand] = useState({});
@@ -15,7 +17,7 @@ function Command() {
   useEffect(() => {
     axios.get(API_URL + '/commands')
       .then(response => {
-        setCommands(response.data);
+        setCommands(response.data.filter(command => command.scriptId === params.scriptId));
       })
       .catch(error => {
         console.log(error);
@@ -28,6 +30,7 @@ function Command() {
   };
 
   const handleAddModalSave = () => {
+    addCommand.scriptId = params.scriptId;
     axios.post(API_URL + '/commands', addCommand)
       .then(response => {
         const updatedCommands = [...commands, response.data];
@@ -157,7 +160,7 @@ function Command() {
           <Form>
             <Form.Group controlId="formScriptId">
               <Form.Label>Script ID</Form.Label>
-              <Form.Control type="text" name="scriptId" value={addCommand.scriptId || ''} onChange={handleAddCommandChange} />
+              <Form.Control type="text" name="scriptId" value={params.scriptId || ''} onChange={handleAddCommandChange} readOnly/>
             </Form.Group>
             <Form.Group controlId="formCommand">
               <Form.Label>Command</Form.Label>

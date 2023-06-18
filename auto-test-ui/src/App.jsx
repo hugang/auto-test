@@ -1,12 +1,20 @@
 import { Container } from 'react-bootstrap';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Script from './components/Script';
-
+import Command from './components/Command';
 
 function App() {
   return (
     <Container>
-      <h1>Scripts</h1>
-      <Script />
+      <BrowserRouter>
+        <div><Routes>
+          <Route path="/" element={<Script />} />
+          <Route path="/script" element={<Script />} />
+          <Route path="/command/:scriptId" element={<Command />} />
+        </Routes>
+        </div>
+      </BrowserRouter>
+
     </Container>
   );
 }

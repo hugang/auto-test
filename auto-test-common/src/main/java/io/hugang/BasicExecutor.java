@@ -93,6 +93,7 @@ public class BasicExecutor {
                 if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
                     options.setBinary(autoTestConfig.getBrowserBinaryPath());
                 }
+                options.addArguments("--remote-allow-origins=*");
                 options.setExperimentalOption("prefs", optionsMap);
                 driver = new EdgeDriver(options);
                 break;
@@ -206,7 +207,7 @@ public class BasicExecutor {
     /**
      * method to execute the commands
      */
-    private void runCommandsList(List<Commands> commandsList) {
+    public void runCommandsList(List<Commands> commandsList) {
         // execute the commands
         for (Commands commands : commandsList) {
             // init the executor

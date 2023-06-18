@@ -8,6 +8,15 @@ package io.hugang.bean;
  * @author hugang
  */
 public class OriginalCommand {
+    public OriginalCommand() {
+    }
+
+    public OriginalCommand(String command, String target, String value) {
+        this.command = command;
+        this.target = target;
+        this.value = value;
+    }
+
     // command
     private String command;
     // target

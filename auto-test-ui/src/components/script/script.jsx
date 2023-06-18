@@ -42,13 +42,24 @@ function Script() {
             });
     };
 
+    const handleExecuteScript = (id) => {
+        axios.post(API_URL + `/scripts/execute/${id}`)
+            .then(() => {
+                console.log('executed');
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    };
+    
     return (
         <div>
             <ul>
                 {scripts.map(script => (
                     <li key={script.id}>
-                        <a href={`/commands/${script.id}`}>{script.scriptName}</a>
+                        <a href={`/command/${script.id}`}>{script.scriptName}</a>
                         <button onClick={() => handleDeleteScript(script.id)}>Delete</button>
+                        <button onClick={() => handleExecuteScript(script.id)}>execute</button>
                     </li>
                 ))}
             </ul>
