@@ -221,6 +221,28 @@ public class CommandParserUtil {
                 return new DoubleClickCommand(commandName, command.getTarget(), command.getValue());
             case "runCase":
                 return new RunCaseCommand(commandName, command.getTarget(), command.getValue());
+            case "addSelection":
+                return new AddSelectionCommand(commandName, command.getTarget(), command.getValue());
+            case "executeScript":
+                return new ExecuteScriptCommand(commandName, command.getTarget(), command.getValue());
+            case "executeAsyncScript":
+                return new ExecuteAsyncScriptCommand(commandName, command.getTarget(), command.getValue());
+            case "mouseOver":
+                return new MouseOverCommand(commandName, command.getTarget(), command.getValue());
+            case "store":
+                return new StoreCommand(commandName, command.getTarget(), command.getValue());
+            case "storeText":
+                return new StoreTextCommand(commandName, command.getTarget(), command.getValue());
+            case "storeTitle":
+                return new StoreTitleCommand(commandName, command.getTarget(), command.getValue());
+            case "storeValue":
+                return new StoreValueCommand(commandName, command.getTarget(), command.getValue());
+            case "storeAttribute":
+                return new StoreAttributeCommand(commandName, command.getTarget(), command.getValue());
+            case "storeJson":
+                return new StoreJsonCommand(commandName, command.getTarget(), command.getValue());
+            case "storeXpathCount":
+                return new StoreXpathCountCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }

@@ -5,6 +5,10 @@ import io.hugang.execute.CommandExecuteUtil;
 
 public class StoreValueCommand extends Command {
 
+    public StoreValueCommand(String command, String target, String value) {
+        super(command, target, value);
+    }
+
     @Override
     public boolean execute() {
         CommandExecuteUtil.setVariable(this.getValue(), CommandExecuteUtil.getElement(this.getTarget()).getAttribute("value"));

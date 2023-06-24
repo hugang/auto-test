@@ -12,19 +12,8 @@ import org.openqa.selenium.Keys;
  * @author hugang
  */
 public class SendKeysCommand extends Command {
-    public SendKeysCommand() {
-    }
-
-    public SendKeysCommand(String command, String target) {
-        super(command, target);
-    }
-
     public SendKeysCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public SendKeysCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     /**

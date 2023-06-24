@@ -5,6 +5,9 @@ import io.hugang.execute.CommandExecuteUtil;
 
 public class StoreTextCommand extends Command {
 
+    public StoreTextCommand(String command, String target, String value) {
+        super(command, target, value);
+    }
 
     @Override
     public boolean execute() {

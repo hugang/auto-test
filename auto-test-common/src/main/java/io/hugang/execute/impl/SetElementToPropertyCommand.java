@@ -11,20 +11,8 @@ import io.hugang.execute.CommandExecuteUtil;
  * @author hugang
  */
 public class SetElementToPropertyCommand extends Command {
-
-    public SetElementToPropertyCommand() {
-    }
-
-    public SetElementToPropertyCommand(String command, String target) {
-        super(command, target);
-    }
-
     public SetElementToPropertyCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public SetElementToPropertyCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     /**

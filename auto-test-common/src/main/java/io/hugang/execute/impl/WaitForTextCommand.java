@@ -12,19 +12,8 @@ import io.hugang.execute.CommandExecuteUtil;
  * @author hugang
  */
 public class WaitForTextCommand extends Command {
-    public WaitForTextCommand() {
-    }
-
-    public WaitForTextCommand(String command, String target) {
-        super(command, target);
-    }
-
     public WaitForTextCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public WaitForTextCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     /**

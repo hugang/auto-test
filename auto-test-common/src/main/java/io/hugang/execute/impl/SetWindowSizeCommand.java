@@ -12,20 +12,8 @@ import org.openqa.selenium.WebDriver;
  * @author hugang
  */
 public class SetWindowSizeCommand extends Command {
-
-    public SetWindowSizeCommand() {
-    }
-
-    public SetWindowSizeCommand(String command, String target) {
-        super(command, target);
-    }
-
     public SetWindowSizeCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public SetWindowSizeCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     /**

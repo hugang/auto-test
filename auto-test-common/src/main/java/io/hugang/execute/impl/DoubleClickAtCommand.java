@@ -7,19 +7,8 @@ import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 
 public class DoubleClickAtCommand extends Command {
-    public DoubleClickAtCommand() {
-    }
-
-    public DoubleClickAtCommand(String command, String target) {
-        super(command, target);
-    }
-
     public DoubleClickAtCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public DoubleClickAtCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     @Override

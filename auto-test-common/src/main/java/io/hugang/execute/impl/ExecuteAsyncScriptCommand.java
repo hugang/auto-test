@@ -8,19 +8,8 @@ import io.hugang.execute.CommandExecuteUtil;
 import org.openqa.selenium.JavascriptExecutor;
 
 public class ExecuteAsyncScriptCommand extends Command {
-    public ExecuteAsyncScriptCommand() {
-    }
-
-    public ExecuteAsyncScriptCommand(String command, String target) {
-        super(command, target);
-    }
-
     public ExecuteAsyncScriptCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public ExecuteAsyncScriptCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     @Override

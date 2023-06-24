@@ -8,19 +8,8 @@ import io.hugang.execute.CommandExecuteUtil;
 import org.openqa.selenium.JavascriptExecutor;
 
 public class ExecuteScriptCommand extends Command {
-    public ExecuteScriptCommand() {
-    }
-
-    public ExecuteScriptCommand(String command, String target) {
-        super(command, target);
-    }
-
     public ExecuteScriptCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public ExecuteScriptCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     @Override

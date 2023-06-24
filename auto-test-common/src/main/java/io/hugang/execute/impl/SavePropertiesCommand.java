@@ -17,20 +17,8 @@ import java.util.Map;
  * @author hugang
  */
 public class SavePropertiesCommand extends Command {
-
-    public SavePropertiesCommand() {
-    }
-
-    public SavePropertiesCommand(String command, String target) {
-        super(command, target);
-    }
-
     public SavePropertiesCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public SavePropertiesCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     /**

@@ -19,19 +19,8 @@ import io.hugang.execute.CommandExecuteUtil;
  * 
  */
 public class MouseOverCommand extends Command {
-    public MouseOverCommand() {
-    }
-
-    public MouseOverCommand(String command, String target) {
-        super(command, target);
-    }
-
     public MouseOverCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public MouseOverCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     /**

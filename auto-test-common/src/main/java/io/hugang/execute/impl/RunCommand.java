@@ -24,19 +24,8 @@ public class RunCommand extends Command {
     private static final String TYPE_BAT = "bat";
     private static final String TYPE_SH = "sh";
 
-    public RunCommand() {
-    }
-
-    public RunCommand(String command, String target) {
-        super(command, target);
-    }
-
     public RunCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public RunCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     /**

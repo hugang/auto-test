@@ -13,19 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IfCommand extends Command implements IConditionCommand {
-    public IfCommand() {
-    }
-
-    public IfCommand(String command, String target) {
-        super(command, target);
-    }
-
     public IfCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public IfCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     // sub commands
@@ -60,10 +49,6 @@ public class IfCommand extends Command implements IConditionCommand {
     @Override
     public List<ICommand> getSubCommands() {
         return subCommands;
-    }
-
-    public void setSubCommands(List<ICommand> subCommands) {
-        this.subCommands = subCommands;
     }
 
     @Override
