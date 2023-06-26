@@ -12,8 +12,9 @@ import javax.script.ScriptException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IfCommand extends Command implements IConditionCommand {
-    public IfCommand(String command, String target, String value) {
+public class WhileCommand extends Command implements IConditionCommand {
+
+    public WhileCommand(String command, String target, String value) {
         super(command, target, value);
     }
 
@@ -23,21 +24,13 @@ public class IfCommand extends Command implements IConditionCommand {
     @Override
     public boolean execute() throws CommandExecuteException {
         try {
-            if (inCondition()){
+            while (inCondition()) {
                 this.getSubCommands().forEach(ICommand::execute);
             }
             return true;
         } catch (Exception e) {
             throw new CommandExecuteException(e);
         }
-    }
-
-    @Override
-    public void addSubCommand(ICommand subCommand) {
-        if (this.subCommands == null) {
-            this.subCommands = new ArrayList<>();
-        }
-        this.subCommands.add(subCommand);
     }
 
     @Override
@@ -52,8 +45,16 @@ public class IfCommand extends Command implements IConditionCommand {
     }
 
     @Override
+    public void addSubCommand(ICommand subCommand) {
+        if (this.subCommands == null) {
+            this.subCommands = new ArrayList<>();
+        }
+        this.subCommands.add(subCommand);
+    }
+
+    @Override
     public String toString() {
-        return "IfCommand{" +
+        return "WhileCommand{" +
                 "subCommands=" + subCommands +
                 '}';
     }

@@ -140,6 +140,10 @@ public class CommandParserUtil {
                     TimesCommand timesCommand = new TimesCommand(commandName, command.getTarget(), command.getValue());
                     commandStack.push(timesCommand);
                     break;
+                case "while":
+                    WhileCommand whileCommand = new WhileCommand(commandName, command.getTarget(), command.getValue());
+                    commandStack.push(whileCommand);
+                    break;
                 case "end":
                     ICommand subCommand = commandStack.pop();
                     if (!commandStack.empty()) {
