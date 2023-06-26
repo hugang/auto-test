@@ -1,10 +1,12 @@
 package io.hugang.execute.impl;
 
 import io.hugang.CommandExecuteException;
+import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 import org.openqa.selenium.By;
 
+@WebCommand
 public class AddSelectionCommand extends Command {
 
     public AddSelectionCommand(String command, String target, String value) {

@@ -211,12 +211,16 @@ public class BasicExecutor {
         // execute the commands
         for (Commands commands : commandsList) {
             // init the executor
-            this.init();
+            if (commands.isWebCommand()){
+                this.init();
+            }
             CommandExecuteUtil.setVariable("caseId", commands.getCaseId());
             this.executeCommands(commands);
             sleep(1000);
             // destroy the executor
-            this.destroy();
+            if (commands.isWebCommand()){
+                this.destroy();
+            }
         }
     }
 

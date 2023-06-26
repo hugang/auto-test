@@ -11,6 +11,7 @@ import cn.hutool.log.LogFactory;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
+import io.hugang.annotation.WebCommand;
 import io.hugang.bean.*;
 import io.hugang.execute.impl.*;
 import org.apache.commons.csv.CSVFormat;
@@ -73,7 +74,7 @@ public class CommandParserUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        commands.setCommands(parseCommandToSubCommand(commandList));
+        parseCommandToSubCommand(commandList, commands);
         commandsList.add(commands);
         return commandsList;
     }
@@ -114,7 +115,7 @@ public class CommandParserUtil {
                     commandList.add(command);
                 }
                 commands.setCaseId(caseNo);
-                commands.setCommands(parseCommandToSubCommand(commandList));
+                parseCommandToSubCommand(commandList, commands);
                 if (ObjectUtil.isNotEmpty(commandList)) {
                     commandsList.add(commands);
                 }
@@ -123,9 +124,10 @@ public class CommandParserUtil {
         return commandsList;
     }
 
-    public static List<ICommand> parseCommandToSubCommand(List<OriginalCommand> commandList) {
+    public static void parseCommandToSubCommand(List<OriginalCommand> commandList, Commands newCommandList) {
         List<ICommand> commands = new ArrayList<>();
         Stack<IConditionCommand> commandStack = new Stack<>();
+        boolean isWeb = false;
 
         for (OriginalCommand command : commandList) {
             String commandName = command.getCommand();
@@ -148,6 +150,10 @@ public class CommandParserUtil {
                     break;
                 default:
                     ICommand normalCommand = parseOriginToCommand(command);
+                    // if the command with WebCommand annotation, set the isWeb to true
+                    if (normalCommand.getClass().isAnnotationPresent(WebCommand.class)) {
+                        isWeb = true;
+                    }
 
                     if (!commandStack.empty()) {
                         commandStack.peek().addSubCommand(normalCommand);
@@ -157,7 +163,8 @@ public class CommandParserUtil {
                     break;
             }
         }
-        return commands;
+        newCommandList.setCommands(commands);
+        newCommandList.setWebCommand(isWeb);
     }
 
     private static ICommand parseOriginToCommand(OriginalCommand command) {
@@ -278,7 +285,7 @@ public class CommandParserUtil {
                 }
                 commandList.add(command);
             }
-            commands.setCommands(parseCommandToSubCommand(commandList));
+            parseCommandToSubCommand(commandList, commands);
             commandsList.add(commands);
         }
         return commandsList;

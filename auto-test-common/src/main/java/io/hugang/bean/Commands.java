@@ -11,6 +11,7 @@ import java.util.List;
 public class Commands {
     // test case id
     private String caseId;
+    private boolean webCommand;
     // command list
     private List<ICommand> commands;
 
@@ -28,5 +29,13 @@ public class Commands {
 
     public void setCommands(List<ICommand> commands) {
         this.commands = commands;
+    }
+
+    public boolean isWebCommand() {
+        return webCommand;
+    }
+
+    public void setWebCommand(boolean webCommand) {
+        this.webCommand = webCommand;
     }
 }

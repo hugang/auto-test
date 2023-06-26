@@ -74,8 +74,7 @@ public class ScriptController {
             originalCommands.add(new OriginalCommand(command.getCommand(), command.getTarget(), command.getValue()));
         }
         Commands commandList = new Commands();
-        commandList.setCommands(CommandParserUtil.parseCommandToSubCommand(originalCommands));
-        commandsList.add(commandList);
+        CommandParserUtil.parseCommandToSubCommand(originalCommands, commandList);
         executor.runCommandsList(commandsList);
     }
 
