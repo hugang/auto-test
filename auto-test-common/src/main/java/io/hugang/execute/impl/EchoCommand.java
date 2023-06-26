@@ -14,7 +14,7 @@ public class EchoCommand extends Command {
 
     @Override
     public boolean execute() {
-        log.info(CommandExecuteUtil.render(this.getTarget()));
+        log.info(CommandExecuteUtil.render(this.getValue()));
         return true;
     }
 }

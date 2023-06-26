@@ -106,10 +106,10 @@ public class CommandParserUtil {
                 for (int j = 1; j < commandRow.size(); j++) {
                     OriginalCommand command = new OriginalCommand();
                     command.setCommand(commandRow.get(j).toString());
-                    if (ObjectUtil.isNotEmpty(targetRow.get(j))) {
+                    if (ObjectUtil.isNotEmpty(targetRow) && ObjectUtil.isNotEmpty(targetRow.get(j))) {
                         command.setTarget(targetRow.get(j).toString());
                     }
-                    if (ObjectUtil.isNotEmpty(valueRow.get(j))) {
+                    if (ObjectUtil.isNotEmpty(valueRow) && ObjectUtil.isNotEmpty(valueRow.get(j))) {
                         command.setValue(valueRow.get(j).toString());
                     }
                     commandList.add(command);
@@ -151,6 +151,7 @@ public class CommandParserUtil {
                 default:
                     ICommand normalCommand = parseOriginToCommand(command);
                     // if the command with WebCommand annotation, set the isWeb to true
+                    assert normalCommand != null;
                     if (normalCommand.getClass().isAnnotationPresent(WebCommand.class)) {
                         isWeb = true;
                     }

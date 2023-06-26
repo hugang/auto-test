@@ -250,7 +250,7 @@ public class BasicExecutor {
         try {
             for (ICommand command : commands.getCommands()) {
                 // execute the command
-                log.info("execute command: " + command);
+                log.debug("execute command: " + command);
                 result = command.execute();
                 if (!result) {
                     log.error("execute command failed");
