@@ -7,6 +7,7 @@ import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.BasicExecutor;
+import io.hugang.CommandExecuteException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,6 +24,8 @@ import static com.codeborne.selenide.Selenide.$;
  */
 public class CommandExecuteUtil {
     private static final Log log = LogFactory.get();
+    private static final int TIMEOUT = 10000;
+    private static int spendTime = 0;
     private static final TemplateEngine ENGINE = TemplateUtil.createEngine();
 
     /**
@@ -55,8 +58,18 @@ public class CommandExecuteUtil {
                 break;
             }
         }
-        if ($ == null) {
+        assert $ != null;
+        if (!$.exists() && spendTime > TIMEOUT) {
             log.info("can not find element by target: {}", target);
+            throw new CommandExecuteException("can not find element by target: " + target);
+        }else if(!$.exists()){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            spendTime += 1000;
+            return getElement(target);
         }
         return $;
     }

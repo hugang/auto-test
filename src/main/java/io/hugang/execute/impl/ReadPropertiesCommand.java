@@ -14,20 +14,8 @@ import io.hugang.execute.CommandExecuteUtil;
  * @author hugang
  */
 public class ReadPropertiesCommand extends Command {
-
-    public ReadPropertiesCommand() {
-    }
-
-    public ReadPropertiesCommand(String command, String target) {
-        super(command, target);
-    }
-
     public ReadPropertiesCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public ReadPropertiesCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     /**

@@ -1,24 +1,14 @@
 package io.hugang.execute.impl;
 
+import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 import org.openqa.selenium.Keys;
 
+@WebCommand
 public class TypeCommand extends Command {
-
-    public TypeCommand() {
-    }
-
-    public TypeCommand(String command, String target) {
-        super(command, target);
-    }
-
     public TypeCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public TypeCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     @Override

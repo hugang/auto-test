@@ -1,23 +1,14 @@
 package io.hugang.execute.impl;
 
 import io.hugang.CommandExecuteException;
+import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 
+@WebCommand
 public class SubmitCommand extends Command {
-    public SubmitCommand() {
-    }
-
-    public SubmitCommand(String command, String target) {
-        super(command, target);
-    }
-
     public SubmitCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public SubmitCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     @Override

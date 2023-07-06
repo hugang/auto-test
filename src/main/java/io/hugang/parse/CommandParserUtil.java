@@ -11,6 +11,7 @@ import cn.hutool.log.LogFactory;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
+import io.hugang.annotation.WebCommand;
 import io.hugang.bean.*;
 import io.hugang.execute.impl.*;
 import org.apache.commons.csv.CSVFormat;
@@ -73,7 +74,7 @@ public class CommandParserUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        commands.setCommands(parseCommandToSubCommand(commandList));
+        parseCommandToSubCommand(commandList, commands);
         commandsList.add(commands);
         return commandsList;
     }
@@ -105,16 +106,16 @@ public class CommandParserUtil {
                 for (int j = 1; j < commandRow.size(); j++) {
                     OriginalCommand command = new OriginalCommand();
                     command.setCommand(commandRow.get(j).toString());
-                    if (ObjectUtil.isNotEmpty(targetRow.get(j))) {
+                    if (ObjectUtil.isNotEmpty(targetRow) && ObjectUtil.isNotEmpty(targetRow.get(j))) {
                         command.setTarget(targetRow.get(j).toString());
                     }
-                    if (ObjectUtil.isNotEmpty(valueRow.get(j))) {
+                    if (ObjectUtil.isNotEmpty(valueRow) && ObjectUtil.isNotEmpty(valueRow.get(j))) {
                         command.setValue(valueRow.get(j).toString());
                     }
                     commandList.add(command);
                 }
                 commands.setCaseId(caseNo);
-                commands.setCommands(parseCommandToSubCommand(commandList));
+                parseCommandToSubCommand(commandList, commands);
                 if (ObjectUtil.isNotEmpty(commandList)) {
                     commandsList.add(commands);
                 }
@@ -123,9 +124,10 @@ public class CommandParserUtil {
         return commandsList;
     }
 
-    private static List<ICommand> parseCommandToSubCommand(List<OriginalCommand> commandList) {
+    public static void parseCommandToSubCommand(List<OriginalCommand> commandList, Commands newCommandList) {
         List<ICommand> commands = new ArrayList<>();
         Stack<IConditionCommand> commandStack = new Stack<>();
+        boolean isWeb = false;
 
         for (OriginalCommand command : commandList) {
             String commandName = command.getCommand();
@@ -138,6 +140,10 @@ public class CommandParserUtil {
                     TimesCommand timesCommand = new TimesCommand(commandName, command.getTarget(), command.getValue());
                     commandStack.push(timesCommand);
                     break;
+                case "while":
+                    WhileCommand whileCommand = new WhileCommand(commandName, command.getTarget(), command.getValue());
+                    commandStack.push(whileCommand);
+                    break;
                 case "end":
                     ICommand subCommand = commandStack.pop();
                     if (!commandStack.empty()) {
@@ -148,6 +154,11 @@ public class CommandParserUtil {
                     break;
                 default:
                     ICommand normalCommand = parseOriginToCommand(command);
+                    // if the command with WebCommand annotation, set the isWeb to true
+                    assert normalCommand != null;
+                    if (normalCommand.getClass().isAnnotationPresent(WebCommand.class)) {
+                        isWeb = true;
+                    }
 
                     if (!commandStack.empty()) {
                         commandStack.peek().addSubCommand(normalCommand);
@@ -157,7 +168,8 @@ public class CommandParserUtil {
                     break;
             }
         }
-        return commands;
+        newCommandList.setCommands(commands);
+        newCommandList.setWebCommand(isWeb);
     }
 
     private static ICommand parseOriginToCommand(OriginalCommand command) {
@@ -221,6 +233,28 @@ public class CommandParserUtil {
                 return new DoubleClickCommand(commandName, command.getTarget(), command.getValue());
             case "runCase":
                 return new RunCaseCommand(commandName, command.getTarget(), command.getValue());
+            case "addSelection":
+                return new AddSelectionCommand(commandName, command.getTarget(), command.getValue());
+            case "executeScript":
+                return new ExecuteScriptCommand(commandName, command.getTarget(), command.getValue());
+            case "executeAsyncScript":
+                return new ExecuteAsyncScriptCommand(commandName, command.getTarget(), command.getValue());
+            case "mouseOver":
+                return new MouseOverCommand(commandName, command.getTarget(), command.getValue());
+            case "store":
+                return new StoreCommand(commandName, command.getTarget(), command.getValue());
+            case "storeText":
+                return new StoreTextCommand(commandName, command.getTarget(), command.getValue());
+            case "storeTitle":
+                return new StoreTitleCommand(commandName, command.getTarget(), command.getValue());
+            case "storeValue":
+                return new StoreValueCommand(commandName, command.getTarget(), command.getValue());
+            case "storeAttribute":
+                return new StoreAttributeCommand(commandName, command.getTarget(), command.getValue());
+            case "storeJson":
+                return new StoreJsonCommand(commandName, command.getTarget(), command.getValue());
+            case "storeXpathCount":
+                return new StoreXpathCountCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }
@@ -256,7 +290,7 @@ public class CommandParserUtil {
                 }
                 commandList.add(command);
             }
-            commands.setCommands(parseCommandToSubCommand(commandList));
+            parseCommandToSubCommand(commandList, commands);
             commandsList.add(commands);
         }
         return commandsList;

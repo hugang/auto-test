@@ -8,6 +8,9 @@ package io.hugang.bean;
  * @author hugang
  */
 public class OriginalCommand {
+    public OriginalCommand() {
+    }
+
     // command
     private String command;
     // target

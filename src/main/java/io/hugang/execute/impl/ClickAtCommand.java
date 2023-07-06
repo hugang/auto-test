@@ -3,23 +3,14 @@ package io.hugang.execute.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.codeborne.selenide.ClickOptions;
 import com.codeborne.selenide.SelenideElement;
+import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 
+@WebCommand
 public class ClickAtCommand extends Command {
-    public ClickAtCommand() {
-    }
-
-    public ClickAtCommand(String command, String target) {
-        super(command, target);
-    }
-
     public ClickAtCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public ClickAtCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     @Override

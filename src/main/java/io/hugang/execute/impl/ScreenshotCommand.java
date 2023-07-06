@@ -14,19 +14,8 @@ import static com.codeborne.selenide.Selenide.*;
 public class ScreenshotCommand extends Command {
     private static final Log log = LogFactory.get();
 
-    public ScreenshotCommand() {
-    }
-
-    public ScreenshotCommand(String command, String target) {
-        super(command, target);
-    }
-
     public ScreenshotCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public ScreenshotCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     @Override

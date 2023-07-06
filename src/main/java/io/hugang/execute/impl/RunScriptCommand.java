@@ -10,20 +10,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 
 public class RunScriptCommand extends Command {
-
-    public RunScriptCommand() {
-    }
-
-    public RunScriptCommand(String command, String target) {
-        super(command, target);
-    }
-
     public RunScriptCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public RunScriptCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     @Override

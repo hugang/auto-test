@@ -11,19 +11,8 @@ import java.util.List;
 public class TimesCommand extends Command implements IConditionCommand {
     private int times = -1;
 
-    public TimesCommand() {
-    }
-
-    public TimesCommand(String command, String target) {
-        super(command, target);
-    }
-
     public TimesCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public TimesCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     // sub commands
@@ -32,7 +21,7 @@ public class TimesCommand extends Command implements IConditionCommand {
     @Override
     public boolean execute() {
         while (inCondition()) {
-            this.subCommands.forEach(ICommand::execute);
+            this.getSubCommands().forEach(ICommand::execute);
             times--;
         }
         return true;

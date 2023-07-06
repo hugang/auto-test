@@ -93,6 +93,7 @@ public class BasicExecutor {
                 if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
                     options.setBinary(autoTestConfig.getBrowserBinaryPath());
                 }
+                options.addArguments("--remote-allow-origins=*");
                 options.setExperimentalOption("prefs", optionsMap);
                 driver = new EdgeDriver(options);
                 break;
@@ -206,16 +207,20 @@ public class BasicExecutor {
     /**
      * method to execute the commands
      */
-    private void runCommandsList(List<Commands> commandsList) {
+    public void runCommandsList(List<Commands> commandsList) {
         // execute the commands
         for (Commands commands : commandsList) {
             // init the executor
-            this.init();
+            if (commands.isWebCommand()){
+                this.init();
+            }
             CommandExecuteUtil.setVariable("caseId", commands.getCaseId());
             this.executeCommands(commands);
             sleep(1000);
             // destroy the executor
-            this.destroy();
+            if (commands.isWebCommand()){
+                this.destroy();
+            }
         }
     }
 
@@ -242,13 +247,20 @@ public class BasicExecutor {
     public void executeCommands(Commands commands) {
         boolean result;
         // loop through the commands
-        for (ICommand command : commands.getCommands()) {
-            // execute the command
-            log.info("execute command: " + command);
-            if (!command.execute()) {
-                throw new RuntimeException("execute command failed");
+        try {
+            for (ICommand command : commands.getCommands()) {
+                // execute the command
+                log.debug("execute command: " + command);
+                result = command.execute();
+                if (!result) {
+                    log.error("execute command failed");
+                    return;
+                }
             }
+            log.info("execute commands success");
+        } catch (Exception e) {
+            log.error("execute commands failed", e);
+            destroy();
         }
-        log.info("execute commands success");
     }
 }

@@ -12,20 +12,8 @@ import io.hugang.execute.CommandExecuteUtil;
  * @author hugang
  */
 public class IncreaseNumberCommand extends Command {
-
-    public IncreaseNumberCommand() {
-    }
-
-    public IncreaseNumberCommand(String command, String target) {
-        super(command, target);
-    }
-
     public IncreaseNumberCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public IncreaseNumberCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     /**

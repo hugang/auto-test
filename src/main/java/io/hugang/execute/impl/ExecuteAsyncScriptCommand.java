@@ -3,24 +3,15 @@ package io.hugang.execute.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.CommandExecuteException;
+import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 import org.openqa.selenium.JavascriptExecutor;
 
+@WebCommand
 public class ExecuteAsyncScriptCommand extends Command {
-    public ExecuteAsyncScriptCommand() {
-    }
-
-    public ExecuteAsyncScriptCommand(String command, String target) {
-        super(command, target);
-    }
-
     public ExecuteAsyncScriptCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public ExecuteAsyncScriptCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     @Override

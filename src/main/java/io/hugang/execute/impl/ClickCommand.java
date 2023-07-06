@@ -1,28 +1,23 @@
 package io.hugang.execute.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.codeborne.selenide.SelenideElement;
+import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 
+@WebCommand
 public class ClickCommand extends Command {
-
-    public ClickCommand() {
-    }
-
-    public ClickCommand(String command, String target) {
-        super(command, target);
-    }
 
     public ClickCommand(String command, String target, String value) {
         super(command, target, value);
     }
 
-    public ClickCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
-    }
-
     @Override
     public boolean execute() {
+        if (StrUtil.isEmpty(this.getValue())) {
+            return false;
+        }
         execute(CommandExecuteUtil.getElement(this.getTarget()));
         return true;
     }

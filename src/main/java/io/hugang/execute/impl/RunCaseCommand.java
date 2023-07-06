@@ -13,19 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RunCaseCommand extends Command {
-    public RunCaseCommand() {
-    }
-
-    public RunCaseCommand(String command, String target) {
-        super(command, target);
-    }
-
     public RunCaseCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public RunCaseCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     @Override

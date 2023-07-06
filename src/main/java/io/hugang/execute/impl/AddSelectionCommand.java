@@ -1,24 +1,16 @@
 package io.hugang.execute.impl;
 
 import io.hugang.CommandExecuteException;
+import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 import org.openqa.selenium.By;
 
+@WebCommand
 public class AddSelectionCommand extends Command {
-    public AddSelectionCommand() {
-    }
-
-    public AddSelectionCommand(String command, String target) {
-        super(command, target);
-    }
 
     public AddSelectionCommand(String command, String target, String value) {
         super(command, target, value);
-    }
-
-    public AddSelectionCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
     }
 
     @Override
