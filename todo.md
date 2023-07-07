@@ -423,7 +423,7 @@ be attempted.
     - select locator: An element locator identifying a drop-down menu.
     - option: An option locator, typically just an option label (e.g. "John Smith").
 
-## select frame
+## select frame [x]
 
 Selects a frame within the current window. You can select a frame by its 0-based index number (e.g., select the first
 frame with "index=0", or the third frame with "index=2"). For nested frames you will need to invoke this command
