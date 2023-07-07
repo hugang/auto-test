@@ -433,7 +433,7 @@ with "relative=parent". To return to the top of the page use "relative=top".
 - arguments
     - locator: An element locator.
 
-## select window
+## select window [x]
 
 Selects a popup window using a window locator. Once a popup window has been selected, all commands will go to that
 window. Window locators use handles to select windows.

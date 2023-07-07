@@ -183,6 +183,8 @@ public class CommandParserUtil {
                 return new SelectCommand(commandName, command.getTarget(), command.getValue());
             case "selectFrame":
                 return new SelectFrameCommand(commandName, command.getTarget(), command.getValue());
+            case "selectWindow":
+                return new SelectWindowCommand(commandName, command.getTarget(), command.getValue());
             case "open":
                 return new OpenCommand(commandName, command.getTarget(), command.getValue());
             case "run":
