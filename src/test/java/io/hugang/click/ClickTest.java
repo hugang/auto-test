@@ -16,6 +16,10 @@ public class ClickTest {
     public void testClickXlsx() {
         new BasicExecutor().execute("xlsx", Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("click/click.xlsx")).getPath());
     }
+    @Test
+    public void testClickXlsxNotExist() {
+        new BasicExecutor().execute("xlsx", Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("click/clickNotExist.xlsx")).getPath());
+    }
 
     @Test
     public void testClickCsv() {

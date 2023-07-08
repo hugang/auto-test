@@ -1,5 +1,6 @@
 package io.hugang.execute.impl;
 
+import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
 
@@ -13,7 +14,12 @@ public class OpenCommand extends Command {
 
     @Override
     public boolean execute() {
-        open(this.getTarget());
-        return true;
+        try {
+            open(this.getTarget());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CommandExecuteException("OpenCommand execute failed");
+        }
     }
 }
