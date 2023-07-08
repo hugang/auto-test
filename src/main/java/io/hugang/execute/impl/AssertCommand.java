@@ -1,6 +1,5 @@
 package io.hugang.execute.impl;
 
-import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 
@@ -12,7 +11,6 @@ import io.hugang.execute.CommandExecuteUtil;
  *
  * @author hugang
  */
-@WebCommand
 public class AssertCommand extends Command {
     public AssertCommand(String command, String target, String value) {
         super(command, target, value);
