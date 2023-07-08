@@ -11,4 +11,8 @@ public class AddSelectionTest {
     public void testAddSelectionXlsx() {
         new BasicExecutor().execute("xlsx", Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("addselection/addSelection.xlsx")).getPath());
     }
+    @Test
+    public void testAddSelectionNotExistXlsx() {
+        new BasicExecutor().execute("xlsx", Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("addselection/addSelectionNotExist.xlsx")).getPath());
+    }
 }
