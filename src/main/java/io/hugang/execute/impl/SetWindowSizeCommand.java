@@ -25,11 +25,23 @@ public class SetWindowSizeCommand extends Command {
      */
     @Override
     public boolean execute() {
-        String[] sizes = this.getTarget().split("x");
-        int width = Integer.parseInt(sizes[0]);
-        int height = Integer.parseInt(sizes[1]);
+        if (!this.getTarget().contains("x") && !"max".equals(this.getTarget()) && !"min".equals(this.getTarget())) {
+            return false;
+        }
         WebDriver driver = WebDriverRunner.getWebDriver();
-        driver.manage().window().setSize(new Dimension(width, height));
-        return true;
+        if ("max".equals(this.getTarget())) {
+            driver.manage().window().maximize();
+            return true;
+        }
+        if ("min".equals(this.getTarget())) {
+            driver.manage().window().setSize(new Dimension(0, 0));
+            return true;
+        } else {
+            String[] sizes = this.getTarget().split("x");
+            int width = Integer.parseInt(sizes[0]);
+            int height = Integer.parseInt(sizes[1]);
+            driver.manage().window().setSize(new Dimension(width, height));
+            return true;
+        }
     }
 }
