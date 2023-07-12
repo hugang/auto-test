@@ -8,7 +8,10 @@ import java.util.Objects;
 
 public class SetWindowSizeTest {
     @Test
-    public void testTypeXlsx() {
+    public void testSetWindowSizeXlsx() {
         new BasicExecutor().execute("xlsx", Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("setwindowsize/setwindowsize.xlsx")).getPath());
+    }    @Test
+    public void testSetWindowSizeErrXlsx() {
+        new BasicExecutor().execute("xlsx", Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("setwindowsize/setwindowsizeError.xlsx")).getPath());
     }
 }
