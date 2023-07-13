@@ -1,28 +1,25 @@
 package io.hugang.click;
 
-import io.hugang.BasicExecutor;
-import io.hugang.open.OpenTest;
+import io.hugang.util.Utils;
 import org.junit.Test;
-
-import java.util.Objects;
 
 public class ClickTest {
     @Test
     public void testClickSide() {
-        new BasicExecutor().execute("side", Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("click/click.side")).getPath());
+        Utils.execute("side", "click.side");
     }
 
     @Test
     public void testClickXlsx() {
-        new BasicExecutor().execute("xlsx", Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("click/click.xlsx")).getPath());
+        Utils.execute("xlsx", "click.xlsx");
     }
     @Test
     public void testClickXlsxNotExist() {
-        new BasicExecutor().execute("xlsx", Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("click/clickNotExist.xlsx")).getPath());
+        Utils.execute("xlsx", "clickNotExist.xlsx");
     }
 
     @Test
     public void testClickCsv() {
-        new BasicExecutor().execute("csv", Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("click/click.csv")).getPath());
+        Utils.execute("csv", "click.csv");
     }
 }

@@ -1,6 +1,6 @@
 package io.hugang;
 
-import io.hugang.open.OpenTest;
+import io.hugang.util.Utils;
 import org.junit.Test;
 
 import java.util.Objects;
@@ -8,19 +8,16 @@ import java.util.Objects;
 public class AllTest {
     @Test
     public void testClickXlsx() {
-        new BasicExecutor().execute("xlsx",
-                Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("testcase1.xlsx")).getPath());
+        Utils.execute("xlsx","testcase1.xlsx");
     }
 
     @Test
     public void testTimesXlsx() {
-        new BasicExecutor().execute("xlsx",
-                Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("testcase2.xlsx")).getPath());
+        Utils.execute("xlsx","testcase2.xlsx");
     }
 
     @Test
     public void testNewXlsx() {
-        new BasicExecutor().execute("xlsx",
-                Objects.requireNonNull(OpenTest.class.getClassLoader().getResource("testcase3.xlsx")).getPath());
+        Utils.execute("xlsx","testcase3.xlsx");
     }
 }
