@@ -51,6 +51,9 @@ public class CallApiCommand extends Command {
         try {
             HttpResponse response = httpRequest.execute();
             Object o = obj.get("store");
+            if (o == null) {
+                return true;
+            }
             // the object o is a json array, so we need to loop it
             JSONArray store = (JSONArray) o;
             for (int i = 0; i < store.size(); i++) {
