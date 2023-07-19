@@ -1,5 +1,6 @@
 package io.hugang.execute.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.Method;
@@ -9,6 +10,8 @@ import cn.hutool.json.JSONUtil;
 import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
+
+import java.nio.charset.Charset;
 
 public class CallApiCommand extends Command {
     public CallApiCommand(String command, String target, String value) {
@@ -21,8 +24,14 @@ public class CallApiCommand extends Command {
         String url = CommandExecuteUtil.render(getTarget());
         // get other options from value
         String options = CommandExecuteUtil.render(getValue());
-        // parse options to json
-        JSONObject obj = JSONUtil.parseObj(options);
+        JSONObject obj;
+        if (options.contains(".json")) {
+            // get json string from file
+            obj = (JSONObject) JSONUtil.readJSON(FileUtil.file(options), Charset.defaultCharset());
+        } else {
+            // parse options to json
+            obj = JSONUtil.parseObj(options);
+        }
         // get method
         String methodStr = obj.getStr("method");
         Method method = Method.valueOf(methodStr);
