@@ -259,6 +259,8 @@ public class CommandParserUtil {
                 return new StoreJsonCommand(commandName, command.getTarget(), command.getValue());
             case "storeXpathCount":
                 return new StoreXpathCountCommand(commandName, command.getTarget(), command.getValue());
+            case "callApi":
+                return new CallApiCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }
