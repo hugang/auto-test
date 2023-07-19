@@ -27,11 +27,10 @@ public class CallApiCommand extends Command {
         JSONObject obj;
         if (options.contains(".json")) {
             // get json string from file
-            obj = (JSONObject) JSONUtil.readJSON(FileUtil.file(options), Charset.defaultCharset());
-        } else {
-            // parse options to json
-            obj = JSONUtil.parseObj(options);
+            options = CommandExecuteUtil.render(FileUtil.readString(options, Charset.defaultCharset()));
         }
+        // parse options to json
+        obj = JSONUtil.parseObj(options);
         // get method
         String methodStr = obj.getStr("method");
         Method method = Method.valueOf(methodStr);
