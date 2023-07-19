@@ -18,9 +18,9 @@ public class CallApiCommand extends Command {
     @Override
     public boolean execute() {
         // get url from target
-        String url = getTarget();
+        String url = CommandExecuteUtil.render(getTarget());
         // get other options from value
-        String options = getValue();
+        String options = CommandExecuteUtil.render(getValue());
         // parse options to json
         JSONObject obj = JSONUtil.parseObj(options);
         // get method
