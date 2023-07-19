@@ -28,10 +28,14 @@ public class CallApiCommand extends Command {
         Method method = Method.valueOf(methodStr);
         // get params
         String params = obj.getStr("params");
-        // join params to url, params is a string like "name=xxx&age=xxx"
-        url = url.concat("?").concat(params);
+        // if params is null, return true
+        if (params != null) {
+            // join params to url, params is a string like "name=xxx&age=xxx"
+            url = url.concat("?").concat(params);
+        }
         // get headers
-        String headers = obj.getStr("headers");
+        Object headers = obj.get("headers");
+
         // get body
         String body = obj.getStr("body");
         // get proxy
@@ -47,7 +51,17 @@ public class CallApiCommand extends Command {
             int proxyPort = proxyObj.getInt("port");
             httpRequest.setHttpProxy(proxyHost, proxyPort);
         }
-        httpRequest.header(headers);
+        // if headers is null, return true
+        if (headers != null) {
+            // set headers to request, headers is a json object like {"Content-Type": "application/json"}
+            // loop headers and get key and value
+            JSONObject headerObject = (JSONObject) headers;
+            // loop headers and set header to request
+            for (String key : headerObject.keySet()) {
+                String value = headerObject.getStr(key);
+                httpRequest.header(key, value);
+            }
+        }
         try {
             HttpResponse response = httpRequest.execute();
             Object o = obj.get("store");
