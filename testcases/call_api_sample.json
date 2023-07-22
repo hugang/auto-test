@@ -1,0 +1,24 @@
+{
+  "method": "POST",
+  "headers": {
+    "X-Redmine-API-Key": "xxx"
+  },
+  "body": {},
+  "params": "age=aaa&name=bbb",
+  "tests": {
+  },
+  "store": [
+    {
+      "name": "name",
+      "value": "John"
+    },
+    {
+      "name": "age",
+      "responseKey": "age"
+    },
+    {
+      "name": "job",
+      "value": "Developer"
+    }
+  ]
+}
