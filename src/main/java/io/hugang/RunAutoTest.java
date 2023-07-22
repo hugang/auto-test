@@ -9,6 +9,6 @@ package io.hugang;
  */
 public class RunAutoTest {
     public static void main(String[] args) {
-        new BasicExecutor().execute();
+        new BasicExecutor().execute(args);
     }
 }

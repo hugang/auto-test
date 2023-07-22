@@ -41,7 +41,7 @@ public class CallApiCommand extends Command {
         // get params
         String params = obj.getStr("params");
         // if params is null, return true
-        if (params != null) {
+        if (ObjectUtil.isNotEmpty(params)) {
             // join params to url, params is a string like "name=xxx&age=xxx"
             url = url.concat("?").concat(params);
         }
@@ -82,17 +82,17 @@ public class CallApiCommand extends Command {
             }
             // the object o is a json array, so we need to loop it
             JSONArray store = (JSONArray) o;
+            // get value from response body
+            JSONObject jsonObject = JSONUtil.parseObj(response.body());
             for (int i = 0; i < store.size(); i++) {
                 JSONObject storeObj = store.getJSONObject(i);
                 String name = storeObj.getStr("name");
                 String value = storeObj.getStr("value");
                 String responseKey = storeObj.getStr("responseKey");
                 if (responseKey != null) {
-                    // get value from response body
-                    JSONObject jsonObject = JSONUtil.parseObj(response.body());
                     Object byPath = JSONUtil.getByPath(jsonObject, responseKey);
                     String responseValue = "";
-                    if (ObjectUtil.isEmpty(byPath)) {
+                    if (ObjectUtil.isNotEmpty(byPath)) {
                         responseValue = byPath.toString();
                     }
                     // store value to context

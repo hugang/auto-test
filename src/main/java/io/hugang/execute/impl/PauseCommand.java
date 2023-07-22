@@ -1,7 +1,7 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import io.hugang.CommandExecuteException;
+import com.codeborne.selenide.Selenide;
 import io.hugang.bean.Command;
 
 public class PauseCommand extends Command {
@@ -14,11 +14,7 @@ public class PauseCommand extends Command {
         if (ObjectUtil.isEmpty(this.getValue())) {
             return true;
         }
-        try {
-            Thread.sleep(Integer.parseInt(this.getValue()));
-        } catch (InterruptedException e) {
-            throw new CommandExecuteException(e);
-        }
+        Selenide.sleep(Long.parseLong(this.getValue()));
         return true;
     }
 }

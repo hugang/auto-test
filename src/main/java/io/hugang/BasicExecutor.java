@@ -118,6 +118,31 @@ public class BasicExecutor {
         WebDriverRunner.setWebDriver(driver);
     }
 
+    public void execute(String[] args) {
+        // if no arguments, execute the testCase path in the config file
+        if (args.length == 0) {
+            this.execute();
+        }
+        // if two arguments, the first one is testCase path, the second one is test cases
+        else if (args.length == 2) {
+            if (FileUtil.exist(args[0])) {
+                autoTestConfig.setTestCasePath(args[0]);
+            } else if (FileUtil.exist(AutoTestConfig.WORK_DIR + "/" + args[0])) {
+                autoTestConfig.setTestCasePath(AutoTestConfig.WORK_DIR + "/" + args[0]);
+            } else if (FileUtil.exist(FileUtil.file(args[0]))) {
+                autoTestConfig.setTestCasePath(FileUtil.file(args[0]).getAbsolutePath());
+            } else {
+                throw new RuntimeException("invalid test case path");
+            }
+            autoTestConfig.setTestCases(args[1]);
+            this.execute();
+        }
+        // the other arguments are invalid
+        else {
+            throw new RuntimeException("invalid arguments");
+        }
+    }
+
     /**
      * method to execute the commands
      */
@@ -211,14 +236,14 @@ public class BasicExecutor {
         // execute the commands
         for (Commands commands : commandsList) {
             // init the executor
-            if (commands.isWebCommand()){
+            if (commands.isWebCommand()) {
                 this.init();
             }
             CommandExecuteUtil.setVariable("caseId", commands.getCaseId());
             this.executeCommands(commands);
             sleep(1000);
             // destroy the executor
-            if (commands.isWebCommand()){
+            if (commands.isWebCommand()) {
                 this.destroy();
             }
         }
@@ -263,4 +288,6 @@ public class BasicExecutor {
             destroy();
         }
     }
+
+
 }
