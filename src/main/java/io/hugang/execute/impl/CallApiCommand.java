@@ -1,6 +1,7 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.Method;
@@ -20,6 +21,9 @@ public class CallApiCommand extends Command {
 
     @Override
     public boolean execute() {
+        if (ObjectUtil.isEmpty(getValue())) {
+            return true;
+        }
         // get url from target
         String url = CommandExecuteUtil.render(getTarget());
         // get other options from value
@@ -85,7 +89,12 @@ public class CallApiCommand extends Command {
                 String responseKey = storeObj.getStr("responseKey");
                 if (responseKey != null) {
                     // get value from response body
-                    String responseValue = JSONUtil.parseObj(response.body()).getStr(responseKey);
+                    JSONObject jsonObject = JSONUtil.parseObj(response.body());
+                    Object byPath = JSONUtil.getByPath(jsonObject, responseKey);
+                    String responseValue = "";
+                    if (ObjectUtil.isEmpty(byPath)) {
+                        responseValue = byPath.toString();
+                    }
                     // store value to context
                     CommandExecuteUtil.setVariable(name, responseValue);
                 } else {
