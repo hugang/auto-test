@@ -1,6 +1,7 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
@@ -30,12 +31,17 @@ public class SavePropertiesCommand extends Command {
     public boolean execute() {
 
         Map<String, String> map = new HashMap<>();
+
+        if (ObjectUtil.isEmpty(this.getValue())) {
+            map = CommandExecuteUtil.getVariables();
+        }
         for (String key : this.getValue().split(",")) {
             if (CommandExecuteUtil.hasVariable(key)) {
                 map.put(key, CommandExecuteUtil.getVariable(key));
             }
         }
-        File file = FileUtil.writeString(JSONUtil.toJsonPrettyStr(map), this.getTarget(), Charset.defaultCharset());
+        File file = FileUtil.writeString(JSONUtil.toJsonPrettyStr(map),
+                CommandExecuteUtil.render(this.getTarget()), Charset.defaultCharset());
         return file.exists();
     }
 }

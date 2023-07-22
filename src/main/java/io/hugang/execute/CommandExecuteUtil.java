@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -62,7 +63,7 @@ public class CommandExecuteUtil {
         if (!$.exists() && spendTime > TIMEOUT) {
             log.info("can not find element by target: {}", target);
             throw new CommandExecuteException("can not find element by target: " + target);
-        }else if(!$.exists()){
+        } else if (!$.exists()) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -154,6 +155,10 @@ public class CommandExecuteUtil {
      */
     public static String getVariable(String key) {
         return BasicExecutor.variablesMap.get(key);
+    }
+
+    public static Map<String, String> getVariables() {
+        return BasicExecutor.variablesMap;
     }
 
     /**
