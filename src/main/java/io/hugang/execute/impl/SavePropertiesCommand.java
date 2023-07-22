@@ -34,12 +34,14 @@ public class SavePropertiesCommand extends Command {
 
         if (ObjectUtil.isEmpty(this.getValue())) {
             map = CommandExecuteUtil.getVariables();
-        }
-        for (String key : this.getValue().split(",")) {
-            if (CommandExecuteUtil.hasVariable(key)) {
-                map.put(key, CommandExecuteUtil.getVariable(key));
+        }else {
+            for (String key : this.getValue().split(",")) {
+                if (CommandExecuteUtil.hasVariable(key)) {
+                    map.put(key, CommandExecuteUtil.getVariable(key));
+                }
             }
         }
+
         File file = FileUtil.writeString(JSONUtil.toJsonPrettyStr(map),
                 CommandExecuteUtil.render(this.getTarget()), Charset.defaultCharset());
         return file.exists();
