@@ -1,10 +1,9 @@
 package io.hugang.execute.impl;
 
-import com.codeborne.selenide.Selenide;
-import io.hugang.annotation.WebCommand;
+import cn.hutool.core.util.ObjectUtil;
+import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 
-@WebCommand
 public class PauseCommand extends Command {
     public PauseCommand(String command, String target, String value) {
         super(command, target, value);
@@ -12,7 +11,14 @@ public class PauseCommand extends Command {
 
     @Override
     public boolean execute() {
-        Selenide.sleep(Integer.parseInt(this.getValue()));
+        if (ObjectUtil.isEmpty(this.getValue())) {
+            return true;
+        }
+        try {
+            Thread.sleep(Integer.parseInt(this.getValue()));
+        } catch (InterruptedException e) {
+            throw new CommandExecuteException(e);
+        }
         return true;
     }
 }
