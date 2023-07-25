@@ -3,6 +3,7 @@ package io.hugang.execute.impl;
 import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
+import io.hugang.execute.CommandExecuteUtil;
 
 import static com.codeborne.selenide.Selenide.open;
 
@@ -15,7 +16,7 @@ public class OpenCommand extends Command {
     @Override
     public boolean execute() {
         try {
-            open(this.getTarget());
+            open(CommandExecuteUtil.render(this.getTarget()));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
