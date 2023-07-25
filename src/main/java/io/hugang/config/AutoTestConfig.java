@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
+import cn.hutool.system.SystemUtil;
 
 import java.io.File;
 
@@ -14,7 +15,7 @@ import java.io.File;
  */
 public class AutoTestConfig {
     // the working path
-    public static final String WORK_DIR = new File("").getAbsolutePath();
+    public static final String WORK_DIR = SystemUtil.getUserInfo().getCurrentDir();
     // config group of browser
     public static final String GROUP_BROWSER = "browser";
     // config group of test case
