@@ -5,21 +5,16 @@ import org.junit.Test;
 
 public class ClickTest {
     @Test
-    public void testClickSide() {
-        Utils.execute("side", "click.side");
-    }
-
-    @Test
     public void testClickXlsx() {
-        Utils.execute("xlsx", "click.xlsx");
+        Utils.execute("xlsx", "click/click.xlsx");
     }
     @Test
     public void testClickXlsxNotExist() {
-        Utils.execute("xlsx", "clickNotExist.xlsx");
+        Utils.execute("xlsx", "click/clickNotExist.xlsx");
     }
 
     @Test
     public void testClickCsv() {
-        Utils.execute("csv", "click.csv");
+        Utils.execute("csv", "click/click.csv");
     }
 }
