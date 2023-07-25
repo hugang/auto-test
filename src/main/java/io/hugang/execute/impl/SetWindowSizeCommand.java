@@ -37,14 +37,13 @@ public class SetWindowSizeCommand extends Command {
             }
             if ("min".equals(this.getTarget())) {
                 driver.manage().window().setSize(new Dimension(0, 0));
-                return true;
             } else {
                 String[] sizes = this.getTarget().split("x");
                 int width = Integer.parseInt(sizes[0]);
                 int height = Integer.parseInt(sizes[1]);
                 driver.manage().window().setSize(new Dimension(width, height));
-                return true;
             }
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             throw new CommandExecuteException(e);
