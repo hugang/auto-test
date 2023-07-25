@@ -28,7 +28,7 @@ public class AutoTestConfig {
      */
     public void readConfigurations() {
         // read auto-test.conf
-        File file = FileUtil.file(WORK_DIR + "/conf/auto-test.conf");
+        File file = FileUtil.file(WORK_DIR + "conf/auto-test.conf");
         if (!file.exists()) {
             return;
         }
@@ -91,7 +91,7 @@ public class AutoTestConfig {
             if (FileUtil.isAbsolutePath(filePath)) {
                 return filePath;
             } else {
-                return WORK_DIR + File.separator + filePath;
+                return WORK_DIR + filePath;
             }
         }
         return StrUtil.EMPTY;

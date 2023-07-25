@@ -5,6 +5,7 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.system.SystemUtil;
+import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 
@@ -32,11 +33,11 @@ public class ReadPropertiesCommand extends Command {
         if ("json".equals(this.getTarget())) {
             File file = FileUtil.file(this.getValue());
 
-            if (!file.exists()){
-                file = FileUtil.file(SystemUtil.getUserInfo().getCurrentDir()+File.separator+this.getValue());
+            if (!file.exists()) {
+                file = FileUtil.file(SystemUtil.getUserInfo().getCurrentDir() + this.getValue());
             }
-            if (!file.exists()){
-                return false;
+            if (!file.exists()) {
+                throw new CommandExecuteException("file not found: " + this.getValue());
             }
             JSONObject json = (JSONObject) JSONUtil.readJSON(file, CharsetUtil.CHARSET_UTF_8);
             json.forEach((key, value) -> CommandExecuteUtil.setVariable(key, value.toString()));
