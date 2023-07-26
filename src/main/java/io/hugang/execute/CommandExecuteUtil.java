@@ -1,9 +1,11 @@
 package io.hugang.execute;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
+import cn.hutool.system.SystemUtil;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.BasicExecutor;
@@ -12,6 +14,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -179,5 +182,17 @@ public class CommandExecuteUtil {
      */
     public static String render(String value) {
         return ENGINE.getTemplate(value).render(BasicExecutor.variablesMap);
+    }
+
+    public static String getFilePath(String path) {
+        File file = FileUtil.file(path);
+
+        if (!file.exists()) {
+            file = FileUtil.file(SystemUtil.getUserInfo().getCurrentDir() + path);
+        }
+        if (!file.exists()) {
+            throw new CommandExecuteException("file not found: " + path);
+        }
+        return file.getAbsolutePath();
     }
 }
