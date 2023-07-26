@@ -184,17 +184,24 @@ public class CommandExecuteUtil {
         return ENGINE.getTemplate(value).render(BasicExecutor.variablesMap);
     }
 
-    public static String getFilePath(String path) {
+    public static String getFilePath(String path, boolean createIfNotExists) {
         File file;
         if (FileUtil.isAbsolutePath(path)) {
             file = FileUtil.file(path);
         } else {
             file = FileUtil.file(SystemUtil.getUserInfo().getCurrentDir() + path);
         }
+        if (!file.exists() && createIfNotExists) {
+            FileUtil.touch(file);
+        }
 
         if (!file.exists()) {
             throw new CommandExecuteException("file not found: " + path);
         }
         return file.getAbsolutePath();
+    }
+
+    public static String getFilePath(String path) {
+        return getFilePath(path, false);
     }
 }
