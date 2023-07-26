@@ -30,6 +30,7 @@ public class CallApiCommand extends Command {
         String options = CommandExecuteUtil.render(getValue());
         JSONObject obj;
         if (options.contains(".json")) {
+            options = CommandExecuteUtil.getFilePath(options);
             // get json string from file
             options = CommandExecuteUtil.render(FileUtil.readString(options, Charset.defaultCharset()));
         }
