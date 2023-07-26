@@ -3,7 +3,6 @@ package io.hugang.execute.impl;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
-import cn.hutool.system.SystemUtil;
 import io.hugang.bean.Command;
 import io.hugang.execute.CommandExecuteUtil;
 
@@ -43,12 +42,8 @@ public class SavePropertiesCommand extends Command {
             }
         }
 
-        String saveFilePath = CommandExecuteUtil.render(this.getTarget());
-        if (!FileUtil.exist(saveFilePath)) {
-            saveFilePath = SystemUtil.getUserInfo().getCurrentDir() + saveFilePath;
-        }
-        File file = FileUtil.writeString(JSONUtil.toJsonPrettyStr(map),
-                saveFilePath, Charset.defaultCharset());
+        String saveFilePath = CommandExecuteUtil.getFilePath(CommandExecuteUtil.render(this.getTarget()));
+        File file = FileUtil.writeString(JSONUtil.toJsonPrettyStr(map), saveFilePath, Charset.defaultCharset());
         return file.exists();
     }
 }
