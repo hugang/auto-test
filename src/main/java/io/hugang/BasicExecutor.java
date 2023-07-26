@@ -176,6 +176,13 @@ public class BasicExecutor {
         this.execute();
     }
 
+    public void execute(String mode, String path, String testCases) {
+        this.autoTestConfig.setTestMode(mode);
+        this.autoTestConfig.setTestCasePath(path);
+        this.autoTestConfig.setTestCases(testCases);
+        this.execute();
+    }
+
     /**
      * method to parse input to commands list
      */
