@@ -185,11 +185,13 @@ public class CommandExecuteUtil {
     }
 
     public static String getFilePath(String path) {
-        File file = FileUtil.file(path);
-
-        if (!file.exists()) {
+        File file;
+        if (FileUtil.isAbsolutePath(path)) {
+            file = FileUtil.file(path);
+        } else {
             file = FileUtil.file(SystemUtil.getUserInfo().getCurrentDir() + path);
         }
+
         if (!file.exists()) {
             throw new CommandExecuteException("file not found: " + path);
         }
