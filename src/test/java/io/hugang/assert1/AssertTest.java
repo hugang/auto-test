@@ -6,10 +6,10 @@ import org.junit.Test;
 public class AssertTest {
     @Test
     public void testAssertXlsx() {
-        Utils.execute("xlsx", "assert.xlsx");
+        Utils.execute("xlsx", "assert1/assert.xlsx");
     }
     @Test
     public void testAssertErrorXlsx() {
-        Utils.execute("xlsx", "assertError.xlsx");
+        Utils.execute("xlsx", "assert1/assertError.xlsx");
     }
 }

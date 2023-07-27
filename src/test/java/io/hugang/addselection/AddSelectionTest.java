@@ -1,15 +1,17 @@
 package io.hugang.addselection;
 
+import com.codeborne.selenide.ex.ElementNotFound;
 import io.hugang.util.Utils;
 import org.junit.Test;
 
 public class AddSelectionTest {
     @Test
     public void testAddSelectionXlsx() {
-        Utils.execute("xlsx", "addSelection.xlsx");
+        Utils.execute("xlsx", "addselection/addSelection.xlsx");
     }
-    @Test
+
+    @Test(expected = ElementNotFound.class)
     public void testAddSelectionNotExistXlsx() {
-        Utils.execute("xlsx", "addSelectionNotExist.xlsx");
+        Utils.execute("xlsx", "addselection/addSelectionNotExist.xlsx");
     }
 }
