@@ -24,7 +24,7 @@ public class IncreaseNumberCommand extends Command {
     @Override
     public boolean execute() {
         // get from variable map
-        String variable = CommandExecuteUtil.getVariable(this.getTarget());
+        String variable = CommandExecuteUtil.getVariableStr(this.getTarget());
         if (!StrUtil.isNumeric(variable)) {
             return false;
         }

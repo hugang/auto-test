@@ -2,6 +2,7 @@ package io.hugang;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.cron.CronUtil;
@@ -42,7 +43,7 @@ public class BasicExecutor {
     // auto test config
     private final AutoTestConfig autoTestConfig = new AutoTestConfig();
     // map to storage variables
-    public static final Map<String, String> variablesMap = new HashMap<>();
+    public static final Dict variablesMap = new Dict();
 
     public BasicExecutor() {
         // read the user properties

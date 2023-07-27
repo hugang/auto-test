@@ -1,6 +1,7 @@
 package io.hugang.execute;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Dict;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.log.Log;
@@ -16,7 +17,6 @@ import org.openqa.selenium.WebElement;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -146,7 +146,7 @@ public class CommandExecuteUtil {
      * @param key   key
      * @param value value
      */
-    public static void setVariable(String key, String value) {
+    public static void setVariable(String key, Object value) {
         BasicExecutor.variablesMap.put(key, value);
     }
 
@@ -156,11 +156,15 @@ public class CommandExecuteUtil {
      * @param key key
      * @return variable
      */
-    public static String getVariable(String key) {
+    public static Object getVariable(String key) {
         return BasicExecutor.variablesMap.get(key);
     }
 
-    public static Map<String, String> getVariables() {
+    public static String getVariableStr(String key) {
+        return BasicExecutor.variablesMap.getStr(key);
+    }
+
+    public static Dict getVariables() {
         return BasicExecutor.variablesMap;
     }
 

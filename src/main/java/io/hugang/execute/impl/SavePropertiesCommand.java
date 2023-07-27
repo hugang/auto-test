@@ -1,6 +1,7 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
 import io.hugang.bean.Command;
@@ -8,8 +9,6 @@ import io.hugang.execute.CommandExecuteUtil;
 
 import java.io.File;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * save properties command executor
@@ -30,11 +29,12 @@ public class SavePropertiesCommand extends Command {
     @Override
     public boolean execute() {
 
-        Map<String, String> map = new HashMap<>();
+        Dict map;
 
         if (ObjectUtil.isEmpty(this.getValue())) {
             map = CommandExecuteUtil.getVariables();
         } else {
+            map = Dict.create();
             for (String key : this.getValue().split(",")) {
                 if (CommandExecuteUtil.hasVariable(key)) {
                     map.put(key, CommandExecuteUtil.getVariable(key));
