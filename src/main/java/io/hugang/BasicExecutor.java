@@ -31,8 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.codeborne.selenide.Selenide.sleep;
-
 /**
  * main executor class
  *
@@ -249,7 +247,6 @@ public class BasicExecutor {
             }
             CommandExecuteUtil.setVariable("caseId", commands.getCaseId());
             this.executeCommands(commands);
-            sleep(1000);
             // destroy the executor
             if (commands.isWebCommand()) {
                 this.destroy();
@@ -290,7 +287,6 @@ public class BasicExecutor {
                     return;
                 }
             }
-            log.info("execute commands success");
         } catch (Exception e) {
             log.error("execute commands failed", e);
             destroy();
