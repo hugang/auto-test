@@ -45,7 +45,6 @@ public class SetWindowSizeCommand extends Command {
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new CommandExecuteException(e);
         }
     }

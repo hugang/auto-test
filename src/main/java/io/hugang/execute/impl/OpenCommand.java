@@ -18,8 +18,7 @@ public class OpenCommand extends Command {
             open(render(this.getTarget()));
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new CommandExecuteException("OpenCommand execute failed");
+            throw new CommandExecuteException(e);
         }
     }
 }

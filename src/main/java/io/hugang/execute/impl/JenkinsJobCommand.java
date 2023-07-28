@@ -8,7 +8,6 @@ import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import io.hugang.bean.Command;
-import io.hugang.execute.CommandExecuteUtil;
 
 /**
  * jenkins job command executor
@@ -52,13 +51,9 @@ public class JenkinsJobCommand extends Command {
 
         if (!parameterObj.isEmpty()) {
             StringBuilder sb = new StringBuilder();
-            sb.append(jobUrl)
-                    .append("/buildWithParameters?");
+            sb.append(jobUrl).append("/buildWithParameters?");
             // append parameters in parameterObj
-            parameterObj.forEach((key, value) -> sb.append(key)
-                    .append("=")
-                    .append(value)
-                    .append("&"));
+            parameterObj.forEach((key, value) -> sb.append(key).append("=").append(value).append("&"));
             jobUrl = sb.substring(0, sb.toString().length() - 1);
         } else {
             jobUrl = jobUrl + "/build";

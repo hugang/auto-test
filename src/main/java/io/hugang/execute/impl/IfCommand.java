@@ -5,7 +5,6 @@ import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.bean.ICommand;
 import io.hugang.bean.IConditionCommand;
-import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.execute.JavaScriptEvaluator;
 
 import javax.script.ScriptException;
@@ -23,7 +22,7 @@ public class IfCommand extends Command implements IConditionCommand {
     @Override
     public boolean execute() throws CommandExecuteException {
         try {
-            if (inCondition()){
+            if (inCondition()) {
                 this.getSubCommands().forEach(ICommand::execute);
             }
             return true;
