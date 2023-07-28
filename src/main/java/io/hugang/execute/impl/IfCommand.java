@@ -42,7 +42,7 @@ public class IfCommand extends Command implements IConditionCommand {
 
     @Override
     public boolean inCondition() throws ScriptException {
-        String render = CommandExecuteUtil.render(this.getTarget());
+        String render = render(this.getTarget());
         return (boolean) JavaScriptEvaluator.evaluate(render, BasicExecutor.variablesMap);
     }
 

@@ -70,7 +70,7 @@ public class CommandExecuteUtil {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error("sleep error", e);
             }
             spendTime += 1000;
             return getElement(target);

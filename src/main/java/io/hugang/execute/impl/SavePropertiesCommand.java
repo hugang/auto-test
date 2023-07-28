@@ -42,7 +42,7 @@ public class SavePropertiesCommand extends Command {
             }
         }
 
-        String saveFilePath = CommandExecuteUtil.getFilePath(CommandExecuteUtil.render(this.getTarget()),true);
+        String saveFilePath = CommandExecuteUtil.getFilePath(render(this.getTarget()), true);
         File file = FileUtil.writeString(JSONUtil.toJsonPrettyStr(map), saveFilePath, Charset.defaultCharset());
         return file.exists();
     }

@@ -1,7 +1,7 @@
 package io.hugang;
 
 /**
- * entry point
+ * entry point to run the program.
  * <p>
  * This class is the entry point of the program.
  *

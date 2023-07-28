@@ -11,6 +11,7 @@ import cn.hutool.log.LogFactory;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
+import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.*;
 import io.hugang.execute.impl.*;
@@ -72,7 +73,7 @@ public class CommandParserUtil {
                 commandList.add(CommandParserUtil.getCommand(csvRecord));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CommandExecuteException("read csv file error");
         }
         parseCommandToSubCommand(commandList, commands);
         commandsList.add(commands);

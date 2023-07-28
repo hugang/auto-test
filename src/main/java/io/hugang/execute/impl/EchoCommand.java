@@ -3,7 +3,6 @@ package io.hugang.execute.impl;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import io.hugang.bean.Command;
-import io.hugang.execute.CommandExecuteUtil;
 
 public class EchoCommand extends Command {
     private static final Log log = LogFactory.get();
@@ -14,7 +13,7 @@ public class EchoCommand extends Command {
 
     @Override
     public boolean execute() {
-        log.info(CommandExecuteUtil.render(this.getValue()));
+        log.info(render(this.getValue()));
         return true;
     }
 }

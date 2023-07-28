@@ -56,10 +56,10 @@ public class WaitForTextCommand extends Command {
     /**
      * exist value
      *
-     * @param value   value
+     * @param value value
      * @return exist or not
      */
     private boolean existValue(String value) {
-        return null != value && value.contains(CommandExecuteUtil.render(this.getValue()));
+        return null != value && value.contains(render(this.getValue()));
     }
 }

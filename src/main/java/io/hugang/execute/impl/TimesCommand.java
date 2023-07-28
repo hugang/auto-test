@@ -3,7 +3,6 @@ package io.hugang.execute.impl;
 import io.hugang.bean.Command;
 import io.hugang.bean.ICommand;
 import io.hugang.bean.IConditionCommand;
-import io.hugang.execute.CommandExecuteUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,7 @@ public class TimesCommand extends Command implements IConditionCommand {
     @Override
     public boolean inCondition() {
         if (times < 0) {
-            this.times = Integer.parseInt(CommandExecuteUtil.render(this.getTarget()));
+            this.times = Integer.parseInt(render(this.getTarget()));
         }
         return times > 0;
     }

@@ -5,7 +5,6 @@ import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.bean.ICommand;
 import io.hugang.bean.IConditionCommand;
-import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.execute.JavaScriptEvaluator;
 
 import javax.script.ScriptException;
@@ -35,7 +34,7 @@ public class WhileCommand extends Command implements IConditionCommand {
 
     @Override
     public boolean inCondition() throws ScriptException {
-        String render = CommandExecuteUtil.render(this.getTarget());
+        String render = render(this.getTarget());
         return (boolean) JavaScriptEvaluator.evaluate(render, BasicExecutor.variablesMap);
     }
 
@@ -54,8 +53,6 @@ public class WhileCommand extends Command implements IConditionCommand {
 
     @Override
     public String toString() {
-        return "WhileCommand{" +
-                "subCommands=" + subCommands +
-                '}';
+        return "WhileCommand{" + "subCommands=" + subCommands + '}';
     }
 }

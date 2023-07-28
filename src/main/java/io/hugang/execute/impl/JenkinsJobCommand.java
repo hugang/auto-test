@@ -43,7 +43,7 @@ public class JenkinsJobCommand extends Command {
     @Override
     public boolean execute() {
         String jobUrl = this.getTarget();
-        String parameters = CommandExecuteUtil.render(this.getValue());
+        String parameters = render(this.getValue());
         JSONObject parametersJson = JSONUtil.parseObj(parameters);
 
         String userName = (String) parametersJson.get("userName");

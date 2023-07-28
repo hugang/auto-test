@@ -13,7 +13,7 @@ public class TypeCommand extends Command {
 
     @Override
     public boolean execute() {
-        CommandExecuteUtil.getElement(this.getTarget()).setValue(CommandExecuteUtil.render(this.getValue()).replace("\\n", Keys.chord(Keys.SHIFT, Keys.ENTER)));
+        CommandExecuteUtil.getElement(this.getTarget()).setValue(render(this.getValue()).replace("\\n", Keys.chord(Keys.SHIFT, Keys.ENTER)));
         return true;
     }
 }

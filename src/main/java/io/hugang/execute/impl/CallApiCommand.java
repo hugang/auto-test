@@ -25,14 +25,14 @@ public class CallApiCommand extends Command {
             return true;
         }
         // get url from target
-        String url = CommandExecuteUtil.render(getTarget());
+        String url = render(getTarget());
         // get other options from value
-        String options = CommandExecuteUtil.render(getValue());
+        String options = render(getValue());
         JSONObject obj;
         if (options.contains(".json")) {
             options = CommandExecuteUtil.getFilePath(options);
             // get json string from file
-            options = CommandExecuteUtil.render(FileUtil.readString(options, Charset.defaultCharset()));
+            options = render(FileUtil.readString(options, Charset.defaultCharset()));
         }
         // parse options to json
         obj = JSONUtil.parseObj(options);

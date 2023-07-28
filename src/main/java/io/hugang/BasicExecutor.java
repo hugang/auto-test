@@ -51,7 +51,7 @@ public class BasicExecutor {
     }
 
     /**
-     * initialize
+     * initialize web driver
      */
     public void init() {
         // create a web driver by webDriver
@@ -292,6 +292,4 @@ public class BasicExecutor {
             destroy();
         }
     }
-
-
 }

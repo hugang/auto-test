@@ -1,6 +1,7 @@
 package io.hugang.bean;
 
 import io.hugang.CommandExecuteException;
+import io.hugang.execute.CommandExecuteUtil;
 
 public abstract class Command implements ICommand {
     public Command() {
@@ -50,6 +51,10 @@ public abstract class Command implements ICommand {
 
     public String getDescription() {
         return description;
+    }
+
+    public String render(String value) {
+        return CommandExecuteUtil.render(value);
     }
 
     @Override

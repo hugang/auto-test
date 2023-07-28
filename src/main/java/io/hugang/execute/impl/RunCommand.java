@@ -4,7 +4,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import io.hugang.bean.Command;
-import io.hugang.execute.CommandExecuteUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class RunCommand extends Command {
             Runtime runtime = Runtime.getRuntime();
             Process process;
 
-            String value = CommandExecuteUtil.render(this.getValue());
+            String value = render(this.getValue());
             switch (this.getTarget()) {
                 case TYPE_CMD:
                 case TYPE_BAT:

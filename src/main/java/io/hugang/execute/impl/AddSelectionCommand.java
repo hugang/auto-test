@@ -16,7 +16,7 @@ public class AddSelectionCommand extends Command {
     @Override
     public boolean execute() throws CommandExecuteException {
         try {
-            CommandExecuteUtil.getElement(this.getTarget()).findElement(By.xpath("//option[. = '" + CommandExecuteUtil.render(this.getValue()) + "']")).click();
+            CommandExecuteUtil.getElement(this.getTarget()).findElement(By.xpath("//option[. = '" + render(this.getValue()) + "']")).click();
         } catch (Exception e) {
             throw new CommandExecuteException(e);
         }
