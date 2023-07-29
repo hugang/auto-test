@@ -281,10 +281,12 @@ public class BasicExecutor {
             for (ICommand command : commands.getCommands()) {
                 // execute the command
                 log.debug("execute command: " + command);
-                result = command.execute();
-                if (!result) {
-                    log.error("execute command failed");
-                    return;
+                if (!command.isSkip()) {
+                    result = command.execute();
+                    if (!result) {
+                        log.error("execute command failed, command={}", command);
+                        return;
+                    }
                 }
             }
         } catch (Exception e) {

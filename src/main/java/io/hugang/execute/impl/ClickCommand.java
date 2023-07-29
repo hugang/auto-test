@@ -1,6 +1,5 @@
 package io.hugang.execute.impl;
 
-import cn.hutool.core.util.StrUtil;
 import com.codeborne.selenide.SelenideElement;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
@@ -15,10 +14,7 @@ public class ClickCommand extends Command {
 
     @Override
     public boolean execute() {
-        if (StrUtil.isEmpty(this.getValue())) {
-            return false;
-        }
-        execute(CommandExecuteUtil.getElement(this.getTarget()));
+        execute(CommandExecuteUtil.getElement(getTarget()));
         return true;
     }
 

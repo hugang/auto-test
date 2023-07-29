@@ -7,6 +7,9 @@ import io.hugang.execute.CommandExecuteUtil;
 
 @WebCommand
 public class AssertCheckedCommand extends Command {
+
+    public static final String KEY_TARGET = "target";
+
     public AssertCheckedCommand(String command, String target, String value) {
         super(command, target, value);
     }
@@ -14,7 +17,8 @@ public class AssertCheckedCommand extends Command {
     @Override
     public boolean execute() {
         try {
-            return CommandExecuteUtil.getElement(this.getTarget()).isSelected();
+            String target = getTarget();
+            return CommandExecuteUtil.getElement(target).isSelected();
         } catch (Exception e) {
             throw new CommandExecuteException(e);
         }

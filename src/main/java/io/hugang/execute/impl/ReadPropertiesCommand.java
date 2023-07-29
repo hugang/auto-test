@@ -14,6 +14,11 @@ import io.hugang.execute.CommandExecuteUtil;
  * @author hugang
  */
 public class ReadPropertiesCommand extends Command {
+
+    public static final String KEY_TYPE = "type";
+    public static final String KEY_FILE = "file";
+    public static final String VALUE_TYPE_JSON = "json";
+
     public ReadPropertiesCommand(String command, String target, String value) {
         super(command, target, value);
     }
@@ -25,11 +30,13 @@ public class ReadPropertiesCommand extends Command {
      */
     @Override
     public boolean execute() {
+        String type = this.getDictStr(KEY_TYPE, this.getTarget());
+        String file = this.getDictStr(KEY_FILE);
 
-        if ("json".equals(this.getTarget())) {
-            String filePath = CommandExecuteUtil.getFilePath(this.getValue());
+        if (VALUE_TYPE_JSON.equals(type)) {
+            String filePath = CommandExecuteUtil.getFilePath(file);
             JSONObject json = (JSONObject) JSONUtil.readJSON(FileUtil.file(filePath), CharsetUtil.CHARSET_UTF_8);
-            json.forEach((key, value) -> CommandExecuteUtil.setVariable(key, value.toString()));
+            json.forEach(CommandExecuteUtil::setVariable);
         }
 
         return true;

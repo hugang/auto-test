@@ -1,28 +1,30 @@
 package io.hugang.bean;
 
+import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import io.hugang.CommandExecuteException;
 import io.hugang.execute.CommandExecuteUtil;
 
 public abstract class Command implements ICommand {
+
+    public static final String TARGET = "target";
+
     public Command() {
     }
 
     public Command(String command, String target) {
         this.command = command;
         this.target = target;
+        generateDict();
     }
 
     public Command(String command, String target, String value) {
         this.command = command;
         this.target = target;
         this.value = value;
-    }
-
-    public Command(String command, String description, String target, String value) {
-        this.command = command;
-        this.description = description;
-        this.target = target;
-        this.value = value;
+        generateDict();
     }
 
     // execute command
@@ -30,8 +32,8 @@ public abstract class Command implements ICommand {
 
     // command
     private String command;
-    // description
-    private String description;
+    // dict to store variables
+    private Dict dict = new Dict();
     // target
     private String target;
     // value
@@ -42,26 +44,64 @@ public abstract class Command implements ICommand {
     }
 
     public String getTarget() {
-        return target;
+        return this.getDictStr(TARGET, this.target);
     }
 
     public String getValue() {
         return value;
     }
 
-    public String getDescription() {
-        return description;
+    public Dict getDict() {
+        return dict;
+    }
+
+    public Object getDict(String key) {
+        return dict.get(key);
+    }
+
+    public String getDictStr(String key) {
+        return dict.getStr(key);
+    }
+
+    public String getDictStr(String key, String defaultValue) {
+        String value = dict.getStr(key);
+        return StrUtil.isEmptyIfStr(value) ? defaultValue : value;
+    }
+
+    public void appendDict(Dict dict) {
+        this.dict.putAll(dict);
+    }
+
+    public void appendDict(String key, Object value) {
+        this.dict.put(key, value);
     }
 
     public String render(String value) {
         return CommandExecuteUtil.render(value);
     }
 
+    public void generateDict() {
+        try {
+            JSONObject targetObj = (JSONObject) JSONUtil.parse(this.getTarget());
+            targetObj.forEach((key, value) -> this.appendDict(key, value));
+
+            JSONObject valueObj = (JSONObject) JSONUtil.parse(this.getValue());
+            valueObj.forEach((key, value) -> this.appendDict(key, value));
+        } catch (Exception e) {
+            // do nothing if not json
+        }
+    }
+
+    @Override
+    public boolean isSkip() {
+        if (this.getDict().containsKey("skip") && this.getDict().getBool("skip")) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
-        return "Command: " + this.getCommand() + "\t" +
-                "Description: " + this.getDescription() + "\t" +
-                "Target: " + this.getTarget() + "\t" +
-                "Value: " + this.getValue() + "\t";
+        return "Command: " + this.getCommand() + "\t" + "options: " + this.getDict() + "\t" + "Target: " + this.getTarget() + "\t" + "Value: " + this.getValue() + "\t";
     }
 }

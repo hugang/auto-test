@@ -15,8 +15,9 @@ public class ClickAtCommand extends Command {
 
     @Override
     public boolean execute() {
-        SelenideElement $ = CommandExecuteUtil.getElement(this.getTarget());
-        String[] offSets = this.getValue().split(",");
+        SelenideElement $ = CommandExecuteUtil.getElement(getTarget());
+        String value = this.getDictStr("offSet", getValue());
+        String[] offSets = value.split(",");
         if (ObjectUtil.isNotEmpty(offSets) && offSets.length == 2) {
             int x = Integer.parseInt(offSets[0]);
             int y = Integer.parseInt(offSets[1]);

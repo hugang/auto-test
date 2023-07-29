@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class SetPropertyCommand extends Command {
     private static final Log log = LogFactory.get();
+    public static final String KEY_TYPE = "type";
+    public static final String VALUE_TYPE_JSON = "json";
 
     public SetPropertyCommand(String command, String target, String value) {
         super(command, target, value);
@@ -17,7 +19,8 @@ public class SetPropertyCommand extends Command {
 
     @Override
     public boolean execute() {
-        if ("json".equals(this.getTarget())) {
+        String type = this.getDictStr(KEY_TYPE, this.getTarget());
+        if (VALUE_TYPE_JSON.equals(type)) {
             for (Map.Entry<String, Object> propertiesMap : JSONUtil.parseObj(this.getValue())) {
                 CommandExecuteUtil.setVariable(propertiesMap.getKey(), propertiesMap.getValue().toString());
             }

@@ -8,6 +8,9 @@ import static com.codeborne.selenide.Selenide.open;
 
 @WebCommand
 public class OpenCommand extends Command {
+
+    public static final String KEY_URL = "url";
+
     public OpenCommand(String command, String target, String value) {
         super(command, target, value);
     }
@@ -15,7 +18,11 @@ public class OpenCommand extends Command {
     @Override
     public boolean execute() {
         try {
-            open(render(this.getTarget()));
+            String url = this.getDictStr(KEY_URL);
+            if (url == null) {
+                url = this.getTarget();
+            }
+            open(render(url));
             return true;
         } catch (Exception e) {
             throw new CommandExecuteException(e);

@@ -30,9 +30,6 @@ public class JenkinsJobCommand extends Command {
         super(command, target, value);
     }
 
-    public JenkinsJobCommand(String command, String description, String target, String value) {
-        super(command, description, target, value);
-    }
 
     /**
      * execute jenkins job command

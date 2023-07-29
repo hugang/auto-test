@@ -12,12 +12,18 @@ import io.hugang.execute.CommandExecuteUtil;
  * @author hugang
  */
 public class AssertCommand extends Command {
+
+    public static final String KEY = "key";
+    public static final String VALUE = "value";
+
     public AssertCommand(String command, String target, String value) {
         super(command, target, value);
     }
 
     @Override
     public boolean execute() {
-        return CommandExecuteUtil.getVariable(this.getTarget()).equals(this.getValue());
+        String key = this.getTarget();
+        String value = this.getDictStr(VALUE, this.getValue());
+        return CommandExecuteUtil.getVariable(key).equals(value);
     }
 }
