@@ -38,13 +38,11 @@ public class JenkinsJobCommand extends Command {
      */
     @Override
     public boolean execute() {
-        String jobUrl = this.getTarget();
-        String parameters = render(this.getValue());
-        JSONObject parametersJson = JSONUtil.parseObj(parameters);
-
-        String userName = (String) parametersJson.get("userName");
-        String token = (String) parametersJson.get("token");
-        JSONObject parameterObj = (JSONObject) parametersJson.get("parameters");
+        String jobUrl = this.getDictStr("url");
+        Object parameters = this.getDict("parameters");
+        String userName =this.getDictStr("userName");
+        String token =this.render(this.getDictStr("token"));
+        JSONObject parameterObj = JSONUtil.parseObj(parameters);
 
         if (!parameterObj.isEmpty()) {
             StringBuilder sb = new StringBuilder();
@@ -86,7 +84,7 @@ public class JenkinsJobCommand extends Command {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);
         }
         return 0;
     }
@@ -119,7 +117,7 @@ public class JenkinsJobCommand extends Command {
                 // wait for 1 second
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error(e);
             }
         } while (true);
     }
@@ -152,7 +150,7 @@ public class JenkinsJobCommand extends Command {
                 // wait for 1 second
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error(e);
             }
         } while (true);
     }

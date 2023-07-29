@@ -29,16 +29,28 @@ public class IncreaseNumberCommand extends Command {
             return false;
         }
         String result;
-        int i = NumberUtil.parseInt(variable);
-        String[] split = this.getValue().split(",");
-        int unit = NumberUtil.parseInt(split[0]);
-        if (split.length > 1) {
-            int length = NumberUtil.parseInt(split[1]);
-            String padStr = split.length > 2 ? split[2] : "0";
-            result = StrUtil.padPre(StrUtil.toString(i + unit), length, padStr);
-        } else {
-            result = StrUtil.toString(i + unit);
+        int originNumber = NumberUtil.parseInt(variable);
+        String step = this.getDictStr("step");
+        String padSize = this.getDictStr("padSize");
+        String padStr = this.getDictStr("padStr", "0");
+
+        if (StrUtil.isEmpty(step)){
+            String[] split = this.getValue().split(",");
+            step = split[0];
+            if (split.length > 1) {
+                padSize = split[1];
+            }
+            if (split.length > 2) {
+                padStr = split[2];
+            }
         }
+
+        if (StrUtil.isNotEmpty(padSize)){
+            result = StrUtil.padPre(StrUtil.toString(originNumber + NumberUtil.parseInt(step)), NumberUtil.parseInt(padSize), padStr);
+        } else {
+            result = StrUtil.toString(originNumber + NumberUtil.parseInt(step));
+        }
+
         // write back to variable map
         CommandExecuteUtil.setVariable(this.getTarget(), result);
         return true;

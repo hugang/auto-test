@@ -6,6 +6,6 @@ import org.junit.Test;
 public class EchoTest {
     @Test
     public void testEchoXlsx() {
-        Utils.execute("xlsx", "echo.xlsx");
+        Utils.execute("xlsx", "echo/echo.xlsx");
     }
 }

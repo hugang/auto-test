@@ -31,7 +31,7 @@ public class ReadPropertiesCommand extends Command {
     @Override
     public boolean execute() {
         String type = this.getDictStr(KEY_TYPE, this.getTarget());
-        String file = this.getDictStr(KEY_FILE);
+        String file = this.getDictStr(KEY_FILE, this.getValue());
 
         if (VALUE_TYPE_JSON.equals(type)) {
             String filePath = CommandExecuteUtil.getFilePath(file);

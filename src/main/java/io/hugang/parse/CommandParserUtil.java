@@ -262,6 +262,8 @@ public class CommandParserUtil {
                 return new StoreXpathCountCommand(commandName, command.getTarget(), command.getValue());
             case "callApi":
                 return new CallApiCommand(commandName, command.getTarget(), command.getValue());
+            case "jenkinsJob":
+                return new JenkinsJobCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }
