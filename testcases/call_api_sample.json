@@ -5,6 +5,10 @@
   },
   "body": {},
   "params": "age=aaa&name=bbb",
+  "proxy": {
+    "host": "localhost",
+    "port": 8888
+  },
   "tests": {
   },
   "store": [

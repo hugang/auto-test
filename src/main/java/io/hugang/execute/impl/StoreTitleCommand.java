@@ -14,7 +14,7 @@ public class StoreTitleCommand extends Command {
 
     @Override
     public boolean execute() {
-        CommandExecuteUtil.setVariable(this.getValue(), WebDriverRunner.getWebDriver().getTitle());
+        CommandExecuteUtil.setVariable(this.getDictStr("value", this.getValue()), WebDriverRunner.getWebDriver().getTitle());
         return true;
     }
 }

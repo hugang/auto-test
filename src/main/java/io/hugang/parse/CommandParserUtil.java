@@ -204,8 +204,6 @@ public class CommandParserUtil {
                 return new IncreaseNumberCommand(commandName, command.getTarget(), command.getValue());
             case "setWindowSize":
                 return new SetWindowSizeCommand(commandName, command.getTarget(), command.getValue());
-            case "setElementToProperty":
-                return new SetElementToPropertyCommand(commandName, command.getTarget(), command.getValue());
             case "waitForText":
                 return new WaitForTextCommand(commandName, command.getTarget(), command.getValue());
             case "sendKeys":

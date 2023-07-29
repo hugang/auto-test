@@ -11,7 +11,9 @@ public class StoreJsonCommand extends Command {
 
     @Override
     public boolean execute() {
-        CommandExecuteUtil.setVariable(this.getValue(), this.getTarget());
+        String target = this.getTarget();
+        String value = this.getDictStr("value", this.getValue());
+        CommandExecuteUtil.setVariable(value, target);
         return true;
     }
 }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"
+            integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
+</head>
+<body>
+<p>如果您双击了按钮，则会显示一个警告框。</p>
+<button id="btn1">button</button>
+<script>
+  $(document).ready(function () {
+    $("#btn1").click(function () {
+      // 打开新窗口
+        window.open("./index.html", "_blank", "width=500,height=500");
+    });
+  });
+</script>
+
+</body>
+</html>

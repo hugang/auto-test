@@ -14,11 +14,12 @@ public class StoreAttributeCommand extends Command {
 
     @Override
     public boolean execute() {
-        int lastIndexOf = this.getTarget().lastIndexOf("@");
-        String target = this.getTarget().substring(0, lastIndexOf);
-        String attribute = this.getTarget().substring(lastIndexOf + 1);
+        String targetStr = this.getTarget();
+        int lastIndexOf = targetStr.lastIndexOf("@");
+        String target = targetStr.substring(0, lastIndexOf);
+        String attribute = targetStr.substring(lastIndexOf + 1);
         SelenideElement $ = CommandExecuteUtil.getElement(target);
-        CommandExecuteUtil.setVariable(this.getValue(), $.getAttribute(attribute));
+        CommandExecuteUtil.setVariable(this.getDictStr("value", this.getValue()), $.getAttribute(attribute));
         return true;
     }
 }
