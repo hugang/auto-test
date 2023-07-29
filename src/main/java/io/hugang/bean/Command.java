@@ -82,11 +82,14 @@ public abstract class Command implements ICommand {
 
     public void generateDict() {
         try {
-            JSONObject targetObj = (JSONObject) JSONUtil.parse(this.getTarget());
-            targetObj.forEach((key, value) -> this.appendDict(key, value));
-
-            JSONObject valueObj = (JSONObject) JSONUtil.parse(this.getValue());
-            valueObj.forEach((key, value) -> this.appendDict(key, value));
+            if (this.target != null) {
+                JSONObject targetObj = (JSONObject) JSONUtil.parse(this.target);
+                targetObj.forEach((key, value) -> this.appendDict(key, value));
+            }
+            if (this.value != null) {
+                JSONObject valueObj = (JSONObject) JSONUtil.parse(this.value);
+                valueObj.forEach((key, value) -> this.appendDict(key, value));
+            }
         } catch (Exception e) {
             // do nothing if not json
         }

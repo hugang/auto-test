@@ -17,18 +17,19 @@ public class RunScriptCommand extends Command {
     @Override
     public boolean execute() {
         try {
+            String value = this.getDictStr("value", this.getValue());
             JavascriptExecutor driver = (JavascriptExecutor) WebDriverRunner.getWebDriver();
             if (this.getTarget() == null) {
-                driver.executeScript(this.getValue());
-            }else{
+                driver.executeScript(value);
+            } else {
                 SelenideElement $ = CommandExecuteUtil.getElement(this.getTarget());
-                driver.executeScript(this.getValue(), $);
+                driver.executeScript(value, $);
             }
             // org.openqa.selenium.UnhandledAlertException: unexpected alert open
-            try{
+            try {
                 Alert alert = WebDriverRunner.getWebDriver().switchTo().alert();
                 alert.accept();
-            }catch (NoAlertPresentException e){
+            } catch (NoAlertPresentException e) {
                 // do nothing when no alert
             }
             return true;

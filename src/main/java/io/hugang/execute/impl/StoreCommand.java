@@ -11,7 +11,8 @@ public class StoreCommand extends Command {
 
     @Override
     public boolean execute() {
-        CommandExecuteUtil.setVariable(this.getValue(), this.getTarget());
+        String value = this.getDictStr("value", this.getValue());
+        CommandExecuteUtil.setVariable(this.render(value), this.render(this.getTarget()));
         return true;
     }
 }

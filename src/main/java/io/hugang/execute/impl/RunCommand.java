@@ -1,8 +1,11 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
+import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 
 import java.io.BufferedReader;
@@ -40,9 +43,15 @@ public class RunCommand extends Command {
             Runtime runtime = Runtime.getRuntime();
             Process process;
 
-            String value = render(this.getValue());
-            switch (this.getTarget()) {
+            String value = render(this.getDictStr("value"));
+            String type = render(this.getDictStr("type"));
+            if (StrUtil.isEmpty(type) || StrUtil.isEmpty(value)) {
+                throw new CommandExecuteException("type or value is empty");
+            }
+            switch (type) {
                 case TYPE_CMD:
+                    process = runtime.exec("cmd /C " + value);
+                    break;
                 case TYPE_BAT:
                     process = runtime.exec(value);
                     break;
@@ -55,8 +64,8 @@ public class RunCommand extends Command {
             }
 
             if (process != null) {
-                // get the input stream of the process
-                BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                // get the input stream of the process TODO: 打印console时乱码
+                BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream(), CharsetUtil.systemCharset()));
                 // read the output line by line
                 String line;
                 while ((line = input.readLine()) != null) {

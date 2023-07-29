@@ -7,6 +7,7 @@ import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.bean.Commands;
 import io.hugang.bean.ICommand;
+import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.parse.CommandParserUtil;
 
 import java.util.ArrayList;
@@ -20,16 +21,16 @@ public class RunCaseCommand extends Command {
     @Override
     public boolean execute() throws CommandExecuteException {
         List<Commands> commandsFromXlsx;
-        String[] split = this.getTarget().split(",");
-        String type = split[0];
-        String path = split[1];
+        String path = CommandExecuteUtil.getFilePath(this.getTarget());
+        String type = this.getDictStr("type", "xlsx");
+        String testCase = this.getDictStr("testCase", null);
         switch (type) {
             case "xlsx":
                 commandsFromXlsx = CommandParserUtil.getCommandsFromXlsx(path);
                 List<String> testCasesArray = new ArrayList<>();
                 List<Commands> executeCommands = new ArrayList<>();
-                if (StrUtil.isNotEmpty(this.getValue())) {
-                    String[] testCaseArray = this.getValue().split(",");
+                if (StrUtil.isNotEmpty(testCase)) {
+                    String[] testCaseArray = testCase.split(",");
                     BasicExecutor.getTestCases(testCasesArray, testCaseArray);
                 }
                 if (CollUtil.isNotEmpty(testCasesArray)) {
