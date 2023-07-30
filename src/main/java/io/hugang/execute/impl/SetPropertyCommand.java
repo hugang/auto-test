@@ -21,8 +21,8 @@ public class SetPropertyCommand extends Command {
     public boolean execute() {
         String type = this.getDictStr(KEY_TYPE, this.getTarget());
         if (VALUE_TYPE_JSON.equals(type)) {
-            for (Map.Entry<String, Object> propertiesMap : JSONUtil.parseObj(this.getValue())) {
-                CommandExecuteUtil.setVariable(propertiesMap.getKey(), propertiesMap.getValue().toString());
+            for (Map.Entry<String, Object> propertiesMap : JSONUtil.parseObj(CommandExecuteUtil.render(this.getDictStr("value", this.getValue())))) {
+                CommandExecuteUtil.setVariable(propertiesMap.getKey(), propertiesMap.getValue());
             }
         } else {
             log.error("unknown command target: {}", this.getTarget());
