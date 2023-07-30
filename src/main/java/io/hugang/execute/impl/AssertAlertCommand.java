@@ -8,8 +8,6 @@ import io.hugang.bean.Command;
 @WebCommand
 public class AssertAlertCommand extends Command {
 
-    public static final String VALUE = "value";
-
     public AssertAlertCommand(String command, String target, String value) {
         super(command, target, value);
     }
@@ -18,7 +16,7 @@ public class AssertAlertCommand extends Command {
     public boolean execute() throws CommandExecuteException {
         try {
             String text = WebDriverRunner.getWebDriver().switchTo().alert().getText();
-            return text.equals(getDictStr(VALUE, this.getValue()));
+            return text.equals(this.getTarget());
         } catch (Exception e) {
             throw new CommandExecuteException(e);
         }

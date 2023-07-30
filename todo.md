@@ -2,44 +2,44 @@
 
 reference: https://www.selenium.dev/selenium-ide/docs/en/api/commands
 
-## add selection [x]
+## add selection [〇]
 
 Add a selection to the set of options in a multi-select element.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
     - value: The value to input.
 
-## answer on next prompt
+## answer on next prompt [〇]
 
 Affects the next alert prompt. This command will send the specified answer string to it. If the alert is already
 present, then use "webdriver answer on visible prompt" instead.
 
 - arguments
-    - answer: The answer to give in response to the prompt pop-up.
+    - answer(target): The answer to give in response to the prompt pop-up.
 
-## assert [x]
+## assert [〇]
 
 Check that a variable is an expected value. The variable's value will be converted to a string for comparison. The test
 will stop if the assert fails.
 
 - arguments
-    - variable name: The name of a variable without brackets.
-    - expected value: The result you expect a variable to contain (e.g., true, false, or some other value).
+    - variable name(target): The name of a variable without brackets.
+    - expected value(value): The result you expect a variable to contain (e.g., true, false, or some other value).
 
-## assert alert [x]
+## assert alert [〇]
 
 Confirm that an alert has been rendered with the provided text. The test will stop if the assert fails.
 
 - arguments
-    - alert text: text to check
+    - alert text(target): text to check
 
-## assert checked [x]
+## assert checked [〇]
 
 Confirm that the target element has been checked. The test will stop if the assert fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
 ## assert confirmation
 
@@ -55,19 +55,19 @@ Confirm that the target element is editable. The test will stop if the assert fa
 - arguments
     - locator: An element locator.
 
-## assert element present [x]
+## assert element present [〇]
 
 Confirm that the target element is present somewhere on the page. The test will stop if the assert fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
-## assert element not present [x]
+## assert element not present [〇]
 
 Confirm that the target element is not present anywhere on the page. The test will stop if the assert fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
 ## assert not checked [x]
 
@@ -93,7 +93,7 @@ test will stop if the assert fails.
     - text: An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
-- ## assert not text
+## assert not text
   Confirm that the text of an element does not contain the provided value. The test will stop if the assert fails.
 - arguments
     - locator: An element locator.

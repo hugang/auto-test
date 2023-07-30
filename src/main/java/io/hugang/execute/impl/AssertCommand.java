@@ -13,7 +13,6 @@ import io.hugang.execute.CommandExecuteUtil;
  */
 public class AssertCommand extends Command {
 
-    public static final String KEY = "key";
     public static final String VALUE = "value";
 
     public AssertCommand(String command, String target, String value) {
@@ -22,8 +21,8 @@ public class AssertCommand extends Command {
 
     @Override
     public boolean execute() {
-        String key = this.getTarget();
+        String target = this.getTarget();
         String value = this.getDictStr(VALUE, this.getValue());
-        return CommandExecuteUtil.getVariable(key).equals(value);
+        return CommandExecuteUtil.getVariable(target).equals(value);
     }
 }
