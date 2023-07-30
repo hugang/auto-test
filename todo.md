@@ -287,13 +287,13 @@ variable if you use the 'return' keyword.
     - script: The JavaScript snippet to run.
     - variable name: The name of a variable without brackets.
 
-## for each
+## for each [〇]
 
 Create a loop that executes the proceeding commands for each item in a given collection.
 
 - arguments
-    - array variable name: The name of a variable containing a JavaScript array.
-    - iterator variable name: The name of the variable used when iterating over a collection in a looping control flow
+    - array variable name(target): The name of a variable containing a JavaScript array.
+    - iterator variable name(value): The name of the variable used when iterating over a collection in a looping control flow
       command (e.g., for each).
 
 ## if [〇]
@@ -335,12 +335,12 @@ Simulates a user moving the mouse pointer away from the specified element.
 - arguments
     - locator: An element locator.
 
-## mouse over
+## mouse over [〇]
 
 Simulates a user hovering a mouse over the specified element.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
 ## mouse up
 
@@ -389,7 +389,7 @@ starts the do loop over. Otherwise, it ends the loop.
 - arguments
     - conditional expression: JavaScript expression that returns a boolean result for use in control flow commands.
 
-## run [x]
+## run [〇]
 
 ```
 # old
@@ -401,27 +401,38 @@ Runs a test case from the current project.
 Runs a windows bat file, or a shell script on OS X and Linux
 
 - arguments
-  - type: The type of script to run, either "bat" or "sh" or "cmd".
-  - value: The path to the file to be executed, or script.
+  - type(target): The type of script to run, either "bat" or "sh" or "cmd".
+  - value(value): The path to the file to be executed, or script.
 
-## run script [x]
+## run case [〇]
+
+Runs a test case from the current project.
+
+- arguments
+    - test case file(target): Test case path. 
+    - test cases(value): Test cases. default all cases.
+    - test case mode(type): Test case type. default xlsx.
+
+## run script [〇]
 
 Creates a new "script" tag in the body of the current test window, and adds the specified text into the body of the
 command. Beware that JS exceptions thrown in these script tags aren't managed by Selenium, so you should probably wrap
 your script in try/catch blocks if there is any chance that the script will throw an exception.
 
 - arguments
-    - script: The JavaScript snippet to run.
+    - target: The web element.
+    - script(value): The JavaScript snippet to run.
+imcompatible with selenium ide: add target and move script to value.
 
-## select [x]
+## select [〇]
 
 Select an element from a drop-down menu using an option locator. Option locators provide different ways of specifying a
 select element (e.g., label=, value=, id=, index=). If no option locator prefix is provided, a match on the label will
 be attempted.
 
 - arguments
-    - select locator: An element locator identifying a drop-down menu.
-    - option: An option locator, typically just an option label (e.g. "John Smith").
+    - select locator(target): An element locator identifying a drop-down menu.
+    - option(value): An option locator, typically just an option label (e.g. "John Smith").
 
 ## select frame [x]
 
@@ -773,6 +784,6 @@ true.
 
 ## save properties
 
-## run
+## call api
 
-## r
+## jenkins job

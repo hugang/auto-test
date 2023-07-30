@@ -24,7 +24,7 @@ public class SelectCommand extends Command {
      */
     @Override
     public boolean execute() {
-        CommandExecuteUtil.getElement(this.getTarget()).selectOption(render(this.getValue()));
+        CommandExecuteUtil.getElement(this.getTarget()).selectOption(render(this.getDictStr("value", this.getValue())));
         return true;
     }
 }

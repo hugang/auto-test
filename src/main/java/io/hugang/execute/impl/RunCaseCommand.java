@@ -23,7 +23,7 @@ public class RunCaseCommand extends Command {
         List<Commands> commandsFromXlsx;
         String path = CommandExecuteUtil.getFilePath(this.getTarget());
         String type = this.getDictStr("type", "xlsx");
-        String testCase = this.getDictStr("testCase", null);
+        String testCase = this.getDictStr("value", null);
         switch (type) {
             case "xlsx":
                 commandsFromXlsx = CommandParserUtil.getCommandsFromXlsx(path);
