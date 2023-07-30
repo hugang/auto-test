@@ -145,6 +145,10 @@ public class CommandParserUtil {
                     WhileCommand whileCommand = new WhileCommand(commandName, command.getTarget(), command.getValue());
                     commandStack.push(whileCommand);
                     break;
+                case "forEach":
+                    ForEachCommand forEachCommand = new ForEachCommand(commandName, command.getTarget(), command.getValue());
+                    commandStack.push(forEachCommand);
+                    break;
                 case "end":
                     ICommand subCommand = commandStack.pop();
                     if (!commandStack.empty()) {

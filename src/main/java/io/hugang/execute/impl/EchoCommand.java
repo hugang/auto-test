@@ -13,7 +13,7 @@ public class EchoCommand extends Command {
 
     @Override
     public boolean execute() {
-        log.info(render(this.getValue()));
+        log.info(render(this.getTarget()));
         return true;
     }
 }

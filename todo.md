@@ -235,12 +235,12 @@ Drags an element and drops it on another element.
   locator of drag destination object: The locator of an element whose location (e.g., the center-most pixel within it)
   will be the point where locator of object to be dragged is dropped.
 
-## echo [x]
+## echo [〇]
 
 Prints the specified message into the third table cell in your Selenese tables. Useful for debugging.
 
 - arguments
-    - message: The message to print.
+    - message(target): The message to print.
 
 ## edit content
 
@@ -296,12 +296,12 @@ Create a loop that executes the proceeding commands for each item in a given col
     - iterator variable name: The name of the variable used when iterating over a collection in a looping control flow
       command (e.g., for each).
 
-## if [x]
+## if [〇]
 
 Create a conditional branch in your test. Terminate the branch with the end command.
 
 - arguments
-  conditional expression: JavaScript expression that returns a boolean result for use in control flow commands.
+  conditional expression(target): JavaScript expression that returns a boolean result for use in control flow commands.
 
 ## mouse down
 
@@ -366,12 +366,12 @@ Opens a URL and waits for the page to load before proceeding. This accepts both 
 - arguments
     - url: The URL to open (maybe relative or absolute).
 
-## pause [x]
+## pause [〇]
 
 Wait for the specified amount of time.
 
 - arguments
-    - wait time: The amount of time to wait (in milliseconds).
+    - wait time(target): The amount of time to wait (in milliseconds).
 
 ## remove selection
 

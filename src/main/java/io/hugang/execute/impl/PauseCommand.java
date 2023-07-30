@@ -11,10 +11,10 @@ public class PauseCommand extends Command {
 
     @Override
     public boolean execute() {
-        if (ObjectUtil.isEmpty(this.getValue())) {
+        if (ObjectUtil.isEmpty(this.getTarget())) {
             return true;
         }
-        Selenide.sleep(Long.parseLong(this.getValue()));
+        Selenide.sleep(Long.parseLong(this.getTarget()));
         return true;
     }
 }
