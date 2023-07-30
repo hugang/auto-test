@@ -264,6 +264,8 @@ public class CommandParserUtil {
                 return new JenkinsJobCommand(commandName, command.getTarget(), command.getValue());
             case "answerOnNextPrompt":
                 return new AnswerOnNextPromptCommand(commandName, command.getTarget(), command.getValue());
+            case "check":
+                return new CheckCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }

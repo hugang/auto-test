@@ -69,12 +69,12 @@ Confirm that the target element is not present anywhere on the page. The test wi
 - arguments
     - locator(target): An element locator.
 
-## assert not checked [x]
+## assert not checked [〇]
 
 Confirm that the target element has not been checked. The test will stop if the assert fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
 ## assert not editable
 
@@ -155,12 +155,12 @@ assert fails.
     - text: An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
-## check
+## check [〇]
 
 Check a toggle-button (checkbox/radio).
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
 ## choose cancel on next confirmation
 
@@ -177,22 +177,22 @@ cancel on visible prompt" instead.
 Affects the next confirmation alert. This command will accept it. If the alert is already present, then use "webdriver
 choose ok on visible confirmation" instead.
 
-## click [x]
+## click [〇]
 
 Clicks on a target element (e.g., a link, button, checkbox, or radio button).
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
-## click at [x]
+## click at [〇]
 
 Clicks on a target element (e.g., a link, button, checkbox, or radio button). The coordinates are relative to the target
 element (e.g., 0,0 is the top left corner of the element) and are mostly used to check effects that relay on them, for
 example the material ripple effect.
 
 - arguments
-    - locator: An element locator.
-    - coord string: Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found from a
+    - locator(target): An element locator.
+    - coord string(value): Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found from a
       locator.
 
 ## close
@@ -208,22 +208,22 @@ Breaks the execution and enters debugger
 
 Create a loop that executes the proceeding commands at least once. Terminate the branch with the repeat if command.
 
-## double click [x]
+## double click [〇]
 
 Double-clicks on an element (e.g., a link, button, checkbox, or radio button).
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
-## double click at [x]
+## double click at [〇]
 
 Double-clicks on a target element (e.g., a link, button, checkbox, or radio button). The coordinates are relative to the
 target element (e.g., 0,0 is the top left corner of the element) and are mostly used to check effects that relay on
 them, for example the material ripple effect.
 
 - arguments
-    - locator: An element locator.
-    - coord string: Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found from a
+    - locator(target): An element locator.
+    - coord string(value): Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found from a
       locator.
 
 ## drag and drop to object
@@ -263,7 +263,7 @@ with the end command.
 - arguments
   conditional expression: JavaScript expression that returns a boolean result for use in control flow commands.
 
-## end [x]
+## end [〇]
 
 Terminates a control flow block for if, while, and times.
 
@@ -764,3 +764,15 @@ true.
     - loop limit: An optional argument that specifies the maximum number of times a looping control flow command can
       execute.
       This protects against infinite loops. The defaults value is set to 1000.
+
+
+
+## read properties
+
+## set property
+
+## save properties
+
+## run
+
+## r
