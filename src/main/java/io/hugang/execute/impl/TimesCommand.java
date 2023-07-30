@@ -30,6 +30,14 @@ public class TimesCommand extends Command implements IConditionCommand {
     public boolean inCondition() {
         if (times < 0) {
             this.times = Integer.parseInt(render(this.getTarget()));
+            // loop limit
+            String value = this.getDictStr("value", this.getValue());
+            if (value != null) {
+                int limit = Integer.parseInt(render(value));
+                if (times > limit) {
+                    times = limit;
+                }
+            }
         }
         return times > 0;
     }

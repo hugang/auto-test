@@ -13,7 +13,12 @@ public class EchoCommand extends Command {
 
     @Override
     public boolean execute() {
-        log.info(render(this.getTarget()));
+        String target = this.getTarget();
+        if (target == null) {
+            log.error("echo target is null");
+            return false;
+        }
+        log.info(render(target));
         return true;
     }
 }

@@ -267,25 +267,25 @@ with the end command.
 
 Terminates a control flow block for if, while, and times.
 
-## execute script [x]
+## execute script [〇]
 
 Executes a snippet of JavaScript in the context of the currently selected frame or window. The script fragment will be
 executed as the body of an anonymous function. To store the return value, use the 'return' keyword and provide a
 variable name in the value input field.
 
 - arguments
-    - script: The JavaScript snippet to run.
-    - variable name: The name of a variable without brackets.
+    - script(target): The JavaScript snippet to run.
+    - variable name(value): The name of a variable without brackets.
 
-## execute async script [x]
+## execute async script [〇]
 
 Executes an async snippet of JavaScript in the context of the currently selected frame or window. The script fragment
 will be executed as the body of an anonymous function and must return a Promise. The Promise result will be saved on the
 variable if you use the 'return' keyword.
 
 - arguments
-    - script: The JavaScript snippet to run.
-    - variable name: The name of a variable without brackets.
+    - script(target): The JavaScript snippet to run.
+    - variable name(value): The name of a variable without brackets.
 
 ## for each [〇]
 
@@ -359,12 +359,12 @@ specified location.
     - coord string: Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found from a
       locator.
 
-## open [x]
+## open [〇]
 
 Opens a URL and waits for the page to load before proceeding. This accepts both relative and absolute URLs.
 
 - arguments
-    - url: The URL to open (maybe relative or absolute).
+    - url(target): The URL to open (maybe relative or absolute).
 
 ## pause [〇]
 
@@ -452,7 +452,7 @@ window. Window locators use handles to select windows.
 - arguments
     - window handle: A handle representing a specific page (tab, or window).
 
-## send keys [x]
+## send keys [〇]
 
 Simulates keystroke events on the specified element, as though you typed the value key-by-key. This simulates a real
 user typing every character in the specified string; it is also bound by the limitations of a real user, like not being
@@ -461,8 +461,8 @@ boxes) that require explicit key events. Unlike the simple "type" command, which
 page directly, this command will not replace the existing content.
 
 - arguments
-    - locator: An element locator.
-    - key sequence: A sequence of keys to type, can be used to send key strokes (e.g. ${KEY_ENTER}).
+    - locator(target): An element locator.
+    - key sequence(value): A sequence of keys to type, can be used to send key strokes (e.g. ${KEY_ENTER}).
 
 ## set speed
 
@@ -544,32 +544,32 @@ Gets the number of nodes that match the specified xpath (e.g. "//table" would gi
     - xpath: The xpath expression to evaluate.
     - variable name: The name of a variable without brackets.
 
-## submit [x]
+## submit [〇]
 
 Submit the specified form. This is particularly useful for forms without submit buttons, e.g. single-input "Search"
 forms.
 
 - arguments
-    - form locator: An element locator for the form you want to submit.
+    - form locator(target): An element locator for the form you want to submit.
 
-## times [x]
+## times [〇]
 
 Create a loop that executes the proceeding commands n number of times.
 
 - arguments
-    - times: The number of attempts a times control flow loop will execute the commands within its block.
-    - loop limit: An optional argument that specifies the maximum number of times a looping control flow command can
+    - times(target): The number of attempts a times control flow loop will execute the commands within its block.
+    - loop limit(value): An optional argument that specifies the maximum number of times a looping control flow command can
       execute.
       This protects against infinite loops. The defaults value is set to 1000.
 
-## type [x]
+## type [〇]
 
 Sets the value of an input field, as though you typed it in. Can also be used to set the value of combo boxes, check
 boxes, etc. In these cases, value should be the value of the option selected, not the visible text. Chrome only: If a
 file path is given it will be uploaded to the input (for type=file), NOTE: XPath locators are not supported.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
     - value: The value to input.
 
 ## uncheck
@@ -765,7 +765,7 @@ yet then use "choose cancel on next prompt" instead.
 Affects a currently showing confirmation alert. This command instructs Selenium to accept it. If the alert has not
 appeared yet then use "choose ok on next confirmation" instead.
 
-## while
+## while [〇]
 
 Create a loop that executes the proceeding commands repeatedly for as long as the provided conditional expression is
 true.
@@ -778,12 +778,12 @@ true.
 
 
 
-## read properties
+## read properties [x]
 
-## set property
+## set property [x]
 
-## save properties
+## save properties [x]
 
-## call api
+## call api [x]
 
-## jenkins job
+## jenkins job [x]
