@@ -3,6 +3,7 @@ package io.hugang.execute.impl;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
@@ -38,17 +39,20 @@ public class JenkinsJobCommand extends Command {
      */
     @Override
     public boolean execute() {
-        String jobUrl = this.getDictStr("url");
-        Object parameters = this.getDict("parameters");
-        String userName =this.getDictStr("userName");
-        String token =this.render(this.getDictStr("token"));
+        String jobUrl = this.getDictStr("target");
+        String value = this.getDictStr("value",this.getValue());
+        // parse value to json object
+        JSONObject options = (JSONObject) JSONUtil.parse(value);
+        Object parameters = options.getByPath("parameters");
+        String userName = options.getStr("userName");
+        String token =this.render(options.getStr("token"));
         JSONObject parameterObj = JSONUtil.parseObj(parameters);
 
         if (!parameterObj.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             sb.append(jobUrl).append("/buildWithParameters?");
             // append parameters in parameterObj
-            parameterObj.forEach((key, value) -> sb.append(key).append("=").append(value).append("&"));
+            parameterObj.forEach((key, val) -> sb.append(key).append("=").append(val).append("&"));
             jobUrl = sb.substring(0, sb.toString().length() - 1);
         } else {
             jobUrl = jobUrl + "/build";

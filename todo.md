@@ -795,8 +795,36 @@ set properties to environment variables.
     - type(target): The type of the file. Currently only json is supported.
     - value(value): The json string of the variable.
 
-## save properties [x]
+## save properties [〇]
 
-## call api [x]
+save current environment variables to a file.
 
-## jenkins job [x]
+- arguments
+    - type(target): The type of the file. Currently only json is supported.
+    - file path(value): The path to the json file.
+
+## call api [〇]
+
+call api and set the values of response to environment variables.
+
+- arguments
+    - url(target): The url of the api.
+    - value: the json string or json file of the request body.
+       - method: The method of the api. Currently only get and post are supported.
+       - params: The params of the api.
+       - headers: The headers of the api.
+       - body: The body of the api.
+       - proxy: The proxy of the api.
+       - store: array, response values to environment variables.
+
+## jenkins job [〇]
+
+run jenkins job.
+
+- arguments
+    - url(target): The url of the jenkins.
+    - value: the json string or json file of the request body.
+       - job: The job name of the jenkins.
+       - params: The params of the jenkins.
+       - token: The token of the jenkins.
+       - store: array, response values to environment variables.

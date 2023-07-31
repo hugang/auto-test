@@ -27,7 +27,7 @@ public class CallApiCommand extends Command {
         // get url from target
         String url = render(getTarget());
         // get other options from value
-        String options = render(getValue());
+        String options = render(this.getDictStr("value", getValue()));
         JSONObject obj;
         if (options.contains(".json")) {
             options = CommandExecuteUtil.getFilePath(options);
