@@ -10,4 +10,9 @@ public class Utils {
         new BasicExecutor().execute(mode, Objects.requireNonNull(Utils.class.getClassLoader().getResource(path)).getPath());
         System.out.println(CommandExecuteUtil.getVariables());
     }
+
+    public static void execute(String mode, String path, String cases) {
+        new BasicExecutor().execute(mode, Objects.requireNonNull(Utils.class.getClassLoader().getResource(path)).getPath(), cases);
+        System.out.println(CommandExecuteUtil.getVariables());
+    }
 }

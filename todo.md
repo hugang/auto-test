@@ -381,7 +381,9 @@ Remove a selection from the set of selected options in a multi-select element us
     - locator: An element locator.
     - option: An option locator, typically just an option label (e.g. "John Smith").
 
-## repeat if
+## repeat if [-]
+
+not needed, use while
 
 Terminate a 'do' control flow branch conditionally. If the result of the provided conditional expression is true, it
 starts the do loop over. Otherwise, it ends the loop.
