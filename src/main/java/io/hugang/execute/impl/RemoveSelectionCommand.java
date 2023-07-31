@@ -8,11 +8,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 @WebCommand
-public class AddSelectionCommand extends Command {
+public class RemoveSelectionCommand extends Command {
 
     public static final String KEY_VALUE = "value";
 
-    public AddSelectionCommand(String command, String target, String value) {
+    public RemoveSelectionCommand(String command, String target, String value) {
         super(command, target, value);
     }
 
@@ -24,7 +24,7 @@ public class AddSelectionCommand extends Command {
             String option = getDictStr(KEY_VALUE, this.getValue());
 
             WebElement element = CommandExecuteUtil.getElement(target).findElement(By.xpath("//option[. = '" + render(option) + "']"));
-            if (!element.isSelected()) {
+            if (element.isSelected()) {
                 element.click();
             }
         } catch (Exception e) {

@@ -286,8 +286,9 @@ public class BasicExecutor {
     public void executeCommands(Commands commands) {
         boolean result;
         // loop through the commands
-        try {
-            for (ICommand command : commands.getCommands()) {
+        for (ICommand command : commands.getCommands()) {
+
+            try {
                 // execute the command
                 log.debug("execute command: " + command);
                 if (!command.isSkip()) {
@@ -297,10 +298,12 @@ public class BasicExecutor {
                         return;
                     }
                 }
+            } catch (Exception e) {
+                log.error("execute command failed, command={}", command);
+                log.error("execute command failed detail", e);
+                destroy();
             }
-        } catch (Exception e) {
-            log.error("execute commands failed", e);
-            destroy();
         }
+
     }
 }

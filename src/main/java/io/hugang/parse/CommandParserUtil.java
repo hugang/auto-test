@@ -242,6 +242,8 @@ public class CommandParserUtil {
                 return new RunCaseCommand(commandName, command.getTarget(), command.getValue());
             case "addSelection":
                 return new AddSelectionCommand(commandName, command.getTarget(), command.getValue());
+            case "removeSelection":
+                return new RemoveSelectionCommand(commandName, command.getTarget(), command.getValue());
             case "executeScript":
                 return new ExecuteScriptCommand(commandName, command.getTarget(), command.getValue());
             case "executeAsyncScript":

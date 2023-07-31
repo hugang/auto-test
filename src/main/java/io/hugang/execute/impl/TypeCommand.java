@@ -16,7 +16,8 @@ public class TypeCommand extends Command {
 
     @Override
     public boolean execute() {
-        CommandExecuteUtil.getElement(this.getTarget()).setValue(render(this.getDictStr(VALUE, getValue())).replace("\\n", Keys.chord(Keys.SHIFT, Keys.ENTER)));
+        String value = this.getDictStr(VALUE, getValue());
+        CommandExecuteUtil.getElement(this.getTarget()).setValue(render(value).replace("\\n", Keys.chord(Keys.SHIFT, Keys.ENTER)));
         return true;
     }
 }
