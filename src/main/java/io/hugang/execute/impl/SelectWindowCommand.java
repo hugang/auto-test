@@ -21,12 +21,18 @@ public class SelectWindowCommand extends Command {
         // 获取所有窗口句柄
         Set<String> handles = driver.getWindowHandles();
         // 切换到新窗口
-        for (String handle : handles) {
+        for (int i = 0; i < handles.size(); i++) {
+            String handle = (String) handles.toArray()[i];
             if (!handle.equals(currentHandle)) {
                 driver.switchTo().window(handle);
-                break;
+                String title = driver.getTitle();
+                String currentUrl = driver.getCurrentUrl();
+                if (title.contains(getTarget()) || currentUrl.contains(getTarget()) || "tab=".concat(String.valueOf(i)).equals(getTarget())) {
+                    return true;
+                }
             }
         }
-        return true;
+
+        return false;
     }
 }

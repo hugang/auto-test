@@ -434,7 +434,7 @@ be attempted.
     - select locator(target): An element locator identifying a drop-down menu.
     - option(value): An option locator, typically just an option label (e.g. "John Smith").
 
-## select frame [x]
+## select frame [〇]
 
 Selects a frame within the current window. You can select a frame by its 0-based index number (e.g., select the first
 frame with "index=0", or the third frame with "index=2"). For nested frames you will need to invoke this command
@@ -442,15 +442,16 @@ multiple times (once for each frame in the tree until you reach your desired fra
 with "relative=parent". To return to the top of the page use "relative=top".
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
-## select window [x]
+## select window [〇]
 
 Selects a popup window using a window locator. Once a popup window has been selected, all commands will go to that
 window. Window locators use handles to select windows.
 
 - arguments
-    - window handle: A handle representing a specific page (tab, or window).
+    - window handle(target): A handle representing a specific page (tab, or window).
+    * tab=1 or contains page title, or contains url
 
 ## send keys [〇]
 
@@ -473,61 +474,61 @@ changed.
 - arguments
     - wait time: The amount of time to wait (in milliseconds).
 
-## set window size [x]
+## set window size [〇]
 
 Set the browser's window size, including the browser's interface.
 
 - arguments
-    - resolution: Specify a window resolution using Width`x`Height. (e.g., 1280x800).
+    - resolution(target): Specify a window resolution using Width`x`Height. (e.g., 1280x800). or max, min
 
-## store [x]
+## store [〇]
 
 Save a target string as a variable for easy re-use.
 
 - arguments
-    - text: The text to use.
-    - variable name: The name of a variable without brackets.
+    - text(target): The text to use.
+    - variable name(value): The name of a variable without brackets.
 
-## store attribute [x]
+## store attribute [〇]
 
 Gets the value of an element attribute. The value of the attribute may differ across browsers (this is the case for
 the "style" attribute, for example).
 
 - arguments
-    - attribute locator: An element locator followed by an @ sign and then the name of the attribute, e.g. "foo@bar".
-    - variable name: The name of a variable without brackets.
+    - attribute locator(target): An element locator followed by an @ sign and then the name of the attribute, e.g. "foo@bar".
+    - variable name(value): The name of a variable without brackets.
 
-## store json [x]
+## store json [〇]
 
 undefined
 
 - arguments
-    - json: A string representation of a JavaScript object.
-    - variable name: The name of a variable without brackets.
+    - json(target): A string representation of a JavaScript object.
+    - variable name(value): The name of a variable without brackets.
 
-## store text [x]
+## store text [〇]
 
 Gets the text of an element and stores it for later use. This works for any element that contains text.
 
 - arguments
-    - locator: An element locator.
-    - variable name: The name of a variable without brackets.
+    - locator(target): An element locator.
+    - variable name(value): The name of a variable without brackets.
 
-## store title [x]
+## store title [〇]
 
 Gets the title of the current page.
 
 - arguments
-    - text: The text to use.
-    - variable name: The name of a variable without brackets.
+    - text(-): The text to use. not used
+    - variable name(value): The name of a variable without brackets.
 
-## store value [x]
+## store value [〇]
 
 Gets the value of element and stores it for later use. This works for any input type element.
 
 - arguments
-    - locator: An element locator.
-    - variable name: The name of a variable without brackets.
+    - locator(target): An element locator.
+    - variable name(value): The name of a variable without brackets.
 
 ## store window handle
 
@@ -536,13 +537,13 @@ Gets the handle of the current page.
 - arguments
     - window handle: A handle representing a specific page (tab, or window).
 
-## store xpath count [x]
+## store xpath count [〇]
 
 Gets the number of nodes that match the specified xpath (e.g. "//table" would give the number of tables).
 
 - arguments
-    - xpath: The xpath expression to evaluate.
-    - variable name: The name of a variable without brackets.
+    - xpath(target): The xpath expression to evaluate.
+    - variable name(value): The name of a variable without brackets.
 
 ## submit [〇]
 
@@ -778,9 +779,21 @@ true.
 
 
 
-## read properties [x]
+## read properties [〇]
 
-## set property [x]
+read properties from a file and set them as variables.
+
+- arguments
+    - type(target): The type of the file. Currently only json is supported.
+    - file path(value): The path to the json file.
+
+## set property [〇]
+
+set properties to environment variables.
+
+- arguments
+    - type(target): The type of the file. Currently only json is supported.
+    - value(value): The json string of the variable.
 
 ## save properties [x]
 

@@ -15,8 +15,7 @@ import io.hugang.execute.CommandExecuteUtil;
  */
 public class ReadPropertiesCommand extends Command {
 
-    public static final String KEY_TYPE = "type";
-    public static final String KEY_FILE = "file";
+    public static final String KEY_FILE = "value";
     public static final String VALUE_TYPE_JSON = "json";
 
     public ReadPropertiesCommand(String command, String target, String value) {
@@ -30,7 +29,7 @@ public class ReadPropertiesCommand extends Command {
      */
     @Override
     public boolean execute() {
-        String type = this.getDictStr(KEY_TYPE, this.getTarget());
+        String type = this.getTarget();
         String file = this.getDictStr(KEY_FILE, this.getValue());
 
         if (VALUE_TYPE_JSON.equals(type)) {

@@ -239,18 +239,27 @@ public class BasicExecutor {
      * method to execute the commands
      */
     public void runCommandsList(List<Commands> commandsList) {
-        // execute the commands
+        // check if there is web command
+        boolean isWebCommand = false;
         for (Commands commands : commandsList) {
             // init the executor
             if (commands.isWebCommand()) {
-                this.init();
+                isWebCommand = true;
+                break;
             }
+        }
+        // init the executor
+        if (isWebCommand) {
+            this.init();
+        }
+        // execute the commands
+        for (Commands commands : commandsList) {
             CommandExecuteUtil.setVariable("caseId", commands.getCaseId());
             this.executeCommands(commands);
-            // destroy the executor
-            if (commands.isWebCommand()) {
-                this.destroy();
-            }
+        }
+        // destroy the executor
+        if (isWebCommand) {
+            this.destroy();
         }
     }
 

@@ -9,6 +9,5 @@ public class ReadPropertiesTest {
     @Test
     public void testReadPropertiesXlsx() {
         Utils.execute("xlsx", "readProperties/readProperties.xlsx");
-        System.out.println(CommandExecuteUtil.getVariables());
     }
 }

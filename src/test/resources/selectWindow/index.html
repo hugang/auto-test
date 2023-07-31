@@ -7,13 +7,22 @@
             integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
 </head>
 <body>
-<p>如果您双击了按钮，则会显示一个警告框。</p>
-<button id="btn1">button</button>
+<button id="btn1">byTab</button>
+<button id="btn2">byTitle</button>
+<button id="btn3">byUrl</button>
 <script>
   $(document).ready(function () {
     $("#btn1").click(function () {
       // 打开新窗口
-        window.open("./index.html", "_blank", "width=500,height=500");
+      window.open("./byTab.html", "_blank", "width=500,height=500");
+    });
+    $("#btn2").click(function () {
+      // 打开新窗口
+      window.open("./byTitle.html", "_blank", "width=500,height=500");
+    });
+    $("#btn3").click(function () {
+      // 打开新窗口
+      window.open("./byUrl.html", "_blank", "width=500,height=500");
     });
   });
 </script>
