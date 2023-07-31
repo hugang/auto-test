@@ -373,13 +373,13 @@ Wait for the specified amount of time.
 - arguments
     - wait time(target): The amount of time to wait (in milliseconds).
 
-## remove selection
+## remove selection [〇]
 
 Remove a selection from the set of selected options in a multi-select element using an option locator.
 
 - arguments
-    - locator: An element locator.
-    - option: An option locator, typically just an option label (e.g. "John Smith").
+    - locator(target): An element locator.
+    - option(value): An option locator, typically just an option label (e.g. "John Smith").
 
 ## repeat if [-]
 
