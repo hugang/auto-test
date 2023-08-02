@@ -118,28 +118,29 @@ public class BasicExecutor {
     }
 
     public void execute(String[] args) {
+        if (args.length != 0 && args.length != 2 && args.length != 3) {
+            throw new RuntimeException("invalid arguments");
+        }
         // if no arguments, execute the testCase path in the config file
         if (args.length == 0) {
             this.execute();
+            return;
         }
         // if two arguments, the first one is testCase path, the second one is test cases
-        else if (args.length == 2) {
-            if (FileUtil.exist(args[0])) {
-                autoTestConfig.setTestCasePath(args[0]);
-            } else if (FileUtil.exist(AutoTestConfig.WORK_DIR + "/" + args[0])) {
-                autoTestConfig.setTestCasePath(AutoTestConfig.WORK_DIR + "/" + args[0]);
-            } else if (FileUtil.exist(FileUtil.file(args[0]))) {
-                autoTestConfig.setTestCasePath(FileUtil.file(args[0]).getAbsolutePath());
-            } else {
-                throw new RuntimeException("invalid test case path");
-            }
-            autoTestConfig.setTestCases(args[1]);
-            this.execute();
+        if (FileUtil.exist(args[0])) {
+            autoTestConfig.setTestCasePath(args[0]);
+        } else if (FileUtil.exist(AutoTestConfig.WORK_DIR + "/" + args[0])) {
+            autoTestConfig.setTestCasePath(AutoTestConfig.WORK_DIR + "/" + args[0]);
+        } else if (FileUtil.exist(FileUtil.file(args[0]))) {
+            autoTestConfig.setTestCasePath(FileUtil.file(args[0]).getAbsolutePath());
+        } else {
+            throw new RuntimeException("invalid test case path");
         }
-        // the other arguments are invalid
-        else {
-            throw new RuntimeException("invalid arguments");
+        autoTestConfig.setTestCases(args[1]);
+        if (args.length == 3) {
+            autoTestConfig.setTestMode(args[2]);
         }
+        this.execute();
     }
 
     /**

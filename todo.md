@@ -204,7 +204,9 @@ performance penalty on the test.
 
 Breaks the execution and enters debugger
 
-## do
+## do [-]
+
+not needed, just use `while` or `if` instead
 
 Create a loop that executes the proceeding commands at least once. Terminate the branch with the repeat if command.
 
@@ -383,7 +385,7 @@ Remove a selection from the set of selected options in a multi-select element us
 
 ## repeat if [-]
 
-not needed, use while
+not needed, use `while`
 
 Terminate a 'do' control flow branch conditionally. If the result of the provided conditional expression is true, it
 starts the do loop over. Otherwise, it ends the loop.
@@ -575,12 +577,12 @@ file path is given it will be uploaded to the input (for type=file), NOTE: XPath
     - locator(target): An element locator.
     - value: The value to input.
 
-## uncheck
+## uncheck [〇]
 
 Uncheck a toggle-button (checkbox/radio).
 
 - arguments
-    - locator: An element locator.
+    - locator(value): An element locator.
 
 ## verify
 
