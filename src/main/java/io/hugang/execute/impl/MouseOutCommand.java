@@ -15,7 +15,7 @@ public class MouseOutCommand extends Command {
     public boolean execute() {
         // use selenium to execute the command
         SelenideElement $ = CommandExecuteUtil.getElement(this.getTarget());
-        $.hover();
+        $.parent().hover(); // trigger mouse out event
         return true;
     }
 
