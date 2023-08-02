@@ -276,6 +276,8 @@ public class CommandParserUtil {
                 return new UncheckCommand(commandName, command.getTarget(), command.getValue());
             case "mouseOut":
                 return new MouseOutCommand(commandName, command.getTarget(), command.getValue());
+            case "close":
+                return new CloseCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }

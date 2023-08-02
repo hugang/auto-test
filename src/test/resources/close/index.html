@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"
+            integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
+</head>
+<body>
+<button id="btn1">byTab</button>
+<button id="btn2">byTitle</button>
+<button id="btn3">byUrl</button>
+<script>
+  $(document).ready(function () {
+    $("#btn1").click(function () {
+      // 打开新窗口
+      window.open("./byTab.html", "_blank", "width=500,height=500");
+    });
+    $("#btn2").click(function () {
+      // 打开新窗口
+      window.open("./byTitle.html", "_blank", "width=500,height=500");
+    });
+    $("#btn3").click(function () {
+      // 打开新窗口
+      window.open("./byUrl.html", "_blank", "width=500,height=500");
+    });
+  });
+</script>
+
+</body>
+</html>

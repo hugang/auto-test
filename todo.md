@@ -195,7 +195,7 @@ example the material ripple effect.
     - coord string(value): Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found from a
       locator.
 
-## close
+## close [〇]
 
 Closes the current window. There is no need to close the initial window, IDE will re-use it; closing it may cause a
 performance penalty on the test.
@@ -330,12 +330,12 @@ Simulates a user pressing the mouse button (without releasing it yet) on the spe
     - coord string: Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found from a
       locator.
 
-## mouse out
+## mouse out [〇]
 
 Simulates a user moving the mouse pointer away from the specified element.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
 ## mouse over [〇]
 
