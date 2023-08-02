@@ -1,4 +1,4 @@
 @echo off
-set JAVA_HOME=C:\tools\jdk8u312-b07
+set JAVA_HOME=%USERPROFILE%\.jdks\corretto-11.0.19
 set PATH=%PATH%;%JAVA_HOME%\bin
-java -cp "libs/*" io.hugang.RunAutoTest
+java -cp "C:/projs/auto-test/libs/*" io.hugang.RunAutoTest %*
