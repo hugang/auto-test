@@ -75,6 +75,7 @@ public class CommandExecuteUtil {
             spendTime += 1000;
             return getElement(target);
         }
+        spendTime = 0;
         return $;
     }
 
