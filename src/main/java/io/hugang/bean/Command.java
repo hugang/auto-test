@@ -86,6 +86,10 @@ public abstract class Command implements ICommand {
                 JSONObject targetObj = (JSONObject) JSONUtil.parse(this.target);
                 targetObj.forEach((key, value) -> this.appendDict(key, value));
             }
+        } catch (Exception e) {
+            // do nothing if not json
+        }
+        try {
             if (this.value != null) {
                 JSONObject valueObj = (JSONObject) JSONUtil.parse(this.value);
                 valueObj.forEach((key, value) -> this.appendDict(key, value));
