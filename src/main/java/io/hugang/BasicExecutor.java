@@ -250,16 +250,24 @@ public class BasicExecutor {
             }
         }
         // init the executor
-        if (isWebCommand) {
+        if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
             this.init();
         }
         // execute the commands
         for (Commands commands : commandsList) {
+            // init the executor
+            if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
+                this.init();
+            }
             CommandExecuteUtil.setVariable("caseId", commands.getCaseId());
             this.executeCommands(commands);
+            // destroy the executor
+            if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
+                this.destroy();
+            }
         }
         // destroy the executor
-        if (isWebCommand) {
+        if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
             this.destroy();
         }
     }
