@@ -43,8 +43,8 @@ public class RunCommand extends Command {
             Runtime runtime = Runtime.getRuntime();
             Process process;
 
-            String value = render(this.getDictStr("value"));
-            String type = render(this.getDictStr("type"));
+            String value = render(this.getDictStr("value",this.getValue()));
+            String type = render(this.getTarget());
             if (StrUtil.isEmpty(type) || StrUtil.isEmpty(value)) {
                 throw new CommandExecuteException("type or value is empty");
             }

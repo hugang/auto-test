@@ -39,15 +39,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class BasicExecutor {
     private static final Log log = LogFactory.get();
     // auto test config
-    private final AutoTestConfig autoTestConfig = new AutoTestConfig();
+    public static final AutoTestConfig autoTestConfig = new AutoTestConfig();
     // map to storage variables
     public static final Dict variablesMap = new Dict();
 
     public BasicExecutor() {
-        // read the user properties
-        autoTestConfig.readConfigurations();
-        // prepare work directories
-        this.prepareWorkDirectories();
     }
 
     /**
@@ -145,15 +141,15 @@ public class BasicExecutor {
     }
 
     public void execute(String mode, String path) {
-        this.autoTestConfig.setTestMode(mode);
-        this.autoTestConfig.setTestCasePath(path);
+        autoTestConfig.setTestMode(mode);
+        autoTestConfig.setTestCasePath(path);
         this.execute();
     }
 
     public void execute(String mode, String path, String testCases) {
-        this.autoTestConfig.setTestMode(mode);
-        this.autoTestConfig.setTestCasePath(path);
-        this.autoTestConfig.setTestCases(testCases);
+        autoTestConfig.setTestMode(mode);
+        autoTestConfig.setTestCasePath(path);
+        autoTestConfig.setTestCases(testCases);
         this.execute();
     }
 
@@ -162,18 +158,15 @@ public class BasicExecutor {
      */
     private List<Commands> parseCommandsList() {
         List<Commands> commandsList = new ArrayList<>();
-        // read csv from xlsx when xlsx file path is not null
+        // get the test case path
         String testCasePath = autoTestConfig.getTestCasePath();
         if (!FileUtil.exist(testCasePath)) {
-            testCasePath = autoTestConfig.getCurrentDir().concat("/").concat(testCasePath);
+            testCasePath = autoTestConfig.getWorkDir().concat(testCasePath);
             if (!FileUtil.exist(testCasePath)) {
-                testCasePath = autoTestConfig.getWorkDir().concat("/").concat(testCasePath);
-                if (!FileUtil.exist(testCasePath)) {
-                    throw new CommandExecuteException("test case file not exist");
-                }
+                throw new CommandExecuteException("test case file not exist");
             }
         }
-        log.info(testCasePath);
+        log.info("test case path = {} ", testCasePath);
         switch (autoTestConfig.getTestMode()) {
             case "xlsx":
                 List<Commands> commandsFromXlsx = CommandParserUtil.getCommandsFromXlsx(testCasePath);
@@ -206,6 +199,12 @@ public class BasicExecutor {
         return commandsList;
     }
 
+    /**
+     * get test cases
+     *
+     * @param testCasesArray test cases array for result
+     * @param testCaseArray  test case array
+     */
     public static void getTestCases(List<String> testCasesArray, String[] testCaseArray) {
         for (String testCase : testCaseArray) {
             if (testCase.indexOf("-") > 0) {
@@ -260,7 +259,7 @@ public class BasicExecutor {
     /**
      * prepare work directories
      */
-    private void prepareWorkDirectories() {
+    public void prepareWorkDirectories() {
         // create the download directory
         FileUtil.mkdir(autoTestConfig.getFileDownloadPath());
         // create the user profile directory
@@ -296,6 +295,7 @@ public class BasicExecutor {
                 log.error("execute command failed, command={}", command);
                 log.error("execute command failed detail", e);
                 destroy();
+                return;
             }
         }
     }

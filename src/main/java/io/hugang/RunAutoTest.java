@@ -3,6 +3,7 @@ package io.hugang;
 import cn.hutool.core.util.StrUtil;
 import com.beust.jcommander.JCommander;
 import io.hugang.bean.AutoTestCommandLineOption;
+import io.hugang.config.AutoTestConfig;
 
 /**
  * entry point to run the program.
@@ -13,30 +14,42 @@ import io.hugang.bean.AutoTestCommandLineOption;
  */
 public class RunAutoTest {
     public static void main(String[] args) {
-
+        // parse command line options
         AutoTestCommandLineOption autoTestCommandLineOption = new AutoTestCommandLineOption();
-        JCommander.newBuilder()
+        JCommander jCommander = JCommander.newBuilder()
                 .addObject(autoTestCommandLineOption)
-                .build()
-                .parse(args);
+                .programName("auto-test")
+                .build();
+        jCommander.parse(args);
 
+        // if help is true, print help message and return
+        if (autoTestCommandLineOption.isHelp()) {
+            jCommander.usage();
+            return;
+        }
         BasicExecutor basicExecutor = new BasicExecutor();
         // set to autoTestConfig if not null
+        AutoTestConfig autoTestConfig = basicExecutor.getAutoTestConfig();
         if (StrUtil.isNotEmpty(autoTestCommandLineOption.getMode())) {
-            basicExecutor.getAutoTestConfig().setTestMode(autoTestCommandLineOption.getMode());
+            autoTestConfig.setTestMode(autoTestCommandLineOption.getMode());
         }
-        if (StrUtil.isNotEmpty(autoTestCommandLineOption.getTestCases())) {
-            basicExecutor.getAutoTestConfig().setTestCases(autoTestCommandLineOption.getTestCases());
+        if (StrUtil.isNotEmpty(autoTestCommandLineOption.getCases())) {
+            autoTestConfig.setTestCases(autoTestCommandLineOption.getCases());
         }
-        if (StrUtil.isNotEmpty(autoTestCommandLineOption.getPath())) {
-            basicExecutor.getAutoTestConfig().setTestCasePath(autoTestCommandLineOption.getPath());
+        if (StrUtil.isNotEmpty(autoTestCommandLineOption.getFilePath())) {
+            autoTestConfig.setTestCasePath(autoTestCommandLineOption.getFilePath());
         }
         if (StrUtil.isNotEmpty(autoTestCommandLineOption.getWorkDir())) {
-            basicExecutor.getAutoTestConfig().setWorkDir(autoTestCommandLineOption.getWorkDir());
+            autoTestConfig.setWorkDir(autoTestCommandLineOption.getWorkDir());
         }
-        if (StrUtil.isNotEmpty(autoTestCommandLineOption.getCurrentDir())) {
-            basicExecutor.getAutoTestConfig().setCurrentDir(autoTestCommandLineOption.getCurrentDir());
+        if (StrUtil.isNotEmpty(autoTestCommandLineOption.getBaseDir())) {
+            autoTestConfig.setBaseDir(autoTestCommandLineOption.getBaseDir());
         }
+        // read the other user properties
+        autoTestConfig.readConfigurations();
+        // prepare work directories
+        basicExecutor.prepareWorkDirectories();
+        // execute the test
         basicExecutor.execute();
     }
 }

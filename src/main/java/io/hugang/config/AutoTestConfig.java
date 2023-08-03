@@ -14,21 +14,20 @@ import java.io.File;
  * @author hugang
  */
 public class AutoTestConfig {
-    // the working path
-    public static final String WORK_DIR = SystemUtil.getUserInfo().getCurrentDir();
     // config group of browser
     public static final String GROUP_BROWSER = "browser";
     // config group of test case
     public static final String GROUP_TEST_CASE = "test-case";
     // config group of base
     public static final String GROUP_BASE = "base";
+    public static final String AUTO_TEST_HOME = "AUTO_TEST_HOME";
 
     /**
      * read auto-test.conf
      */
     public void readConfigurations() {
         // read auto-test.conf
-        File file = FileUtil.file(WORK_DIR + "conf/auto-test.conf");
+        File file = FileUtil.file(this.getBaseDir() + "conf/auto-test.conf");
         if (!file.exists()) {
             return;
         }
@@ -42,10 +41,12 @@ public class AutoTestConfig {
         }
 
         String webDriverPath = setting.get(GROUP_BROWSER, "web.driver.path");
-        this.setWebDriverPath(getAbsolutePath(webDriverPath));
+        this.setWebDriverPath(getAbsolutePath(webDriverPath, this.getBaseDir()));
 
-        String testCasePath = setting.get(GROUP_TEST_CASE, "test.case.path");
-        this.setTestCasePath(getAbsolutePath(testCasePath));
+        if (StrUtil.isEmpty(this.getTestCasePath())) {
+            String testCasePath = setting.get(GROUP_TEST_CASE, "test.case.path");
+            this.setTestCasePath(getAbsolutePath(testCasePath));
+        }
 
         String fileDownloadPath = setting.get(GROUP_BASE, "file.download.path");
         this.setFileDownloadPath(getAbsolutePath(fileDownloadPath));
@@ -58,13 +59,17 @@ public class AutoTestConfig {
         if (height != null) {
             this.setHeight(Integer.parseInt(height));
         }
-        String inputMedia = setting.get(GROUP_TEST_CASE, "test.case.mode");
-        if (inputMedia != null) {
-            this.setTestMode(inputMedia);
+        if (StrUtil.isEmpty(this.getTestMode())) {
+            String inputMedia = setting.get(GROUP_TEST_CASE, "test.case.mode");
+            if (inputMedia != null) {
+                this.setTestMode(inputMedia);
+            }
         }
-        String testCases = setting.get(GROUP_TEST_CASE, "xlsx.specific.testcases");
-        if (testCases != null) {
-            this.setTestCases(testCases);
+        if (StrUtil.isEmpty(this.getTestCases())) {
+            String testCases = setting.get(GROUP_TEST_CASE, "xlsx.specific.testcases");
+            if (testCases != null) {
+                this.setTestCases(testCases);
+            }
         }
         String cronEnabled = setting.get(GROUP_BASE, "cron.enabled");
         if (cronEnabled != null) {
@@ -92,11 +97,21 @@ public class AutoTestConfig {
      * @return absolute path
      */
     private String getAbsolutePath(String filePath) {
+        return getAbsolutePath(filePath, this.getWorkDir());
+    }
+
+    /**
+     * get absolute path
+     *
+     * @param filePath file path
+     * @return absolute path
+     */
+    private String getAbsolutePath(String filePath, String defaultPath) {
         if (filePath != null) {
             if (FileUtil.isAbsolutePath(filePath)) {
                 return filePath;
             } else {
-                return WORK_DIR + filePath;
+                return defaultPath + filePath;
             }
         }
         return StrUtil.EMPTY;
@@ -130,8 +145,8 @@ public class AutoTestConfig {
     private boolean restartWebDriverByCase;
     // work dir
     private String workDir;
-    // current dir
-    private String currentDir;
+    // base dir
+    private String baseDir;
 
     public String getUserProfilePath() {
         return userProfilePath;
@@ -242,14 +257,14 @@ public class AutoTestConfig {
     }
 
     public void setWorkDir(String workDir) {
-        this.workDir = workDir;
+        this.workDir = workDir.endsWith(File.separator) ? workDir : workDir + File.separator;
     }
 
-    public String getCurrentDir() {
-        return currentDir;
+    public String getBaseDir() {
+        return StrUtil.isEmpty(baseDir) ? SystemUtil.get(AUTO_TEST_HOME) + File.separator : baseDir;
     }
 
-    public void setCurrentDir(String currentDir) {
-        this.currentDir = currentDir;
+    public void setBaseDir(String baseDir) {
+        this.baseDir = baseDir.endsWith(File.separator) ? baseDir : baseDir + File.separator;
     }
 }

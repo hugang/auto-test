@@ -1,5 +1,6 @@
 package io.hugang.execute.impl;
 
+import cn.hutool.core.util.StrUtil;
 import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.bean.ICommand;
@@ -22,17 +23,21 @@ public class ForEachCommand extends Command implements IConditionCommand {
     @Override
     public boolean execute() throws CommandExecuteException {
         try {
+            if (StrUtil.isEmpty(this.getTarget()) || StrUtil.isEmpty(this.getValue())) {
+                throw new CommandExecuteException("target or value is empty");
+            }
+
             Object target = CommandExecuteUtil.getVariable(this.getTarget());
             String value = this.getDictStr("value", this.getValue());
 
-            System.out.println(target.getClass());
             if (target instanceof String && ((String) target).contains(",")) {
                 Arrays.stream(((String) target).split(",")).forEach(s -> {
                     CommandExecuteUtil.setVariable(value, s);
                     this.getSubCommands().forEach(ICommand::execute);
                 });
-            } else if (target instanceof List) {
-                ((List) target).forEach(s -> {
+            } else if (target instanceof List && !((List<?>) target).isEmpty()) {
+                List<?> list = (List<?>) target;
+                list.forEach(s -> {
                     CommandExecuteUtil.setVariable(value, s);
                     this.getSubCommands().forEach(ICommand::execute);
                 });

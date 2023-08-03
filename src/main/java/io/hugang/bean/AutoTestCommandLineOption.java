@@ -4,31 +4,33 @@ import com.beust.jcommander.Parameter;
 
 public class AutoTestCommandLineOption {
 
-    @Parameter(names = {"-f", "--help"}, description = "test case file path", help = true)
-    private String path;
-    @Parameter(names = {"-t", "--testcases"}, description = "test cases", help = true)
-    private String testCases;
-    @Parameter(names = {"-m", "--mode"}, description = "test mode", help = true)
+    @Parameter(names = {"-f", "--file"}, description = "the test case file to be executed, specific absolute path,  if relative path, it will look for the file in the work directory.")
+    private String filePath;
+    @Parameter(names = {"-c", "--cases"}, description = "the test cases to be executed, split by comma. eg. 1-2,13")
+    private String cases;
+    @Parameter(names = {"-m", "--mode"}, description = "test mode, default is xlsx, optional: xlsx, csv, json.")
     private String mode;
-    @Parameter(names = {"-d", "--workDir"}, description = "work directory", help = true)
+    @Parameter(names = {"-d", "--workDir"}, description = "work directory to store test case file and test result file.")
     private String workDir;
-    @Parameter(names = {"-c", "--currentDir"}, description = "current directory", help = true)
-    private String currentDir;
+    @Parameter(names = {"-b", "--baseDir"}, description = "base directory of the program.")
+    private String baseDir;
+    @Parameter(names = {"-h", "--help"}, description = "help message", help = true)
+    private boolean help;
 
-    public String getPath() {
-        return path;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
-    public String getTestCases() {
-        return testCases;
+    public String getCases() {
+        return cases;
     }
 
-    public void setTestCases(String testCases) {
-        this.testCases = testCases;
+    public void setCases(String cases) {
+        this.cases = cases;
     }
 
     public String getMode() {
@@ -47,22 +49,31 @@ public class AutoTestCommandLineOption {
         this.workDir = workDir;
     }
 
-    public String getCurrentDir() {
-        return currentDir;
+    public String getBaseDir() {
+        return baseDir;
     }
 
-    public void setCurrentDir(String currentDir) {
-        this.currentDir = currentDir;
+    public void setBaseDir(String baseDir) {
+        this.baseDir = baseDir;
+    }
+
+    public boolean isHelp() {
+        return help;
+    }
+
+    public void setHelp(boolean help) {
+        this.help = help;
     }
 
     @Override
     public String toString() {
         return "AutoTestCommandLineOption{" +
-                "path='" + path + '\'' +
-                ", testCases='" + testCases + '\'' +
+                "filePath='" + filePath + '\'' +
+                ", cases='" + cases + '\'' +
                 ", mode='" + mode + '\'' +
                 ", workDir='" + workDir + '\'' +
-                ", currentDir='" + currentDir + '\'' +
+                ", baseDir='" + baseDir + '\'' +
+                ", help=" + help +
                 '}';
     }
 }
