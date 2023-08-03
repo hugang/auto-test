@@ -117,32 +117,6 @@ public class BasicExecutor {
         WebDriverRunner.setWebDriver(driver);
     }
 
-    public void execute(String[] args) {
-        if (args.length != 0 && args.length != 2 && args.length != 3) {
-            throw new RuntimeException("invalid arguments");
-        }
-        // if no arguments, execute the testCase path in the config file
-        if (args.length == 0) {
-            this.execute();
-            return;
-        }
-        // if two arguments, the first one is testCase path, the second one is test cases
-        if (FileUtil.exist(args[0])) {
-            autoTestConfig.setTestCasePath(args[0]);
-        } else if (FileUtil.exist(AutoTestConfig.WORK_DIR + "/" + args[0])) {
-            autoTestConfig.setTestCasePath(AutoTestConfig.WORK_DIR + "/" + args[0]);
-        } else if (FileUtil.exist(FileUtil.file(args[0]))) {
-            autoTestConfig.setTestCasePath(FileUtil.file(args[0]).getAbsolutePath());
-        } else {
-            throw new RuntimeException("invalid test case path");
-        }
-        autoTestConfig.setTestCases(args[1]);
-        if (args.length == 3) {
-            autoTestConfig.setTestMode(args[2]);
-        }
-        this.execute();
-    }
-
     /**
      * method to execute the commands
      */
@@ -189,9 +163,20 @@ public class BasicExecutor {
     private List<Commands> parseCommandsList() {
         List<Commands> commandsList = new ArrayList<>();
         // read csv from xlsx when xlsx file path is not null
+        String testCasePath = autoTestConfig.getTestCasePath();
+        if (!FileUtil.exist(testCasePath)) {
+            testCasePath = autoTestConfig.getCurrentDir().concat("/").concat(testCasePath);
+            if (!FileUtil.exist(testCasePath)) {
+                testCasePath = autoTestConfig.getWorkDir().concat("/").concat(testCasePath);
+                if (!FileUtil.exist(testCasePath)) {
+                    throw new CommandExecuteException("test case file not exist");
+                }
+            }
+        }
+        log.info(testCasePath);
         switch (autoTestConfig.getTestMode()) {
             case "xlsx":
-                List<Commands> commandsFromXlsx = CommandParserUtil.getCommandsFromXlsx(autoTestConfig.getTestCasePath());
+                List<Commands> commandsFromXlsx = CommandParserUtil.getCommandsFromXlsx(testCasePath);
                 List<String> testCasesArray = new ArrayList<>();
                 if (StrUtil.isNotEmpty(autoTestConfig.getTestCases())) {
                     String[] testCaseArray = autoTestConfig.getTestCases().split(",");
@@ -208,10 +193,10 @@ public class BasicExecutor {
                 }
                 break;
             case "csv":
-                commandsList.addAll(CommandParserUtil.getCommandsFromCsv(autoTestConfig.getTestCasePath()));
+                commandsList.addAll(CommandParserUtil.getCommandsFromCsv(testCasePath));
                 break;
             case "side":
-                commandsList.addAll(CommandParserUtil.getCommandsFromSide(autoTestConfig.getTestCasePath()));
+                commandsList.addAll(CommandParserUtil.getCommandsFromSide(testCasePath));
                 // save commandsList to a xlsx file
                 CommandParserUtil.saveCommandsListToXlsx(commandsList, autoTestConfig.getFileDownloadPath());
                 break;
@@ -313,6 +298,9 @@ public class BasicExecutor {
                 destroy();
             }
         }
+    }
 
+    public AutoTestConfig getAutoTestConfig() {
+        return autoTestConfig;
     }
 }

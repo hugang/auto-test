@@ -128,6 +128,10 @@ public class AutoTestConfig {
     private String browserBinaryPath;
     // restart web driver by case
     private boolean restartWebDriverByCase;
+    // work dir
+    private String workDir;
+    // current dir
+    private String currentDir;
 
     public String getUserProfilePath() {
         return userProfilePath;
@@ -231,5 +235,21 @@ public class AutoTestConfig {
 
     public void setRestartWebDriverByCase(boolean restartWebDriverByCase) {
         this.restartWebDriverByCase = restartWebDriverByCase;
+    }
+
+    public String getWorkDir() {
+        return workDir;
+    }
+
+    public void setWorkDir(String workDir) {
+        this.workDir = workDir;
+    }
+
+    public String getCurrentDir() {
+        return currentDir;
+    }
+
+    public void setCurrentDir(String currentDir) {
+        this.currentDir = currentDir;
     }
 }
