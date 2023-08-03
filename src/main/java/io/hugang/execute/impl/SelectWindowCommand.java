@@ -1,5 +1,6 @@
 package io.hugang.execute.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
@@ -17,9 +18,19 @@ public class SelectWindowCommand extends Command {
     public boolean execute() {
         WebDriver driver = WebDriverRunner.getWebDriver();
         // 获取当前窗口句柄
-        String currentHandle = driver.getWindowHandle();
+        String currentHandle = "";
+        try {
+            currentHandle = driver.getWindowHandle();
+        } catch (Exception e) {
+            // ignore
+        }
         // 获取所有窗口句柄
         Set<String> handles = driver.getWindowHandles();
+        if (!handles.isEmpty() && StrUtil.isEmpty(currentHandle)) {
+            currentHandle = (String) handles.toArray()[0];
+            driver.switchTo().window(currentHandle);
+            return true;
+        }
         // 切换到新窗口
         for (int i = 0; i < handles.size(); i++) {
             String handle = (String) handles.toArray()[i];
