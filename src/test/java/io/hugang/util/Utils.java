@@ -12,7 +12,7 @@ public class Utils {
     }
 
     public static void execute(String mode, String path, String cases) {
-        new BasicExecutor().execute(mode, Objects.requireNonNull(Utils.class.getClassLoader().getResource(path)).getPath(), cases);
+        new BasicExecutor().execute(mode, path, cases);
         System.out.println(CommandExecuteUtil.getVariables());
     }
 }
