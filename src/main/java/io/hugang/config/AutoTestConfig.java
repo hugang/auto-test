@@ -253,7 +253,7 @@ public class AutoTestConfig {
     }
 
     public String getWorkDir() {
-        return workDir;
+        return StrUtil.isEmpty(workDir) ? SystemUtil.get(AUTO_TEST_HOME) + File.separator : workDir;
     }
 
     public void setWorkDir(String workDir) {

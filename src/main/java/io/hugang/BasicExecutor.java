@@ -143,6 +143,7 @@ public class BasicExecutor {
     public void execute(String mode, String path) {
         autoTestConfig.setTestMode(mode);
         autoTestConfig.setTestCasePath(path);
+        autoTestConfig.readConfigurations();
         this.execute();
     }
 
@@ -150,6 +151,7 @@ public class BasicExecutor {
         autoTestConfig.setTestMode(mode);
         autoTestConfig.setTestCasePath(path);
         autoTestConfig.setTestCases(testCases);
+        autoTestConfig.readConfigurations();
         this.execute();
     }
 
@@ -243,15 +245,18 @@ public class BasicExecutor {
         }
         // execute the commands
         for (Commands commands : commandsList) {
-            // init the executor
-            if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
-                this.init();
-            }
-            CommandExecuteUtil.setVariable("caseId", commands.getCaseId());
-            this.executeCommands(commands);
-            // destroy the executor
-            if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
-                this.destroy();
+            try {
+                // init the executor
+                if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
+                    this.init();
+                }
+                CommandExecuteUtil.setVariable("caseId", commands.getCaseId());
+                this.executeCommands(commands);
+            } finally {
+                // destroy the executor
+                if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
+                    this.destroy();
+                }
             }
         }
         // destroy the executor
@@ -298,7 +303,6 @@ public class BasicExecutor {
             } catch (Exception e) {
                 log.error("execute command failed, command={}", command);
                 log.error("execute command failed detail", e);
-                destroy();
                 return;
             }
         }
