@@ -43,7 +43,7 @@
 
     <Loggers>
         // trace以上のログを出力する
-        <Root level="info">
+        <Root level="debug">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="logfile001"/>
         </Root>
