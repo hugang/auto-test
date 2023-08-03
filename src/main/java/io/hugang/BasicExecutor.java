@@ -233,6 +233,10 @@ public class BasicExecutor {
                 break;
             }
         }
+        if (isWebCommand) {
+            // prepare work directories
+            this.prepareWorkDirectories();
+        }
         // init the executor
         if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
             this.init();

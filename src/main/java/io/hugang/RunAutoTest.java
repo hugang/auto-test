@@ -47,8 +47,6 @@ public class RunAutoTest {
         }
         // read the other user properties
         autoTestConfig.readConfigurations();
-        // prepare work directories
-        basicExecutor.prepareWorkDirectories();
         // execute the test
         basicExecutor.execute();
     }

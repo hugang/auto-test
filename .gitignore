@@ -4,9 +4,11 @@
 
 /target
 
-/UserData
+**/UserData
+UserData
 /driver
-/download
+**/download
+download
 /testcases
 /dependency
 
