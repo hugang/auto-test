@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"
+            integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="timer" style="visibility: hidden">hello,timer</div>
+<script>
+  function showTimer() {
+    let seconds = 0;
+    setInterval(function () {
+      seconds++;
+      console.log(seconds)
+      if (seconds % 5 === 0) {
+        $("#timer").css("visibility", "visible");
+      }
+    }, 1000);
+  }
+  showTimer();
+</script>
+
+</body>
+</html>

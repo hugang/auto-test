@@ -731,21 +731,21 @@ Wait for a target element to not be visible on the page.
     - locator: An element locator.
     - wait time: The amount of time to wait (in milliseconds).
 
-## wait for element present
+## wait for element present [〇]
 
 Wait for a target element to be present on the page.
 
 - arguments
-    - locator: An element locator.
-    - wait time: The amount of time to wait (in milliseconds).
+    - locator(target): An element locator.
+    - wait time(value): The amount of time to wait (in milliseconds).
 
-## wait for element visible
+## wait for element visible [〇]
 
 Wait for a target element to be visible on the page.
 
 - arguments
-    - locator: An element locator.
-    - wait time: The amount of time to wait (in milliseconds).
+    - locator(target): An element locator.
+    - wait time(value): The amount of time to wait (in milliseconds).
 
 ## webdriver answer on visible prompt
 

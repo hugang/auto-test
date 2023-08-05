@@ -280,6 +280,8 @@ public class CommandParserUtil {
                 return new CloseCommand(commandName, command.getTarget(), command.getValue());
             case "waitForElementPresent":
                 return new WaitForElementPresentCommand(commandName, command.getTarget(), command.getValue());
+            case "waitForElementVisible":
+                return new WaitForElementVisibleCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }
