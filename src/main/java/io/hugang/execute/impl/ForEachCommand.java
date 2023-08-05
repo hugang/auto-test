@@ -23,7 +23,7 @@ public class ForEachCommand extends Command implements IConditionCommand {
     @Override
     public boolean execute() throws CommandExecuteException {
         try {
-            if (StrUtil.isEmpty(this.getTarget()) || StrUtil.isEmpty(this.getValue())) {
+            if (StrUtil.isEmpty(this.getTarget()) || StrUtil.isEmpty(this.getDictStr("value", this.getValue()))) {
                 throw new CommandExecuteException("target or value is empty");
             }
 
@@ -70,6 +70,6 @@ public class ForEachCommand extends Command implements IConditionCommand {
 
     @Override
     public String toString() {
-        return "WhileCommand{" + "subCommands=" + subCommands + '}';
+        return "ForEachCommand{" + "subCommands=" + subCommands + '}';
     }
 }
