@@ -278,6 +278,8 @@ public class CommandParserUtil {
                 return new MouseOutCommand(commandName, command.getTarget(), command.getValue());
             case "close":
                 return new CloseCommand(commandName, command.getTarget(), command.getValue());
+            case "waitForElementPresent":
+                return new WaitForElementPresentCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }
