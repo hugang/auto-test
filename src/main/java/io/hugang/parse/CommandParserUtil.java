@@ -250,6 +250,10 @@ public class CommandParserUtil {
                 return new ExecuteAsyncScriptCommand(commandName, command.getTarget(), command.getValue());
             case "mouseOver":
                 return new MouseOverCommand(commandName, command.getTarget(), command.getValue());
+            case "mouseUp":
+                return new MouseUpCommand(commandName, command.getTarget(), command.getValue());
+            case "mouseDown":
+                return new MouseDownCommand(commandName, command.getTarget(), command.getValue());
             case "store":
                 return new StoreCommand(commandName, command.getTarget(), command.getValue());
             case "storeText":
