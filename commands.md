@@ -94,7 +94,9 @@ test will stop if the assert fails.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
 ## assert not text
-  Confirm that the text of an element does not contain the provided value. The test will stop if the assert fails.
+
+Confirm that the text of an element does not contain the provided value. The test will stop if the assert fails.
+
 - arguments
     - locator: An element locator.
     - text: An exact string match. Support for pattern matching is in the works.
@@ -192,7 +194,8 @@ example the material ripple effect.
 
 - arguments
     - locator(target): An element locator.
-    - coord string(value): Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found from a
+    - coord string(value): Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found
+      from a
       locator.
 
 ## close [〇]
@@ -225,7 +228,8 @@ them, for example the material ripple effect.
 
 - arguments
     - locator(target): An element locator.
-    - coord string(value): Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found from a
+    - coord string(value): Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found
+      from a
       locator.
 
 ## drag and drop to object
@@ -295,7 +299,8 @@ Create a loop that executes the proceeding commands for each item in a given col
 
 - arguments
     - array variable name(target): The name of a variable containing a JavaScript array.
-    - iterator variable name(value): The name of the variable used when iterating over a collection in a looping control flow
+    - iterator variable name(value): The name of the variable used when iterating over a collection in a looping control
+      flow
       command (e.g., for each).
 
 ## if [〇]
@@ -402,18 +407,19 @@ Runs a test case from the current project.
 - arguments
     - test case: Test case name from the project.
 ```
+
 Runs a windows bat file, or a shell script on OS X and Linux
 
 - arguments
-  - type(target): The type of script to run, either "bat" or "sh" or "cmd".
-  - value(value): The path to the file to be executed, or script.
+    - type(target): The type of script to run, either "bat" or "sh" or "cmd".
+    - value(value): The path to the file to be executed, or script.
 
 ## run case [〇]
 
 Runs a test case from the current project.
 
 - arguments
-    - test case file(target): Test case path. 
+    - test case file(target): Test case path.
     - test cases(value): Test cases. default all cases.
     - test case mode(type): Test case type. default xlsx.
 
@@ -426,7 +432,7 @@ your script in try/catch blocks if there is any chance that the script will thro
 - arguments
     - target: The web element.
     - script(value): The JavaScript snippet to run.
-imcompatible with selenium ide: add target and move script to value.
+      imcompatible with selenium ide: add target and move script to value.
 
 ## select [〇]
 
@@ -455,6 +461,7 @@ window. Window locators use handles to select windows.
 
 - arguments
     - window handle(target): A handle representing a specific page (tab, or window).
+
     * tab=1 or contains page title, or contains url
 
 ## send keys [〇]
@@ -499,7 +506,8 @@ Gets the value of an element attribute. The value of the attribute may differ ac
 the "style" attribute, for example).
 
 - arguments
-    - attribute locator(target): An element locator followed by an @ sign and then the name of the attribute, e.g. "foo@bar".
+    - attribute locator(target): An element locator followed by an @ sign and then the name of the attribute, e.g. "
+      foo@bar".
     - variable name(value): The name of a variable without brackets.
 
 ## store json [〇]
@@ -563,7 +571,8 @@ Create a loop that executes the proceeding commands n number of times.
 
 - arguments
     - times(target): The number of attempts a times control flow loop will execute the commands within its block.
-    - loop limit(value): An optional argument that specifies the maximum number of times a looping control flow command can
+    - loop limit(value): An optional argument that specifies the maximum number of times a looping control flow command
+      can
       execute.
       This protects against infinite loops. The defaults value is set to 1000.
 
@@ -781,8 +790,6 @@ true.
       execute.
       This protects against infinite loops. The defaults value is set to 1000.
 
-
-
 ## read properties [〇]
 
 read properties from a file and set them as variables.
@@ -814,12 +821,12 @@ call api and set the values of response to environment variables.
 - arguments
     - url(target): The url of the api.
     - value: the json string or json file of the request body.
-       - method: The method of the api. Currently only get and post are supported.
-       - params: The params of the api.
-       - headers: The headers of the api.
-       - body: The body of the api.
-       - proxy: The proxy of the api.
-       - store: array, response values to environment variables.
+        - method: The method of the api. Currently only get and post are supported.
+        - params: The params of the api.
+        - headers: The headers of the api.
+        - body: The body of the api.
+        - proxy: The proxy of the api.
+        - store: array, response values to environment variables.
 
 ## jenkins job [〇]
 
@@ -828,17 +835,28 @@ run jenkins job.
 - arguments
     - url(target): The url of the jenkins.
     - value: the json string or json file of the request body.
-       - job: The job name of the jenkins.
-       - params: The params of the jenkins.
-       - token: The token of the jenkins.
-       - store: array, response values to environment variables.
+        - job: The job name of the jenkins.
+        - params: The params of the jenkins.
+        - token: The token of the jenkins.
+        - store: array, response values to environment variables.
 
 ## generate code [〇]
+
 generate code for development.
+
 - arguments
-  - target: The database group which defined in conf/db.conf.
-  - value: the json string or json file of the request body.
-    - author: author name.
-    - package: package name.
-    - basePackage: base package name.
-    - tables: split with comma.
+    - target: The database group which defined in conf/db.conf.
+    - value: the json string or json file of the request body.
+        - author: author name.
+        - package: package name.
+        - basePackage: base package name.
+        - tables: split with comma.
+
+## export db [〇]
+
+export db by sql.
+
+- arguments
+    - target: The database group which defined in conf/db.conf.
+    - value: sqls.
+    - path: the path of the exported file.

@@ -3,12 +3,11 @@ package io.hugang.execute.impl;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.setting.Setting;
-import cn.hutool.setting.SettingUtil;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import io.hugang.BasicExecutor;
 import io.hugang.bean.Command;
+import io.hugang.execute.DatabaseUtil;
 
 import java.util.Collections;
 
@@ -20,7 +19,7 @@ public class GenerateCodeCommand extends Command {
 
     @Override
     public boolean execute() {
-        Setting setting = SettingUtil.get(BasicExecutor.autoTestConfig.getWorkDir().concat("conf/db.conf"));
+        Setting setting = DatabaseUtil.getDbSetting();
         // get db from config
         String dbName = this.getTarget();
         String url = setting.get(dbName, "url");

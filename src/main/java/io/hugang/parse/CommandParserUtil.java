@@ -288,6 +288,8 @@ public class CommandParserUtil {
                 return new WaitForElementVisibleCommand(commandName, command.getTarget(), command.getValue());
             case "generateCode":
                 return new GenerateCodeCommand(commandName, command.getTarget(), command.getValue());
+            case "exportDb":
+                return new ExportDbCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }

@@ -27,3 +27,7 @@ Usage: auto-test [options]
 ```
 
 2. use test cases xlsm to run the test. there is an example file [[case_template.xlsm]] in test case directory.
+
+## commands.md
+
+refer to [[commands.md]] for the commands supported by auto-test.

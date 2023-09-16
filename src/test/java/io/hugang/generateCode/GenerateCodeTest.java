@@ -1,4 +1,4 @@
-package io.hugang.exportDb;
+package io.hugang.generateCode;
 
 import io.hugang.util.Utils;
 import org.junit.Test;
