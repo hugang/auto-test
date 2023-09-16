@@ -6,7 +6,7 @@
 
     <groupId>io.hugang</groupId>
     <artifactId>auto-test</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>v0.5</version>
 
     <properties>
         <!--set java language level 11-->
@@ -15,6 +15,7 @@
         <!-- encoding-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <myBatis.version>3.5.3.2</myBatis.version>
     </properties>
 
     <dependencies>
@@ -22,7 +23,7 @@
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
-            <version>6.16.1</version>
+            <version>6.18.0</version>
         </dependency>
         <!--import log4j-core-->
         <dependency>
@@ -34,7 +35,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.20</version>
+            <version>5.8.22</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -57,7 +58,7 @@
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
-            <version>1.81</version>
+            <version>1.82</version>
         </dependency>
         <!-- add junit4-->
         <dependency>
@@ -65,6 +66,31 @@
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
         </dependency>
+        <!-- add mysql-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.43.0.0</version>
+        </dependency>
+        <!-- add mybatis-plus-generator-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${myBatis.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-core -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-core</artifactId>
+            <version>${myBatis.version}</version>
+        </dependency>
+
     </dependencies>
     <!-- add dependency plugin-->
     <build>
@@ -83,7 +109,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>

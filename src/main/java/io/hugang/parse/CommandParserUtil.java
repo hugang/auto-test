@@ -286,6 +286,8 @@ public class CommandParserUtil {
                 return new WaitForElementPresentCommand(commandName, command.getTarget(), command.getValue());
             case "waitForElementVisible":
                 return new WaitForElementVisibleCommand(commandName, command.getTarget(), command.getValue());
+            case "generateCode":
+                return new GenerateCodeCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }

@@ -305,7 +305,7 @@ Create a conditional branch in your test. Terminate the branch with the end comm
 - arguments
   conditional expression(target): JavaScript expression that returns a boolean result for use in control flow commands.
 
-## mouse down
+## mouse down [〇]
 
 Simulates a user pressing the left mouse button (without releasing it yet).
 
@@ -344,7 +344,7 @@ Simulates a user hovering a mouse over the specified element.
 - arguments
     - locator(target): An element locator.
 
-## mouse up
+## mouse up [〇]
 
 Simulates the event that occurs when the user releases the mouse button (e.g., stops holding the button down).
 
@@ -832,3 +832,13 @@ run jenkins job.
        - params: The params of the jenkins.
        - token: The token of the jenkins.
        - store: array, response values to environment variables.
+
+## generate code [〇]
+generate code for development.
+- arguments
+  - target: The database group which defined in conf/db.conf.
+  - value: the json string or json file of the request body.
+    - author: author name.
+    - package: package name.
+    - basePackage: base package name.
+    - tables: split with comma.
