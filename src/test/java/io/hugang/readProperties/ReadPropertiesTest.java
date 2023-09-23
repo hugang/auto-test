@@ -1,6 +1,5 @@
 package io.hugang.readProperties;
 
-import io.hugang.execute.CommandExecuteUtil;
 import io.hugang.util.Utils;
 import org.junit.Test;
 
