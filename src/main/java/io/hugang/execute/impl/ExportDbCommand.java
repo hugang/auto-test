@@ -34,23 +34,23 @@ public class ExportDbCommand extends Command {
         StyleSet styleSet = writer.getStyleSet();
         styleSet.setAlign(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
 
-        List<Entity> resultEntiryList;
+        List<Entity> resultEntityList;
         try {
             writer.setCurrentRow(0);
             if (sqlStr.contains(";")) {
                 String[] sqlArr = sqlStr.split(";");
                 for (String sql : sqlArr) {
-                    resultEntiryList = Db.use(dbName).query(sql);
+                    resultEntityList = Db.use(dbName).query(sql);
                     Set<String> sqlSet = new HashSet<>(List.of(sql));
                     writer.write(sqlSet, false);
-                    writer.write(resultEntiryList, true);
+                    writer.write(resultEntityList, true);
                     writer.setCurrentRow(writer.getCurrentRow() + 1);
                 }
             } else {
-                resultEntiryList = Db.use(dbName).query(sqlStr);
+                resultEntityList = Db.use(dbName).query(sqlStr);
                 Set<String> sqlSet = new HashSet<>(List.of(sqlStr));
                 writer.write(sqlSet, false);
-                writer.write(resultEntiryList, true);
+                writer.write(resultEntityList, true);
             }
             writer.flush();
             writer.close();

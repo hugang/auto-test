@@ -33,7 +33,7 @@ public abstract class Command implements ICommand {
     // command
     private String command;
     // dict to store variables
-    private Dict dict = new Dict();
+    private final Dict dict = new Dict();
     // target
     private String target;
     // value
@@ -101,10 +101,7 @@ public abstract class Command implements ICommand {
 
     @Override
     public boolean isSkip() {
-        if (this.getDict().containsKey("skip") && this.getDict().getBool("skip")) {
-            return true;
-        }
-        return false;
+        return this.getDict().containsKey("skip") && this.getDict().getBool("skip");
     }
 
     @Override

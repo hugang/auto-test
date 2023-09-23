@@ -7,8 +7,6 @@ import io.hugang.execute.CommandExecuteUtil;
 
 @WebCommand
 public class AssertNotCheckedCommand extends Command {
-    public static final String KEY_TARGET = "target";
-
     public AssertNotCheckedCommand(String command, String target, String value) {
         super(command, target, value);
     }

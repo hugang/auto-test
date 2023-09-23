@@ -46,22 +46,29 @@ public class GenerateCodeCommand extends Command {
 
         FastAutoGenerator.create(url, user, pass)
                 .globalConfig(builder -> {
-                    builder.author(authorStr) // 设置作者
-                            .outputDir(path); // 指定输出目录
+                    // 设置作者
+                    builder.author(authorStr)
+                            // 指定输出目录
+                            .outputDir(path);
                 })
                 .packageConfig(builder -> {
-                    builder.parent(packageStr) // 设置父包名
-                            .moduleName(basePackageStr) // 设置父包模块名
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, path)); // 设置mapperXml生成路径
+                    // 设置父包名
+                    builder.parent(packageStr)
+                            // 设置父包模块名
+                            .moduleName(basePackageStr)
+                            // 设置mapperXml生成路径
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, path));
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude(tablesStr) // 设置需要生成的表名
-                            .addTablePrefix("t_", "c_"); // 设置过滤表前缀
+                    // 设置需要生成的表名
+                    builder.addInclude(tablesStr)
+                            // 设置过滤表前缀
+                            .addTablePrefix("t_", "c_");
                 })
-                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
+                // 使用Freemarker引擎模板，默认的是Velocity引擎模板,可以自定义模板引擎进行功能扩展
+                .templateEngine(new FreemarkerTemplateEngine())
                 .templateConfig(builder -> builder.controller("/templates/Controller"))
                 .execute();
-
         return true;
     }
 }
