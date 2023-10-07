@@ -1,4 +1,4 @@
-package io.hugang.parse;
+package io.hugang.util;
 
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;

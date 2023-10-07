@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import io.hugang.bean.Command;
-import io.hugang.execute.CommandExecuteUtil;
+import io.hugang.util.CommandExecuteUtil;
 
 /**
  * increase number command executor

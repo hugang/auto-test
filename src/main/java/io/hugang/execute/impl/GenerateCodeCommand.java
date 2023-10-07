@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import io.hugang.bean.Command;
-import io.hugang.execute.DatabaseUtil;
+import io.hugang.util.DatabaseUtil;
 
 import java.util.Collections;
 

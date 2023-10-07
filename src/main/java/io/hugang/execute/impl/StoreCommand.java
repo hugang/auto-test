@@ -1,7 +1,7 @@
 package io.hugang.execute.impl;
 
 import io.hugang.bean.Command;
-import io.hugang.execute.CommandExecuteUtil;
+import io.hugang.util.CommandExecuteUtil;
 
 public class StoreCommand extends Command {
 

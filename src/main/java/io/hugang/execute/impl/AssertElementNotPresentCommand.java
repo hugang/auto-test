@@ -3,7 +3,7 @@ package io.hugang.execute.impl;
 import cn.hutool.core.util.ObjectUtil;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
-import io.hugang.execute.CommandExecuteUtil;
+import io.hugang.util.CommandExecuteUtil;
 
 @WebCommand
 public class AssertElementNotPresentCommand extends Command {

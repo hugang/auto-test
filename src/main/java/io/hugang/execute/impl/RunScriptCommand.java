@@ -4,7 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
-import io.hugang.execute.CommandExecuteUtil;
+import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;

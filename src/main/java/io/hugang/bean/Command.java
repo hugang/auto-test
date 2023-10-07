@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import io.hugang.CommandExecuteException;
-import io.hugang.execute.CommandExecuteUtil;
+import io.hugang.util.CommandExecuteUtil;
 
 public abstract class Command implements ICommand {
 

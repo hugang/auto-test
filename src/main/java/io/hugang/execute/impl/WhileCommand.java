@@ -5,7 +5,7 @@ import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.bean.ICommand;
 import io.hugang.bean.IConditionCommand;
-import io.hugang.execute.JavaScriptEvaluator;
+import io.hugang.util.JavaScriptEvaluator;
 
 import javax.script.ScriptException;
 import java.util.ArrayList;

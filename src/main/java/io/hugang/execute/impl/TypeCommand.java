@@ -2,7 +2,7 @@ package io.hugang.execute.impl;
 
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
-import io.hugang.execute.CommandExecuteUtil;
+import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.Keys;
 
 @WebCommand

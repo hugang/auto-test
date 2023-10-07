@@ -3,7 +3,7 @@ package io.hugang.execute.impl;
 import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
-import io.hugang.execute.CommandExecuteUtil;
+import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
