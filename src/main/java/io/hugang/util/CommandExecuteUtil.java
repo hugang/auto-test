@@ -188,6 +188,10 @@ public class CommandExecuteUtil {
         return ENGINE.getTemplate(value).render(BasicExecutor.variablesMap);
     }
 
+    public static String render(String value, Dict dict) {
+        return ENGINE.getTemplate(value).render(dict);
+    }
+
     public static String getFilePath(String path, boolean createIfNotExists) {
         File file;
         if (FileUtil.isAbsolutePath(path)) {

@@ -9,8 +9,8 @@ import cn.hutool.log.Log;
 import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
 import io.hugang.BasicExecutor;
+import io.hugang.CommandExecuteException;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -43,18 +43,25 @@ public class DatabaseUtil {
         return BasicExecutor.autoTestConfig.getWorkDir().concat("conf/db.conf");
     }
 
+    public static List<String> getTables(Db db) {
+        try {
+            return getTables(db.getConnection());
+        } catch (SQLException e) {
+            log.error(e);
+            throw new CommandExecuteException(e);
+        }
+    }
+
     /**
      * 获得所有表名
      *
-     * @param ds 数据源
+     * @param conn 数据源连接
      * @return 表名列表
      */
-    public static List<String> getTables(DataSource ds) {
+    public static List<String> getTables(Connection conn) {
         final List<String> tables = new ArrayList<>();
-        Connection conn = null;
         ResultSet rs = null;
         try {
-            conn = ds.getConnection();
             final DatabaseMetaData metaData = conn.getMetaData();
             rs = metaData.getTables(conn.getCatalog(), null, null, new String[]{"TABLE"});
             if (rs == null) {
@@ -74,19 +81,19 @@ public class DatabaseUtil {
         return tables;
     }
 
-    /**
-     * 获得表的元信息
-     *
-     * @param ds        数据源
-     * @param tableName 表名
-     * @return Table对象
-     */
-    public static Table getTableMeta(DataSource ds, String tableName) {
+    public static Table getTableMeta(Db db, String tableName) {
+        try {
+            return getTableMeta(db.getConnection(), tableName);
+        } catch (SQLException e) {
+            log.error(e);
+            throw new CommandExecuteException(e);
+        }
+    }
+
+    public static Table getTableMeta(Connection conn, String tableName) {
         final Table table = Table.create(tableName);
-        Connection conn = null;
         ResultSet rs = null;
         try {
-            conn = ds.getConnection();
             final DatabaseMetaData metaData = conn.getMetaData();
             //获得主键
             rs = metaData.getPrimaryKeys(conn.getCatalog(), null, tableName);
@@ -100,6 +107,7 @@ public class DatabaseUtil {
             }
         } catch (SQLException e) {
             log.error(e);
+            throw new CommandExecuteException(e);
         } finally {
             close(rs, conn);
         }

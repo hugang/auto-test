@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
-            <version>6.18.0</version>
+            <version>6.19.0</version>
         </dependency>
         <!--import log4j-core-->
         <dependency>
@@ -40,7 +40,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>5.2.3</version>
+            <version>5.2.4</version>
         </dependency>
         <!-- add commons-csv-->
         <dependency>
@@ -78,19 +78,6 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.43.0.0</version>
         </dependency>
-        <!-- add mybatis-plus-generator-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>${myBatis.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-core -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-core</artifactId>
-            <version>${myBatis.version}</version>
-        </dependency>
-
     </dependencies>
     <!-- add dependency plugin-->
     <build>
