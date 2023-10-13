@@ -1,0 +1,18 @@
+{
+  "name": "test",
+  "tests": [
+    {
+      "name": "test1",
+      "commands": [
+        {
+          "command": "echo",
+          "target": "hello1"
+        },
+        {
+          "command": "echo",
+          "value": "{\"target\":\"hello2\"}"
+        }
+      ]
+    }
+  ]
+}

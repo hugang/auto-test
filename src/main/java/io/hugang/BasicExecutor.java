@@ -190,7 +190,7 @@ public class BasicExecutor {
             case "csv":
                 commandsList.addAll(CommandParserUtil.getCommandsFromCsv(testCasePath));
                 break;
-            case "side":
+            case "json":
                 commandsList.addAll(CommandParserUtil.getCommandsFromSide(testCasePath));
                 // save commandsList to a xlsx file
                 CommandParserUtil.saveCommandsListToXlsx(commandsList, autoTestConfig.getFileDownloadPath());

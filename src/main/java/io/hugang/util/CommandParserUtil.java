@@ -318,8 +318,12 @@ public class CommandParserUtil {
                 OriginalCommand command = new OriginalCommand();
                 JSON jsonCommand = (JSON) value;
                 command.setCommand(jsonCommand.getByPath("command").toString());
-                command.setTarget(jsonCommand.getByPath("target").toString());
-                command.setValue(jsonCommand.getByPath("value").toString());
+                if (ObjectUtil.isNotEmpty(jsonCommand.getByPath("target"))) {
+                    command.setTarget(jsonCommand.getByPath("target").toString());
+                }
+                if (ObjectUtil.isNotEmpty(jsonCommand.getByPath("value"))) {
+                    command.setValue(jsonCommand.getByPath("value").toString());
+                }
                 if (command.getCommand().equals("open")) {
                     command.setTarget(baseUrl + command.getTarget());
                 }

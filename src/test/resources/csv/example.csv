@@ -1,0 +1,3 @@
+readProperties,json,download/2.json
+setProperty,json,"{""userName"":""hugang"",""caseId"":""hugangのテスト"",""times"":""5""}"
+echo,,"{""target"":""${userName}""}"
