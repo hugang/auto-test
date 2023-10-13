@@ -297,14 +297,14 @@ public class CommandParserUtil {
     }
 
     /**
-     * read from side file and parse to command
+     * read from json file and parse to command
      *
-     * @param sideFilePath side file path
+     * @param jsonFilePath json file path
      * @return command list
      */
-    public static List<Commands> getCommandsFromSide(String sideFilePath) {
-        // read side file and parse to json
-        JSON json = JSONUtil.readJSON(new File(sideFilePath), CharsetUtil.CHARSET_UTF_8);
+    public static List<Commands> getCommandsFromJson(String jsonFilePath) {
+        // read json file and parse to json
+        JSON json = JSONUtil.readJSON(new File(jsonFilePath), CharsetUtil.CHARSET_UTF_8);
         // get the base url
         String baseUrl = (String) json.getByPath("url");
         // get the test case from json
@@ -344,7 +344,7 @@ public class CommandParserUtil {
     public static void saveCommandsListToXlsx(List<Commands> commandsList, String fileDownloadPath) {
         for (int i = 0; i < commandsList.size(); i++) {
             // create excel writer
-            String destFilePath = fileDownloadPath + "/testcaseFromSide_" + System.currentTimeMillis() + "_" + (i + 1) + ".xlsx";
+            String destFilePath = fileDownloadPath + "/testcaseFromJson_" + System.currentTimeMillis() + "_" + (i + 1) + ".xlsx";
             log.info("save to xlsx: {}", destFilePath);
 
             ExcelWriter writer = ExcelUtil.getWriter(destFilePath);

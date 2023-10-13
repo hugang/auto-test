@@ -191,7 +191,7 @@ public class BasicExecutor {
                 commandsList.addAll(CommandParserUtil.getCommandsFromCsv(testCasePath));
                 break;
             case "json":
-                commandsList.addAll(CommandParserUtil.getCommandsFromSide(testCasePath));
+                commandsList.addAll(CommandParserUtil.getCommandsFromJson(testCasePath));
                 // save commandsList to a xlsx file
                 CommandParserUtil.saveCommandsListToXlsx(commandsList, autoTestConfig.getFileDownloadPath());
                 break;
