@@ -1,0 +1,135 @@
+{
+	"info": {
+		"_postman_id": "84a81172-f2e6-459a-90ba-735e2d7ef3d7",
+		"name": "auto-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "csv",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/projs/auto-test/src/test/resources/csv/example.csv"
+						},
+						{
+							"key": "testcases",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "mode",
+							"value": "csv",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9191/run",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9191",
+					"path": [
+						"run"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "json",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/projs/auto-test/src/test/resources/json/example.json"
+						},
+						{
+							"key": "testcases",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "mode",
+							"value": "json",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9191/run",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9191",
+					"path": [
+						"run"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "xlsx",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/projs/auto-test/src/test/resources/open/open.xlsx"
+						},
+						{
+							"key": "testcases",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "mode",
+							"value": "xlsx",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9191/run",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9191",
+					"path": [
+						"run"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
