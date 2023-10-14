@@ -2,12 +2,14 @@ package io.hugang.execute.impl;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.Method;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import io.hugang.BasicExecutor;
 import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.util.CommandExecuteUtil;
@@ -63,7 +65,19 @@ public class CallApiCommand extends Command {
             String proxyHost = proxyObj.getStr("host");
             int proxyPort = proxyObj.getInt("port");
             httpRequest.setHttpProxy(proxyHost, proxyPort);
+            String proxyUser = proxyObj.getStr("username");
+            String proxyPass = proxyObj.getStr("password");
+            if (StrUtil.isNotEmpty(proxyUser) && StrUtil.isNotEmpty(proxyPass)) {
+                httpRequest.basicProxyAuth(proxyUser, proxyPass);
+            }
+        } else if (BasicExecutor.autoTestConfig.getProxyHost() != null && BasicExecutor.autoTestConfig.getProxyPort() != 0) {
+            httpRequest.setHttpProxy(BasicExecutor.autoTestConfig.getProxyHost(), BasicExecutor.autoTestConfig.getProxyPort());
+            // set proxy username and password
+            if (StrUtil.isNotEmpty(BasicExecutor.autoTestConfig.getProxyUser()) && StrUtil.isNotEmpty(BasicExecutor.autoTestConfig.getProxyPassword())) {
+                httpRequest.basicProxyAuth(BasicExecutor.autoTestConfig.getProxyUser(), BasicExecutor.autoTestConfig.getProxyPassword());
+            }
         }
+
         // if headers is null, return true
         if (headers != null) {
             // set headers to request, headers is a json object like {"Content-Type": "application/json"}

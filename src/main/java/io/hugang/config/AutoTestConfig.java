@@ -20,6 +20,8 @@ public class AutoTestConfig {
     public static final String GROUP_TEST_CASE = "test-case";
     // config group of base
     public static final String GROUP_BASE = "base";
+    // config group of proxy
+    public static final String GROUP_PROXY = "proxy";
     public static final String AUTO_TEST_HOME = "AUTO_TEST_HOME";
 
     /**
@@ -88,6 +90,26 @@ public class AutoTestConfig {
         if (restartDriverByCase != null) {
             this.setRestartWebDriverByCase(Boolean.parseBoolean(restartDriverByCase));
         }
+        // proxy host
+        String proxyHost = setting.get(GROUP_PROXY, "proxy.host");
+        if (proxyHost != null) {
+            this.setProxyHost(proxyHost);
+        }
+        // proxy port
+        String proxyPort = setting.get(GROUP_PROXY, "proxy.port");
+        if (proxyPort != null) {
+            this.setProxyPort(Integer.parseInt(proxyPort));
+        }
+        // proxy user
+        String proxyUser = setting.get(GROUP_PROXY, "proxy.username");
+        if (proxyUser != null) {
+            this.setProxyUser(proxyUser);
+        }
+        // proxy password
+        String proxyPassword = setting.get(GROUP_PROXY, "proxy.password");
+        if (proxyPassword != null) {
+            this.setProxyPassword(proxyPassword);
+        }
     }
 
     /**
@@ -147,6 +169,14 @@ public class AutoTestConfig {
     private String workDir;
     // base dir
     private String baseDir;
+    // proxy host
+    private String proxyHost;
+    // proxy port
+    private int proxyPort;
+    // proxy user
+    private String proxyUser;
+    // proxy password
+    private String proxyPassword;
 
     public String getUserProfilePath() {
         return userProfilePath;
@@ -266,5 +296,37 @@ public class AutoTestConfig {
 
     public void setBaseDir(String baseDir) {
         this.baseDir = baseDir.endsWith(File.separator) ? baseDir : baseDir + File.separator;
+    }
+
+    public String getProxyHost() {
+        return proxyHost;
+    }
+
+    public void setProxyHost(String proxyHost) {
+        this.proxyHost = proxyHost;
+    }
+
+    public int getProxyPort() {
+        return proxyPort;
+    }
+
+    public void setProxyPort(int proxyPort) {
+        this.proxyPort = proxyPort;
+    }
+
+    public String getProxyUser() {
+        return proxyUser;
+    }
+
+    public void setProxyUser(String proxyUser) {
+        this.proxyUser = proxyUser;
+    }
+
+    public String getProxyPassword() {
+        return proxyPassword;
+    }
+
+    public void setProxyPassword(String proxyPassword) {
+        this.proxyPassword = proxyPassword;
     }
 }
