@@ -19,7 +19,7 @@ public class AutoTestServer {
         server.addAction("/run", (request, response) -> {
             try {
                 UploadFile file = request.getMultipart().getFile("file");
-                File tempFile = new File(System.currentTimeMillis() + ".csv");
+                File tempFile = new File(System.currentTimeMillis() + "_" + file.getFileName());
                 file.write(tempFile);
                 if (file.getFileName().endsWith(".csv") || file.getFileName().endsWith(".json")) {
                     log.info(FileUtil.readString(tempFile, CharsetUtil.defaultCharset()));
