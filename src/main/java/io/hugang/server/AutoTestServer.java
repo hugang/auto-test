@@ -1,10 +1,15 @@
 package io.hugang.server;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.net.multipart.UploadFile;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.SimpleServer;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import io.hugang.BasicExecutor;
+
+import java.io.File;
 
 public class AutoTestServer {
     private static final Log log = LogFactory.get();
@@ -13,13 +18,22 @@ public class AutoTestServer {
         SimpleServer server = HttpUtil.createServer(9191);
         server.addAction("/run", (request, response) -> {
             try {
-                String path = request.getParam("path");
-                String testCases = request.getParam("testCases");
-                new BasicExecutor().execute("xlsx", path, testCases);
+                UploadFile file = request.getMultipart().getFile("file");
+                File tempFile = new File(System.currentTimeMillis() + ".csv");
+                file.write(tempFile);
+                if (file.getFileName().endsWith(".csv") || file.getFileName().endsWith(".json")) {
+                    log.info(FileUtil.readString(tempFile, CharsetUtil.defaultCharset()));
+                }
+                String path = tempFile.getAbsolutePath();
+                String testCases = request.getMultipart().getParam("testcases");
+                String mode = request.getMultipart().getParam("mode");
+                new BasicExecutor().execute(mode, path, testCases);
                 response.write("ok");
             } catch (Exception ex) {
                 log.error(ex);
+                response.write("ng");
             }
+            response.close();
         });
         server.start();
     }
