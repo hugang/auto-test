@@ -3,7 +3,6 @@ package io.hugang.execute.impl;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
-import io.hugang.util.CommandExecuteUtil;
 
 @WebCommand
 public class StoreTitleCommand extends Command {
@@ -14,7 +13,7 @@ public class StoreTitleCommand extends Command {
 
     @Override
     public boolean execute() {
-        CommandExecuteUtil.setVariable(this.getDictStr("value", this.getValue()), WebDriverRunner.getWebDriver().getTitle());
+        this.setVariable(this.getDictStr("value", this.getValue()), WebDriverRunner.getWebDriver().getTitle());
         return true;
     }
 }

@@ -5,7 +5,6 @@ import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.Command;
-import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.JavascriptExecutor;
 
 @WebCommand
@@ -19,7 +18,7 @@ public class ExecuteAsyncScriptCommand extends Command {
         try {
             JavascriptExecutor js = (JavascriptExecutor) WebDriverRunner.getWebDriver();
             if (ObjectUtil.isNotEmpty(this.getValue())) {
-                CommandExecuteUtil.setVariable(this.getValue(), String.valueOf(js.executeAsyncScript(this.getTarget())));
+                this.setVariable(this.getValue(), String.valueOf(js.executeAsyncScript(this.getTarget())));
             } else {
                 js.executeAsyncScript(this.getTarget());
             }

@@ -5,7 +5,6 @@ import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.bean.ICommand;
 import io.hugang.bean.IConditionCommand;
-import io.hugang.util.CommandExecuteUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,19 +26,19 @@ public class ForEachCommand extends Command implements IConditionCommand {
                 throw new CommandExecuteException("target or value is empty");
             }
 
-            Object target = CommandExecuteUtil.getVariable(this.getTarget());
+            Object target = this.getVariable(this.getTarget());
             String value = this.getDictStr("value", this.getValue());
 
             if (target instanceof String && ((String) target).contains(",")) {
                 Arrays.stream(((String) target).split(",")).forEach(s -> {
-                    CommandExecuteUtil.setVariable(value, s);
-                    this.getSubCommands().forEach(ICommand::execute);
+                    this.setVariable(value, s);
+                    this.runSubCommands();
                 });
             } else if (target instanceof List && !((List<?>) target).isEmpty()) {
                 List<?> list = (List<?>) target;
                 list.forEach(s -> {
-                    CommandExecuteUtil.setVariable(value, s);
-                    this.getSubCommands().forEach(ICommand::execute);
+                    this.setVariable(value, s);
+                    this.runSubCommands();
                 });
             } else {
                 throw new CommandExecuteException("target is not a list");
@@ -48,6 +47,18 @@ public class ForEachCommand extends Command implements IConditionCommand {
         } catch (Exception e) {
             throw new CommandExecuteException(e);
         }
+    }
+
+    private void runSubCommands() {
+        this.getSubCommands().forEach(e -> {
+            try {
+                e.setVariableMap(this.getVariableMap());
+                e.setAutoTestConfig(this.getAutoTestConfig());
+                e.execute();
+            } catch (CommandExecuteException ex) {
+                throw new CommandExecuteException(ex);
+            }
+        });
     }
 
     @Override

@@ -13,7 +13,7 @@ public class StoreTextCommand extends Command {
 
     @Override
     public boolean execute() {
-        CommandExecuteUtil.setVariable(this.getDictStr("value", this.getValue()), CommandExecuteUtil.getElement(this.getTarget()).getText());
+        this.setVariable(this.getDictStr("value", this.getValue()), CommandExecuteUtil.getElement(this.getTarget()).getText());
         return true;
     }
 }

@@ -6,7 +6,6 @@ import cn.hutool.db.Entity;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import cn.hutool.poi.excel.StyleSet;
-import io.hugang.BasicExecutor;
 import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -24,12 +23,12 @@ public class ExportDbCommand extends Command {
 
     @Override
     public boolean execute() {
-        DbUtil.setDbSettingPathGlobal(BasicExecutor.autoTestConfig.getWorkDir().concat("conf/db.conf"));
+        DbUtil.setDbSettingPathGlobal(this.getAutoTestConfig().getWorkDir().concat("conf/db.conf"));
         // get db from config
         String dbName = this.getTarget();
         String path = this.getDictStr("path");
         String sqlStr = render(this.getDictStr("value", this.getValue())).replace("\n", "");
-        path = BasicExecutor.autoTestConfig.getWorkDir().concat(render(path));
+        path = this.getAutoTestConfig().getWorkDir().concat(render(path));
         ExcelWriter writer = ExcelUtil.getWriter(path);
         StyleSet styleSet = writer.getStyleSet();
         styleSet.setAlign(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);

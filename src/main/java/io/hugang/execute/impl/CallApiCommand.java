@@ -9,10 +9,8 @@ import cn.hutool.http.Method;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import io.hugang.BasicExecutor;
 import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
-import io.hugang.util.CommandExecuteUtil;
 
 import java.nio.charset.Charset;
 
@@ -32,7 +30,7 @@ public class CallApiCommand extends Command {
         String options = render(this.getDictStr("value", getValue()));
         JSONObject obj;
         if (options.contains(".json")) {
-            options = CommandExecuteUtil.getFilePath(options);
+            options = this.getFilePath(options);
             // get json string from file
             options = render(FileUtil.readString(options, Charset.defaultCharset()));
         }
@@ -70,11 +68,11 @@ public class CallApiCommand extends Command {
             if (StrUtil.isNotEmpty(proxyUser) && StrUtil.isNotEmpty(proxyPass)) {
                 httpRequest.basicProxyAuth(proxyUser, proxyPass);
             }
-        } else if (BasicExecutor.autoTestConfig.getProxyHost() != null && BasicExecutor.autoTestConfig.getProxyPort() != 0) {
-            httpRequest.setHttpProxy(BasicExecutor.autoTestConfig.getProxyHost(), BasicExecutor.autoTestConfig.getProxyPort());
+        } else if (this.getAutoTestConfig().getProxyHost() != null && this.getAutoTestConfig().getProxyPort() != 0) {
+            httpRequest.setHttpProxy(this.getAutoTestConfig().getProxyHost(), this.getAutoTestConfig().getProxyPort());
             // set proxy username and password
-            if (StrUtil.isNotEmpty(BasicExecutor.autoTestConfig.getProxyUser()) && StrUtil.isNotEmpty(BasicExecutor.autoTestConfig.getProxyPassword())) {
-                httpRequest.basicProxyAuth(BasicExecutor.autoTestConfig.getProxyUser(), BasicExecutor.autoTestConfig.getProxyPassword());
+            if (StrUtil.isNotEmpty(this.getAutoTestConfig().getProxyUser()) && StrUtil.isNotEmpty(this.getAutoTestConfig().getProxyPassword())) {
+                httpRequest.basicProxyAuth(this.getAutoTestConfig().getProxyUser(), this.getAutoTestConfig().getProxyPassword());
             }
         }
 
@@ -111,10 +109,10 @@ public class CallApiCommand extends Command {
                         responseValue = byPath.toString();
                     }
                     // store value to context
-                    CommandExecuteUtil.setVariable(name, responseValue);
+                    this.setVariable(name, responseValue);
                 } else {
                     // store value to context
-                    CommandExecuteUtil.setVariable(name, value);
+                    this.setVariable(name, value);
                 }
             }
         } catch (Exception e) {

@@ -1,7 +1,6 @@
 package io.hugang.execute.impl;
 
 import io.hugang.bean.Command;
-import io.hugang.util.CommandExecuteUtil;
 
 /**
  * Check that a variable is an expected value.
@@ -23,6 +22,6 @@ public class AssertCommand extends Command {
     public boolean execute() {
         String target = this.getTarget();
         String value = this.getDictStr(VALUE, this.getValue());
-        return CommandExecuteUtil.getVariable(target).equals(value);
+        return this.getVariable(target).equals(value);
     }
 }

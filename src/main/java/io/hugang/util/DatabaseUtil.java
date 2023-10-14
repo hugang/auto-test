@@ -8,8 +8,8 @@ import cn.hutool.db.meta.Table;
 import cn.hutool.log.Log;
 import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
-import io.hugang.BasicExecutor;
 import io.hugang.CommandExecuteException;
+import io.hugang.config.AutoTestConfig;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -23,24 +23,24 @@ import static cn.hutool.db.DbUtil.close;
 public class DatabaseUtil {
     private final static Log log = Log.get();
 
-    public static Setting getDbSetting() {
-        return SettingUtil.get(getDbSettingPath());
+    public static Setting getDbSetting(AutoTestConfig autoTestConfig) {
+        return SettingUtil.get(getDbSettingPath(autoTestConfig));
     }
 
-    public static Db getDb() {
-        return getDb(null);
+    public static Db getDb(AutoTestConfig autoTestConfig) {
+        return getDb(autoTestConfig, null);
     }
 
-    public static Db getDb(String dbName) {
+    public static Db getDb(AutoTestConfig autoTestConfig, String dbName) {
         if (dbName == null || dbName.isEmpty()) {
-            return Db.use(DSFactory.create(getDbSetting()).getDataSource());
+            return Db.use(DSFactory.create(getDbSetting(autoTestConfig)).getDataSource());
         } else {
             return Db.use(dbName);
         }
     }
 
-    public static String getDbSettingPath() {
-        return BasicExecutor.autoTestConfig.getWorkDir().concat("conf/db.conf");
+    public static String getDbSettingPath(AutoTestConfig autoTestConfig) {
+        return autoTestConfig.getWorkDir().concat("conf/db.conf");
     }
 
     public static List<String> getTables(Db db) {

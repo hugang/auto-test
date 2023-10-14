@@ -1,7 +1,6 @@
 package io.hugang.execute.impl;
 
 import io.hugang.bean.Command;
-import io.hugang.util.CommandExecuteUtil;
 
 public class StoreCommand extends Command {
 
@@ -12,7 +11,7 @@ public class StoreCommand extends Command {
     @Override
     public boolean execute() {
         String value = this.getDictStr("value", this.getValue());
-        CommandExecuteUtil.setVariable(this.render(value), this.render(this.getTarget()));
+        this.setVariable(this.render(value), this.render(this.getTarget()));
         return true;
     }
 }

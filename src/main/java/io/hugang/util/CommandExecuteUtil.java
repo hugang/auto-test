@@ -8,8 +8,8 @@ import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
-import io.hugang.BasicExecutor;
 import io.hugang.CommandExecuteException;
+import io.hugang.config.AutoTestConfig;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -109,17 +109,7 @@ public class CommandExecuteUtil {
         return $;
     }
 
-    /**
-     * set variable
-     *
-     * @param key key
-     * @param $   selenide element
-     */
-    public static void setVariable(String key, SelenideElement $) {
-        BasicExecutor.variablesMap.put(key, CommandExecuteUtil.getElementValue($));
-    }
-
-    private static String getElementValue(SelenideElement $) {
+    public static String getElementValue(SelenideElement $) {
         String value = null;
         if ($ != null) {
             switch ($.getTagName()) {
@@ -141,63 +131,25 @@ public class CommandExecuteUtil {
     }
 
     /**
-     * set variable
-     *
-     * @param key   key
-     * @param value value
-     */
-    public static void setVariable(String key, Object value) {
-        BasicExecutor.variablesMap.put(key, value);
-    }
-
-    /**
-     * get variable
-     *
-     * @param key key
-     * @return variable
-     */
-    public static Object getVariable(String key) {
-        return BasicExecutor.variablesMap.get(key);
-    }
-
-    public static String getVariableStr(String key) {
-        return BasicExecutor.variablesMap.getStr(key);
-    }
-
-    public static Dict getVariables() {
-        return BasicExecutor.variablesMap;
-    }
-
-    /**
-     * has variable
-     *
-     * @param key key
-     * @return has or not
-     */
-    public static boolean hasVariable(String key) {
-        return BasicExecutor.variablesMap.containsKey(key);
-    }
-
-    /**
      * render template
      *
      * @param value template
      * @return rendered value
      */
-    public static String render(String value) {
-        return ENGINE.getTemplate(value).render(BasicExecutor.variablesMap);
+    public static String render(Dict dict, String value) {
+        return ENGINE.getTemplate(value).render(dict);
     }
 
     public static String render(String value, Dict dict) {
         return ENGINE.getTemplate(value).render(dict);
     }
 
-    public static String getFilePath(String path, boolean createIfNotExists) {
+    public static String getFilePath(AutoTestConfig autoTestConfig, String path, boolean createIfNotExists) {
         File file;
         if (FileUtil.isAbsolutePath(path)) {
             file = FileUtil.file(path);
         } else {
-            file = FileUtil.file(BasicExecutor.autoTestConfig.getWorkDir() + path);
+            file = FileUtil.file(autoTestConfig.getWorkDir() + path);
         }
         if (!file.exists() && createIfNotExists) {
             FileUtil.touch(file);
@@ -209,7 +161,7 @@ public class CommandExecuteUtil {
         return file.getAbsolutePath();
     }
 
-    public static String getFilePath(String path) {
-        return getFilePath(path, false);
+    public static String getFilePath(AutoTestConfig autoTestConfig, String path) {
+        return getFilePath(autoTestConfig, path, false);
     }
 }

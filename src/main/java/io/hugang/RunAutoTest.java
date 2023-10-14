@@ -29,7 +29,7 @@ public class RunAutoTest {
         }
         BasicExecutor basicExecutor = new BasicExecutor();
         // set to autoTestConfig if not null
-        AutoTestConfig autoTestConfig = basicExecutor.getAutoTestConfig();
+        AutoTestConfig autoTestConfig = new AutoTestConfig();
         if (StrUtil.isNotEmpty(autoTestCommandLineOption.getMode())) {
             autoTestConfig.setTestMode(autoTestCommandLineOption.getMode());
         }
@@ -48,6 +48,6 @@ public class RunAutoTest {
         // read the other user properties
         autoTestConfig.readConfigurations();
         // execute the test
-        basicExecutor.execute();
+        basicExecutor.execute(autoTestConfig);
     }
 }

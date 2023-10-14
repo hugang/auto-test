@@ -19,7 +19,7 @@ public class StoreAttributeCommand extends Command {
         String target = targetStr.substring(0, lastIndexOf);
         String attribute = targetStr.substring(lastIndexOf + 1);
         SelenideElement $ = CommandExecuteUtil.getElement(target);
-        CommandExecuteUtil.setVariable(this.getDictStr("value", this.getValue()), $.getAttribute(attribute));
+        this.setVariable(this.getDictStr("value", this.getValue()), $.getAttribute(attribute));
         return true;
     }
 }

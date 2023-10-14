@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import io.hugang.bean.Command;
-import io.hugang.util.CommandExecuteUtil;
 
 /**
  * increase number command executor
@@ -29,7 +28,7 @@ public class IncreaseNumberCommand extends Command {
     public boolean execute() {
         try {
             // get from variable map
-            String variable = CommandExecuteUtil.getVariableStr(this.getTarget());
+            String variable = this.getVariableStr(this.getTarget());
             if (!StrUtil.isNumeric(variable)) {
                 return false;
             }
@@ -41,7 +40,7 @@ public class IncreaseNumberCommand extends Command {
             int result = originNumber + NumberUtil.parseInt(value);
 
             // write back to variable map
-            CommandExecuteUtil.setVariable(this.getTarget(), result);
+            this.setVariable(this.getTarget(), result);
             return true;
         } catch (Exception e) {
             log.error("increase number command execute error", e);

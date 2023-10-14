@@ -5,7 +5,6 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
 import io.hugang.bean.Command;
-import io.hugang.util.CommandExecuteUtil;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -32,17 +31,17 @@ public class SavePropertiesCommand extends Command {
         Dict map;
 
         if (ObjectUtil.isEmpty(this.getValue())) {
-            map = CommandExecuteUtil.getVariables();
+            map = this.getVariables();
         } else {
             map = Dict.create();
             for (String key : this.getValue().split(",")) {
-                if (CommandExecuteUtil.hasVariable(key)) {
-                    map.put(key, CommandExecuteUtil.getVariable(key));
+                if (this.hasVariable(key)) {
+                    map.put(key, this.getVariable(key));
                 }
             }
         }
 
-        String saveFilePath = CommandExecuteUtil.getFilePath(render(this.getTarget()), true);
+        String saveFilePath = this.getFilePath(render(this.getTarget()), true);
         File file = FileUtil.writeString(JSONUtil.toJsonPrettyStr(map), saveFilePath, Charset.defaultCharset());
         return file.exists();
     }

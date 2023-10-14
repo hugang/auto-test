@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import io.hugang.CommandExecuteException;
+import io.hugang.config.AutoTestConfig;
 import io.hugang.util.CommandExecuteUtil;
 
 public abstract class Command implements ICommand {
@@ -38,6 +39,10 @@ public abstract class Command implements ICommand {
     private String target;
     // value
     private String value;
+    // variable map
+    private Dict variableMap;
+    // auto test config
+    private AutoTestConfig autoTestConfig;
 
     public String getCommand() {
         return command;
@@ -68,6 +73,22 @@ public abstract class Command implements ICommand {
         return StrUtil.isEmptyIfStr(value) ? defaultValue : value;
     }
 
+    public Dict getVariableMap() {
+        return variableMap;
+    }
+
+    public void setVariableMap(Dict variableMap) {
+        this.variableMap = variableMap;
+    }
+
+    public AutoTestConfig getAutoTestConfig() {
+        return autoTestConfig;
+    }
+
+    public void setAutoTestConfig(AutoTestConfig autoTestConfig) {
+        this.autoTestConfig = autoTestConfig;
+    }
+
     public void appendDict(Dict dict) {
         this.dict.putAll(dict);
     }
@@ -77,7 +98,7 @@ public abstract class Command implements ICommand {
     }
 
     public String render(String value) {
-        return CommandExecuteUtil.render(value);
+        return CommandExecuteUtil.render(value, this.variableMap);
     }
 
     public void generateDict() {
@@ -107,5 +128,33 @@ public abstract class Command implements ICommand {
     @Override
     public String toString() {
         return "Command: " + this.getCommand() + "\t" + "options: " + this.getDict() + "\t" + "Target: " + this.getTarget() + "\t" + "Value: " + this.getValue() + "\t";
+    }
+
+    public String getFilePath(String options) {
+        return CommandExecuteUtil.getFilePath(this.autoTestConfig, options);
+    }
+
+    public String getFilePath(String options, boolean isCreate) {
+        return CommandExecuteUtil.getFilePath(this.autoTestConfig, options, isCreate);
+    }
+
+    public void setVariable(String key, Object value) {
+        this.variableMap.put(key, value);
+    }
+
+    public Object getVariable(String key) {
+        return this.variableMap.get(key);
+    }
+
+    public String getVariableStr(String key) {
+        return this.variableMap.getStr(key);
+    }
+
+    public boolean hasVariable(String key) {
+        return this.variableMap.containsKey(key);
+    }
+
+    public Dict getVariables() {
+        return this.variableMap;
     }
 }

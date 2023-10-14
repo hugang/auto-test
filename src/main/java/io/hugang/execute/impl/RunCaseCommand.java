@@ -7,7 +7,6 @@ import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.bean.Commands;
 import io.hugang.bean.ICommand;
-import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.CommandParserUtil;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class RunCaseCommand extends Command {
     @Override
     public boolean execute() throws CommandExecuteException {
         List<Commands> commandsFromXlsx;
-        String path = CommandExecuteUtil.getFilePath(this.getTarget());
+        String path = this.getFilePath(this.getTarget());
         String type = this.getDictStr("type", "xlsx");
         String testCase = this.getDictStr("value", null);
         switch (type) {
@@ -53,6 +52,8 @@ public class RunCaseCommand extends Command {
 
         for (Commands commands : commandsFromXlsx) {
             for (ICommand command : commands.getCommands()) {
+                command.setAutoTestConfig(this.getAutoTestConfig());
+                command.setVariableMap(this.getVariableMap());
                 if (!command.execute()) {
                     return false;
                 }

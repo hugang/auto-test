@@ -19,11 +19,11 @@ public class GenerateCodeCommand extends Command {
         String dbName = this.getTarget();
         // parse value to json object
         Dict dict = new Dict();
-        dict.putAll(CommandExecuteUtil.getVariables());
+        dict.putAll(this.getVariables());
         dict.putAll(getDict());
 
         for (String table : dict.getStr("tables").split(",")) {
-            Table tableMeta = DatabaseUtil.getTableMeta(DatabaseUtil.getDb(dbName), table);
+            Table tableMeta = DatabaseUtil.getTableMeta(DatabaseUtil.getDb(this.getAutoTestConfig(), dbName), table);
             dict.set("table", tableMeta);
 
             System.out.println(CommandExecuteUtil.render("${table.tableName} columns : \n" +

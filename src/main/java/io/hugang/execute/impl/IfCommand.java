@@ -1,6 +1,5 @@
 package io.hugang.execute.impl;
 
-import io.hugang.BasicExecutor;
 import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.bean.ICommand;
@@ -23,7 +22,7 @@ public class IfCommand extends Command implements IConditionCommand {
     public boolean execute() throws CommandExecuteException {
         try {
             if (inCondition()) {
-                this.getSubCommands().forEach(ICommand::execute);
+                runSubCommands();
             }
             return true;
         } catch (Exception e) {
@@ -31,6 +30,17 @@ public class IfCommand extends Command implements IConditionCommand {
         }
     }
 
+    private void runSubCommands() {
+        this.getSubCommands().forEach(e -> {
+            try {
+                e.setVariableMap(this.getVariableMap());
+                e.setAutoTestConfig(this.getAutoTestConfig());
+                e.execute();
+            } catch (CommandExecuteException ex) {
+                throw new CommandExecuteException(ex);
+            }
+        });
+    }
     @Override
     public void addSubCommand(ICommand subCommand) {
         if (this.subCommands == null) {
@@ -42,7 +52,7 @@ public class IfCommand extends Command implements IConditionCommand {
     @Override
     public boolean inCondition() throws ScriptException {
         String render = render(this.getTarget());
-        return (boolean) JavaScriptEvaluator.evaluate(render, BasicExecutor.variablesMap);
+        return (boolean) JavaScriptEvaluator.evaluate(render, this.getVariableMap());
     }
 
     @Override

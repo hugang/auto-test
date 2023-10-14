@@ -1,7 +1,6 @@
 package io.hugang.execute.impl;
 
 import io.hugang.bean.Command;
-import io.hugang.util.CommandExecuteUtil;
 
 public class StoreJsonCommand extends Command {
 
@@ -13,7 +12,7 @@ public class StoreJsonCommand extends Command {
     public boolean execute() {
         String target = this.getTarget();
         String value = this.getDictStr("value", this.getValue());
-        CommandExecuteUtil.setVariable(value, target);
+        this.setVariable(value, target);
         return true;
     }
 }

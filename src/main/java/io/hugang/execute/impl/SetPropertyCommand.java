@@ -4,7 +4,6 @@ import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import io.hugang.bean.Command;
-import io.hugang.util.CommandExecuteUtil;
 
 import java.util.Map;
 
@@ -21,8 +20,8 @@ public class SetPropertyCommand extends Command {
     public boolean execute() {
         String type = this.getDictStr(KEY_TYPE, this.getTarget());
         if (VALUE_TYPE_JSON.equals(type)) {
-            for (Map.Entry<String, Object> propertiesMap : JSONUtil.parseObj(CommandExecuteUtil.render(this.getDictStr("value", this.getValue())))) {
-                CommandExecuteUtil.setVariable(propertiesMap.getKey(), propertiesMap.getValue());
+            for (Map.Entry<String, Object> propertiesMap : JSONUtil.parseObj(this.render(this.getDictStr("value", this.getValue())))) {
+                this.setVariable(propertiesMap.getKey(), propertiesMap.getValue());
             }
         } else {
             log.error("unknown command target: {}", this.getTarget());

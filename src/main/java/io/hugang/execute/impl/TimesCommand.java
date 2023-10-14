@@ -1,5 +1,6 @@
 package io.hugang.execute.impl;
 
+import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.bean.ICommand;
 import io.hugang.bean.IConditionCommand;
@@ -20,10 +21,22 @@ public class TimesCommand extends Command implements IConditionCommand {
     @Override
     public boolean execute() {
         while (inCondition()) {
-            this.getSubCommands().forEach(ICommand::execute);
+            runSubCommands();
             times--;
         }
         return true;
+    }
+
+    private void runSubCommands() {
+        this.getSubCommands().forEach(e -> {
+            try {
+                e.setVariableMap(this.getVariableMap());
+                e.setAutoTestConfig(this.getAutoTestConfig());
+                e.execute();
+            } catch (CommandExecuteException ex) {
+                throw new CommandExecuteException(ex);
+            }
+        });
     }
 
     @Override

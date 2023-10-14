@@ -5,7 +5,6 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import io.hugang.bean.Command;
-import io.hugang.util.CommandExecuteUtil;
 
 /**
  * set property command executor
@@ -33,9 +32,9 @@ public class ReadPropertiesCommand extends Command {
         String file = this.getDictStr(KEY_FILE, this.getValue());
 
         if (VALUE_TYPE_JSON.equals(type)) {
-            String filePath = CommandExecuteUtil.getFilePath(file);
+            String filePath = this.getFilePath(file);
             JSONObject json = (JSONObject) JSONUtil.readJSON(FileUtil.file(filePath), CharsetUtil.CHARSET_UTF_8);
-            json.forEach(CommandExecuteUtil::setVariable);
+            json.forEach(this::setVariable);
         }
 
         return true;
