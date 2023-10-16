@@ -8,6 +8,12 @@ import io.hugang.CommandExecuteException;
 import io.hugang.config.AutoTestConfig;
 import io.hugang.util.CommandExecuteUtil;
 
+/**
+ * base command
+ * <p>
+ * variableMap is for all commands <br>
+ * dict is for this command
+ */
 public abstract class Command implements ICommand {
 
     public static final String TARGET = "target";

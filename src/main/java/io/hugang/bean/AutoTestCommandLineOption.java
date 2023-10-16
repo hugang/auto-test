@@ -2,6 +2,9 @@ package io.hugang.bean;
 
 import com.beust.jcommander.Parameter;
 
+/**
+ * command line option to parse the command line arguments
+ */
 public class AutoTestCommandLineOption {
 
     @Parameter(names = {"-f", "--file"}, description = "the test case file to be executed, specific absolute path,  if relative path, it will look for the file in the work directory.")
