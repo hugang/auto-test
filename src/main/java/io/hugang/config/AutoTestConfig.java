@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
 import cn.hutool.system.SystemUtil;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 
@@ -283,7 +284,14 @@ public class AutoTestConfig {
     }
 
     public String getWorkDir() {
-        return StrUtil.isEmpty(workDir) ? SystemUtil.get(AUTO_TEST_HOME) + File.separator : workDir;
+        if (StrUtil.isEmpty(this.workDir)) {
+            this.workDir = SystemUtil.get(AUTO_TEST_HOME);
+        }
+        if (StrUtil.isEmpty(this.workDir)) {
+            this.workDir = FileUtils.getFile("").getAbsolutePath();
+        }
+        return this.workDir.concat(File.separator);
+
     }
 
     public void setWorkDir(String workDir) {
