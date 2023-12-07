@@ -299,7 +299,8 @@ public class AutoTestConfig {
     }
 
     public String getBaseDir() {
-        return StrUtil.isEmpty(baseDir) ? SystemUtil.get(AUTO_TEST_HOME) + File.separator : baseDir;
+        return StrUtil.isEmpty(baseDir) ? StrUtil.isNotEmpty(SystemUtil.get(AUTO_TEST_HOME)) ?
+                SystemUtil.get(AUTO_TEST_HOME) + File.separator : this.getWorkDir() : baseDir;
     }
 
     public void setBaseDir(String baseDir) {
