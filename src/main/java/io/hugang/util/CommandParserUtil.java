@@ -88,15 +88,23 @@ public class CommandParserUtil {
      */
     public static List<Commands> getCommandsFromXlsx(String xlsxFilePath) {
         List<Commands> commandsList = new ArrayList<>();
+
         // first row is command, second row is target, third row is value or execute
         ExcelReader reader = ExcelUtil.getReader(xlsxFilePath, 0);
 
+        int startLineNo = 0;
         // read the first row
         List<Object> commandRow = reader.readRow(0);
+        if (ObjectUtil.isEmpty(commandRow) || ObjectUtil.isEmpty(commandRow.get(0))) {
+            // if the first row is comment line, set the start line number to 1
+            startLineNo = 1;
+            commandRow = reader.readRow(startLineNo);
+        }
+
         // read the second row
-        List<Object> targetRow = reader.readRow(1);
+        List<Object> targetRow = reader.readRow(startLineNo + 1);
         // read the left rows
-        for (int i = 2; i < reader.getRowCount(); i++) {
+        for (int i = startLineNo + 2; i < reader.getRowCount(); i++) {
             List<Object> valueRow = reader.readRow(i);
             // judge the value row is empty or not
             String caseNo = valueRow.get(0).toString();
@@ -290,6 +298,8 @@ public class CommandParserUtil {
                 return new GenerateCodeCommand(commandName, command.getTarget(), command.getValue());
             case "exportDb":
                 return new ExportDbCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyElementPresent":
+                return new VerifyElementPresentCommand(commandName, command.getTarget(), command.getValue());
             default:
                 break;
         }

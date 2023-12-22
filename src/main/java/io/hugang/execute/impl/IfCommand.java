@@ -1,10 +1,13 @@
 package io.hugang.execute.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import io.hugang.CommandExecuteException;
 import io.hugang.bean.Command;
 import io.hugang.bean.ICommand;
 import io.hugang.bean.IConditionCommand;
+import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.JavaScriptEvaluator;
+import org.openqa.selenium.WebElement;
 
 import javax.script.ScriptException;
 import java.util.ArrayList;
@@ -41,6 +44,7 @@ public class IfCommand extends Command implements IConditionCommand {
             }
         });
     }
+
     @Override
     public void addSubCommand(ICommand subCommand) {
         if (this.subCommands == null) {
@@ -52,6 +56,10 @@ public class IfCommand extends Command implements IConditionCommand {
     @Override
     public boolean inCondition() throws ScriptException {
         String render = render(this.getTarget());
+        if (render.startsWith("xpath=") || render.startsWith("css=") || render.startsWith("id=")) {
+            List<WebElement> elements = CommandExecuteUtil.findElements(render);
+            return ObjectUtil.isNotEmpty(elements);
+        }
         return (boolean) JavaScriptEvaluator.evaluate(render, this.getVariableMap());
     }
 
