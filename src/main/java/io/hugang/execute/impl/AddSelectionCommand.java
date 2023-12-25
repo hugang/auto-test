@@ -20,7 +20,7 @@ public class AddSelectionCommand extends Command {
     public boolean execute() throws CommandExecuteException {
 
         try {
-            String target = this.getTarget();
+            String target = render(this.getTarget());
             String option = getDictStr(KEY_VALUE, this.getValue());
 
             WebElement element = CommandExecuteUtil.getElement(target).findElement(By.xpath("//option[. = '" + render(option) + "']"));
