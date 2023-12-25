@@ -14,7 +14,7 @@ public class ClickCommand extends Command {
 
     @Override
     public boolean execute() {
-        execute(CommandExecuteUtil.getElement(getTarget()));
+        execute(CommandExecuteUtil.getElement(render(getTarget())));
         return true;
     }
 
