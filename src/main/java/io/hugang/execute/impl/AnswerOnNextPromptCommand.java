@@ -6,6 +6,19 @@ import io.hugang.bean.Command;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 
+/**
+ * AnswerOnNextPromptCommand
+ * <p>
+ * AnswerOnNextPromptCommand is used to answer a prompt dialog.
+ * The dialog is dismissed, and the value is set to the string of the target.
+ * <br>
+ * <b>Command format:</b>
+ * <br>
+ * answerOnNextPrompt | target | value
+ * <br>
+ *
+ * @author hugang
+ */
 @WebCommand
 public class AnswerOnNextPromptCommand extends Command {
     public AnswerOnNextPromptCommand(String command, String target, String value) {

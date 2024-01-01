@@ -88,31 +88,34 @@ public class CallApiCommand extends Command {
             }
         }
         try {
-            HttpResponse response = httpRequest.execute();
-            Object o = obj.get("store");
-            if (o == null) {
-                return true;
-            }
-            // the object o is a json array, so we need to loop it
-            JSONArray store = (JSONArray) o;
-            // get value from response body
-            JSONObject jsonObject = JSONUtil.parseObj(response.body());
-            for (int i = 0; i < store.size(); i++) {
-                JSONObject storeObj = store.getJSONObject(i);
-                String name = storeObj.getStr("name");
-                String value = storeObj.getStr("value");
-                String responseKey = storeObj.getStr("responseKey");
-                if (responseKey != null) {
-                    Object byPath = JSONUtil.getByPath(jsonObject, responseKey);
-                    String responseValue = "";
-                    if (ObjectUtil.isNotEmpty(byPath)) {
-                        responseValue = byPath.toString();
+            JSONArray store;
+            JSONObject jsonObject;
+            try (HttpResponse response = httpRequest.execute()) {
+                Object o = obj.get("store");
+                if (o == null) {
+                    return true;
+                }
+                // the object o is a json array, so we need to loop it
+                store = (JSONArray) o;
+                // get value from response body
+                jsonObject = JSONUtil.parseObj(response.body());
+                for (int i = 0; i < store.size(); i++) {
+                    JSONObject storeObj = store.getJSONObject(i);
+                    String name = storeObj.getStr("name");
+                    String value = storeObj.getStr("value");
+                    String responseKey = storeObj.getStr("responseKey");
+                    if (responseKey != null) {
+                        Object byPath = JSONUtil.getByPath(jsonObject, responseKey);
+                        String responseValue = "";
+                        if (ObjectUtil.isNotEmpty(byPath)) {
+                            responseValue = byPath.toString();
+                        }
+                        // store value to context
+                        this.setVariable(name, responseValue);
+                    } else {
+                        // store value to context
+                        this.setVariable(name, value);
                     }
-                    // store value to context
-                    this.setVariable(name, responseValue);
-                } else {
-                    // store value to context
-                    this.setVariable(name, value);
                 }
             }
         } catch (Exception e) {
