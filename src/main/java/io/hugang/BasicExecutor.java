@@ -244,6 +244,9 @@ public class BasicExecutor {
         if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
             this.init(autoTestConfig);
         }
+        // clear result file
+        FileUtil.writeUtf8String("", autoTestConfig.getBaseDir() + "/result.txt");
+
         // execute the commands
         for (Commands commands : commandsList) {
             try {
@@ -288,16 +291,27 @@ public class BasicExecutor {
                     command.setAutoTestConfig(autoTestConfig);
                     result = command.execute();
                     if (!result) {
+                        // write failed result to file
+                        writeResultToFile("caseId: " + commands.getCaseId() + " result: false\n", autoTestConfig.getBaseDir() + "/result.txt");
                         log.error("execute command failed, command={}", command);
                         return;
                     }
                 }
             } catch (Exception e) {
+                // write failed result to file
+                writeResultToFile("caseId: " + commands.getCaseId() + " result: false\n", autoTestConfig.getBaseDir() + "/result.txt");
                 log.error("execute command failed, command={}", command);
                 log.error("execute command failed detail", e);
                 return;
             }
         }
+        // write success result to file
+        writeResultToFile("caseId: " + commands.getCaseId() + " result: true\n", autoTestConfig.getBaseDir() + "/result.txt");
         log.info(variablesMap.toString());
+    }
+
+    // function to write the result to a file with append mode
+    public void writeResultToFile(String result, String filePath) {
+        FileUtil.appendUtf8String(result, filePath);
     }
 }

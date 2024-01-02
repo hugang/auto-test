@@ -1,4 +1,5 @@
 @echo off
+call env.bat
 set CURRENT_DIR=%cd%
 
 echo %* | findstr /C:"-d" 1>nul
