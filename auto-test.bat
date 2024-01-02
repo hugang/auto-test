@@ -1,8 +1,8 @@
 @echo off
 set CURRENT_DIR=%cd%
-set JAVA_HOME=%USERPROFILE%\.jdks\corretto-11.0.19
+rem set JAVA_HOME=%USERPROFILE%\.jdks\corretto-11.0.19
 rem set AUTO_TEST_HOME=C:/projs/auto-test to environment variable and path
-set PATH=%PATH%;%JAVA_HOME%\bin
+rem set PATH=%PATH%;%JAVA_HOME%\bin
 
 set found=false
 for %%i in (%*) do (
