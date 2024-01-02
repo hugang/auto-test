@@ -1,19 +1,9 @@
 @echo off
 set CURRENT_DIR=%cd%
-rem set JAVA_HOME=%USERPROFILE%\.jdks\corretto-11.0.19
-rem set AUTO_TEST_HOME=C:/projs/auto-test to environment variable and path
-rem set PATH=%PATH%;%JAVA_HOME%\bin
 
-set found=false
-for %%i in (%*) do (
-    if "%%i"=="-d" (
-        set found=true
-    )
-)
-if %found%==true (
-    rem echo "java -Dfile.encoding=UTF-8 -cp %AUTO_TEST_HOME%/libs/* io.hugang.RunAutoTest -b %AUTO_TEST_HOME% %*"
-    java -Dfile.encoding=UTF-8 -cp %AUTO_TEST_HOME%/libs/* io.hugang.RunAutoTest -b %AUTO_TEST_HOME% %*
-) else (
-    rem echo "java -Dfile.encoding=UTF-8 -cp %AUTO_TEST_HOME%/libs/* io.hugang.RunAutoTest -b %AUTO_TEST_HOME% -d %CURRENT_DIR% %*"
+echo %* | findstr /C:"-d" 1>nul
+if errorlevel 1 (
     java -Dfile.encoding=UTF-8 -cp %AUTO_TEST_HOME%/libs/* io.hugang.RunAutoTest -b %AUTO_TEST_HOME% -d %CURRENT_DIR% %*
+) else (
+    java -Dfile.encoding=UTF-8 -cp %AUTO_TEST_HOME%/libs/* io.hugang.RunAutoTest -b %AUTO_TEST_HOME% %*
 )
