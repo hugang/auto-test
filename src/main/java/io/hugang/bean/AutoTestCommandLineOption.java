@@ -19,6 +19,8 @@ public class AutoTestCommandLineOption {
     private String baseDir;
     @Parameter(names = {"-h", "--help"}, description = "help message", help = true)
     private boolean help;
+    @Parameter(names = {"-v", "--version"}, description = "version", arity = 0)
+    private boolean version;
 
     public String getFilePath() {
         return filePath;
@@ -68,6 +70,14 @@ public class AutoTestCommandLineOption {
         this.help = help;
     }
 
+    public boolean isVersion() {
+        return version;
+    }
+
+    public void setVersion(boolean version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
         return "AutoTestCommandLineOption{" +
@@ -77,6 +87,7 @@ public class AutoTestCommandLineOption {
                 ", workDir='" + workDir + '\'' +
                 ", baseDir='" + baseDir + '\'' +
                 ", help=" + help +
+                ", version='" + version + '\'' +
                 '}';
     }
 }

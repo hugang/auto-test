@@ -11,9 +11,9 @@ for %%i in (%*) do (
     )
 )
 if %found%==true (
-    echo "java -Dfile.encoding=UTF-8 -cp %AUTO_TEST_HOME%/libs/* io.hugang.RunAutoTest -b %AUTO_TEST_HOME% %*"
+    rem echo "java -Dfile.encoding=UTF-8 -cp %AUTO_TEST_HOME%/libs/* io.hugang.RunAutoTest -b %AUTO_TEST_HOME% %*"
     java -Dfile.encoding=UTF-8 -cp %AUTO_TEST_HOME%/libs/* io.hugang.RunAutoTest -b %AUTO_TEST_HOME% %*
 ) else (
-    echo "java -Dfile.encoding=UTF-8 -cp %AUTO_TEST_HOME%/libs/* io.hugang.RunAutoTest -b %AUTO_TEST_HOME% -d %CURRENT_DIR% %*"
+    rem echo "java -Dfile.encoding=UTF-8 -cp %AUTO_TEST_HOME%/libs/* io.hugang.RunAutoTest -b %AUTO_TEST_HOME% -d %CURRENT_DIR% %*"
     java -Dfile.encoding=UTF-8 -cp %AUTO_TEST_HOME%/libs/* io.hugang.RunAutoTest -b %AUTO_TEST_HOME% -d %CURRENT_DIR% %*
 )

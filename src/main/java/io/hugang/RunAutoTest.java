@@ -27,6 +27,18 @@ public class RunAutoTest {
             jCommander.usage();
             return;
         }
+        // if version is not null, print version and return
+        if (autoTestCommandLineOption.isVersion()) {
+            System.out.println("auto-test version: 1.0.0");
+            return;
+        }
+
+        // if filePath is null, print help message and return
+        if (StrUtil.isEmpty(autoTestCommandLineOption.getFilePath())) {
+            jCommander.usage();
+            return;
+        }
+
         BasicExecutor basicExecutor = new BasicExecutor();
         // set to autoTestConfig if not null
         AutoTestConfig autoTestConfig = new AutoTestConfig();
