@@ -1,13 +1,4 @@
 ## TEST
-- AddSelectionCommand.java OK
-
-- AnswerOnNextPromptCommand.java OK
-
-- AssertAlertCommand.java OK
-
-AssertCheckedCommand.java
-
-AssertCommand.java
 
 AssertElementNotPresentCommand.java
 
@@ -29,8 +20,6 @@ DoubleClickAtCommand.java
 
 DoubleClickCommand.java
 
-EchoCommand.java
-
 ExecuteAsyncScriptCommand.java
 
 ExecuteScriptCommand.java
@@ -40,8 +29,6 @@ ExportDbCommand.java
 ForEachCommand.java
 
 GenerateCodeCommand.java
-
-IfCommand.java
 
 IncreaseNumberCommand.java
 
@@ -117,11 +104,3 @@ WaitForTextCommand.java
 
 WhileCommand.java
 
-## command line
-
-auto-test -v
-
-auto-test -c autotest.conf -f  C:\projs\auto-test\src\test\resources\addSelection\addSelection.xlsx
-
-
-## script runtime java17
