@@ -6,6 +6,8 @@ import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.*;
 import org.bytedeco.javacv.Frame;
 
+import java.util.concurrent.Executors;
+
 /**
  * recorder command
  *
@@ -25,31 +27,37 @@ public class RecorderCommand extends Command {
     public boolean execute() {
         String outputFile = getTarget();
         // new recorder and start
+        int width = 1920;
+        int height = 1080;
+        int frameRate = 30;
         try {
             grabber = new FFmpegFrameGrabber("desktop");
             grabber.setFormat("gdigrab");
-            grabber.setFrameRate(30);
+            grabber.setFrameRate(frameRate);
+            grabber.setImageHeight(height);
+            grabber.setImageWidth(width);
             grabber.start();
 
             // Create a FrameRecorder
-            FrameRecorder recorder = FFmpegFrameRecorder.createDefault(outputFile, 640, 480);
+            recorder = FFmpegFrameRecorder.createDefault(outputFile, width, height);
             recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264); // MP4 encoding
             recorder.setFormat("mp4");
-            recorder.setFrameRate(30);
+            recorder.setFrameRate(frameRate);
             recorder.start();
 
-            // create a async thread to record
-            new Thread(() -> {
+            // create an async thread to record
+            Thread recorder = new Thread(() -> {
                 try {
                     // Capture and record frames
                     Frame frame;
                     while ((frame = grabber.grab()) != null) {
-                        recorder.record(frame);
+                        RecorderCommand.recorder.record(frame);
                     }
                 } catch (FrameGrabber.Exception | FrameRecorder.Exception e) {
                     log.error("record error", e);
                 }
-            }).start();
+            });
+            Executors.newSingleThreadExecutor().submit(recorder);
         } catch (FrameGrabber.Exception | FrameRecorder.Exception e) {
             log.error("start recorder error", e);
             return false;
