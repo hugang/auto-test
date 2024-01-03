@@ -30,7 +30,7 @@ public class SavePropertiesCommand extends Command {
 
         Dict map;
 
-        if (ObjectUtil.isEmpty(this.getValue())) {
+        if (ObjectUtil.isEmpty(this.getValue()) || JSONUtil.isTypeJSONObject(this.getValue())) {
             map = this.getVariables();
         } else {
             map = Dict.create();

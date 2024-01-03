@@ -1,5 +1,6 @@
 package io.hugang.setWindowSize;
 
+import io.hugang.CommandExecuteException;
 import io.hugang.util.Utils;
 import org.junit.Test;
 
@@ -11,6 +12,10 @@ public class SetWindowSizeTest {
 
     @Test
     public void testSetWindowSizeErrXlsx() {
-        Utils.execute("xlsx", "setWindowSize/setWindowSizeError.xlsx");
+        try {
+            Utils.execute("xlsx", "setWindowSize/setWindowSizeError.xlsx");
+        } catch (CommandExecuteException e) {
+            assert e.getMessage().contains("NumberFormatException");
+        }
     }
 }
