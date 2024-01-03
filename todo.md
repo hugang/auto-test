@@ -1,35 +1,10 @@
 ## TEST
 
-ClickAtCommand.java
 ClickCommand.java
-CloseCommand.java
-ExecuteAsyncScriptCommand.java
-ExecuteScriptCommand.java
 ExportDbCommand.java
 ForEachCommand.java
 GenerateCodeCommand.java
-IncreaseNumberCommand.java
 JenkinsJobCommand.java
-RunCaseCommand.java
-RunCommand.java
-RunScriptCommand.java
-SavePropertiesCommand.java
-ScreenshotCommand.java
-SelectWindowCommand.java
-SendKeysCommand.java
-StoreAttributeCommand.java
-StoreCommand.java
-StoreJsonCommand.java
-StoreTextCommand.java
-StoreTitleCommand.java
-StoreValueCommand.java
-StoreXpathCountCommand.java
-SubmitCommand.java
-TimesCommand.java
 TypeCommand.java
-UncheckCommand.java
 VerifyElementPresentCommand.java
-WaitForElementPresentCommand.java
-WaitForElementVisibleCommand.java
-WaitForTextCommand.java
 WhileCommand.java
