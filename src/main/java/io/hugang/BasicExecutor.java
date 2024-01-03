@@ -14,7 +14,10 @@ import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.bean.Commands;
 import io.hugang.bean.ICommand;
 import io.hugang.config.AutoTestConfig;
+import io.hugang.execute.impl.RecorderCommand;
 import io.hugang.util.CommandParserUtil;
+import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.FrameRecorder;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -305,6 +308,10 @@ public class BasicExecutor {
                 return;
             }
         }
+
+        // stop recorder
+        RecorderCommand.stop();
+
         // write success result to file
         writeResultToFile("caseId: " + commands.getCaseId() + " result: true\n", autoTestConfig.getBaseDir() + "/result.txt");
         log.info(variablesMap.toString());

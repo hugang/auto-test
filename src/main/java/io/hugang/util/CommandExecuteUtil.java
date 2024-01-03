@@ -109,27 +109,6 @@ public class CommandExecuteUtil {
         return $;
     }
 
-    public static String getElementValue(SelenideElement $) {
-        String value = null;
-        if ($ != null) {
-            switch ($.getTagName()) {
-                case "input": {
-                    value = $.getValue();
-                    break;
-                }
-                case "select": {
-                    value = $.getSelectedOptionText();
-                    break;
-                }
-                default: {
-                    value = $.getText();
-                    break;
-                }
-            }
-        }
-        return value;
-    }
-
     /**
      * render template
      *

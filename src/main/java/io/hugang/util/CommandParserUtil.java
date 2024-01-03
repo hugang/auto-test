@@ -187,123 +187,73 @@ public class CommandParserUtil {
 
     private static ICommand parseOriginToCommand(OriginalCommand command) {
         String commandName = command.getCommand();
-        switch (commandName) {
-            case "click":
-                return new ClickCommand(commandName, command.getTarget(), command.getValue());
-            case "type":
-                return new TypeCommand(commandName, command.getTarget(), command.getValue());
-            case "select":
-                return new SelectCommand(commandName, command.getTarget(), command.getValue());
-            case "selectFrame":
-                return new SelectFrameCommand(commandName, command.getTarget(), command.getValue());
-            case "selectWindow":
-                return new SelectWindowCommand(commandName, command.getTarget(), command.getValue());
-            case "open":
-                return new OpenCommand(commandName, command.getTarget(), command.getValue());
-            case "run":
-                return new RunCommand(commandName, command.getTarget(), command.getValue());
-            case "runScript":
-                return new RunScriptCommand(commandName, command.getTarget(), command.getValue());
-            case "echo":
-                return new EchoCommand(commandName, command.getTarget(), command.getValue());
-            case "setProperty":
-                return new SetPropertyCommand(commandName, command.getTarget(), command.getValue());
-            case "readProperties":
-                return new ReadPropertiesCommand(commandName, command.getTarget(), command.getValue());
-            case "saveProperties":
-                return new SavePropertiesCommand(commandName, command.getTarget(), command.getValue());
-            case "increaseNumber":
-                return new IncreaseNumberCommand(commandName, command.getTarget(), command.getValue());
-            case "setWindowSize":
-                return new SetWindowSizeCommand(commandName, command.getTarget(), command.getValue());
-            case "waitForText":
-                return new WaitForTextCommand(commandName, command.getTarget(), command.getValue());
-            case "sendKeys":
-                return new SendKeysCommand(commandName, command.getTarget(), command.getValue());
-            case "screenshot":
-                return new ScreenshotCommand(commandName, command.getTarget(), command.getValue());
-            case "submit":
-                return new SubmitCommand(commandName, command.getTarget(), command.getValue());
-            case "pause":
-            case "wait":
-            case "sleep":
-                return new PauseCommand(commandName, command.getTarget(), command.getValue());
-            case "assert":
-                return new AssertCommand(commandName, command.getTarget(), command.getValue());
-            case "assertAlert":
-                return new AssertAlertCommand(commandName, command.getTarget(), command.getValue());
-            case "assertElementPresent":
-                return new AssertElementPresentCommand(commandName, command.getTarget(), command.getValue());
-            case "assertElementNotPresent":
-                return new AssertElementNotPresentCommand(commandName, command.getTarget(), command.getValue());
-            case "assertChecked":
-                return new AssertCheckedCommand(commandName, command.getTarget(), command.getValue());
-            case "assertNotChecked":
-                return new AssertNotCheckedCommand(commandName, command.getTarget(), command.getValue());
-            case "clickAt":
-                return new ClickAtCommand(commandName, command.getTarget(), command.getValue());
-            case "doubleClickAt":
-                return new DoubleClickAtCommand(commandName, command.getTarget(), command.getValue());
-            case "doubleClick":
-                return new DoubleClickCommand(commandName, command.getTarget(), command.getValue());
-            case "runCase":
-                return new RunCaseCommand(commandName, command.getTarget(), command.getValue());
-            case "addSelection":
-                return new AddSelectionCommand(commandName, command.getTarget(), command.getValue());
-            case "removeSelection":
-                return new RemoveSelectionCommand(commandName, command.getTarget(), command.getValue());
-            case "executeScript":
-                return new ExecuteScriptCommand(commandName, command.getTarget(), command.getValue());
-            case "executeAsyncScript":
-                return new ExecuteAsyncScriptCommand(commandName, command.getTarget(), command.getValue());
-            case "mouseOver":
-                return new MouseOverCommand(commandName, command.getTarget(), command.getValue());
-            case "mouseUp":
-                return new MouseUpCommand(commandName, command.getTarget(), command.getValue());
-            case "mouseDown":
-                return new MouseDownCommand(commandName, command.getTarget(), command.getValue());
-            case "store":
-                return new StoreCommand(commandName, command.getTarget(), command.getValue());
-            case "storeText":
-                return new StoreTextCommand(commandName, command.getTarget(), command.getValue());
-            case "storeTitle":
-                return new StoreTitleCommand(commandName, command.getTarget(), command.getValue());
-            case "storeValue":
-                return new StoreValueCommand(commandName, command.getTarget(), command.getValue());
-            case "storeAttribute":
-                return new StoreAttributeCommand(commandName, command.getTarget(), command.getValue());
-            case "storeJson":
-                return new StoreJsonCommand(commandName, command.getTarget(), command.getValue());
-            case "storeXpathCount":
-                return new StoreXpathCountCommand(commandName, command.getTarget(), command.getValue());
-            case "callApi":
-                return new CallApiCommand(commandName, command.getTarget(), command.getValue());
-            case "jenkinsJob":
-                return new JenkinsJobCommand(commandName, command.getTarget(), command.getValue());
-            case "answerOnNextPrompt":
-                return new AnswerOnNextPromptCommand(commandName, command.getTarget(), command.getValue());
-            case "check":
-                return new CheckCommand(commandName, command.getTarget(), command.getValue());
-            case "uncheck":
-                return new UncheckCommand(commandName, command.getTarget(), command.getValue());
-            case "mouseOut":
-                return new MouseOutCommand(commandName, command.getTarget(), command.getValue());
-            case "close":
-                return new CloseCommand(commandName, command.getTarget(), command.getValue());
-            case "waitForElementPresent":
-                return new WaitForElementPresentCommand(commandName, command.getTarget(), command.getValue());
-            case "waitForElementVisible":
-                return new WaitForElementVisibleCommand(commandName, command.getTarget(), command.getValue());
-            case "generateCode":
-                return new GenerateCodeCommand(commandName, command.getTarget(), command.getValue());
-            case "exportDb":
-                return new ExportDbCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyElementPresent":
-                return new VerifyElementPresentCommand(commandName, command.getTarget(), command.getValue());
-            default:
-                break;
-        }
-        return null;
+        return switch (commandName) {
+            case "click" -> new ClickCommand(commandName, command.getTarget(), command.getValue());
+            case "type" -> new TypeCommand(commandName, command.getTarget(), command.getValue());
+            case "select" -> new SelectCommand(commandName, command.getTarget(), command.getValue());
+            case "selectFrame" -> new SelectFrameCommand(commandName, command.getTarget(), command.getValue());
+            case "selectWindow" -> new SelectWindowCommand(commandName, command.getTarget(), command.getValue());
+            case "open" -> new OpenCommand(commandName, command.getTarget(), command.getValue());
+            case "run" -> new RunCommand(commandName, command.getTarget(), command.getValue());
+            case "runScript" -> new RunScriptCommand(commandName, command.getTarget(), command.getValue());
+            case "echo" -> new EchoCommand(commandName, command.getTarget(), command.getValue());
+            case "setProperty" -> new SetPropertyCommand(commandName, command.getTarget(), command.getValue());
+            case "readProperties" -> new ReadPropertiesCommand(commandName, command.getTarget(), command.getValue());
+            case "saveProperties" -> new SavePropertiesCommand(commandName, command.getTarget(), command.getValue());
+            case "increaseNumber" -> new IncreaseNumberCommand(commandName, command.getTarget(), command.getValue());
+            case "setWindowSize" -> new SetWindowSizeCommand(commandName, command.getTarget(), command.getValue());
+            case "waitForText" -> new WaitForTextCommand(commandName, command.getTarget(), command.getValue());
+            case "sendKeys" -> new SendKeysCommand(commandName, command.getTarget(), command.getValue());
+            case "screenshot" -> new ScreenshotCommand(commandName, command.getTarget(), command.getValue());
+            case "submit" -> new SubmitCommand(commandName, command.getTarget(), command.getValue());
+            case "pause", "wait", "sleep" -> new PauseCommand(commandName, command.getTarget(), command.getValue());
+            case "assert" -> new AssertCommand(commandName, command.getTarget(), command.getValue());
+            case "assertAlert" -> new AssertAlertCommand(commandName, command.getTarget(), command.getValue());
+            case "assertElementPresent" ->
+                    new AssertElementPresentCommand(commandName, command.getTarget(), command.getValue());
+            case "assertElementNotPresent" ->
+                    new AssertElementNotPresentCommand(commandName, command.getTarget(), command.getValue());
+            case "assertChecked" -> new AssertCheckedCommand(commandName, command.getTarget(), command.getValue());
+            case "assertNotChecked" ->
+                    new AssertNotCheckedCommand(commandName, command.getTarget(), command.getValue());
+            case "clickAt" -> new ClickAtCommand(commandName, command.getTarget(), command.getValue());
+            case "doubleClickAt" -> new DoubleClickAtCommand(commandName, command.getTarget(), command.getValue());
+            case "doubleClick" -> new DoubleClickCommand(commandName, command.getTarget(), command.getValue());
+            case "runCase" -> new RunCaseCommand(commandName, command.getTarget(), command.getValue());
+            case "addSelection" -> new AddSelectionCommand(commandName, command.getTarget(), command.getValue());
+            case "removeSelection" -> new RemoveSelectionCommand(commandName, command.getTarget(), command.getValue());
+            case "executeScript" -> new ExecuteScriptCommand(commandName, command.getTarget(), command.getValue());
+            case "executeAsyncScript" ->
+                    new ExecuteAsyncScriptCommand(commandName, command.getTarget(), command.getValue());
+            case "mouseOver" -> new MouseOverCommand(commandName, command.getTarget(), command.getValue());
+            case "mouseUp" -> new MouseUpCommand(commandName, command.getTarget(), command.getValue());
+            case "mouseDown" -> new MouseDownCommand(commandName, command.getTarget(), command.getValue());
+            case "store" -> new StoreCommand(commandName, command.getTarget(), command.getValue());
+            case "storeText" -> new StoreTextCommand(commandName, command.getTarget(), command.getValue());
+            case "storeTitle" -> new StoreTitleCommand(commandName, command.getTarget(), command.getValue());
+            case "storeValue" -> new StoreValueCommand(commandName, command.getTarget(), command.getValue());
+            case "storeAttribute" -> new StoreAttributeCommand(commandName, command.getTarget(), command.getValue());
+            case "storeJson" -> new StoreJsonCommand(commandName, command.getTarget(), command.getValue());
+            case "storeXpathCount" -> new StoreXpathCountCommand(commandName, command.getTarget(), command.getValue());
+            case "callApi" -> new CallApiCommand(commandName, command.getTarget(), command.getValue());
+            case "jenkinsJob" -> new JenkinsJobCommand(commandName, command.getTarget(), command.getValue());
+            case "answerOnNextPrompt" ->
+                    new AnswerOnNextPromptCommand(commandName, command.getTarget(), command.getValue());
+            case "check" -> new CheckCommand(commandName, command.getTarget(), command.getValue());
+            case "uncheck" -> new UncheckCommand(commandName, command.getTarget(), command.getValue());
+            case "mouseOut" -> new MouseOutCommand(commandName, command.getTarget(), command.getValue());
+            case "close" -> new CloseCommand(commandName, command.getTarget(), command.getValue());
+            case "waitForElementPresent" ->
+                    new WaitForElementPresentCommand(commandName, command.getTarget(), command.getValue());
+            case "waitForElementVisible" ->
+                    new WaitForElementVisibleCommand(commandName, command.getTarget(), command.getValue());
+            case "generateCode" -> new GenerateCodeCommand(commandName, command.getTarget(), command.getValue());
+            case "exportDb" -> new ExportDbCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyElementPresent" ->
+                    new VerifyElementPresentCommand(commandName, command.getTarget(), command.getValue());
+            case "recorder" -> new RecorderCommand(commandName, command.getTarget(), command.getValue());
+            default -> null;
+        };
     }
 
     /**
