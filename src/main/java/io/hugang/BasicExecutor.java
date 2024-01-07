@@ -314,7 +314,6 @@ public class BasicExecutor {
                 executionCommandResultDetails.add(new ExecutionCommandResultDetail(command.getCommand(), "false"));
                 log.error("execute command failed, command={}", command);
                 log.error("execute command failed detail", e);
-                return null;
             }
         }
 
