@@ -50,6 +50,7 @@ public abstract class Command implements ICommand {
     // auto test config
     private AutoTestConfig autoTestConfig;
 
+    @Override
     public String getCommand() {
         return command;
     }

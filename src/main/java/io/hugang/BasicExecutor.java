@@ -12,6 +12,8 @@ import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.bean.Commands;
+import io.hugang.bean.ExecutionCommandResultDetail;
+import io.hugang.bean.ExecutionResult;
 import io.hugang.bean.ICommand;
 import io.hugang.config.AutoTestConfig;
 import io.hugang.execute.impl.RecorderCommand;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -113,7 +116,8 @@ public class BasicExecutor {
     /**
      * method to execute the commands
      */
-    private void execute(AutoTestConfig autoTestConfig, Dict variablesMap) {
+    private ExecutionResult execute(AutoTestConfig autoTestConfig, Dict variablesMap) {
+        AtomicReference<ExecutionResult> executionResult = new AtomicReference<>(new ExecutionResult());
         if (autoTestConfig.isCronEnabled()) {
             ReentrantLock lock = new ReentrantLock();
             CronUtil.schedule(autoTestConfig.getCronExpression(), (Task) () -> {
@@ -122,7 +126,7 @@ public class BasicExecutor {
                     // parse input to commands list
                     List<Commands> commands = parseCommandsList(autoTestConfig);
                     // run the commands list
-                    runCommandsList(commands, autoTestConfig, variablesMap);
+                    executionResult.set(runCommandsList(commands, autoTestConfig, variablesMap));
                 } finally {
                     lock.unlock();
                 }
@@ -133,32 +137,33 @@ public class BasicExecutor {
             // parse input to commands list
             List<Commands> commands = parseCommandsList(autoTestConfig);
             // run the commands list
-            runCommandsList(commands, autoTestConfig, variablesMap);
+            executionResult.set(runCommandsList(commands, autoTestConfig, variablesMap));
         }
+        return executionResult.get();
     }
 
-    public void execute(AutoTestConfig autoTestConfig) {
+    public ExecutionResult execute(AutoTestConfig autoTestConfig) {
         Dict variablesMap = new Dict();
-        this.execute(autoTestConfig, variablesMap);
+        return this.execute(autoTestConfig, variablesMap);
     }
 
-    public void execute(String mode, String path) {
+    public ExecutionResult execute(String mode, String path) {
         // auto test config
         AutoTestConfig autoTestConfig = new AutoTestConfig();
         autoTestConfig.setTestMode(mode);
         autoTestConfig.setTestCasePath(path);
         autoTestConfig.readConfigurations();
-        this.execute(autoTestConfig);
+        return this.execute(autoTestConfig);
     }
 
-    public void execute(String mode, String path, String testCases) {
+    public ExecutionResult execute(String mode, String path, String testCases) {
         // auto test config
         AutoTestConfig autoTestConfig = new AutoTestConfig();
         autoTestConfig.setTestMode(mode);
         autoTestConfig.setTestCasePath(path);
         autoTestConfig.setTestCases(testCases);
         autoTestConfig.readConfigurations();
-        this.execute(autoTestConfig);
+        return this.execute(autoTestConfig);
     }
 
     /**
@@ -231,7 +236,8 @@ public class BasicExecutor {
     /**
      * method to execute the commands
      */
-    public void runCommandsList(List<Commands> commandsList, AutoTestConfig autoTestConfig, Dict variablesMap) {
+    public ExecutionResult runCommandsList(List<Commands> commandsList, AutoTestConfig autoTestConfig, Dict variablesMap) {
+        ExecutionResult executionResult = new ExecutionResult();
         // check if there is web command
         boolean isWebCommand = false;
         for (Commands commands : commandsList) {
@@ -256,7 +262,7 @@ public class BasicExecutor {
                     this.init(autoTestConfig);
                 }
                 variablesMap.set("caseId", commands.getCaseId());
-                this.executeCommands(commands, autoTestConfig, variablesMap);
+                executionResult.appendCaseResultDetail(this.executeCommands(commands, autoTestConfig, variablesMap));
             } finally {
                 // destroy the executor
                 if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
@@ -268,6 +274,7 @@ public class BasicExecutor {
         if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
             this.destroy();
         }
+        return executionResult;
     }
 
     /**
@@ -280,7 +287,8 @@ public class BasicExecutor {
     /**
      * method to execute the commands
      */
-    public void executeCommands(Commands commands, AutoTestConfig autoTestConfig, Dict variablesMap) {
+    public List<ExecutionCommandResultDetail> executeCommands(Commands commands, AutoTestConfig autoTestConfig, Dict variablesMap) {
+        List<ExecutionCommandResultDetail> executionCommandResultDetails = new ArrayList<>();
         boolean result;
         // loop through the commands
         for (ICommand command : commands.getCommands()) {
@@ -294,16 +302,19 @@ public class BasicExecutor {
                     if (!result) {
                         // write failed result to file
                         writeResultToFile("caseId: " + commands.getCaseId() + " result: false\n", autoTestConfig.getBaseDir() + "/result.txt");
+                        executionCommandResultDetails.add(new ExecutionCommandResultDetail(command.getCommand(), "false"));
                         log.error("execute command failed, command={}", command);
-                        return;
+                        return null;
                     }
+                    executionCommandResultDetails.add(new ExecutionCommandResultDetail(command.getCommand(), "true"));
                 }
             } catch (Exception e) {
                 // write failed result to file
                 writeResultToFile("caseId: " + commands.getCaseId() + " result: false\n", autoTestConfig.getBaseDir() + "/result.txt");
+                executionCommandResultDetails.add(new ExecutionCommandResultDetail(command.getCommand(), "false"));
                 log.error("execute command failed, command={}", command);
                 log.error("execute command failed detail", e);
-                return;
+                return null;
             }
         }
 
@@ -313,6 +324,7 @@ public class BasicExecutor {
         // write success result to file
         writeResultToFile("caseId: " + commands.getCaseId() + " result: true\n", autoTestConfig.getBaseDir() + "/result.txt");
         log.info(variablesMap.toString());
+        return executionCommandResultDetails;
     }
 
     // function to write the result to a file with append mode
