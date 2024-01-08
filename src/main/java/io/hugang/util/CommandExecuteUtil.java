@@ -128,7 +128,7 @@ public class CommandExecuteUtil {
         if (FileUtil.isAbsolutePath(path)) {
             file = FileUtil.file(path);
         } else {
-            file = FileUtil.file(autoTestConfig.getWorkDir() + path);
+            file = FileUtil.file(autoTestConfig.getBaseDir() + path);
         }
         if (!file.exists() && createIfNotExists) {
             FileUtil.touch(file);

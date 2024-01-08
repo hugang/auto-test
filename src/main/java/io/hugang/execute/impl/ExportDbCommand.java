@@ -23,12 +23,12 @@ public class ExportDbCommand extends Command {
 
     @Override
     public boolean execute() {
-        DbUtil.setDbSettingPathGlobal(this.getAutoTestConfig().getWorkDir().concat("conf/db.conf"));
+        DbUtil.setDbSettingPathGlobal(this.getAutoTestConfig().getBaseDir().concat("conf/db.conf"));
         // get db from config
         String dbName = this.getTarget();
         String path = this.getDictStr("path");
         String sqlStr = render(this.getDictStr("value", this.getValue())).replace("\n", "");
-        path = this.getAutoTestConfig().getWorkDir().concat(render(path));
+        path = this.getAutoTestConfig().getBaseDir().concat(render(path));
         ExcelWriter writer = ExcelUtil.getWriter(path);
         StyleSet styleSet = writer.getStyleSet();
         styleSet.setAlign(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);

@@ -51,9 +51,6 @@ public class RunAutoTest {
         if (StrUtil.isNotEmpty(autoTestCommandLineOption.getFilePath())) {
             autoTestConfig.setTestCasePath(autoTestCommandLineOption.getFilePath());
         }
-        if (StrUtil.isNotEmpty(autoTestCommandLineOption.getWorkDir())) {
-            autoTestConfig.setWorkDir(autoTestCommandLineOption.getWorkDir());
-        }
         if (StrUtil.isNotEmpty(autoTestCommandLineOption.getBaseDir())) {
             autoTestConfig.setBaseDir(autoTestCommandLineOption.getBaseDir());
         }

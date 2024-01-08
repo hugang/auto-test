@@ -40,7 +40,7 @@ public class DatabaseUtil {
     }
 
     public static String getDbSettingPath(AutoTestConfig autoTestConfig) {
-        return autoTestConfig.getWorkDir().concat("conf/db.conf");
+        return autoTestConfig.getBaseDir().concat("conf/db.conf");
     }
 
     public static List<String> getTables(Db db) {

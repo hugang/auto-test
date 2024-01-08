@@ -174,7 +174,7 @@ public class BasicExecutor {
         // get the test case path
         String testCasePath = autoTestConfig.getTestCasePath();
         if (!FileUtil.exist(testCasePath)) {
-            testCasePath = autoTestConfig.getWorkDir().concat(testCasePath);
+            testCasePath = autoTestConfig.getBaseDir().concat(testCasePath);
             if (!FileUtil.exist(testCasePath)) {
                 throw new CommandExecuteException("test case file not exist");
             }

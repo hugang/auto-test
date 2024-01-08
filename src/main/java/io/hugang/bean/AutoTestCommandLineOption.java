@@ -13,8 +13,6 @@ public class AutoTestCommandLineOption {
     private String cases;
     @Parameter(names = {"-m", "--mode"}, description = "test mode, default is xlsx, optional: xlsx, csv, json.")
     private String mode;
-    @Parameter(names = {"-d", "--workDir"}, description = "work directory to store test case file and test result file.")
-    private String workDir;
     @Parameter(names = {"-b", "--baseDir"}, description = "base directory of the program.")
     private String baseDir;
     @Parameter(names = {"-h", "--help"}, description = "help message", help = true)
@@ -44,14 +42,6 @@ public class AutoTestCommandLineOption {
 
     public void setMode(String mode) {
         this.mode = mode;
-    }
-
-    public String getWorkDir() {
-        return workDir;
-    }
-
-    public void setWorkDir(String workDir) {
-        this.workDir = workDir;
     }
 
     public String getBaseDir() {
@@ -84,7 +74,6 @@ public class AutoTestCommandLineOption {
                 "filePath='" + filePath + '\'' +
                 ", cases='" + cases + '\'' +
                 ", mode='" + mode + '\'' +
-                ", workDir='" + workDir + '\'' +
                 ", baseDir='" + baseDir + '\'' +
                 ", help=" + help +
                 ", version='" + version + '\'' +

@@ -14,7 +14,7 @@ Sub run()
     batPath = Environ("AUTO_TEST_HOME") & "\auto-test.bat"
 
     command = "cmd.exe"
-    parameters = "/c " & batPath & " -d " & ThisWorkbook.Path & " -f " & ThisWorkbook.Path & "\" & ThisWorkbook.Name & " -c " & testcases & " -m xlsx"
+    parameters = "/c " & batPath & " -f " & ThisWorkbook.Path & "\" & ThisWorkbook.Name & " -c " & testcases & " -m xlsx"
     set cmdObj = CreateObject("WScript.Shell").Exec(command & " " & parameters)
 
     ' Wait for the command until finish

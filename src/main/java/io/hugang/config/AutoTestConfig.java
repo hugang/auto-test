@@ -120,7 +120,7 @@ public class AutoTestConfig {
      * @return absolute path
      */
     private String getAbsolutePath(String filePath) {
-        return getAbsolutePath(filePath, this.getWorkDir());
+        return getAbsolutePath(filePath, this.getBaseDir());
     }
 
     /**
@@ -166,8 +166,6 @@ public class AutoTestConfig {
     private String browserBinaryPath;
     // restart web driver by case
     private boolean restartWebDriverByCase;
-    // work dir
-    private String workDir;
     // base dir
     private String baseDir;
     // proxy host
@@ -283,24 +281,9 @@ public class AutoTestConfig {
         this.restartWebDriverByCase = restartWebDriverByCase;
     }
 
-    public String getWorkDir() {
-        if (StrUtil.isEmpty(this.workDir)) {
-            this.workDir = SystemUtil.get(AUTO_TEST_HOME);
-        }
-        if (StrUtil.isEmpty(this.workDir)) {
-            this.workDir = FileUtils.getFile("").getAbsolutePath();
-        }
-        return this.workDir.concat(File.separator);
-
-    }
-
-    public void setWorkDir(String workDir) {
-        this.workDir = workDir.endsWith(File.separator) ? workDir : workDir + File.separator;
-    }
-
     public String getBaseDir() {
         return StrUtil.isEmpty(baseDir) ? StrUtil.isNotEmpty(SystemUtil.get(AUTO_TEST_HOME)) ?
-                SystemUtil.get(AUTO_TEST_HOME) + File.separator : this.getWorkDir() : baseDir;
+                SystemUtil.get(AUTO_TEST_HOME) + File.separator : FileUtils.getFile("").getAbsolutePath() : baseDir;
     }
 
     public void setBaseDir(String baseDir) {
