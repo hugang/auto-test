@@ -194,6 +194,7 @@ public class CommandParserUtil {
             case "assertAlert" -> new AssertAlertCommand(commandName, command.getTarget(), command.getValue());
             case "assertChecked" -> new AssertCheckedCommand(commandName, command.getTarget(), command.getValue());
             case "assert" -> new AssertCommand(commandName, command.getTarget(), command.getValue());
+            case "assertEditable" -> new AssertEditableCommand(commandName, command.getTarget(), command.getValue());
             case "assertElementNotPresent" ->
                     new AssertElementNotPresentCommand(commandName, command.getTarget(), command.getValue());
             case "assertElementPresent" ->
