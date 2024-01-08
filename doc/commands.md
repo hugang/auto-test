@@ -708,7 +708,7 @@ will continue even if the verify fails.
     - text: An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
-## wait for element editable
+## wait for element editable [〇]
 
 Wait for an element to be editable.
 
