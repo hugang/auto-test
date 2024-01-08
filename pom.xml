@@ -85,7 +85,6 @@
             <artifactId>jai_imageio</artifactId>
             <version>1.1.1</version>
         </dependency>
-
         <!-- add junit4-->
         <dependency>
             <groupId>junit</groupId>

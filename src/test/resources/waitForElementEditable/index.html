@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="timer"></div>
+<button id="btn" disabled>click me</button>
+<script>
+  function showTimer() {
+    let timer = document.getElementById("timer");
+    let seconds = 0;
+    setInterval(function () {
+      seconds++;
+      timer.innerHTML = '<div id="sec-' + seconds + '">Seconds: ' + seconds + '</div>';
+        if (seconds % 5 === 0) {
+            document.getElementById("btn").disabled = false;
+        }else {
+            document.getElementById("btn").disabled = true;
+        }
+    }, 1000);
+  }
+
+  showTimer();
+</script>
+
+</body>
+</html>
