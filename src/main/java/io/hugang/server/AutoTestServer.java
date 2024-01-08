@@ -19,7 +19,7 @@ public class AutoTestServer {
         SimpleServer server = HttpUtil.createServer(9191);
         server
                 // run test case from local pc, the test case store in the work folder
-                // eg. http://localhost:9191/excel?testcases=1&path=src/test/resources/recorder/recorder.xlsx
+                // eg. http://localhost:9191/local?testcases=1&path=src/test/resources/recorder/recorder.xlsx
                 .addAction("/local", (request, response) -> {
                     try {
                         String path = request.getParam("path");

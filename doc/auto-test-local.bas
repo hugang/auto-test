@@ -15,10 +15,12 @@ Sub run()
 
     command = "cmd.exe"
     parameters = "/c " & batPath & " -d " & ThisWorkbook.Path & " -f " & ThisWorkbook.Path & "\" & ThisWorkbook.Name & " -c " & testcases & " -m xlsx"
-    CreateObject("WScript.Shell").Exec(command & " " & parameters).StdOut.ReadAll
+    set cmdObj = CreateObject("WScript.Shell").Exec(command & " " & parameters)
 
-    ' Wait 2s for the command to finish
-    Application.Wait (Now + TimeValue("0:00:02"))
+    ' Wait for the command until finish
+    Do While cmdObj.Status = 0
+        Application.Wait (Now + TimeValue("0:00:01"))
+    Loop
 
     ' read result from file
     Dim fso As Object
