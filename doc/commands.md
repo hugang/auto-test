@@ -48,7 +48,7 @@ Confirm that a confirmation has been rendered. The test will stop if the assert 
 - arguments
     - text: The text to use.
 
-## assert editable
+## assert editable [〇]
 
 Confirm that the target element is editable. The test will stop if the assert fails.
 
