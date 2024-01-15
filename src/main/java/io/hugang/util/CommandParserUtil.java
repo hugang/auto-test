@@ -218,6 +218,8 @@ public class CommandParserUtil {
             case "assertSelectedValue" ->
                     new AssertSelectedValueCommand(commandName, command.getTarget(), command.getValue());
             case "assertText" -> new AssertTextCommand(commandName, command.getTarget(), command.getValue());
+            case "assertTitle" -> new AssertTitleCommand(commandName, command.getTarget(), command.getValue());
+            case "assertValue" -> new AssertValueCommand(commandName, command.getTarget(), command.getValue());
             case "callApi" -> new CallApiCommand(commandName, command.getTarget(), command.getValue());
             case "check" -> new CheckCommand(commandName, command.getTarget(), command.getValue());
             case "chooseCancelOnNextConfirmation", "chooseCancelOnNextPrompt" ->
@@ -229,7 +231,10 @@ public class CommandParserUtil {
             case "close" -> new CloseCommand(commandName, command.getTarget(), command.getValue());
             case "doubleClickAt" -> new DoubleClickAtCommand(commandName, command.getTarget(), command.getValue());
             case "doubleClick" -> new DoubleClickCommand(commandName, command.getTarget(), command.getValue());
+            case "dragAndDropToObject" ->
+                    new DragAndDropToObjectCommand(commandName, command.getTarget(), command.getValue());
             case "echo" -> new EchoCommand(commandName, command.getTarget(), command.getValue());
+            case "editContent" -> new EditContentCommand(commandName, command.getTarget(), command.getValue());
             case "executeAsyncScript" ->
                     new ExecuteAsyncScriptCommand(commandName, command.getTarget(), command.getValue());
             case "executeScript" -> new ExecuteScriptCommand(commandName, command.getTarget(), command.getValue());
@@ -237,9 +242,12 @@ public class CommandParserUtil {
             case "generateCode" -> new GenerateCodeCommand(commandName, command.getTarget(), command.getValue());
             case "increaseNumber" -> new IncreaseNumberCommand(commandName, command.getTarget(), command.getValue());
             case "jenkinsJob" -> new JenkinsJobCommand(commandName, command.getTarget(), command.getValue());
+            case "mouseDownAt" -> new MouseDownAtCommand(commandName, command.getTarget(), command.getValue());
             case "mouseDown" -> new MouseDownCommand(commandName, command.getTarget(), command.getValue());
+            case "mouseMoveAt" -> new MouseMoveAtCommand(commandName, command.getTarget(), command.getValue());
             case "mouseOut" -> new MouseOutCommand(commandName, command.getTarget(), command.getValue());
             case "mouseOver" -> new MouseOverCommand(commandName, command.getTarget(), command.getValue());
+            case "mouseUpAt" -> new MouseUpAtCommand(commandName, command.getTarget(), command.getValue());
             case "mouseUp" -> new MouseUpCommand(commandName, command.getTarget(), command.getValue());
             case "open" -> new OpenCommand(commandName, command.getTarget(), command.getValue());
             case "pause", "wait", "sleep" -> new PauseCommand(commandName, command.getTarget(), command.getValue());

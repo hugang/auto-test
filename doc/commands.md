@@ -139,23 +139,23 @@ Confirm that the text of an element contains the provided value. The test will s
     - text: An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
-## assert title
+## assert title [〇]
 
 Confirm the title of the current page contains the provided text. The test will stop if the assert fails.
 
 - arguments
-    - text: An exact string match. Support for pattern matching is in the works.
+    - text(target): An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
-## assert value
+## assert value [〇]
 
 Confirm the (whitespace-trimmed) value of an input field (or anything else with a value parameter). For checkbox/radio
 elements, the value will be "on" or "off" depending on whether the element is checked or not. The test will stop if the
 assert fails.
 
 - arguments
-    - locator: An element locator.
-    - text: An exact string match. Support for pattern matching is in the works.
+    - locator(target): An element locator.
+    - text(value): An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
 ## check [〇]
@@ -235,13 +235,13 @@ them, for example the material ripple effect.
       from a
       locator.
 
-## drag and drop to object
+## drag and drop to object [〇]
 
 Drags an element and drops it on another element.
 
 - arguments
-  locator of object to be dragged: The locator of element to be dragged.
-  locator of drag destination object: The locator of an element whose location (e.g., the center-most pixel within it)
+  locator of object to be dragged(target): The locator of element to be dragged.
+  locator of drag destination object(value): The locator of an element whose location (e.g., the center-most pixel within it)
   will be the point where locator of object to be dragged is dropped.
 
 ## echo [〇]
@@ -251,12 +251,12 @@ Prints the specified message into the third table cell in your Selenese tables. 
 - arguments
     - message(target): The message to print.
 
-## edit content
+## edit content [〇]
 
 Sets the value of a content editable element as if you typed in it.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
     - value: The value to input.
 
 ## else
@@ -320,7 +320,7 @@ Simulates a user pressing the left mouse button (without releasing it yet).
 - arguments
     - locator: An element locator.
 
-## mouse down at
+## mouse down at [〇]
 
 Simulates a user pressing the left mouse button (without releasing it yet) at the specified location.
 
@@ -329,7 +329,7 @@ Simulates a user pressing the left mouse button (without releasing it yet) at th
     - coord string: Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found from a
       locator.
 
-## mouse move at
+## mouse move at [〇]
 
 Simulates a user pressing the mouse button (without releasing it yet) on the specified element.
 
