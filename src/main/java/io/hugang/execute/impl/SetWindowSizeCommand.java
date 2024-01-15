@@ -25,7 +25,7 @@ public class SetWindowSizeCommand extends Command {
      * @return success or not
      */
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         if (!this.getTarget().contains("x") && !"max".equals(this.getTarget()) && !"min".equals(this.getTarget())) {
             return false;
         }

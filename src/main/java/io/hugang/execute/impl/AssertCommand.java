@@ -19,7 +19,7 @@ public class AssertCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         String target = this.getTarget();
         String value = this.getDictStr(VALUE, this.getValue());
         return this.getVariable(target).equals(value);

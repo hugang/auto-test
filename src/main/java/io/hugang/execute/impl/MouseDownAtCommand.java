@@ -16,7 +16,7 @@ public class MouseDownAtCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         // get web driver
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         // create action

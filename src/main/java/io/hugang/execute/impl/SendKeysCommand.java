@@ -25,7 +25,7 @@ public class SendKeysCommand extends Command {
      * @return success or not
      */
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         execute(CommandExecuteUtil.getElement(this.getTarget()), this.getDictStr("value", this.getValue()));
         return true;
     }

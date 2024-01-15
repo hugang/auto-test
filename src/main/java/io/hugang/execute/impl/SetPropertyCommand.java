@@ -17,7 +17,7 @@ public class SetPropertyCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         String type = this.getDictStr(KEY_TYPE, this.getTarget());
         if (VALUE_TYPE_JSON.equals(type)) {
             for (Map.Entry<String, Object> propertiesMap : JSONUtil.parseObj(this.render(this.getDictStr("value", this.getValue())))) {

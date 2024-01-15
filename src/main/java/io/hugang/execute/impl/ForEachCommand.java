@@ -20,7 +20,7 @@ public class ForEachCommand extends Command implements IConditionCommand {
     private List<ICommand> subCommands;
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         try {
             if (StrUtil.isEmpty(this.getTarget()) || StrUtil.isEmpty(this.getDictStr("value", this.getValue()))) {
                 throw new CommandExecuteException("target or value is empty");
@@ -34,8 +34,7 @@ public class ForEachCommand extends Command implements IConditionCommand {
                     this.setVariable(value, s);
                     this.runSubCommands();
                 });
-            } else if (target instanceof List && !((List<?>) target).isEmpty()) {
-                List<?> list = (List<?>) target;
+            } else if (target instanceof List<?> list && !((List<?>) target).isEmpty()) {
                 list.forEach(s -> {
                     this.setVariable(value, s);
                     this.runSubCommands();

@@ -12,7 +12,7 @@ public class AssertElementNotPresentCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         return ObjectUtil.isEmpty(CommandExecuteUtil.findElements(this.getTarget()));
     }
 }

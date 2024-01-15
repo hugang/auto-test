@@ -17,7 +17,7 @@ public class RemoveSelectionCommand extends Command {
     }
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
 
         try {
             String target = this.getTarget();

@@ -4,7 +4,6 @@ import cn.hutool.log.Log;
 import io.hugang.execute.Command;
 import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.*;
-import org.bytedeco.javacv.Frame;
 
 import java.util.concurrent.Executors;
 
@@ -24,7 +23,7 @@ public class RecorderCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         String outputFile = getTarget();
         // new recorder and start
         int width = 1920;

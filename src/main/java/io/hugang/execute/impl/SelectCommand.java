@@ -23,7 +23,7 @@ public class SelectCommand extends Command {
      * @return success or not
      */
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         CommandExecuteUtil.getElement(this.getTarget()).selectOption(render(this.getDictStr("value", this.getValue())));
         return true;
     }

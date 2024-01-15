@@ -10,7 +10,7 @@ public class PauseCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         if (ObjectUtil.isEmpty(this.getTarget())) {
             return true;
         }

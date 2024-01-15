@@ -13,7 +13,7 @@ public class StoreAttributeCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         String targetStr = this.getTarget();
         int lastIndexOf = targetStr.lastIndexOf("@");
         String target = targetStr.substring(0, lastIndexOf);

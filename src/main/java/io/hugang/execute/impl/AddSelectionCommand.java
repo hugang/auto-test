@@ -17,7 +17,7 @@ public class AddSelectionCommand extends Command {
     }
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
 
         try {
             String target = render(this.getTarget());

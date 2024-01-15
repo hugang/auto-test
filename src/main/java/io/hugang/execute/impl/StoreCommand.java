@@ -9,7 +9,7 @@ public class StoreCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         String value = this.getDictStr("value", this.getValue());
         this.setVariable(this.render(value), this.render(this.getTarget()));
         return true;

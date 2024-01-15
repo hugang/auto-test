@@ -20,7 +20,7 @@ public class WhileCommand extends Command implements IConditionCommand {
     private List<ICommand> subCommands;
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         try {
             while (inCondition()) {
                 this.runSubCommands();

@@ -359,7 +359,7 @@ Simulates the event that occurs when the user releases the mouse button (e.g., s
 - arguments
     - locator: An element locator.
 
-## mouse up at
+## mouse up at [〇]
 
 Simulates the event that occurs when the user releases the mouse button (e.g., stops holding the button down) at the
 specified location.

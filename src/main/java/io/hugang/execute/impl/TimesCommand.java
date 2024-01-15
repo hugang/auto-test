@@ -19,7 +19,7 @@ public class TimesCommand extends Command implements IConditionCommand {
     private List<ICommand> subCommands;
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         while (inCondition()) {
             runSubCommands();
             times--;

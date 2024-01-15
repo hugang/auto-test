@@ -12,7 +12,7 @@ public class StoreXpathCountCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         this.setVariable(this.getDictStr("value", this.getValue()), String.valueOf(CommandExecuteUtil.findElements(this.getTarget()).size()));
         return true;
     }

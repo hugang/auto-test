@@ -1,7 +1,6 @@
 package io.hugang.execute.impl;
 
 import com.codeborne.selenide.SelenideElement;
-import io.hugang.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 
@@ -11,7 +10,7 @@ public class AssertNotEditableCommand extends Command {
     }
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         // get the element by target
         SelenideElement element = CommandExecuteUtil.getElement(getTarget());
         // check if the element is editable

@@ -26,7 +26,7 @@ public class SavePropertiesCommand extends Command {
      * @return success or not
      */
     @Override
-    public boolean execute() {
+    public boolean _execute() {
 
         Dict map;
 

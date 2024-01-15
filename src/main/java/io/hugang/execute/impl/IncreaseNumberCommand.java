@@ -25,7 +25,7 @@ public class IncreaseNumberCommand extends Command {
      * @return execute result
      */
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         try {
             // get from variable map
             String variable = this.getVariableStr(this.getTarget());

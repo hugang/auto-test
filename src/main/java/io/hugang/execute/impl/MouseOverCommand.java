@@ -30,7 +30,7 @@ public class MouseOverCommand extends Command {
      * @return true if the command is executed successfully
      */
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         // use selenium to execute the command
         SelenideElement $ = CommandExecuteUtil.getElement(this.getTarget());
         $.hover();

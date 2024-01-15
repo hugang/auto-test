@@ -13,7 +13,7 @@ public class SelectFrameCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         WebDriver driver = WebDriverRunner.getWebDriver();
         driver.switchTo().frame(CommandExecuteUtil.getElement(this.getTarget()));
         return true;

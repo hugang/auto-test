@@ -22,7 +22,7 @@ public class ExportDbCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         DbUtil.setDbSettingPathGlobal(this.getAutoTestConfig().getBaseDir().concat("conf/db.conf"));
         // get db from config
         String dbName = this.getTarget();

@@ -20,7 +20,7 @@ public class MouseMoveAtCommand extends Command {
      * @return true if the command is executed successfully
      */
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         Actions actions = new Actions(WebDriverRunner.getWebDriver());
 
         // use selenium to execute the command

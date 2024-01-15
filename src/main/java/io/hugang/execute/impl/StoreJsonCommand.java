@@ -9,7 +9,7 @@ public class StoreJsonCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         String target = this.getTarget();
         String value = this.getDictStr("value", this.getValue());
         this.setVariable(value, target);

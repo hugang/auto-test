@@ -12,7 +12,7 @@ public class StoreTitleCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         this.setVariable(this.getDictStr("value", this.getValue()), WebDriverRunner.getWebDriver().getTitle());
         return true;
     }

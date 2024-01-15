@@ -26,7 +26,7 @@ public class AnswerOnNextPromptCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         // get driver
         WebDriver driver = WebDriverRunner.getWebDriver();
         // Switch to the alert dialog

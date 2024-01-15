@@ -13,7 +13,7 @@ public class AssertAlertCommand extends Command {
     }
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         try {
             String text = WebDriverRunner.getWebDriver().switchTo().alert().getText();
             return text.equals(this.getTarget());

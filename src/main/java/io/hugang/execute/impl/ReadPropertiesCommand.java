@@ -27,7 +27,7 @@ public class ReadPropertiesCommand extends Command {
      * @return execute result
      */
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         String type = this.getTarget();
         String file = this.getDictStr(KEY_FILE, this.getValue());
 

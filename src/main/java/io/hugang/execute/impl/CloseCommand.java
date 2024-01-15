@@ -13,7 +13,7 @@ public class CloseCommand extends Command {
     }
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         try {
             WebDriver driver = WebDriverRunner.getWebDriver();
             driver.close();

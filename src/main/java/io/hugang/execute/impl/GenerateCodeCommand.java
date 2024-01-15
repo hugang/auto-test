@@ -14,7 +14,7 @@ public class GenerateCodeCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         // get db from config
         String dbName = this.getTarget();
         // parse value to json object

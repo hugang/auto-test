@@ -15,7 +15,7 @@ public class TypeCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         String value = this.getDictStr(VALUE, getValue());
         CommandExecuteUtil.getElement(this.getTarget()).setValue(render(value).replace("\\n", Keys.chord(Keys.SHIFT, Keys.ENTER)));
         return true;

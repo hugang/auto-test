@@ -18,7 +18,7 @@ public class ScreenshotCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         int screenshotNumber = 1;
         if (StrUtil.isNotBlank(this.getValue())) {
             screenshotNumber = NumberUtil.parseInt(this.getValue());

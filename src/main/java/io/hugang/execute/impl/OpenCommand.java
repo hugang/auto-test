@@ -16,7 +16,7 @@ public class OpenCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         try {
             String url = this.getDictStr(KEY_URL);
             if (url == null) {

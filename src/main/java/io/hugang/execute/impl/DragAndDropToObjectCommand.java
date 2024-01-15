@@ -15,7 +15,7 @@ public class DragAndDropToObjectCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         // source element
         SelenideElement sourceElement = CommandExecuteUtil.getElement(this.getTarget());
         // target element

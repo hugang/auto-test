@@ -35,7 +35,28 @@ public abstract class Command implements ICommand {
     }
 
     // execute command
-    public abstract boolean execute() throws CommandExecuteException;
+    public boolean execute() throws CommandExecuteException {
+        this.beforeExecute();
+        boolean result = this._execute();
+        this.afterExecute();
+        return result;
+    }
+
+    public abstract boolean _execute() throws CommandExecuteException;
+
+    public void beforeExecute() {
+
+    }
+
+    public void afterExecute() {
+        if (this.getDict().containsKey("setSpeed")) {
+            try {
+                Thread.sleep(this.getDict().getInt("setSpeed"));
+            } catch (InterruptedException e) {
+                throw new CommandExecuteException(e);
+            }
+        }
+    }
 
     // command
     private String command;

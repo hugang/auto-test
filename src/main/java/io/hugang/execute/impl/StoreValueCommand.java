@@ -12,7 +12,7 @@ public class StoreValueCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         this.setVariable(this.getDictStr("value", this.getValue()), CommandExecuteUtil.getElement(this.getTarget()).getAttribute("value"));
         return true;
     }

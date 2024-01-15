@@ -1,6 +1,5 @@
 package io.hugang.execute.impl;
 
-import io.hugang.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.By;
@@ -12,7 +11,7 @@ public class AssertSelectedLabelCommand extends Command {
     }
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         // get the element by target
         WebElement element = CommandExecuteUtil.getElement(render(getTarget())).findElement(By.xpath("//option[@label = '" + render(getValue()) + "']"));
         // if element is null, get the element by title

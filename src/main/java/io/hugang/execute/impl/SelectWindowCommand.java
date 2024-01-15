@@ -15,7 +15,7 @@ public class SelectWindowCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         WebDriver driver = WebDriverRunner.getWebDriver();
         // 获取当前窗口句柄
         String currentHandle = "";

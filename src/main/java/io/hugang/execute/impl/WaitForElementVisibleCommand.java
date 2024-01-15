@@ -1,6 +1,5 @@
 package io.hugang.execute.impl;
 
-import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
@@ -15,7 +14,7 @@ public class WaitForElementVisibleCommand extends Command {
     }
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         int timeout = 0;
         try {
             do {

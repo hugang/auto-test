@@ -14,7 +14,7 @@ public class AssertEditableCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         try {
             SelenideElement element = CommandExecuteUtil.getElement(getTarget());
             return element.isEnabled() && element.getAttribute("readonly") == null;

@@ -12,7 +12,7 @@ public class AssertTitleCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         return WebDriverRunner.getWebDriver().getTitle().equals(render(this.getTarget()));
     }
 }

@@ -13,7 +13,7 @@ public class UncheckCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         // Check a toggle-button (checkbox/radio).
         execute(CommandExecuteUtil.getElement(getTarget()));
         return true;

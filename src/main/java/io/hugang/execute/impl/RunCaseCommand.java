@@ -18,7 +18,7 @@ public class RunCaseCommand extends Command {
     }
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         List<Commands> commandsFromXlsx;
         String path = this.getFilePath(this.getTarget());
         String type = this.getDictStr("type", "xlsx");

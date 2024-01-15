@@ -1,7 +1,6 @@
 package io.hugang.execute.impl;
 
 import com.codeborne.selenide.WebDriverRunner;
-import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
@@ -19,7 +18,7 @@ public class WaitForElementEditableCommand extends Command {
     }
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         new WebDriverWait(webDriver, Duration.of(10, ChronoUnit.SECONDS)).until(
                 ExpectedConditions.elementToBeClickable(CommandExecuteUtil.getElement(render(this.getTarget())))

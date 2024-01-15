@@ -2,7 +2,6 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
-import io.hugang.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.JavascriptExecutor;
@@ -13,7 +12,7 @@ public class EditContentCommand extends Command {
     }
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         // get the element by target
         SelenideElement element = CommandExecuteUtil.getElement(render(getTarget()));
         JavascriptExecutor js = (JavascriptExecutor) WebDriverRunner.getWebDriver();

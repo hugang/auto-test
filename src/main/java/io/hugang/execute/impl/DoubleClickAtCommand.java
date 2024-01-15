@@ -14,7 +14,7 @@ public class DoubleClickAtCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         SelenideElement $ = CommandExecuteUtil.getElement(this.getTarget());
         String[] offSets = this.getDictStr("value", this.getValue()).split(",");
         if (ObjectUtil.isNotEmpty(offSets) && offSets.length == 2) {

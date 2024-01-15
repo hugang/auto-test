@@ -1,7 +1,6 @@
 package io.hugang.execute.impl;
 
 import com.codeborne.selenide.SelenideElement;
-import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
@@ -24,7 +23,7 @@ public class WaitForTextCommand extends Command {
      * @return success or not
      */
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         int timeout = 0;
         try {
             do {

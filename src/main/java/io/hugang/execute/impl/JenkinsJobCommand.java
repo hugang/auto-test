@@ -30,7 +30,7 @@ public class JenkinsJobCommand extends Command {
      * @return success or not
      */
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         String jobUrl = this.getDictStr("target");
         String value = this.getDictStr("value",this.getValue());
         // parse value to json object

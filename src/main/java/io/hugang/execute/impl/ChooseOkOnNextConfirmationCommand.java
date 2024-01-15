@@ -1,7 +1,6 @@
 package io.hugang.execute.impl;
 
 import com.codeborne.selenide.WebDriverRunner;
-import io.hugang.CommandExecuteException;
 import io.hugang.execute.Command;
 
 public class ChooseOkOnNextConfirmationCommand extends Command {
@@ -10,7 +9,7 @@ public class ChooseOkOnNextConfirmationCommand extends Command {
     }
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         WebDriverRunner.getWebDriver().switchTo().alert().accept();
         return true;
     }

@@ -14,7 +14,7 @@ public class ClickAtCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         SelenideElement $ = CommandExecuteUtil.getElement(getTarget());
         String value = this.getDictStr("offSet", getDictStr("value", getValue()));
         String[] offSets = value.split(",");

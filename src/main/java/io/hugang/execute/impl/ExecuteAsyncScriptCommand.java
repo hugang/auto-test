@@ -14,7 +14,7 @@ public class ExecuteAsyncScriptCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         try {
             JavascriptExecutor js = (JavascriptExecutor) WebDriverRunner.getWebDriver();
             if (ObjectUtil.isNotEmpty(this.getValue())) {

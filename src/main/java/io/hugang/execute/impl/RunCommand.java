@@ -38,7 +38,7 @@ public class RunCommand extends Command {
      * @return execute result
      */
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         try {
             Runtime runtime = Runtime.getRuntime();
             Process process;

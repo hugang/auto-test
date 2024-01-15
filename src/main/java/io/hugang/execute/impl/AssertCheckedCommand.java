@@ -13,7 +13,7 @@ public class AssertCheckedCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         try {
             String target = getTarget();
             return CommandExecuteUtil.getElement(target).isSelected();

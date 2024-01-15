@@ -21,7 +21,7 @@ public class VerifyElementPresentCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         List<WebElement> elements = CommandExecuteUtil.findElements(this.getTarget());
         if (ObjectUtil.isEmpty(elements)) {
             log.info("element not found: {}", this.getTarget());

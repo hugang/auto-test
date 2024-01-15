@@ -11,7 +11,7 @@ public class DoubleClickCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         CommandExecuteUtil.getElement(this.getTarget()).doubleClick();
         return true;
     }

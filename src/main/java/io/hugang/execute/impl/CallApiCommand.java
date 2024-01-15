@@ -20,7 +20,7 @@ public class CallApiCommand extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public boolean _execute() {
         if (ObjectUtil.isEmpty(getValue())) {
             return true;
         }

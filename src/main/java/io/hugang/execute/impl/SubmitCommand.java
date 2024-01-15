@@ -12,7 +12,7 @@ public class SubmitCommand extends Command {
     }
 
     @Override
-    public boolean execute() throws CommandExecuteException {
+    public boolean _execute() {
         try {
             CommandExecuteUtil.getElement(this.getTarget()).submit();
             return true;
