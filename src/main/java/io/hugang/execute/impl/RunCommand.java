@@ -6,7 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import io.hugang.CommandExecuteException;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 
 import java.io.BufferedReader;
 import java.io.IOException;

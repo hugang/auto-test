@@ -46,7 +46,7 @@ Confirm that the target element has been checked. The test will stop if the asse
 Confirm that a confirmation has been rendered. The test will stop if the assert fails.
 
 - arguments
-    - text: The text to use.
+    - text(target): The text to use.
 
 ## assert editable [〇]
 

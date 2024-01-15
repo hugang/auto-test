@@ -4,9 +4,9 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import io.hugang.BasicExecutor;
 import io.hugang.CommandExecuteException;
-import io.hugang.bean.Command;
-import io.hugang.bean.Commands;
-import io.hugang.bean.ICommand;
+import io.hugang.execute.Command;
+import io.hugang.execute.Commands;
+import io.hugang.execute.ICommand;
 import io.hugang.util.CommandParserUtil;
 
 import java.util.ArrayList;

@@ -3,7 +3,7 @@ package io.hugang.execute.impl;
 import cn.hutool.core.util.StrUtil;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 import org.openqa.selenium.WebDriver;
 
 import java.util.Set;

@@ -2,9 +2,9 @@ package io.hugang.execute.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import io.hugang.CommandExecuteException;
-import io.hugang.bean.Command;
-import io.hugang.bean.ICommand;
-import io.hugang.bean.IConditionCommand;
+import io.hugang.execute.Command;
+import io.hugang.execute.ICommand;
+import io.hugang.execute.IConditionCommand;
 import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.JavaScriptEvaluator;
 import org.openqa.selenium.WebElement;

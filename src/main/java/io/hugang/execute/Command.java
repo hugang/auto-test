@@ -1,4 +1,4 @@
-package io.hugang.bean;
+package io.hugang.execute;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;

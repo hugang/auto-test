@@ -4,7 +4,7 @@ import com.codeborne.selenide.WebDriverRunner;
 import org.openqa.selenium.WebDriver;
 import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 
 @WebCommand
 public class CloseCommand extends Command {

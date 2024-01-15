@@ -1,4 +1,4 @@
-package io.hugang.bean;
+package io.hugang.execute;
 
 import javax.script.ScriptException;
 import java.util.List;

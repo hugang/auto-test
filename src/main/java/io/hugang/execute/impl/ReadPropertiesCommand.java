@@ -4,7 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 
 /**
  * set property command executor

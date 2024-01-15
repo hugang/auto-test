@@ -2,7 +2,7 @@ package io.hugang.execute.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.codeborne.selenide.Selenide;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 
 public class PauseCommand extends Command {
     public PauseCommand(String command, String target, String value) {

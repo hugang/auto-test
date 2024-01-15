@@ -4,7 +4,7 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 

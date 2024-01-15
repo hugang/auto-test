@@ -1,9 +1,9 @@
 package io.hugang.execute.impl;
 
 import io.hugang.CommandExecuteException;
-import io.hugang.bean.Command;
-import io.hugang.bean.ICommand;
-import io.hugang.bean.IConditionCommand;
+import io.hugang.execute.Command;
+import io.hugang.execute.ICommand;
+import io.hugang.execute.IConditionCommand;
 import io.hugang.util.JavaScriptEvaluator;
 
 import javax.script.ScriptException;

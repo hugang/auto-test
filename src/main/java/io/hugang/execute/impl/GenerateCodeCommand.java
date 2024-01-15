@@ -2,7 +2,7 @@ package io.hugang.execute.impl;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.db.meta.Table;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.DatabaseUtil;
 

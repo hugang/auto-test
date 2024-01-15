@@ -1,7 +1,7 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.log.Log;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.*;
 import org.bytedeco.javacv.Frame;

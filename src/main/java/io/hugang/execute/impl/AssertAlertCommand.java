@@ -3,7 +3,7 @@ package io.hugang.execute.impl;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 
 @WebCommand
 public class AssertAlertCommand extends Command {

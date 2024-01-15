@@ -3,7 +3,7 @@ package io.hugang.execute.impl;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 
 import java.util.Map;
 

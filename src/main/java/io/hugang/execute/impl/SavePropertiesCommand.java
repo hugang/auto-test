@@ -4,7 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 
 import java.io.File;
 import java.nio.charset.Charset;

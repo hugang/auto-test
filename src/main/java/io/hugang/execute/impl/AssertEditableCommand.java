@@ -3,7 +3,7 @@ package io.hugang.execute.impl;
 import com.codeborne.selenide.SelenideElement;
 import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 
 @WebCommand

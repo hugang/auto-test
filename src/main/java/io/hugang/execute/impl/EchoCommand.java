@@ -2,7 +2,7 @@ package io.hugang.execute.impl;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 
 public class EchoCommand extends Command {
     private static final Log log = LogFactory.get();

@@ -1,6 +1,6 @@
 package io.hugang.execute.impl;
 
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 
 /**
  * Check that a variable is an expected value.

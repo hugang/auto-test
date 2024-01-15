@@ -10,7 +10,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import io.hugang.CommandExecuteException;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 
 import java.nio.charset.Charset;
 

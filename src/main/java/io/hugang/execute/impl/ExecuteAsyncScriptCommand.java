@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
-import io.hugang.bean.Command;
+import io.hugang.execute.Command;
 import org.openqa.selenium.JavascriptExecutor;
 
 @WebCommand

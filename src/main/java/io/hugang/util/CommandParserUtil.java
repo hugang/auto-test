@@ -14,6 +14,10 @@ import cn.hutool.poi.excel.ExcelWriter;
 import io.hugang.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.*;
+import io.hugang.execute.Command;
+import io.hugang.execute.Commands;
+import io.hugang.execute.ICommand;
+import io.hugang.execute.IConditionCommand;
 import io.hugang.execute.impl.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -194,6 +198,7 @@ public class CommandParserUtil {
             case "assertAlert" -> new AssertAlertCommand(commandName, command.getTarget(), command.getValue());
             case "assertChecked" -> new AssertCheckedCommand(commandName, command.getTarget(), command.getValue());
             case "assert" -> new AssertCommand(commandName, command.getTarget(), command.getValue());
+            case "assertConfirmation" -> new AssertConfirmation(commandName, command.getTarget(), command.getValue());
             case "assertEditable" -> new AssertEditableCommand(commandName, command.getTarget(), command.getValue());
             case "assertElementNotPresent" ->
                     new AssertElementNotPresentCommand(commandName, command.getTarget(), command.getValue());

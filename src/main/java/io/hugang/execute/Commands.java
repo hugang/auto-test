@@ -1,4 +1,4 @@
-package io.hugang.bean;
+package io.hugang.execute;
 
 import java.util.List;
 
