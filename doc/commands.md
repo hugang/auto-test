@@ -479,14 +479,14 @@ page directly, this command will not replace the existing content.
     - locator(target): An element locator.
     - key sequence(value): A sequence of keys to type, can be used to send key strokes (e.g. ${KEY_ENTER}).
 
-## set speed
+## set speed [〇]
 
 Set execution speed (e.g., set the millisecond length of a delay which will follow each Selenium operation). By default,
 there is no such delay, e.g., the delay is 0 milliseconds. This setting is global, and will affect all test runs, until
 changed.
 
 - arguments
-    - wait time: The amount of time to wait (in milliseconds).
+    - wait time(target): The amount of time to wait (in milliseconds).
 
 ## set window size [〇]
 
