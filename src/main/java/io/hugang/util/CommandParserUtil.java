@@ -206,9 +206,23 @@ public class CommandParserUtil {
                     new AssertElementPresentCommand(commandName, command.getTarget(), command.getValue());
             case "assertNotChecked" ->
                     new AssertNotCheckedCommand(commandName, command.getTarget(), command.getValue());
+            case "assertNotEditable" ->
+                    new AssertNotEditableCommand(commandName, command.getTarget(), command.getValue());
+            case "assertNotSelectedLabel" ->
+                    new AssertNotSelectedLabelCommand(commandName, command.getTarget(), command.getValue());
+            case "assertNotSelectedValue" ->
+                    new AssertNotSelectedValueCommand(commandName, command.getTarget(), command.getValue());
+            case "assertNotText" -> new AssertNotTextCommand(commandName, command.getTarget(), command.getValue());
+            case "assertSelectedLabel" ->
+                    new AssertSelectedLabelCommand(commandName, command.getTarget(), command.getValue());
+            case "assertSelectedValue" ->
+                    new AssertSelectedValueCommand(commandName, command.getTarget(), command.getValue());
+            case "assertText" -> new AssertTextCommand(commandName, command.getTarget(), command.getValue());
             case "callApi" -> new CallApiCommand(commandName, command.getTarget(), command.getValue());
             case "check" -> new CheckCommand(commandName, command.getTarget(), command.getValue());
-            case "chooseOkOnNextConfirmation" ->
+            case "chooseCancelOnNextConfirmation", "chooseCancelOnNextPrompt" ->
+                    new ChooseCancelOnNextConfirmationCommand(commandName, command.getTarget(), command.getValue());
+            case "chooseOkOnNextConfirmation", "chooseOkOnNextPrompt" ->
                     new ChooseOkOnNextConfirmationCommand(commandName, command.getTarget(), command.getValue());
             case "clickAt" -> new ClickAtCommand(commandName, command.getTarget(), command.getValue());
             case "click" -> new ClickCommand(commandName, command.getTarget(), command.getValue());

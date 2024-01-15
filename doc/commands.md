@@ -77,60 +77,60 @@ Confirm that the target element has not been checked. The test will stop if the 
 - arguments
     - locator(target): An element locator.
 
-## assert not editable
+## assert not editable [〇]
 
 Confirm that the target element is not editable. The test will stop if the assert fails.
 
 - arguments
     - locator: An element locator.
 
-## assert not selected value
+## assert not selected value [〇]
 
 Confirm that the value attribute of the selected option in a dropdown element does not contain the provided value. The
 test will stop if the assert fails.
 
 - arguments
-    - select locator: An element locator identifying a drop-down menu.
-    - text: An exact string match. Support for pattern matching is in the works.
+    - select locator(target): An element locator identifying a drop-down menu.
+    - text(value): An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
-## assert not text
+## assert not text [〇]
 
 Confirm that the text of an element does not contain the provided value. The test will stop if the assert fails.
 
 - arguments
-    - locator: An element locator.
-    - text: An exact string match. Support for pattern matching is in the works.
+    - locator(target): An element locator.
+    - text(value): An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
-## assert prompt
+## assert prompt [〇]
 
 Confirm that a JavaScript prompt has been rendered. The test will stop if the assert fails.
 
 - arguments
     - text(target): The text to use.
 
-## assert selected value
+## assert selected value [〇]
 
 Confirm that the value attribute of the selected option in a dropdown element contains the provided value. The test will
 stop if the assert fails.
 
 - arguments
-    - select locator: An element locator identifying a drop-down menu.
-    - text: An exact string match. Support for pattern matching is in the works.
+    - select locator(target): An element locator identifying a drop-down menu.
+    - text(value): An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
-## assert selected label
+## assert selected label [〇]
 
 Confirm that the label of the selected option in a dropdown element contains the provided value. The test will stop if
 the assert fails.
 
 - arguments
-    - select locator: An element locator identifying a drop-down menu.
-    - text: An exact string match. Support for pattern matching is in the works.
+    - select locator(target): An element locator identifying a drop-down menu.
+    - text(value): An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
-## assert text
+## assert text [〇]
 
 Confirm that the text of an element contains the provided value. The test will stop if the assert fails.
 
@@ -165,12 +165,12 @@ Check a toggle-button (checkbox/radio).
 - arguments
     - locator(target): An element locator.
 
-## choose cancel on next confirmation
+## choose cancel on next confirmation [〇]
 
 Affects the next confirmation alert. This command will cancel it. If the alert is already present, then use "webdriver
 choose cancel on visible confirmation" instead.
 
-## choose cancel on next prompt
+## choose cancel on next prompt [〇]
 
 Affects the next alert prompt. This command will cancel it. If the alert is already present, then use "webdriver choose
 cancel on visible prompt" instead.
