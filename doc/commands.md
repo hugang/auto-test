@@ -1,6 +1,7 @@
 # Commands
 
 reference: https://www.selenium.dev/selenium-ide/docs/en/api/commands
+reference: https://ui.vision/rpa/docs/selenium-ide
 
 ## add selection [〇]
 
@@ -41,7 +42,7 @@ Confirm that the target element has been checked. The test will stop if the asse
 - arguments
     - locator(target): An element locator.
 
-## assert confirmation
+## assert confirmation [〇]
 
 Confirm that a confirmation has been rendered. The test will stop if the assert fails.
 
@@ -107,7 +108,7 @@ Confirm that the text of an element does not contain the provided value. The tes
 Confirm that a JavaScript prompt has been rendered. The test will stop if the assert fails.
 
 - arguments
-    - text: The text to use.
+    - text(target): The text to use.
 
 ## assert selected value
 
@@ -174,7 +175,7 @@ choose cancel on visible confirmation" instead.
 Affects the next alert prompt. This command will cancel it. If the alert is already present, then use "webdriver choose
 cancel on visible prompt" instead.
 
-## choose ok on next confirmation
+## choose ok on next confirmation [〇]
 
 Affects the next confirmation alert. This command will accept it. If the alert is already present, then use "webdriver
 choose ok on visible confirmation" instead.
@@ -203,7 +204,9 @@ example the material ripple effect.
 Closes the current window. There is no need to close the initial window, IDE will re-use it; closing it may cause a
 performance penalty on the test.
 
-## debugger
+## debugger [-]
+
+do not use it in server mode.
 
 Breaks the execution and enters debugger
 
@@ -599,7 +602,7 @@ Soft assert that a variable is an expected value. The variable's value will be c
 test will continue even if the verify fails.
 
 - arguments
-    - variable name: The name of a variable without brackets.
+    - variable name(target): The name of a variable without brackets.
     - expected value: The result you expect a variable to contain (e.g., true, false, or some other value).
 
 ## verify checked
@@ -607,7 +610,7 @@ test will continue even if the verify fails.
 Soft assert that a toggle-button (checkbox/radio) has been checked. The test will continue even if the verify fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
 ## verify editable
 
@@ -615,28 +618,28 @@ Soft assert whether the specified input element is editable (e.g., hasn't been d
 the verify fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
 ## verify element present
 
 Soft assert that the specified element is somewhere on the page. The test will continue even if the verify fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
 ## verify element not present
 
 Soft assert that the specified element is not somewhere on the page. The test will continue even if the verify fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
 ## verify not checked
 
 Soft assert that a toggle-button (checkbox/radio) has not been checked. The test will continue even if the verify fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
 ## verify not editable
 
@@ -644,7 +647,7 @@ Soft assert whether the specified input element is not editable (e.g., hasn't be
 even if the verify fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
 
 ## verify not selected value
 
@@ -652,7 +655,7 @@ Soft assert that the expected element has not been chosen in a select menu by it
 continue even if the verify fails.
 
 - arguments
-    - select locator: An element locator identifying a drop-down menu.
+    - select locator(target): An element locator identifying a drop-down menu.
     - option: An option locator, typically just an option label (e.g. "John Smith").
 
 ## verify not text
@@ -660,7 +663,7 @@ continue even if the verify fails.
 Soft assert the text of an element is not present. The test will continue even if the verify fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
     - text: The text to use.
 
 ## verify selected label
@@ -669,7 +672,7 @@ Soft assert the visible text for a selected option in the specified select eleme
 verify fails.
 
 - arguments
-    - select locator: An element locator identifying a drop-down menu.
+    - select locator(target): An element locator identifying a drop-down menu.
     - text: An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
@@ -679,7 +682,7 @@ Soft assert that the expected element has been chosen in a select menu by its op
 even if the verify fails.
 
 - arguments
-    - select locator: An element locator identifying a drop-down menu.
+    - select locator(target): An element locator identifying a drop-down menu.
     - option: An option locator, typically just an option label (e.g. "John Smith").
 
 ## verify text
@@ -687,7 +690,7 @@ even if the verify fails.
 Soft assert the text of an element is present. The test will continue even if the verify fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
     - text: The text to use.
 
 ## verify title
@@ -704,7 +707,7 @@ checkbox/radio elements, the value will be "on" or "off" depending on whether th
 will continue even if the verify fails.
 
 - arguments
-    - locator: An element locator.
+    - locator(target): An element locator.
     - text: An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
@@ -713,32 +716,32 @@ will continue even if the verify fails.
 Wait for an element to be editable.
 
 - arguments
-    - locator: An element locator.
-    - wait time: The amount of time to wait (in milliseconds).
+    - locator(target): An element locator.
+    - wait time(value): The amount of time to wait (in milliseconds).
 
 ## wait for element not editable
 
 Wait for an element to not be editable.
 
 - arguments
-    - locator: An element locator.
-    - wait time: The amount of time to wait (in milliseconds).
+    - locator(target): An element locator.
+    - wait time(value): The amount of time to wait (in milliseconds).
 
 ## wait for element not present
 
 Wait for a target element to not be present on the page.
 
 - arguments
-    - locator: An element locator.
-    - wait time: The amount of time to wait (in milliseconds).
+    - locator(target): An element locator.
+    - wait time(value): The amount of time to wait (in milliseconds).
 
 ## wait for element not visible
 
 Wait for a target element to not be visible on the page.
 
 - arguments
-    - locator: An element locator.
-    - wait time: The amount of time to wait (in milliseconds).
+    - locator(target): An element locator.
+    - wait time(value): The amount of time to wait (in milliseconds).
 
 ## wait for element present [〇]
 

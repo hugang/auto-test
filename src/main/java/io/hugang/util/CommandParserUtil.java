@@ -195,10 +195,10 @@ public class CommandParserUtil {
             case "addSelection" -> new AddSelectionCommand(commandName, command.getTarget(), command.getValue());
             case "answerOnNextPrompt" ->
                     new AnswerOnNextPromptCommand(commandName, command.getTarget(), command.getValue());
-            case "assertAlert" -> new AssertAlertCommand(commandName, command.getTarget(), command.getValue());
+            case "assertAlert", "assertConfirmation", "assertPrompt" ->
+                    new AssertAlertCommand(commandName, command.getTarget(), command.getValue());
             case "assertChecked" -> new AssertCheckedCommand(commandName, command.getTarget(), command.getValue());
             case "assert" -> new AssertCommand(commandName, command.getTarget(), command.getValue());
-            case "assertConfirmation" -> new AssertConfirmation(commandName, command.getTarget(), command.getValue());
             case "assertEditable" -> new AssertEditableCommand(commandName, command.getTarget(), command.getValue());
             case "assertElementNotPresent" ->
                     new AssertElementNotPresentCommand(commandName, command.getTarget(), command.getValue());
@@ -208,6 +208,8 @@ public class CommandParserUtil {
                     new AssertNotCheckedCommand(commandName, command.getTarget(), command.getValue());
             case "callApi" -> new CallApiCommand(commandName, command.getTarget(), command.getValue());
             case "check" -> new CheckCommand(commandName, command.getTarget(), command.getValue());
+            case "chooseOkOnNextConfirmation" ->
+                    new ChooseOkOnNextConfirmationCommand(commandName, command.getTarget(), command.getValue());
             case "clickAt" -> new ClickAtCommand(commandName, command.getTarget(), command.getValue());
             case "click" -> new ClickCommand(commandName, command.getTarget(), command.getValue());
             case "close" -> new CloseCommand(commandName, command.getTarget(), command.getValue());
