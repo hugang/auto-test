@@ -550,7 +550,7 @@ Gets the value of element and stores it for later use. This works for any input 
 Gets the handle of the current page.
 
 - arguments
-    - window handle: A handle representing a specific page (tab, or window).
+    - window handle(target): A handle representing a specific page (tab, or window).
 
 ## store xpath count [〇]
 
