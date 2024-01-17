@@ -5,17 +5,19 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
-import cn.hutool.http.HttpUtil;
 import cn.hutool.http.Method;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import cn.hutool.log.Log;
 import io.hugang.CommandExecuteException;
 import io.hugang.execute.Command;
 
 import java.nio.charset.Charset;
 
 public class CallApiCommand extends Command {
+    private static final Log log = Log.get();
+
     public CallApiCommand(String command, String target, String value) {
         super(command, target, value);
     }
@@ -55,13 +57,12 @@ public class CallApiCommand extends Command {
         // get proxy
         String proxy = obj.getStr("proxy");
 
-        // unable to make field protected java.lang.String java.net.httpUrlConnection.method accessible
-        HttpRequest httpRequest = switch (method) {
-            case GET -> HttpUtil.createGet(url);
-            case POST -> HttpUtil.createPost(url).body(body);
-            default -> throw new CommandExecuteException("Unsupported method: " + methodStr);
-        };
-
+        HttpRequest httpRequest = HttpRequest.of(url).method(method);
+        // if method is not get and body is not null, set body to request
+        if (!"GET".equals(methodStr) && StrUtil.isNotEmpty(body)) {
+            // set body to request
+            httpRequest.body(body);
+        }
         // loop proxy and get proxy host and port by key
         if (proxy != null) {
             JSONObject proxyObj = JSONUtil.parseObj(proxy);
@@ -96,6 +97,7 @@ public class CallApiCommand extends Command {
             JSONArray store;
             JSONObject jsonObject;
             try (HttpResponse response = httpRequest.execute()) {
+                log.info("response: {}", response.body());
                 Object o = obj.get("store");
                 if (o == null) {
                     return true;
