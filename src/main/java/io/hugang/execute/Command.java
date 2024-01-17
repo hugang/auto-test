@@ -4,6 +4,8 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import io.hugang.CommandExecuteException;
 import io.hugang.config.AutoTestConfig;
 import io.hugang.util.CommandExecuteUtil;
@@ -15,6 +17,7 @@ import io.hugang.util.CommandExecuteUtil;
  * dict is for this command
  */
 public abstract class Command implements ICommand {
+    private static final Log log = LogFactory.get();
 
     public static final String TARGET = "target";
 
@@ -49,9 +52,10 @@ public abstract class Command implements ICommand {
     }
 
     public void afterExecute() {
-        if (this.getDict().containsKey("setSpeed")) {
+        log.info("command: " + this.getCommand() + " execute success");
+        if (this.getVariableMap().containsKey("setSpeed")) {
             try {
-                Thread.sleep(this.getDict().getInt("setSpeed"));
+                Thread.sleep(this.getVariableMap().getInt("setSpeed"));
             } catch (InterruptedException e) {
                 throw new CommandExecuteException(e);
             }

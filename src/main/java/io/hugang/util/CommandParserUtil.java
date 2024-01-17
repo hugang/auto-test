@@ -264,6 +264,7 @@ public class CommandParserUtil {
             case "selectWindow" -> new SelectWindowCommand(commandName, command.getTarget(), command.getValue());
             case "sendKeys" -> new SendKeysCommand(commandName, command.getTarget(), command.getValue());
             case "setProperty" -> new SetPropertyCommand(commandName, command.getTarget(), command.getValue());
+            case "setSpeed" -> new SetSpeedCommand(commandName, command.getTarget(), command.getValue());
             case "setWindowSize" -> new SetWindowSizeCommand(commandName, command.getTarget(), command.getValue());
             case "storeAttribute" -> new StoreAttributeCommand(commandName, command.getTarget(), command.getValue());
             case "store" -> new StoreCommand(commandName, command.getTarget(), command.getValue());

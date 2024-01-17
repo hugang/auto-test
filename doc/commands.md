@@ -863,3 +863,10 @@ export db by sql.
     - target: The database group which defined in conf/db.conf.
     - value: sqls.
     - path: the path of the exported file.
+
+## recorder [〇]
+
+record the actions of the browser.
+
+- arguments
+    - target: path of the exported file. eg: recorder.mp4
