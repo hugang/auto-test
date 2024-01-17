@@ -25,6 +25,7 @@ public class AutoTestServer {
                         String path = request.getParam("path");
                         String testCases = request.getParam("testcases");
                         String mode = request.getParam("mode");
+                        mode = mode == null ? "xlsx" : mode;
                         response.write(JSONUtil.toJsonStr(new BasicExecutor().execute(mode, path, testCases)));
                     } catch (Exception ex) {
                         log.error(ex);
@@ -44,7 +45,7 @@ public class AutoTestServer {
                         String path = tempFile.getAbsolutePath();
                         String testCases = request.getMultipart().getParam("testcases");
                         String mode = request.getMultipart().getParam("mode");
-                        new BasicExecutor().execute(mode, path, testCases);
+                        mode = mode == null ? "xlsx" : mode;
                         response.write(JSONUtil.toJsonStr(new BasicExecutor().execute(mode, path, testCases)));
                     } catch (Exception ex) {
                         log.error(ex);
