@@ -634,14 +634,14 @@ Soft assert that the specified element is not somewhere on the page. The test wi
 - arguments
     - locator(target): An element locator.
 
-## verify not checked
+## verify not checked [〇]
 
 Soft assert that a toggle-button (checkbox/radio) has not been checked. The test will continue even if the verify fails.
 
 - arguments
     - locator(target): An element locator.
 
-## verify not editable
+## verify not editable [〇]
 
 Soft assert whether the specified input element is not editable (e.g., hasn't been disabled). The test will continue
 even if the verify fails.
@@ -649,7 +649,7 @@ even if the verify fails.
 - arguments
     - locator(target): An element locator.
 
-## verify not selected value
+## verify not selected value [〇]
 
 Soft assert that the expected element has not been chosen in a select menu by its option attribute. The test will
 continue even if the verify fails.
@@ -658,7 +658,7 @@ continue even if the verify fails.
     - select locator(target): An element locator identifying a drop-down menu.
     - option: An option locator, typically just an option label (e.g. "John Smith").
 
-## verify not text
+## verify not text [〇]
 
 Soft assert the text of an element is not present. The test will continue even if the verify fails.
 
@@ -666,7 +666,7 @@ Soft assert the text of an element is not present. The test will continue even i
     - locator(target): An element locator.
     - text: The text to use.
 
-## verify selected label
+## verify selected label [〇]
 
 Soft assert the visible text for a selected option in the specified select element. The test will continue even if the
 verify fails.
@@ -676,7 +676,7 @@ verify fails.
     - text: An exact string match. Support for pattern matching is in the works.
       See https://github.com/SeleniumHQ/selenium-ide/issues/141 for details.
 
-## verify selected value
+## verify selected value [〇]
 
 Soft assert that the expected element has been chosen in a select menu by its option attribute. The test will continue
 even if the verify fails.
@@ -685,7 +685,7 @@ even if the verify fails.
     - select locator(target): An element locator identifying a drop-down menu.
     - option: An option locator, typically just an option label (e.g. "John Smith").
 
-## verify text
+## verify text [〇]
 
 Soft assert the text of an element is present. The test will continue even if the verify fails.
 
@@ -693,14 +693,14 @@ Soft assert the text of an element is present. The test will continue even if th
     - locator(target): An element locator.
     - text: The text to use.
 
-## verify title
+## verify title [〇]
 
 Soft assert the title of the current page contains the provided text. The test will continue even if the verify fails.
 
 - arguments
     - text: The text to use.
 
-## verify value
+## verify value [〇]
 
 Soft assert the (whitespace-trimmed) value of an input field (or anything else with a value parameter). For
 checkbox/radio elements, the value will be "on" or "off" depending on whether the element is checked or not. The test
@@ -719,7 +719,7 @@ Wait for an element to be editable.
     - locator(target): An element locator.
     - wait time(value): The amount of time to wait (in milliseconds).
 
-## wait for element not editable
+## wait for element not editable [〇]
 
 Wait for an element to not be editable.
 
@@ -727,7 +727,7 @@ Wait for an element to not be editable.
     - locator(target): An element locator.
     - wait time(value): The amount of time to wait (in milliseconds).
 
-## wait for element not present
+## wait for element not present [〇]
 
 Wait for a target element to not be present on the page.
 
@@ -735,7 +735,7 @@ Wait for a target element to not be present on the page.
     - locator(target): An element locator.
     - wait time(value): The amount of time to wait (in milliseconds).
 
-## wait for element not visible
+## wait for element not visible [〇]
 
 Wait for a target element to not be visible on the page.
 
@@ -767,17 +767,17 @@ alert has not appeared yet then use "answer on next prompt" instead.
 - arguments
     - answer(target): The answer to give in response to the prompt pop-up.
 
-## webdriver choose cancel on visible confirmation
+## webdriver choose cancel on visible confirmation [〇]
 
 Affects a currently showing confirmation alert. This command instructs Selenium to cancel it. If the alert has not
 appeared yet then use "choose cancel on next confirmation" instead.
 
-## webdriver choose cancel on visible prompt
+## webdriver choose cancel on visible prompt [〇]
 
 Affects a currently showing alert prompt. This command instructs Selenium to cancel it. If the alert has not appeared
 yet then use "choose cancel on next prompt" instead.
 
-## webdriver choose ok on visible confirmation
+## webdriver choose ok on visible confirmation [〇]
 
 Affects a currently showing confirmation alert. This command instructs Selenium to accept it. If the alert has not
 appeared yet then use "choose ok on next confirmation" instead.

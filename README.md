@@ -30,4 +30,4 @@ Usage: auto-test [options]
 
 ## commands.md
 
-refer to [[doc/commands.md]] for the commands supported by auto-test.
+refer to [commands](doc/commands.md) for the commands supported by auto-test.
