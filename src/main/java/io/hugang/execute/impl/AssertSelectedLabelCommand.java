@@ -1,10 +1,12 @@
 package io.hugang.execute.impl;
 
+import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+@WebCommand
 public class AssertSelectedLabelCommand extends Command {
     public AssertSelectedLabelCommand(String command, String target, String value) {
         super(command, target, value);

@@ -1,13 +1,17 @@
 package io.hugang.execute.impl;
 
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.SelenideElement;
 import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 
 @WebCommand
-public class AssertTextCommand extends Command {
-    public AssertTextCommand(String command, String target, String value) {
+public class VerifyNotTextCommand extends Command {
+    private static final Log log = LogFactory.get();
+
+    public VerifyNotTextCommand(String command, String target, String value) {
         super(command, target, value);
     }
 
@@ -18,6 +22,8 @@ public class AssertTextCommand extends Command {
         // Get the text of the element
         String elementText = element.getText();
         // Compare the text of the element with the value
-        return elementText.equals(render(getValue()));
+        boolean equals = elementText.equals(render(getValue()));
+        log.info("verify target: {}, not text={}", getTarget(), !equals);
+        return true;
     }
 }

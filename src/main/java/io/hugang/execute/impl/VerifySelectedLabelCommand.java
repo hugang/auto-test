@@ -1,5 +1,7 @@
 package io.hugang.execute.impl;
 
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
@@ -7,8 +9,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 @WebCommand
-public class AssertNotSelectedLabelCommand extends Command {
-    public AssertNotSelectedLabelCommand(String command, String target, String value) {
+public class VerifySelectedLabelCommand extends Command {
+    private static final Log log = LogFactory.get();
+
+    public VerifySelectedLabelCommand(String command, String target, String value) {
         super(command, target, value);
     }
 
@@ -20,6 +24,10 @@ public class AssertNotSelectedLabelCommand extends Command {
         if (element == null) {
             element = CommandExecuteUtil.getElement(render(getTarget())).findElement(By.xpath("//option[. = '" + render(getValue()) + "']"));
         }
-        return !element.isSelected();
+        // return the selected status of the element
+        boolean selected = element.isSelected();
+
+        log.info("verify target: {}, selected label={}", getTarget(), selected);
+        return true;
     }
 }

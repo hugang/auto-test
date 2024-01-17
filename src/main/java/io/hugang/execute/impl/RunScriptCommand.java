@@ -3,12 +3,14 @@ package io.hugang.execute.impl;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.CommandExecuteException;
+import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 
+@WebCommand
 public class RunScriptCommand extends Command {
     public RunScriptCommand(String command, String target, String value) {
         super(command, target, value);

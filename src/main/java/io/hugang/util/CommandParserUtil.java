@@ -271,19 +271,54 @@ public class CommandParserUtil {
             case "storeText" -> new StoreTextCommand(commandName, command.getTarget(), command.getValue());
             case "storeTitle" -> new StoreTitleCommand(commandName, command.getTarget(), command.getValue());
             case "storeValue" -> new StoreValueCommand(commandName, command.getTarget(), command.getValue());
+            case "storeWindowHandle" ->
+                    new StoreWindowHandleCommand(commandName, command.getTarget(), command.getValue());
             case "storeXpathCount" -> new StoreXpathCountCommand(commandName, command.getTarget(), command.getValue());
             case "submit" -> new SubmitCommand(commandName, command.getTarget(), command.getValue());
             case "type" -> new TypeCommand(commandName, command.getTarget(), command.getValue());
             case "uncheck" -> new UncheckCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyChecked" -> new VerifyCheckedCommand(commandName, command.getTarget(), command.getValue());
+            case "verify" -> new VerifyCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyEditable" -> new VerifyEditableCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyElementNotPresent" ->
+                    new VerifyElementNotPresentCommand(commandName, command.getTarget(), command.getValue());
             case "verifyElementPresent" ->
                     new VerifyElementPresentCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyNotChecked" ->
+                    new VerifyNotCheckedCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyNotEditable" ->
+                    new VerifyNotEditableCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyNotSelectedLabel" ->
+                    new VerifyNotSelectedLabelCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyNotSelectedValue" ->
+                    new VerifyNotSelectedValueCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyNotText" -> new VerifyNotTextCommand(commandName, command.getTarget(), command.getValue());
+            case "verifySelectedLabel" ->
+                    new VerifySelectedLabelCommand(commandName, command.getTarget(), command.getValue());
+            case "verifySelectedValue" ->
+                    new VerifySelectedValueCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyText" -> new VerifyTextCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyTitle" -> new VerifyTitleCommand(commandName, command.getTarget(), command.getValue());
+            case "verifyValue" -> new VerifyValueCommand(commandName, command.getTarget(), command.getValue());
             case "waitForElementEditable" ->
                     new WaitForElementEditableCommand(commandName, command.getTarget(), command.getValue());
+            case "waitForElementNotEditable" ->
+                    new WaitForElementNotEditableCommand(commandName, command.getTarget(), command.getValue());
+            case "waitForElementNotPresent" ->
+                    new WaitForElementNotPresentCommand(commandName, command.getTarget(), command.getValue());
+            case "waitForElementNotVisible" ->
+                    new WaitForElementNotVisibleCommand(commandName, command.getTarget(), command.getValue());
             case "waitForElementPresent" ->
                     new WaitForElementPresentCommand(commandName, command.getTarget(), command.getValue());
             case "waitForElementVisible" ->
                     new WaitForElementVisibleCommand(commandName, command.getTarget(), command.getValue());
             case "waitForText" -> new WaitForTextCommand(commandName, command.getTarget(), command.getValue());
+            case "webdriverAnswerOnVisiblePrompt" ->
+                    new WebdriverAnswerOnVisiblePromptCommand(commandName, command.getTarget(), command.getValue());
+            case "webdriverChooseCancelOnVisibleConfirmation", "webdriverChooseCancelOnVisiblePrompt" ->
+                    new WebdriverChooseCancelOnVisibleConfirmationCommand(commandName, command.getTarget(), command.getValue());
+            case "webdriverChooseOkOnVisibleConfirmation" ->
+                    new WebdriverChooseOkOnVisibleConfirmationCommand(commandName, command.getTarget(), command.getValue());
 
             default -> null;
         };

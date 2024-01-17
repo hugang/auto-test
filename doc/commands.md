@@ -545,7 +545,7 @@ Gets the value of element and stores it for later use. This works for any input 
     - locator(target): An element locator.
     - variable name(value): The name of a variable without brackets.
 
-## store window handle
+## store window handle [〇]
 
 Gets the handle of the current page.
 
@@ -596,7 +596,7 @@ Uncheck a toggle-button (checkbox/radio).
 - arguments
     - locator(value): An element locator.
 
-## verify
+## verify [〇]
 
 Soft assert that a variable is an expected value. The variable's value will be converted to a string for comparison. The
 test will continue even if the verify fails.
@@ -605,14 +605,14 @@ test will continue even if the verify fails.
     - variable name(target): The name of a variable without brackets.
     - expected value: The result you expect a variable to contain (e.g., true, false, or some other value).
 
-## verify checked
+## verify checked [〇]
 
 Soft assert that a toggle-button (checkbox/radio) has been checked. The test will continue even if the verify fails.
 
 - arguments
     - locator(target): An element locator.
 
-## verify editable
+## verify editable [〇]
 
 Soft assert whether the specified input element is editable (e.g., hasn't been disabled). The test will continue even if
 the verify fails.
@@ -620,14 +620,14 @@ the verify fails.
 - arguments
     - locator(target): An element locator.
 
-## verify element present
+## verify element present [〇]
 
 Soft assert that the specified element is somewhere on the page. The test will continue even if the verify fails.
 
 - arguments
     - locator(target): An element locator.
 
-## verify element not present
+## verify element not present [〇]
 
 Soft assert that the specified element is not somewhere on the page. The test will continue even if the verify fails.
 
@@ -759,13 +759,13 @@ Wait for a target element to be visible on the page.
     - locator(target): An element locator.
     - wait time(value): The amount of time to wait (in milliseconds).
 
-## webdriver answer on visible prompt
+## webdriver answer on visible prompt [〇]
 
 Affects a currently showing alert prompt. This command instructs Selenium to provide the specified answer to it. If the
 alert has not appeared yet then use "answer on next prompt" instead.
 
 - arguments
-    - answer: The answer to give in response to the prompt pop-up.
+    - answer(target): The answer to give in response to the prompt pop-up.
 
 ## webdriver choose cancel on visible confirmation
 
