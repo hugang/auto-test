@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import cn.hutool.http.HttpUtil;
 import cn.hutool.http.Method;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
@@ -54,9 +55,13 @@ public class CallApiCommand extends Command {
         // get proxy
         String proxy = obj.getStr("proxy");
 
-        HttpRequest httpRequest = HttpRequest.of(url)
-                .method(method)
-                .body(body);
+        // unable to make field protected java.lang.String java.net.httpUrlConnection.method accessible
+        HttpRequest httpRequest = switch (method) {
+            case GET -> HttpUtil.createGet(url);
+            case POST -> HttpUtil.createPost(url).body(body);
+            default -> throw new CommandExecuteException("Unsupported method: " + methodStr);
+        };
+
         // loop proxy and get proxy host and port by key
         if (proxy != null) {
             JSONObject proxyObj = JSONUtil.parseObj(proxy);
