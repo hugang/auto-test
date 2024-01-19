@@ -7,4 +7,6 @@ public interface IConditionCommand extends ICommand{
     boolean inCondition() throws ScriptException;
     List<ICommand> getSubCommands();
     void addSubCommand(ICommand subCommand);
+    void setUuid(String  uuid);
+    String  getUuid();
 }

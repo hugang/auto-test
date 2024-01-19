@@ -259,12 +259,12 @@ Sets the value of a content editable element as if you typed in it.
     - locator(target): An element locator.
     - value: The value to input.
 
-## else
+## else [〇]
 
 Part of an if block. Execute the commands in this branch when an if and/or else if condition are not met. Terminate the
 branch with the end command.
 
-## else if
+## else if [〇]
 
 Part of an if block. Execute the commands in this branch when an if condition has not been met. Terminate the branch
 with the end command.

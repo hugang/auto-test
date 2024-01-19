@@ -18,6 +18,7 @@ public class WhileCommand extends Command implements IConditionCommand {
 
     // sub commands
     private List<ICommand> subCommands;
+    private String uuid;
 
     @Override
     public boolean _execute() {
@@ -60,6 +61,16 @@ public class WhileCommand extends Command implements IConditionCommand {
             this.subCommands = new ArrayList<>();
         }
         this.subCommands.add(subCommand);
+    }
+
+    @Override
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    @Override
+    public String getUuid() {
+        return this.uuid;
     }
 
     @Override

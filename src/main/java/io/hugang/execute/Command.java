@@ -17,7 +17,7 @@ import io.hugang.util.CommandExecuteUtil;
  * dict is for this command
  */
 public abstract class Command implements ICommand {
-    private static final Log log = LogFactory.get();
+    protected static final Log log = LogFactory.get();
 
     public static final String TARGET = "target";
 

@@ -20,6 +20,7 @@ public class IfCommand extends Command implements IConditionCommand {
 
     // sub commands
     private List<ICommand> subCommands;
+    private String uuid;
 
     @Override
     public boolean _execute() {
@@ -60,12 +61,33 @@ public class IfCommand extends Command implements IConditionCommand {
             List<WebElement> elements = CommandExecuteUtil.findElements(render);
             return ObjectUtil.isNotEmpty(elements);
         }
-        return (boolean) JavaScriptEvaluator.evaluate(render, this.getVariableMap());
+        boolean inCondition = (boolean) JavaScriptEvaluator.evaluate(render, this.getVariableMap())
+                && !this.getVariableMap().containsKey(uuid);
+        log.info(this.getCommand() + " command execute, matching : {}", inCondition);
+
+        if (inCondition) {
+            this.getVariableMap().put(uuid, uuid);
+        }
+        return inCondition;
+    }
+
+    @Override
+    public void afterExecute() {
     }
 
     @Override
     public List<ICommand> getSubCommands() {
         return subCommands;
+    }
+
+    @Override
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    @Override
+    public String getUuid() {
+        return this.uuid;
     }
 
     @Override

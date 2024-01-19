@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.UUID;
 
 /**
  * input command parser util
@@ -147,7 +148,41 @@ public class CommandParserUtil {
             switch (commandName) {
                 case "if":
                     IfCommand ifCommand = new IfCommand(commandName, command.getTarget(), command.getValue());
+                    ifCommand.setUuid(UUID.randomUUID().toString());
                     commandStack.push(ifCommand);
+                    break;
+                case "elseIf":
+                    // if the command stack is empty and the latest stack command is not if or elseIf, throw exception
+                    if (commandStack.empty() || !("if".equals(commandStack.peek().getCommand()) || "elseIf".equals(commandStack.peek().getCommand()))) {
+                        throw new CommandExecuteException("elseIf command must be after if or elseIf command");
+                    }
+                    ElseIfCommand elseIfCommand = new ElseIfCommand(commandName, command.getTarget(), command.getValue());
+                    elseIfCommand.setUuid(commandStack.peek().getUuid());
+
+                    IConditionCommand popElseIf = commandStack.pop();
+                    if (!commandStack.empty()) {
+                        commandStack.peek().addSubCommand(popElseIf);
+                    } else {
+                        commands.add(popElseIf);
+                    }
+
+                    commandStack.push(elseIfCommand);
+                    break;
+                case "else":
+                    // if the command stack is empty and the latest stack command is not if or elseIf, throw exception
+                    if (commandStack.empty() || !("if".equals(commandStack.peek().getCommand()) || "elseIf".equals(commandStack.peek().getCommand()))) {
+                        throw new CommandExecuteException("else command must be after if or elseIf command");
+                    }
+                    ElseCommand elseCommand = new ElseCommand(commandName, command.getTarget(), command.getValue());
+                    elseCommand.setUuid(commandStack.peek().getUuid());
+
+                    IConditionCommand popElse = commandStack.pop();
+                    if (!commandStack.empty()) {
+                        commandStack.peek().addSubCommand(popElse);
+                    } else {
+                        commands.add(popElse);
+                    }
+                    commandStack.push(elseCommand);
                     break;
                 case "times":
                     TimesCommand timesCommand = new TimesCommand(commandName, command.getTarget(), command.getValue());
