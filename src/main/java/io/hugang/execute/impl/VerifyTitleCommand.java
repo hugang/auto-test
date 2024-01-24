@@ -1,14 +1,13 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
 
 @WebCommand
 public class VerifyTitleCommand extends Command {
-    private static final Log log = LogFactory.get();
+    private static final Log log = Log.get();
 
     public VerifyTitleCommand(String command, String target, String value) {
         super(command, target, value);

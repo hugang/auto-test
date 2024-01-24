@@ -1,7 +1,6 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import io.hugang.execute.Command;
 
 /**
@@ -13,7 +12,7 @@ import io.hugang.execute.Command;
  * @author hugang
  */
 public class VerifyCommand extends Command {
-    private static final Log log = LogFactory.get();
+    private static final Log log = Log.get();
 
 
     public VerifyCommand(String command, String target, String value) {

@@ -1,4 +1,4 @@
-package io.hugang.execute.impl;
+package io.hugang.execute.ext;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
@@ -6,7 +6,6 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import io.hugang.execute.Command;
 
 /**
@@ -17,7 +16,7 @@ import io.hugang.execute.Command;
  */
 public class JenkinsJobCommand extends Command {
     // log
-    private static final Log log = LogFactory.get();
+    private static final Log log = Log.get();
 
     public JenkinsJobCommand(String command, String target, String value) {
         super(command, target, value);

@@ -8,7 +8,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.cron.CronUtil;
 import cn.hutool.cron.task.Task;
 import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.execute.Commands;
@@ -16,7 +15,7 @@ import io.hugang.bean.ExecutionCommandResultDetail;
 import io.hugang.bean.ExecutionResult;
 import io.hugang.execute.ICommand;
 import io.hugang.config.AutoTestConfig;
-import io.hugang.execute.impl.RecorderCommand;
+import io.hugang.execute.ext.RecorderCommand;
 import io.hugang.util.CommandParserUtil;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
@@ -40,7 +39,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author hugang
  */
 public class BasicExecutor {
-    private static final Log log = LogFactory.get();
+    private static final Log log = Log.get();
 
 
     public BasicExecutor() {

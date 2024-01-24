@@ -4,7 +4,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import io.hugang.CommandExecuteException;
 import io.hugang.execute.Command;
 
@@ -20,7 +19,7 @@ import java.io.InputStreamReader;
  */
 public class RunCommand extends Command {
     // log
-    private static final Log log = LogFactory.get();
+    private static final Log log = Log.get();
     private static final String BASH_CMD = "/usr/bin/bash";
     private static final String TYPE_CMD = "cmd";
     private static final String TYPE_BAT = "bat";

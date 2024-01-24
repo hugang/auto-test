@@ -7,19 +7,18 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.SimpleServer;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import io.hugang.BasicExecutor;
 
 import java.io.File;
 
 public class AutoTestServer {
-    private static final Log log = LogFactory.get();
+    private static final Log log = Log.get();
 
     public static void main(String[] args) {
         SimpleServer server = HttpUtil.createServer(9191);
         server
                 // run test case from local pc, the test case store in the work folder
-                // eg. http://localhost:9191/local?testcases=1&path=src/test/resources/recorder/recorder.xlsx
+                // e.g. http://localhost:9191/local?testcases=1&path=src/test/resources/recorder/recorder.xlsx
                 .addAction("/local", (request, response) -> {
                     try {
                         String path = request.getParam("path");

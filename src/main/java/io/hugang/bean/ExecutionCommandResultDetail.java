@@ -1,8 +1,10 @@
 package io.hugang.bean;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class ExecutionCommandResultDetail implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     private String commandName;
     private String result;

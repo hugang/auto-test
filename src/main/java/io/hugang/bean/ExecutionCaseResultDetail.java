@@ -1,10 +1,12 @@
 package io.hugang.bean;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExecutionCaseResultDetail implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     private List<ExecutionCommandResultDetail> commands;
     private String result;

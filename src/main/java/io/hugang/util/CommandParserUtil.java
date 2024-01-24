@@ -7,7 +7,6 @@ import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
@@ -18,6 +17,7 @@ import io.hugang.execute.Command;
 import io.hugang.execute.Commands;
 import io.hugang.execute.ICommand;
 import io.hugang.execute.IConditionCommand;
+import io.hugang.execute.ext.*;
 import io.hugang.execute.impl.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -39,7 +39,7 @@ import java.util.UUID;
  * @author hugang
  */
 public class CommandParserUtil {
-    private static final Log log = LogFactory.get();
+    private static final Log log = Log.get();
 
     /**
      * read one line and parse to command
@@ -227,6 +227,7 @@ public class CommandParserUtil {
     private static ICommand parseOriginToCommand(OriginalCommand command) {
         String commandName = command.getCommand();
         return switch (commandName) {
+            // normal command from selenium ide
             case "addSelection" -> new AddSelectionCommand(commandName, command.getTarget(), command.getValue());
             case "answerOnNextPrompt" ->
                     new AnswerOnNextPromptCommand(commandName, command.getTarget(), command.getValue());
@@ -255,7 +256,6 @@ public class CommandParserUtil {
             case "assertText" -> new AssertTextCommand(commandName, command.getTarget(), command.getValue());
             case "assertTitle" -> new AssertTitleCommand(commandName, command.getTarget(), command.getValue());
             case "assertValue" -> new AssertValueCommand(commandName, command.getTarget(), command.getValue());
-            case "callApi" -> new CallApiCommand(commandName, command.getTarget(), command.getValue());
             case "check" -> new CheckCommand(commandName, command.getTarget(), command.getValue());
             case "chooseCancelOnNextConfirmation", "chooseCancelOnNextPrompt" ->
                     new ChooseCancelOnNextConfirmationCommand(commandName, command.getTarget(), command.getValue());
@@ -273,10 +273,6 @@ public class CommandParserUtil {
             case "executeAsyncScript" ->
                     new ExecuteAsyncScriptCommand(commandName, command.getTarget(), command.getValue());
             case "executeScript" -> new ExecuteScriptCommand(commandName, command.getTarget(), command.getValue());
-            case "exportDb" -> new ExportDbCommand(commandName, command.getTarget(), command.getValue());
-            case "generateCode" -> new GenerateCodeCommand(commandName, command.getTarget(), command.getValue());
-            case "increaseNumber" -> new IncreaseNumberCommand(commandName, command.getTarget(), command.getValue());
-            case "jenkinsJob" -> new JenkinsJobCommand(commandName, command.getTarget(), command.getValue());
             case "mouseDownAt" -> new MouseDownAtCommand(commandName, command.getTarget(), command.getValue());
             case "mouseDown" -> new MouseDownCommand(commandName, command.getTarget(), command.getValue());
             case "mouseMoveAt" -> new MouseMoveAtCommand(commandName, command.getTarget(), command.getValue());
@@ -286,13 +282,10 @@ public class CommandParserUtil {
             case "mouseUp" -> new MouseUpCommand(commandName, command.getTarget(), command.getValue());
             case "open" -> new OpenCommand(commandName, command.getTarget(), command.getValue());
             case "pause", "wait", "sleep" -> new PauseCommand(commandName, command.getTarget(), command.getValue());
-            case "readProperties" -> new ReadPropertiesCommand(commandName, command.getTarget(), command.getValue());
-            case "recorder" -> new RecorderCommand(commandName, command.getTarget(), command.getValue());
             case "removeSelection" -> new RemoveSelectionCommand(commandName, command.getTarget(), command.getValue());
             case "runCase" -> new RunCaseCommand(commandName, command.getTarget(), command.getValue());
             case "run" -> new RunCommand(commandName, command.getTarget(), command.getValue());
             case "runScript" -> new RunScriptCommand(commandName, command.getTarget(), command.getValue());
-            case "saveProperties" -> new SavePropertiesCommand(commandName, command.getTarget(), command.getValue());
             case "screenshot" -> new ScreenshotCommand(commandName, command.getTarget(), command.getValue());
             case "select" -> new SelectCommand(commandName, command.getTarget(), command.getValue());
             case "selectFrame" -> new SelectFrameCommand(commandName, command.getTarget(), command.getValue());
@@ -355,6 +348,17 @@ public class CommandParserUtil {
                     new WebdriverChooseCancelOnVisibleConfirmationCommand(commandName, command.getTarget(), command.getValue());
             case "webdriverChooseOkOnVisibleConfirmation" ->
                     new WebdriverChooseOkOnVisibleConfirmationCommand(commandName, command.getTarget(), command.getValue());
+
+            // ext command
+            case "callApi" -> new CallApiCommand(commandName, command.getTarget(), command.getValue());
+            case "exportDb" -> new ExportDbCommand(commandName, command.getTarget(), command.getValue());
+            case "generateCode" -> new GenerateCodeCommand(commandName, command.getTarget(), command.getValue());
+            case "increaseNumber" -> new IncreaseNumberCommand(commandName, command.getTarget(), command.getValue());
+            case "jenkinsJob" -> new JenkinsJobCommand(commandName, command.getTarget(), command.getValue());
+            case "readProperties" -> new ReadPropertiesCommand(commandName, command.getTarget(), command.getValue());
+            case "recorder" -> new RecorderCommand(commandName, command.getTarget(), command.getValue());
+            case "saveProperties" -> new SavePropertiesCommand(commandName, command.getTarget(), command.getValue());
+            case "scrollIntoView" -> new ScrollIntoViewCommand(commandName, command.getTarget(), command.getValue());
 
             default -> null;
         };

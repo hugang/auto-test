@@ -5,7 +5,6 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.CommandExecuteException;
@@ -26,7 +25,7 @@ import static com.codeborne.selenide.Selenide.$;
  * @author hugang
  */
 public class CommandExecuteUtil {
-    private static final Log log = LogFactory.get();
+    private static final Log log = Log.get();
     private static final int TIMEOUT = 10000;
     private static int spendTime = 0;
     private static final TemplateEngine ENGINE = TemplateUtil.createEngine();

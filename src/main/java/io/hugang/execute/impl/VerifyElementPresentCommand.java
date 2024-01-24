@@ -2,7 +2,6 @@ package io.hugang.execute.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
@@ -14,7 +13,7 @@ import java.util.List;
 
 @WebCommand
 public class VerifyElementPresentCommand extends Command {
-    private static final Log log = LogFactory.get();
+    private static final Log log = Log.get();
 
     public VerifyElementPresentCommand(String command, String target, String value) {
         super(command, target, value);

@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import io.hugang.CommandExecuteException;
 import io.hugang.config.AutoTestConfig;
 import io.hugang.util.CommandExecuteUtil;
@@ -17,7 +16,7 @@ import io.hugang.util.CommandExecuteUtil;
  * dict is for this command
  */
 public abstract class Command implements ICommand {
-    protected static final Log log = LogFactory.get();
+    protected static final Log log = Log.get();
 
     public static final String TARGET = "target";
 

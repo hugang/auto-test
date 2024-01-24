@@ -1,4 +1,4 @@
-package io.hugang.execute.impl;
+package io.hugang.execute.ext;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.db.meta.Table;
