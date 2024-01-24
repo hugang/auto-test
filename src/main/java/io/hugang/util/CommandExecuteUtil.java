@@ -7,7 +7,7 @@ import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.log.Log;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
-import io.hugang.CommandExecuteException;
+import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.config.AutoTestConfig;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

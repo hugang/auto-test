@@ -3,6 +3,7 @@ package io.hugang;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.cron.CronUtil;
@@ -10,6 +11,7 @@ import cn.hutool.cron.task.Task;
 import cn.hutool.log.Log;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
+import io.hugang.exceptions.AutoTestException;
 import io.hugang.execute.Commands;
 import io.hugang.bean.ExecutionCommandResultDetail;
 import io.hugang.bean.ExecutionResult;
@@ -175,7 +177,7 @@ public class BasicExecutor {
         if (!FileUtil.exist(testCasePath)) {
             testCasePath = autoTestConfig.getBaseDir().concat(testCasePath);
             if (!FileUtil.exist(testCasePath)) {
-                throw new CommandExecuteException("test case file not exist");
+                throw new AutoTestException("test case file not exist");
             }
         }
         log.info("test case path = {} ", testCasePath);
@@ -250,10 +252,9 @@ public class BasicExecutor {
         if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
             this.init(autoTestConfig);
         }
-        // clear result file
-        FileUtil.writeUtf8String("", autoTestConfig.getBaseDir() + "/result.txt");
-
         // execute the commands
+        String resultPath = autoTestConfig.getBaseDir() + "download/result_" + System.currentTimeMillis() + ".txt";
+        FileUtil.writeString("", resultPath, "UTF-8");
         for (Commands commands : commandsList) {
             try {
                 // init the executor
@@ -263,6 +264,15 @@ public class BasicExecutor {
                 variablesMap.set("caseId", commands.getCaseId());
                 executionResult.appendCaseResultDetail(this.executeCommands(commands, autoTestConfig, variablesMap));
             } finally {
+                // save command result to file
+                FileUtil.appendString("caseId:" + commands.getCaseId() + "\n", resultPath, "UTF-8");
+                for (ICommand command : commands.getCommands()) {
+                    if (command.getResult() == null) {
+                        continue;
+                    }
+                    FileUtil.appendString("  " + command.getResult() + "\n", resultPath, CharsetUtil.CHARSET_UTF_8);
+                    FileUtil.appendString("    " + command + "\n", resultPath, CharsetUtil.CHARSET_UTF_8);
+                }
                 // destroy the executor
                 if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
                     this.destroy();
@@ -306,7 +316,7 @@ public class BasicExecutor {
                     }
                     executionCommandResultDetails.add(new ExecutionCommandResultDetail(command.getCommand(), "true"));
                 }
-            } catch (Exception e) {
+            } catch (AutoTestException e) {
                 // write failed result to file
                 executionCommandResultDetails.add(new ExecutionCommandResultDetail(command.getCommand(), "false"));
                 log.error("execute command failed, command={}", command);

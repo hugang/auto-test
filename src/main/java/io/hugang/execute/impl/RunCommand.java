@@ -4,7 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
-import io.hugang.CommandExecuteException;
+import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 
 import java.io.BufferedReader;

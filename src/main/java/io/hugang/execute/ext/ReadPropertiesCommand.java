@@ -6,7 +6,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
-import io.hugang.CommandExecuteException;
+import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 
 /**

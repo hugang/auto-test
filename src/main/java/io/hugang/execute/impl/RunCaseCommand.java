@@ -3,7 +3,7 @@ package io.hugang.execute.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import io.hugang.BasicExecutor;
-import io.hugang.CommandExecuteException;
+import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.execute.Commands;
 import io.hugang.execute.ICommand;

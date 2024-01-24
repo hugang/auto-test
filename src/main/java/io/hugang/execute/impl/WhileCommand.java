@@ -1,6 +1,6 @@
 package io.hugang.execute.impl;
 
-import io.hugang.CommandExecuteException;
+import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.execute.ICommand;
 import io.hugang.execute.IConditionCommand;
@@ -23,25 +23,28 @@ public class WhileCommand extends Command implements IConditionCommand {
     @Override
     public boolean _execute() {
         try {
+            boolean result = true;
             while (inCondition()) {
-                this.runSubCommands();
+                result = result & this.runSubCommands();
             }
-            return true;
+            return result;
         } catch (Exception e) {
             throw new CommandExecuteException(e);
         }
     }
 
-    private void runSubCommands() {
-        this.getSubCommands().forEach(e -> {
+    private boolean runSubCommands() {
+        boolean result = true;
+        for (ICommand subCommand : this.getSubCommands()) {
             try {
-                e.setVariableMap(this.getVariableMap());
-                e.setAutoTestConfig(this.getAutoTestConfig());
-                e.execute();
-            } catch (CommandExecuteException ex) {
-                throw new CommandExecuteException(ex);
+                subCommand.setVariableMap(this.getVariableMap());
+                subCommand.setAutoTestConfig(this.getAutoTestConfig());
+                result = result & subCommand.execute();
+            } catch (CommandExecuteException e) {
+                throw new CommandExecuteException(e);
             }
-        });
+        }
+        return result;
     }
 
     @Override

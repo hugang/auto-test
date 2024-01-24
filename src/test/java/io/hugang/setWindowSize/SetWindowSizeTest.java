@@ -1,6 +1,6 @@
 package io.hugang.setWindowSize;
 
-import io.hugang.CommandExecuteException;
+import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.util.Utils;
 import org.junit.Test;
 

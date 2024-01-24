@@ -1,6 +1,6 @@
 package io.hugang.execute.impl;
 
-import io.hugang.CommandExecuteException;
+import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
 

@@ -1,4 +1,4 @@
-package io.hugang;
+package io.hugang.exceptions;
 
 public class CommandExecuteException extends RuntimeException {
     public CommandExecuteException(Exception e) {

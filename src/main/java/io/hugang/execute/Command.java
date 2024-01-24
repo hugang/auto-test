@@ -5,7 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
-import io.hugang.CommandExecuteException;
+import io.hugang.exceptions.AutoTestException;
+import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.config.AutoTestConfig;
 import io.hugang.util.CommandExecuteUtil;
 
@@ -37,11 +38,24 @@ public abstract class Command implements ICommand {
     }
 
     // execute command
-    public boolean execute() throws CommandExecuteException {
-        this.beforeExecute();
-        boolean result = this._execute();
-        this.afterExecute();
-        return result;
+    public boolean execute() {
+        try {
+            this.beforeExecute();
+            boolean result = this._execute();
+            this.afterExecute();
+
+            if (StrUtil.isEmpty(this.getResult())) {
+                if (result) {
+                    this.setResult(getCommand().concat(":success"));
+                } else {
+                    this.setResult(getCommand().concat(":fail"));
+                }
+            }
+            return result;
+        } catch (CommandExecuteException e) {
+            this.setResult(getCommand().concat(":" + e.getMessage()));
+            throw new AutoTestException(e);
+        }
     }
 
     public abstract boolean _execute() throws CommandExecuteException;
@@ -73,6 +87,8 @@ public abstract class Command implements ICommand {
     private Dict variableMap;
     // auto test config
     private AutoTestConfig autoTestConfig;
+    // result
+    private String result;
 
     @Override
     public String getCommand() {
@@ -119,6 +135,16 @@ public abstract class Command implements ICommand {
     public void setAutoTestConfig(AutoTestConfig autoTestConfig) {
         this.autoTestConfig = autoTestConfig;
     }
+
+    @Override
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
 
     public void appendDict(Dict dict) {
         this.dict.putAll(dict);

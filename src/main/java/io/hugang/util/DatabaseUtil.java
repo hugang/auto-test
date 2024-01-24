@@ -8,7 +8,7 @@ import cn.hutool.db.meta.Table;
 import cn.hutool.log.Log;
 import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
-import io.hugang.CommandExecuteException;
+import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.config.AutoTestConfig;
 
 import java.sql.Connection;

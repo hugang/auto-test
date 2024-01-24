@@ -1,7 +1,7 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import io.hugang.CommandExecuteException;
+import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.execute.ICommand;
 import io.hugang.execute.IConditionCommand;
@@ -26,24 +26,26 @@ public class IfCommand extends Command implements IConditionCommand {
     public boolean _execute() {
         try {
             if (inCondition()) {
-                runSubCommands();
+                return runSubCommands();
             }
             return true;
-        } catch (Exception e) {
+        } catch (ScriptException e) {
             throw new CommandExecuteException(e);
         }
     }
 
-    private void runSubCommands() {
-        this.getSubCommands().forEach(e -> {
+    private boolean runSubCommands() {
+        boolean result = true;
+        for (ICommand subCommand : this.getSubCommands()) {
             try {
-                e.setVariableMap(this.getVariableMap());
-                e.setAutoTestConfig(this.getAutoTestConfig());
-                e.execute();
-            } catch (CommandExecuteException ex) {
-                throw new CommandExecuteException(ex);
+                subCommand.setVariableMap(this.getVariableMap());
+                subCommand.setAutoTestConfig(this.getAutoTestConfig());
+                result = result & subCommand.execute();
+            } catch (CommandExecuteException e) {
+                throw new CommandExecuteException(e);
             }
-        });
+        }
+        return result;
     }
 
     @Override

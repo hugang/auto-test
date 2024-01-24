@@ -1,7 +1,7 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.core.util.StrUtil;
-import io.hugang.CommandExecuteException;
+import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.execute.ICommand;
 import io.hugang.execute.IConditionCommand;
@@ -9,6 +9,7 @@ import io.hugang.execute.IConditionCommand;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ForEachCommand extends Command implements IConditionCommand {
 
@@ -30,35 +31,38 @@ public class ForEachCommand extends Command implements IConditionCommand {
             Object target = this.getVariable(this.getTarget());
             String value = this.getDictStr("value", this.getValue());
 
+            AtomicBoolean result = new AtomicBoolean(true);
             if (target instanceof String && ((String) target).contains(",")) {
                 Arrays.stream(((String) target).split(",")).forEach(s -> {
                     this.setVariable(value, s);
-                    this.runSubCommands();
+                    result.set(result.get() & this.runSubCommands());
                 });
             } else if (target instanceof List<?> list && !((List<?>) target).isEmpty()) {
                 list.forEach(s -> {
                     this.setVariable(value, s);
-                    this.runSubCommands();
+                    result.set(result.get() & this.runSubCommands());
                 });
             } else {
                 throw new CommandExecuteException("target is not a list");
             }
-            return true;
+            return result.get();
         } catch (Exception e) {
             throw new CommandExecuteException(e);
         }
     }
 
-    private void runSubCommands() {
-        this.getSubCommands().forEach(e -> {
+    private boolean runSubCommands() {
+        boolean result = true;
+        for (ICommand subCommand : this.getSubCommands()) {
             try {
-                e.setVariableMap(this.getVariableMap());
-                e.setAutoTestConfig(this.getAutoTestConfig());
-                e.execute();
-            } catch (CommandExecuteException ex) {
-                throw new CommandExecuteException(ex);
+                subCommand.setVariableMap(this.getVariableMap());
+                subCommand.setAutoTestConfig(this.getAutoTestConfig());
+                result = result & subCommand.execute();
+            } catch (CommandExecuteException e) {
+                throw new CommandExecuteException(e);
             }
-        });
+        }
+        return result;
     }
 
     @Override
