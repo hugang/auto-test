@@ -1,4 +1,4 @@
-package io.hugang.execute.impl;
+package io.hugang.execute.condition;
 
 import cn.hutool.core.util.ObjectUtil;
 import io.hugang.exceptions.CommandExecuteException;
@@ -69,6 +69,9 @@ public class IfCommand extends Command implements IConditionCommand {
 
         if (inCondition) {
             this.getVariableMap().put(uuid, uuid);
+            this.setResult(this.getCommand() + ":match");
+        }else {
+            this.setResult(this.getCommand() + ":skip");
         }
         return inCondition;
     }

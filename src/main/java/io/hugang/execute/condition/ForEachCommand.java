@@ -1,4 +1,4 @@
-package io.hugang.execute.impl;
+package io.hugang.execute.condition;
 
 import cn.hutool.core.util.StrUtil;
 import io.hugang.exceptions.CommandExecuteException;
@@ -67,6 +67,7 @@ public class ForEachCommand extends Command implements IConditionCommand {
 
     @Override
     public boolean inCondition() {
+        this.setResult(this.getCommand() + ":match");
         return true;
     }
 

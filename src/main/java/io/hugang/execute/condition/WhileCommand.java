@@ -1,17 +1,18 @@
-package io.hugang.execute.impl;
+package io.hugang.execute.condition;
 
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.execute.ICommand;
 import io.hugang.execute.IConditionCommand;
+import io.hugang.util.JavaScriptEvaluator;
 
+import javax.script.ScriptException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimesCommand extends Command implements IConditionCommand {
-    private int times = -1;
+public class WhileCommand extends Command implements IConditionCommand {
 
-    public TimesCommand(String command, String target, String value) {
+    public WhileCommand(String command, String target, String value) {
         super(command, target, value);
     }
 
@@ -21,12 +22,15 @@ public class TimesCommand extends Command implements IConditionCommand {
 
     @Override
     public boolean _execute() {
-        boolean result = true;
-        while (inCondition()) {
-            result = result & runSubCommands();
-            times--;
+        try {
+            boolean result = true;
+            while (inCondition()) {
+                result = result & this.runSubCommands();
+            }
+            return result;
+        } catch (Exception e) {
+            throw new CommandExecuteException(e);
         }
-        return result;
     }
 
     private boolean runSubCommands() {
@@ -44,24 +48,20 @@ public class TimesCommand extends Command implements IConditionCommand {
     }
 
     @Override
-    public boolean inCondition() {
-        if (times < 0) {
-            this.times = Integer.parseInt(render(this.getTarget()));
-            // loop limit
-            String value = this.getDictStr("value", this.getValue());
-            if (value != null) {
-                int limit = Integer.parseInt(render(value));
-                if (times > limit) {
-                    times = limit;
-                }
-            }
+    public boolean inCondition() throws ScriptException {
+        String render = render(this.getTarget());
+        boolean evaluate = (boolean) JavaScriptEvaluator.evaluate(render, this.getVariableMap());
+        if (evaluate) {
+            this.setResult(this.getCommand() + ":match");
+        } else {
+            this.setResult(this.getCommand() + ":skip");
         }
-        return times > 0;
+        return evaluate;
     }
 
     @Override
     public List<ICommand> getSubCommands() {
-        return this.subCommands;
+        return subCommands;
     }
 
     @Override
@@ -80,5 +80,10 @@ public class TimesCommand extends Command implements IConditionCommand {
     @Override
     public String getUuid() {
         return this.uuid;
+    }
+
+    @Override
+    public String toString() {
+        return "WhileCommand{" + "subCommands=" + subCommands + '}';
     }
 }

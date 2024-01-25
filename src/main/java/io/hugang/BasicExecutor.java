@@ -17,6 +17,7 @@ import io.hugang.bean.ExecutionCommandResultDetail;
 import io.hugang.bean.ExecutionResult;
 import io.hugang.execute.ICommand;
 import io.hugang.config.AutoTestConfig;
+import io.hugang.execute.IConditionCommand;
 import io.hugang.execute.ext.RecorderCommand;
 import io.hugang.util.CommandParserUtil;
 import org.openqa.selenium.Dimension;
@@ -265,13 +266,9 @@ public class BasicExecutor {
                 executionResult.appendCaseResultDetail(this.executeCommands(commands, autoTestConfig, variablesMap));
             } finally {
                 // save command result to file
-                FileUtil.appendString("caseId:" + commands.getCaseId() + "\n", resultPath, "UTF-8");
+                FileUtil.appendString("\ncaseId:" + commands.getCaseId() + "\n", resultPath, "UTF-8");
                 for (ICommand command : commands.getCommands()) {
-                    if (command.getResult() == null) {
-                        continue;
-                    }
-                    FileUtil.appendString("  " + command.getResult() + "\n", resultPath, CharsetUtil.CHARSET_UTF_8);
-                    FileUtil.appendString("    " + command + "\n", resultPath, CharsetUtil.CHARSET_UTF_8);
+                    generateResultLog(command, resultPath, "");
                 }
                 // destroy the executor
                 if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
@@ -284,6 +281,22 @@ public class BasicExecutor {
             this.destroy();
         }
         return executionResult;
+    }
+
+    private static void generateResultLog(ICommand command, String resultPath, String prefix) {
+        if (StrUtil.isEmpty(command.getResult())) {
+            return;
+        }
+        FileUtil.appendString(prefix + command.getResult() + "\n", resultPath, CharsetUtil.CHARSET_UTF_8);
+        if (command instanceof IConditionCommand conditionCommand) {
+            if (conditionCommand.getSubCommands() != null) {
+                for (ICommand subCommand : conditionCommand.getSubCommands()) {
+                    generateResultLog(subCommand, resultPath, prefix + "  ");
+                }
+            }
+        } else {
+            FileUtil.appendString(prefix + command + "\n", resultPath, CharsetUtil.CHARSET_UTF_8);
+        }
     }
 
     /**

@@ -1,4 +1,4 @@
-package io.hugang.execute.impl;
+package io.hugang.execute.condition;
 
 public class ElseCommand extends IfCommand {
 
@@ -14,6 +14,9 @@ public class ElseCommand extends IfCommand {
 
         if (inCondition) {
             this.getVariableMap().put(uuid, uuid);
+            this.setResult(this.getCommand() + ":match");
+        } else {
+            this.setResult(this.getCommand() + ":skip");
         }
         return inCondition;
     }
