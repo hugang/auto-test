@@ -360,6 +360,7 @@ public class CommandParserUtil {
             case "recorder" -> new RecorderCommand(commandName, command.getTarget(), command.getValue());
             case "saveProperties" -> new SavePropertiesCommand(commandName, command.getTarget(), command.getValue());
             case "scrollIntoView" -> new ScrollIntoViewCommand(commandName, command.getTarget(), command.getValue());
+            case "ftp" -> new FtpCommand(commandName, command.getTarget(), command.getValue());
 
             default -> null;
         };
