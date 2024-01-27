@@ -870,3 +870,5 @@ record the actions of the browser.
 
 - arguments
     - target: path of the exported file. eg: recorder.mp4
+
+## 

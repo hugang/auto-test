@@ -23,4 +23,7 @@ Sub run()
 
     Dim response As String
     response = http.responseText
+
+    ' write the response
+    msgbox response
 End Sub

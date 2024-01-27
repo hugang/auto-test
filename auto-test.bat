@@ -1,5 +1,5 @@
 @echo off
-call env.bat
-set CURRENT_DIR=%cd%
+@REM set AUTO_TEST_HOME=%cd%
+@REM set JAVA_HOME=
 
 java -Dfile.encoding=UTF-8 -cp %AUTO_TEST_HOME%/libs/* io.hugang.RunAutoTest -b %AUTO_TEST_HOME% %*

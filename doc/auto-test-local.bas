@@ -17,11 +17,6 @@ Sub run()
     parameters = "/c " & batPath & " -f " & ThisWorkbook.Path & "\" & ThisWorkbook.Name & " -c " & testcases & " -m xlsx"
     set cmdObj = CreateObject("WScript.Shell").Exec(command & " " & parameters)
 
-    ' Wait for the command until finish
-    Do While cmdObj.Status = 0
-        Application.Wait (Now + TimeValue("0:00:01"))
-    Loop
-
     ' Display the output in a message box
     MsgBox "Test finished!"
 End Sub

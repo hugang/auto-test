@@ -1,15 +1,12 @@
 package io.hugang.execute.ext;
 
 import cn.hutool.extra.ssh.Sftp;
-import cn.hutool.log.Log;
 import io.hugang.execute.Command;
 
 import java.io.File;
 
-public class FtpCommand extends Command {
-    private static final Log log = Log.get();
-
-    public FtpCommand(String command, String target, String value) {
+public class SftpCommand extends Command {
+    public SftpCommand(String command, String target, String value) {
         super(command, target, value);
     }
 
@@ -27,18 +24,19 @@ public class FtpCommand extends Command {
         String[] hostPort = split[1].split(":");
         String hostName = hostPort[0];
         int port = Integer.parseInt(hostPort[1]);
-        Sftp ftp = new Sftp(hostName, port, username, password);
+        try (Sftp ftp = new Sftp(hostName, port, username, password)) {
 
-        if ("download".equals(type)) {
-            if (ftp.isDir(target)) {
-                ftp.recursiveDownloadFolder(target, new File(value));
-            } else {
-                ftp.download(target, new File(value));
+            if ("download".equals(type)) {
+                if (ftp.isDir(target)) {
+                    ftp.recursiveDownloadFolder(target, new File(value));
+                } else {
+                    ftp.download(target, new File(value));
+                }
+                return true;
+            } else if ("upload".equals(type)) {
+                ftp.syncUpload(new File(target), value);
+                return true;
             }
-            return true;
-        } else if ("upload".equals(type)) {
-            ftp.syncUpload(new File(target), value);
-            return true;
         }
         return false;
     }
