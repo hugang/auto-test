@@ -793,6 +793,8 @@ true.
       execute.
       This protects against infinite loops. The defaults value is set to 1000.
 
+<hr>
+
 ## read properties [〇]
 
 read properties from a file and set them as variables.
@@ -871,4 +873,18 @@ record the actions of the browser.
 - arguments
     - target: path of the exported file. eg: recorder.mp4
 
-## 
+## scroll into view [〇]
+
+scroll target element into view.
+
+- arguments
+    - target: The element locator.
+
+## sftp [〇]
+
+sftp file.
+
+- argument
+    - type: The type of the action, download or upload.
+    - from(target): the target file path. download: remote path. upload: local path.
+    - to(value): the value file path. download: local path. upload: remote path.
