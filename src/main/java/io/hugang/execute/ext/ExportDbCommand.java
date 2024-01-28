@@ -1,11 +1,16 @@
 package io.hugang.execute.ext;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.db.Db;
-import cn.hutool.db.DbUtil;
 import cn.hutool.db.Entity;
+import cn.hutool.db.ds.DSFactory;
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import cn.hutool.poi.excel.StyleSet;
+import cn.hutool.setting.Setting;
+import cn.hutool.setting.SettingUtil;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -23,9 +28,31 @@ public class ExportDbCommand extends Command {
 
     @Override
     public boolean _execute() {
-        DbUtil.setDbSettingPathGlobal(this.getAutoTestConfig().getBaseDir().concat("conf/db.conf"));
         // get db from config
-        String dbName = this.getTarget();
+        String target = getTarget();
+        DSFactory dsFactory;
+        Setting setting = null;
+        JSON json = null;
+        // config from json
+        try {
+            json = JSONUtil.parse(this.getTarget());
+            setting = new Setting();
+            setting.put("url", json.getByPath("url").toString());
+            setting.put("user", json.getByPath("user").toString());
+            setting.put("pass", json.getByPath("pass").toString());
+            if (ObjectUtil.isNotEmpty(json.getByPath("remark"))) {
+                setting.put("remark", json.getByPath("remark").toString());
+            }
+        } catch (Exception e) {
+            // not json
+        }
+        // config from path
+        if (json == null) {
+            setting = SettingUtil.get(target);
+        }
+        dsFactory = DSFactory.create(setting);
+        Db db = Db.use(dsFactory.getDataSource());
+
         String path = this.getDictStr("path");
         String sqlStr = render(this.getDictStr("value", this.getValue())).replace("\n", "");
         path = this.getAutoTestConfig().getBaseDir().concat(render(path));
@@ -39,14 +66,14 @@ public class ExportDbCommand extends Command {
             if (sqlStr.contains(";")) {
                 String[] sqlArr = sqlStr.split(";");
                 for (String sql : sqlArr) {
-                    resultEntityList = Db.use(dbName).query(sql);
+                    resultEntityList = db.query(sql);
                     Set<String> sqlSet = new HashSet<>(List.of(sql));
                     writer.write(sqlSet, false);
                     writer.write(resultEntityList, true);
                     writer.setCurrentRow(writer.getCurrentRow() + 1);
                 }
             } else {
-                resultEntityList = Db.use(dbName).query(sqlStr);
+                resultEntityList = db.query(sqlStr);
                 Set<String> sqlSet = new HashSet<>(List.of(sqlStr));
                 writer.write(sqlSet, false);
                 writer.write(resultEntityList, true);

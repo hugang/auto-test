@@ -187,8 +187,8 @@ public abstract class Command implements ICommand {
         return "Command: " + this.getCommand() + "\t" + "options: " + this.getDict() + "\t" + "Target: " + this.getTarget() + "\t" + "Value: " + this.getValue() + "\t";
     }
 
-    public String getFilePath(String options) {
-        return CommandExecuteUtil.getFilePath(this.autoTestConfig, options);
+    public String getFilePath(String path) {
+        return CommandExecuteUtil.getFilePath(this.autoTestConfig, path);
     }
 
     public String getFilePath(String options, boolean isCreate) {
