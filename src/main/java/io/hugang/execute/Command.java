@@ -39,6 +39,16 @@ public abstract class Command implements ICommand {
 
     // execute command
     public boolean execute() {
+        String cmd = this.getCommand();
+
+        // when command is click,open, and the value is 0 or skip, then skip
+        if (!(cmd.equals("type") || cmd.equals("storeJson") || cmd.equals("sendKeys"))
+                && StrUtil.isNotEmpty(getValue())
+                && ("0".equals(getValue()) || "skip".equalsIgnoreCase(getValue()))) {
+            this.setResult(cmd.concat(":skip"));
+            return true;
+        }
+
         try {
             this.beforeExecute();
             boolean result = this._execute();
@@ -46,14 +56,14 @@ public abstract class Command implements ICommand {
 
             if (StrUtil.isEmpty(this.getResult())) {
                 if (result) {
-                    this.setResult(getCommand().concat(":success"));
+                    this.setResult(cmd.concat(":success"));
                 } else {
-                    this.setResult(getCommand().concat(":fail"));
+                    this.setResult(cmd.concat(":fail"));
                 }
             }
             return result;
         } catch (CommandExecuteException e) {
-            this.setResult(getCommand().concat(":" + e.getMessage()));
+            this.setResult(cmd.concat(":" + e.getMessage()));
             throw new AutoTestException(e);
         }
     }
@@ -158,7 +168,7 @@ public abstract class Command implements ICommand {
         return CommandExecuteUtil.render(value, this.variableMap);
     }
 
-    public void generateDict() {
+    private void generateDict() {
         try {
             if (this.target != null) {
                 JSONObject targetObj = (JSONObject) JSONUtil.parse(this.target);
