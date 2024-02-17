@@ -845,6 +845,17 @@ run jenkins job.
         - token: The token of the jenkins.
         - store: array, response values to environment variables.
 
+## ocr [〇]
+
+ocr the image.
+
+- arguments
+    - file path(target): The path of the image file.
+    - result text(value): The result text of the ocr.
+    - tessdata: The tessdata of the image.
+    - lang: The language of the image.
+
+
 ## generate code [〇]
 
 generate code for development.

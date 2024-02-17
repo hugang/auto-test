@@ -7,8 +7,8 @@ import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.log.Log;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
-import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.config.AutoTestConfig;
+import io.hugang.exceptions.CommandExecuteException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -131,10 +131,6 @@ public class CommandExecuteUtil {
         }
         if (!file.exists() && createIfNotExists) {
             FileUtil.touch(file);
-        }
-
-        if (!file.exists()) {
-            throw new CommandExecuteException("file not found: " + path);
         }
         return file.getAbsolutePath();
     }

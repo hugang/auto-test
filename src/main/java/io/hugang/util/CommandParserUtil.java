@@ -356,6 +356,7 @@ public class CommandParserUtil {
             case "generateCode" -> new GenerateCodeCommand(commandName, command.getTarget(), command.getValue());
             case "increaseNumber" -> new IncreaseNumberCommand(commandName, command.getTarget(), command.getValue());
             case "jenkinsJob" -> new JenkinsJobCommand(commandName, command.getTarget(), command.getValue());
+            case "ocr" -> new OcrCommand(commandName, command.getTarget(), command.getValue());
             case "readProperties" -> new ReadPropertiesCommand(commandName, command.getTarget(), command.getValue());
             case "recorder" -> new RecorderCommand(commandName, command.getTarget(), command.getValue());
             case "saveProperties" -> new SavePropertiesCommand(commandName, command.getTarget(), command.getValue());
