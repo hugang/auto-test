@@ -7,6 +7,8 @@ import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
 import javax.imageio.ImageIO;
+
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -21,6 +23,7 @@ import java.io.IOException;
  */
 public class OcrCommand extends Command {
     private static final Log log = Log.get();
+    private BufferedImage bufferedImage;
 
     public OcrCommand(String command, String target, String value) {
         super(command, target, value);
@@ -36,16 +39,15 @@ public class OcrCommand extends Command {
 
         try {
             // read image
-            ImageIO.read(new File(imagePath));
+            bufferedImage = ImageIO.read(new File(imagePath));
             // init tesseract
             Tesseract tesseract = new Tesseract();
             tesseract.setDatapath(tessdata);
             tesseract.setLanguage(language);
             // ocr
-            String result = tesseract.doOCR(new File(imagePath));
+            String result = tesseract.doOCR(bufferedImage);
             // write result to file
             FileUtil.writeUtf8String(result, resultPath);
-
         } catch (IOException | TesseractException e) {
             log.error("ocr error", e);
             throw new RuntimeException(e);
