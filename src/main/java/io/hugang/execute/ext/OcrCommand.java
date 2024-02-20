@@ -23,7 +23,6 @@ import java.io.IOException;
  */
 public class OcrCommand extends Command {
     private static final Log log = Log.get();
-    private BufferedImage bufferedImage;
 
     public OcrCommand(String command, String target, String value) {
         super(command, target, value);
@@ -39,7 +38,7 @@ public class OcrCommand extends Command {
 
         try {
             // read image
-            bufferedImage = ImageIO.read(new File(imagePath));
+            BufferedImage bufferedImage = ImageIO.read(new File(imagePath));
             // init tesseract
             Tesseract tesseract = new Tesseract();
             tesseract.setDatapath(tessdata);
@@ -47,7 +46,7 @@ public class OcrCommand extends Command {
             // ocr
             String result = tesseract.doOCR(bufferedImage);
             // write result to file
-            FileUtil.writeUtf8String(result, resultPath);
+            FileUtil.writeUtf8String(result, getFilePath(resultPath));
         } catch (IOException | TesseractException e) {
             log.error("ocr error", e);
             throw new RuntimeException(e);
