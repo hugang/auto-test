@@ -23,6 +23,11 @@ public class RecorderCommand extends Command {
     }
 
     @Override
+    public String getCommand() {
+        return "recorder";
+    }
+
+    @Override
     public boolean _execute() {
         String outputFile = getTarget();
         // new recorder and start

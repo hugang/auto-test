@@ -11,6 +11,11 @@ public class SftpCommand extends Command {
     }
 
     @Override
+    public String getCommand() {
+        return "sftp";
+    }
+
+    @Override
     public boolean _execute() {
         String target = getTarget();
         String value = getDictStr("value", getValue());

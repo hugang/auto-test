@@ -23,6 +23,11 @@ public class CallApiCommand extends Command {
     }
 
     @Override
+    public String getCommand() {
+        return "callApi";
+    }
+
+    @Override
     public boolean _execute() {
         if (ObjectUtil.isEmpty(getValue())) {
             return true;

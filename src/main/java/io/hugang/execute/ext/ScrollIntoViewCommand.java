@@ -20,6 +20,11 @@ public class ScrollIntoViewCommand extends Command {
     }
 
     @Override
+    public String getCommand() {
+        return "scrollIntoView";
+    }
+
+    @Override
     public boolean _execute() {
         try {
             // get from variable map

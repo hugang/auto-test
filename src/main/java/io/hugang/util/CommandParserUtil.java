@@ -1,6 +1,7 @@
 package io.hugang.util;
 
 import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSON;
@@ -10,6 +11,7 @@ import cn.hutool.log.Log;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
+import io.hugang.exceptions.AutoTestException;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.*;
@@ -18,7 +20,6 @@ import io.hugang.execute.Commands;
 import io.hugang.execute.ICommand;
 import io.hugang.execute.IConditionCommand;
 import io.hugang.execute.condition.*;
-import io.hugang.execute.ext.*;
 import io.hugang.execute.impl.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -28,10 +29,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-import java.util.UUID;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 /**
  * input command parser util
@@ -41,6 +40,7 @@ import java.util.UUID;
  */
 public class CommandParserUtil {
     private static final Log log = Log.get();
+    private static final Map<String, Class<?>> EXT_COMMAND_CLASS_MAP = new HashMap<>();
 
     /**
      * read one line and parse to command
@@ -351,20 +351,33 @@ public class CommandParserUtil {
                     new WebdriverChooseOkOnVisibleConfirmationCommand(commandName, command.getTarget(), command.getValue());
 
             // ext command
-            case "callApi" -> new CallApiCommand(commandName, command.getTarget(), command.getValue());
-            case "exportDb" -> new ExportDbCommand(commandName, command.getTarget(), command.getValue());
-            case "generateCode" -> new GenerateCodeCommand(commandName, command.getTarget(), command.getValue());
-            case "increaseNumber" -> new IncreaseNumberCommand(commandName, command.getTarget(), command.getValue());
-            case "jenkinsJob" -> new JenkinsJobCommand(commandName, command.getTarget(), command.getValue());
-            case "ocr" -> new OcrCommand(commandName, command.getTarget(), command.getValue());
-            case "readProperties" -> new ReadPropertiesCommand(commandName, command.getTarget(), command.getValue());
-            case "recorder" -> new RecorderCommand(commandName, command.getTarget(), command.getValue());
-            case "saveProperties" -> new SavePropertiesCommand(commandName, command.getTarget(), command.getValue());
-            case "scrollIntoView" -> new ScrollIntoViewCommand(commandName, command.getTarget(), command.getValue());
-            case "sftp" -> new SftpCommand(commandName, command.getTarget(), command.getValue());
-
-            default -> null;
+            default -> parseExtCommand(commandName, command.getTarget(), command.getValue());
         };
+    }
+
+    private static ICommand parseExtCommand(String commandName, String target, String value) {
+        if (ObjectUtil.isEmpty(EXT_COMMAND_CLASS_MAP)) {
+            ClassUtil.scanPackage("io.hugang.execute.ext").forEach(
+                    clazz -> {
+                        try {
+                            ICommand cmdInstance = (ICommand) clazz.getConstructor(String.class, String.class, String.class).newInstance(null, null, null);
+                            EXT_COMMAND_CLASS_MAP.put(cmdInstance.getCommand(), clazz);
+                        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                                 IllegalAccessException ignored) {
+                        }
+                    });
+        }
+
+        Class<?> clazz = EXT_COMMAND_CLASS_MAP.get(commandName);
+        if (ObjectUtil.isNotEmpty(clazz)) {
+            try {
+                return (ICommand) clazz.getConstructor(String.class, String.class, String.class).newInstance(commandName, target, value);
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                     IllegalAccessException e) {
+                throw new AutoTestException(e);
+            }
+        }
+        throw new AutoTestException("command not found: " + commandName);
     }
 
     /**

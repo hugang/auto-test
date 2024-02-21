@@ -22,6 +22,10 @@ public class JenkinsJobCommand extends Command {
         super(command, target, value);
     }
 
+    @Override
+    public String getCommand() {
+        return "jenkinsJob";
+    }
 
     /**
      * execute jenkins job command
@@ -31,12 +35,12 @@ public class JenkinsJobCommand extends Command {
     @Override
     public boolean _execute() {
         String jobUrl = this.getDictStr("target");
-        String value = this.getDictStr("value",this.getValue());
+        String value = this.getDictStr("value", this.getValue());
         // parse value to json object
         JSONObject options = (JSONObject) JSONUtil.parse(value);
         Object parameters = options.getByPath("parameters");
         String userName = options.getStr("userName");
-        String token =this.render(options.getStr("token"));
+        String token = this.render(options.getStr("token"));
         JSONObject parameterObj = JSONUtil.parseObj(parameters);
 
         if (!parameterObj.isEmpty()) {

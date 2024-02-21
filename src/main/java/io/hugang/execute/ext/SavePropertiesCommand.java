@@ -20,6 +20,11 @@ public class SavePropertiesCommand extends Command {
         super(command, target, value);
     }
 
+    @Override
+    public String getCommand() {
+        return "saveProperties";
+    }
+
     /**
      * execute save properties command
      *

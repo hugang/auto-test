@@ -29,6 +29,11 @@ public class OcrCommand extends Command {
     }
 
     @Override
+    public String getCommand() {
+        return "ocr";
+    }
+
+    @Override
     public boolean _execute() {
         // use tesseract to read picture from target
         String imagePath = render(getTarget());

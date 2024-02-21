@@ -27,6 +27,11 @@ public class ExportDbCommand extends Command {
     }
 
     @Override
+    public String getCommand() {
+        return "exportDb";
+    }
+
+    @Override
     public boolean _execute() {
         // get db from config
         String target = getTarget();

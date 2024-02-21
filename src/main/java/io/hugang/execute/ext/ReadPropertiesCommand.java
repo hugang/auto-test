@@ -25,6 +25,11 @@ public class ReadPropertiesCommand extends Command {
         super(command, target, value);
     }
 
+    @Override
+    public String getCommand() {
+        return "readProperties";
+    }
+
     /**
      * read properties file and set to variable maps
      *

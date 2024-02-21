@@ -14,6 +14,11 @@ public class GenerateCodeCommand extends Command {
     }
 
     @Override
+    public String getCommand() {
+        return "generateCode";
+    }
+
+    @Override
     public boolean _execute() {
         // get db from config
         String dbName = this.getTarget();

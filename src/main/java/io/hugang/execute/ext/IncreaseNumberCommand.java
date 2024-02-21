@@ -18,6 +18,11 @@ public class IncreaseNumberCommand extends Command {
         super(command, target, value);
     }
 
+    @Override
+    public String getCommand() {
+        return "increaseNumber";
+    }
+
     /**
      * execute command to increase number
      *
