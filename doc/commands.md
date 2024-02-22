@@ -241,7 +241,8 @@ Drags an element and drops it on another element.
 
 - arguments
   locator of object to be dragged(target): The locator of element to be dragged.
-  locator of drag destination object(value): The locator of an element whose location (e.g., the center-most pixel within it)
+  locator of drag destination object(value): The locator of an element whose location (e.g., the center-most pixel
+  within it)
   will be the point where locator of object to be dragged is dropped.
 
 ## echo [〇]
@@ -855,7 +856,6 @@ ocr the image.
     - tessdata: The tessdata of the image.
     - lang: The language of the image.
 
-
 ## generate code [〇]
 
 generate code for development.
@@ -867,6 +867,14 @@ generate code for development.
         - package: package name.
         - basePackage: base package name.
         - tables: split with comma.
+
+## git history [〇]
+
+get git history.
+
+- arguments
+    - path(target): The path of the git repository.
+    - value: the result of the git history, csv format.
 
 ## export db [〇]
 
@@ -899,3 +907,14 @@ sftp file.
     - type: The type of the action, download or upload.
     - from(target): the target file path. download: remote path. upload: local path.
     - to(value): the value file path. download: local path. upload: remote path.
+
+## step count [〇]
+
+count the steps of src.
+
+- argument
+    - target: The src folders, split with comma.
+    - value: The result csv format file with count of the steps, code, comment, blank.
+    - type: file type, split with comma.
+    - excludePath: The exclude path, split with comma.
+    - excludeFile: The exclude file, split with comma.
