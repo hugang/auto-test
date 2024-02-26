@@ -7,7 +7,8 @@
    - [edge](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
 
 ## how to run
-1. use auto-test.bat to run the test.
+
+- use auto-test.bat to run the test.
 ```
 Usage: auto-test [options]
   Options:
@@ -26,7 +27,8 @@ Usage: auto-test [options]
       work directory to store test case file and test result file.
 ```
 
-2. use test cases xlsm to run the test. there is an example file [[case_template.xlsm]] in test case directory.
+- start auto-server.bat to start the server, and then run the test cases xlsm.
+there is an example file [[case_template.xlsm]] in test case directory.
 
 ## commands.md
 
