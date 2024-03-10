@@ -3,7 +3,6 @@ package io.hugang;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.cron.CronUtil;
@@ -11,13 +10,10 @@ import cn.hutool.cron.task.Task;
 import cn.hutool.log.Log;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
+import io.hugang.config.AutoTestConfig;
 import io.hugang.exceptions.AutoTestException;
 import io.hugang.execute.Commands;
-import io.hugang.bean.ExecutionCommandResultDetail;
-import io.hugang.bean.ExecutionResult;
 import io.hugang.execute.ICommand;
-import io.hugang.config.AutoTestConfig;
-import io.hugang.execute.IConditionCommand;
 import io.hugang.execute.ext.RecorderCommand;
 import io.hugang.util.CommandParserUtil;
 import org.openqa.selenium.Dimension;
@@ -118,17 +114,17 @@ public class BasicExecutor {
     /**
      * method to execute the commands
      */
-    private ExecutionResult execute(AutoTestConfig autoTestConfig, Dict variablesMap) {
-        AtomicReference<ExecutionResult> executionResult = new AtomicReference<>(new ExecutionResult());
+    private List<Commands> execute(AutoTestConfig autoTestConfig, Dict variablesMap) {
+        AtomicReference<List<Commands>> commands = new AtomicReference<>();
         if (autoTestConfig.isCronEnabled()) {
             ReentrantLock lock = new ReentrantLock();
             CronUtil.schedule(autoTestConfig.getCronExpression(), (Task) () -> {
                 try {
                     lock.lock();
                     // parse input to commands list
-                    List<Commands> commands = parseCommandsList(autoTestConfig);
-                    // run the commands list
-                    executionResult.set(runCommandsList(commands, autoTestConfig, variablesMap));
+                    commands.set(parseCommandsList(autoTestConfig));
+                    // execute the commands
+                    runCommandsList(commands.get(), autoTestConfig, variablesMap);
                 } finally {
                     lock.unlock();
                 }
@@ -137,19 +133,19 @@ public class BasicExecutor {
             CronUtil.start();
         } else {
             // parse input to commands list
-            List<Commands> commands = parseCommandsList(autoTestConfig);
-            // run the commands list
-            executionResult.set(runCommandsList(commands, autoTestConfig, variablesMap));
+            commands.set(parseCommandsList(autoTestConfig));
+            // execute the commands
+            runCommandsList(commands.get(), autoTestConfig, variablesMap);
         }
-        return executionResult.get();
+        return commands.get();
     }
 
-    public ExecutionResult execute(AutoTestConfig autoTestConfig) {
+    public List<Commands> execute(AutoTestConfig autoTestConfig) {
         Dict variablesMap = new Dict();
         return this.execute(autoTestConfig, variablesMap);
     }
 
-    public ExecutionResult execute(String mode, String path) {
+    public List<Commands> execute(String mode, String path) {
         // auto test config
         AutoTestConfig autoTestConfig = new AutoTestConfig();
         autoTestConfig.setTestMode(mode);
@@ -158,7 +154,7 @@ public class BasicExecutor {
         return this.execute(autoTestConfig);
     }
 
-    public ExecutionResult execute(String mode, String path, String testCases) {
+    public List<Commands> execute(String mode, String path, String testCases) {
         // auto test config
         AutoTestConfig autoTestConfig = new AutoTestConfig();
         autoTestConfig.setTestMode(mode);
@@ -166,6 +162,14 @@ public class BasicExecutor {
         autoTestConfig.setTestCases(testCases);
         autoTestConfig.readConfigurations();
         return this.execute(autoTestConfig);
+    }
+
+    public List<Commands> execute(String mode, String path, String testCases, AutoTestConfig autoTestConfig, Dict variablesMap) {
+        autoTestConfig.setTestMode(mode);
+        autoTestConfig.setTestCasePath(path);
+        autoTestConfig.setTestCases(testCases);
+        autoTestConfig.readConfigurations();
+        return this.execute(autoTestConfig, variablesMap);
     }
 
     /**
@@ -238,8 +242,7 @@ public class BasicExecutor {
     /**
      * method to execute the commands
      */
-    public ExecutionResult runCommandsList(List<Commands> commandsList, AutoTestConfig autoTestConfig, Dict variablesMap) {
-        ExecutionResult executionResult = new ExecutionResult();
+    public void runCommandsList(List<Commands> commandsList, AutoTestConfig autoTestConfig, Dict variablesMap) {
         // check if there is web command
         boolean isWebCommand = false;
         for (Commands commands : commandsList) {
@@ -254,8 +257,6 @@ public class BasicExecutor {
             this.init(autoTestConfig);
         }
         // execute the commands
-        String resultPath = autoTestConfig.getBaseDir() + "download/result_" + System.currentTimeMillis() + ".txt";
-        FileUtil.writeString("", resultPath, "UTF-8");
         for (Commands commands : commandsList) {
             try {
                 // init the executor
@@ -263,13 +264,8 @@ public class BasicExecutor {
                     this.init(autoTestConfig);
                 }
                 variablesMap.set("caseId", commands.getCaseId());
-                executionResult.appendCaseResultDetail(this.executeCommands(commands, autoTestConfig, variablesMap));
+                this.executeCommands(commands, autoTestConfig, variablesMap);
             } finally {
-                // save command result to file
-                FileUtil.appendString("\ncaseId:" + commands.getCaseId() + "\n", resultPath, "UTF-8");
-                for (ICommand command : commands.getCommands()) {
-                    generateResultLog(command, resultPath, "");
-                }
                 // destroy the executor
                 if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
                     this.destroy();
@@ -279,23 +275,6 @@ public class BasicExecutor {
         // destroy the executor
         if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
             this.destroy();
-        }
-        return executionResult;
-    }
-
-    private static void generateResultLog(ICommand command, String resultPath, String prefix) {
-        if (StrUtil.isEmpty(command.getResult())) {
-            return;
-        }
-        FileUtil.appendString(prefix + command.getResult() + "\n", resultPath, CharsetUtil.CHARSET_UTF_8);
-        if (command instanceof IConditionCommand conditionCommand) {
-            if (conditionCommand.getSubCommands() != null) {
-                for (ICommand subCommand : conditionCommand.getSubCommands()) {
-                    generateResultLog(subCommand, resultPath, prefix + "  ");
-                }
-            }
-        } else {
-            FileUtil.appendString(prefix + command + "\n", resultPath, CharsetUtil.CHARSET_UTF_8);
         }
     }
 
@@ -309,8 +288,7 @@ public class BasicExecutor {
     /**
      * method to execute the commands
      */
-    public List<ExecutionCommandResultDetail> executeCommands(Commands commands, AutoTestConfig autoTestConfig, Dict variablesMap) {
-        List<ExecutionCommandResultDetail> executionCommandResultDetails = new ArrayList<>();
+    public void executeCommands(Commands commands, AutoTestConfig autoTestConfig, Dict variablesMap) {
         boolean result;
         // loop through the commands
         for (ICommand command : commands.getCommands()) {
@@ -323,15 +301,11 @@ public class BasicExecutor {
                     result = command.execute();
                     if (!result) {
                         // write failed result to file
-                        executionCommandResultDetails.add(new ExecutionCommandResultDetail(command.getCommand(), "false"));
                         log.error("execute command failed, command={}", command);
-                        return null;
                     }
-                    executionCommandResultDetails.add(new ExecutionCommandResultDetail(command.getCommand(), "true"));
                 }
             } catch (AutoTestException e) {
                 // write failed result to file
-                executionCommandResultDetails.add(new ExecutionCommandResultDetail(command.getCommand(), "false"));
                 log.error("execute command failed, command={}", command);
                 log.error("execute command failed detail", e);
                 break;
@@ -341,8 +315,7 @@ public class BasicExecutor {
         // stop recorder
         RecorderCommand.stop();
 
-        // write success result to file
+        // log the variables
         log.info(variablesMap.toString());
-        return executionCommandResultDetails;
     }
 }

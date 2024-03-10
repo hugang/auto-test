@@ -1,14 +1,20 @@
 package io.hugang.server;
 
 import cn.hutool.core.io.FileTypeUtil;
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.net.multipart.UploadFile;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.SimpleServer;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
 import io.hugang.BasicExecutor;
+import io.hugang.config.AutoTestConfig;
+import io.hugang.execute.Commands;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AutoTestServer {
     private static final Log log = Log.get();
@@ -34,7 +40,15 @@ public class AutoTestServer {
                         String testCases = request.getParam("testcases");
                         String mode = request.getParam("mode");
                         mode = mode == null ? "xlsx" : mode;
-                        response.write(JSONUtil.toJsonStr(new BasicExecutor().execute(mode, path, testCases)));
+                        AutoTestConfig autoTestConfig = new AutoTestConfig();
+                        Dict variablesMap = new Dict();
+                        List<Commands> result = new BasicExecutor().execute(mode, path, testCases, autoTestConfig, variablesMap);
+                        Map<String, Object> resultMap = new HashMap<>();
+                        resultMap.put("commands", result);
+                        resultMap.put("configs", autoTestConfig);
+                        resultMap.put("variables", variablesMap);
+                        response.setContentType("application/json; charset=utf-8");
+                        response.write(JSONUtil.toJsonPrettyStr(resultMap));
                     } catch (Exception ex) {
                         log.error(ex);
                         response.write("ng");
@@ -66,7 +80,15 @@ public class AutoTestServer {
                         } else {
                             mode = "xlsx";
                         }
-                        response.write(JSONUtil.toJsonStr(new BasicExecutor().execute(mode, path, testCases)));
+                        AutoTestConfig autoTestConfig = new AutoTestConfig();
+                        Dict variablesMap = new Dict();
+                        List<Commands> result = new BasicExecutor().execute(mode, path, testCases, autoTestConfig, variablesMap);
+                        Map<String, Object> resultMap = new HashMap<>();
+                        resultMap.put("commands", result);
+                        resultMap.put("configs", autoTestConfig);
+                        resultMap.put("variables", variablesMap);
+                        response.setContentType("application/json; charset=utf-8");
+                        response.write(JSONUtil.toJsonPrettyStr(resultMap));
                     } catch (Exception ex) {
                         log.error(ex);
                         response.write("ng");
