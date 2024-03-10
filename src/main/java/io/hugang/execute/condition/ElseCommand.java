@@ -18,7 +18,6 @@ public class ElseCommand extends IfCommand {
         } else {
             this.setResult(this.getCommand() + ":skip");
         }
-        this.setResultDetail(render(this.getTarget()));
         return inCondition;
     }
 }

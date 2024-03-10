@@ -14,8 +14,6 @@ import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CallApiCommand extends Command {
     private static final Log log = Log.get();
@@ -132,12 +130,10 @@ public class CallApiCommand extends Command {
                     }
                 }
                 // generate result detail
-                Map<String ,Object> resultDetailMap = new HashMap<>();
-                resultDetailMap.put("requestUrl", url);
-                resultDetailMap.put("requestHeader", headers);
-                resultDetailMap.put("requestBody", body);
-                resultDetailMap.put("responseBody", response.body());
-                this.setResultDetail(JSONUtil.toJsonStr(resultDetailMap));
+                this.getDict().set("requestUrl", url);
+                this.getDict().set("requestHeader", headers);
+                this.getDict().set("requestBody", body);
+                this.getDict().set("responseBody", response.body());
             }
         } catch (Exception e) {
             throw new CommandExecuteException(e);

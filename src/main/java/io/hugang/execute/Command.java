@@ -99,8 +99,6 @@ public abstract class Command implements ICommand {
     private transient AutoTestConfig autoTestConfig;
     // result
     private String result;
-    // result detail
-    private String resultDetail;
 
     @Override
     public String getCommand() {
@@ -155,14 +153,6 @@ public abstract class Command implements ICommand {
 
     public void setResult(String result) {
         this.result = result;
-    }
-
-    public String getResultDetail() {
-        return resultDetail;
-    }
-
-    public void setResultDetail(String resultDetail) {
-        this.resultDetail = resultDetail;
     }
 
     public void appendDict(Dict dict) {

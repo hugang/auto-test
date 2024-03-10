@@ -73,7 +73,6 @@ public class IfCommand extends Command implements IConditionCommand {
         }else {
             this.setResult(this.getCommand() + ":skip");
         }
-        this.setResultDetail(render(this.getTarget()));
         return inCondition;
     }
 

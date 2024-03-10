@@ -48,6 +48,7 @@ public class AutoTestServer {
                         resultMap.put("configs", autoTestConfig);
                         resultMap.put("variables", variablesMap);
                         response.setContentType("application/json; charset=utf-8");
+                        log.info(JSONUtil.toJsonPrettyStr(resultMap));
                         response.write(JSONUtil.toJsonPrettyStr(resultMap));
                     } catch (Exception ex) {
                         log.error(ex);
@@ -88,6 +89,7 @@ public class AutoTestServer {
                         resultMap.put("configs", autoTestConfig);
                         resultMap.put("variables", variablesMap);
                         response.setContentType("application/json; charset=utf-8");
+                        log.info(JSONUtil.toJsonPrettyStr(resultMap));
                         response.write(JSONUtil.toJsonPrettyStr(resultMap));
                     } catch (Exception ex) {
                         log.error(ex);
