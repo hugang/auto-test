@@ -130,10 +130,10 @@ public class CallApiCommand extends Command {
                     }
                 }
                 // generate result detail
-                this.getDict().set("requestUrl", url);
-                this.getDict().set("requestHeader", headers);
-                this.getDict().set("requestBody", body);
-                this.getDict().set("responseBody", response.body());
+                this.appendDict("requestUrl", url);
+                this.appendDict("requestHeader", headers);
+                this.appendDict("requestBody", body);
+                this.appendDict("responseBody", response.body());
             }
         } catch (Exception e) {
             throw new CommandExecuteException(e);

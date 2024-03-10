@@ -47,6 +47,7 @@ public class SavePropertiesCommand extends Command {
         }
 
         String saveFilePath = this.getFilePath(render(this.getTarget()), true);
+        this.appendDict("saveFilePath", saveFilePath);
         File file = FileUtil.writeString(JSONUtil.toJsonPrettyStr(map), saveFilePath, Charset.defaultCharset());
         return file.exists();
     }

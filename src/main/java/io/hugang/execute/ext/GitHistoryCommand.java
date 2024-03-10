@@ -49,6 +49,7 @@ public class GitHistoryCommand extends Command {
         String resultPath = getFilePath(render(this.getDictStr("value", this.getValue())));
 
         getGitHistory(targetPath, resultPath);
+        this.appendDict("resultPath", resultPath);
         return true;
     }
 

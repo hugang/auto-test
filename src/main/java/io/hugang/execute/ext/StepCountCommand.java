@@ -45,6 +45,7 @@ public class StepCountCommand extends Command {
         for (String targetPath : targetPaths) {
             listAllFilesAndCountStep(targetPath, resultPath, fileType, excludePath, excludeFile, fileWriter);
         }
+        this.appendDict("resultPath", resultPath);
         return true;
     }
 
