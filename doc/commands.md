@@ -899,6 +899,13 @@ scroll target element into view.
 - arguments
     - target: The element locator.
 
+## scroll [〇]
+
+scroll up or down the page.
+
+- arguments
+    - target: the distance to scroll. eg: 100, -100
+
 ## sftp [〇]
 
 sftp file.
