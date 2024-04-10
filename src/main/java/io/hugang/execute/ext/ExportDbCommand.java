@@ -13,6 +13,7 @@ import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
+import io.hugang.util.ThreadContext;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 
@@ -60,7 +61,7 @@ public class ExportDbCommand extends Command {
 
         String path = this.getDictStr("path");
         String sqlStr = render(this.getDictStr("value", this.getValue())).replace("\n", "");
-        path = this.getAutoTestConfig().getBaseDir().concat(render(path));
+        path = ThreadContext.getAutoTestConfig().getBaseDir().concat(render(path));
         ExcelWriter writer = ExcelUtil.getWriter(path);
         StyleSet styleSet = writer.getStyleSet();
         styleSet.setAlign(HorizontalAlignment.LEFT, VerticalAlignment.CENTER);

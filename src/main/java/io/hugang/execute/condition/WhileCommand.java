@@ -5,6 +5,7 @@ import io.hugang.execute.Command;
 import io.hugang.execute.ICommand;
 import io.hugang.execute.IConditionCommand;
 import io.hugang.util.JavaScriptEvaluator;
+import io.hugang.util.ThreadContext;
 
 import javax.script.ScriptException;
 import java.util.ArrayList;
@@ -37,8 +38,6 @@ public class WhileCommand extends Command implements IConditionCommand {
         boolean result = true;
         for (ICommand subCommand : this.getSubCommands()) {
             try {
-                subCommand.setVariableMap(this.getVariableMap());
-                subCommand.setAutoTestConfig(this.getAutoTestConfig());
                 result = result & subCommand.execute();
             } catch (CommandExecuteException e) {
                 throw new CommandExecuteException(e);
@@ -50,7 +49,7 @@ public class WhileCommand extends Command implements IConditionCommand {
     @Override
     public boolean inCondition() throws ScriptException {
         String render = render(this.getTarget());
-        boolean evaluate = (boolean) JavaScriptEvaluator.evaluate(render, this.getVariableMap());
+        boolean evaluate = (boolean) JavaScriptEvaluator.evaluate(render, ThreadContext.getVariableMap());
         if (evaluate) {
             this.setResult(this.getCommand() + ":match");
         } else {

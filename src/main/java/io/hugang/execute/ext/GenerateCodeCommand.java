@@ -5,6 +5,7 @@ import cn.hutool.db.meta.Table;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.DatabaseUtil;
+import io.hugang.util.ThreadContext;
 
 
 public class GenerateCodeCommand extends Command {
@@ -28,7 +29,7 @@ public class GenerateCodeCommand extends Command {
         dict.putAll(getDict());
 
         for (String table : dict.getStr("tables").split(",")) {
-            Table tableMeta = DatabaseUtil.getTableMeta(DatabaseUtil.getDb(this.getAutoTestConfig(), dbName), table);
+            Table tableMeta = DatabaseUtil.getTableMeta(DatabaseUtil.getDb(ThreadContext.getAutoTestConfig(), dbName), table);
             dict.set("table", tableMeta);
 
             System.out.println(CommandExecuteUtil.render("${table.tableName} columns : \n" +

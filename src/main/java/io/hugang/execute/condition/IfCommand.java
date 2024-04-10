@@ -7,6 +7,7 @@ import io.hugang.execute.ICommand;
 import io.hugang.execute.IConditionCommand;
 import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.JavaScriptEvaluator;
+import io.hugang.util.ThreadContext;
 import org.openqa.selenium.WebElement;
 
 import javax.script.ScriptException;
@@ -38,8 +39,6 @@ public class IfCommand extends Command implements IConditionCommand {
         boolean result = true;
         for (ICommand subCommand : this.getSubCommands()) {
             try {
-                subCommand.setVariableMap(this.getVariableMap());
-                subCommand.setAutoTestConfig(this.getAutoTestConfig());
                 result = result & subCommand.execute();
             } catch (CommandExecuteException e) {
                 throw new CommandExecuteException(e);
@@ -63,12 +62,12 @@ public class IfCommand extends Command implements IConditionCommand {
             List<WebElement> elements = CommandExecuteUtil.findElements(render);
             return ObjectUtil.isNotEmpty(elements);
         }
-        boolean inCondition = (boolean) JavaScriptEvaluator.evaluate(render, this.getVariableMap())
-                && !this.getVariableMap().containsKey(uuid);
+        boolean inCondition = (boolean) JavaScriptEvaluator.evaluate(render, ThreadContext.getVariableMap())
+                && !ThreadContext.getVariableMap().containsKey(uuid);
         log.info(this.getCommand() + " command execute, matching : {}", inCondition);
 
         if (inCondition) {
-            this.getVariableMap().put(uuid, uuid);
+            ThreadContext.getVariableMap().put(uuid, uuid);
             this.setResult(this.getCommand() + ":match");
         }else {
             this.setResult(this.getCommand() + ":skip");

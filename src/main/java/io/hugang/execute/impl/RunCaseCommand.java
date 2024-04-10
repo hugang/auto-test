@@ -52,8 +52,6 @@ public class RunCaseCommand extends Command {
 
         for (Commands commands : commandsFromXlsx) {
             for (ICommand command : commands.getCommands()) {
-                command.setAutoTestConfig(this.getAutoTestConfig());
-                command.setVariableMap(this.getVariableMap());
                 if (!command.execute()) {
                     return false;
                 }

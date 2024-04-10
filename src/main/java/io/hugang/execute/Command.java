@@ -7,8 +7,8 @@ import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
 import io.hugang.exceptions.AutoTestException;
 import io.hugang.exceptions.CommandExecuteException;
-import io.hugang.config.AutoTestConfig;
 import io.hugang.util.CommandExecuteUtil;
+import io.hugang.util.ThreadContext;
 
 /**
  * base command
@@ -76,9 +76,9 @@ public abstract class Command implements ICommand {
 
     public void afterExecute() {
         log.info("command: " + this.getCommand() + " execute success");
-        if (this.getVariableMap().containsKey("setSpeed")) {
+        if (ThreadContext.getVariables().containsKey("setSpeed")) {
             try {
-                Thread.sleep(this.getVariableMap().getInt("setSpeed"));
+                Thread.sleep(ThreadContext.getVariables().getInt("setSpeed"));
             } catch (InterruptedException e) {
                 throw new CommandExecuteException(e);
             }
@@ -93,10 +93,6 @@ public abstract class Command implements ICommand {
     private String target;
     // value
     private String value;
-    // variable map
-    private transient Dict variableMap;
-    // auto test config
-    private transient AutoTestConfig autoTestConfig;
     // result
     private String result;
 
@@ -130,22 +126,6 @@ public abstract class Command implements ICommand {
         return StrUtil.isEmptyIfStr(value) ? defaultValue : value;
     }
 
-    public Dict getVariableMap() {
-        return variableMap;
-    }
-
-    public void setVariableMap(Dict variableMap) {
-        this.variableMap = variableMap;
-    }
-
-    public AutoTestConfig getAutoTestConfig() {
-        return autoTestConfig;
-    }
-
-    public void setAutoTestConfig(AutoTestConfig autoTestConfig) {
-        this.autoTestConfig = autoTestConfig;
-    }
-
     @Override
     public String getResult() {
         return result;
@@ -164,7 +144,7 @@ public abstract class Command implements ICommand {
     }
 
     public String render(String value) {
-        return CommandExecuteUtil.render(value, this.variableMap);
+        return CommandExecuteUtil.render(value, ThreadContext.getVariables());
     }
 
     private void generateDict() {
@@ -197,30 +177,30 @@ public abstract class Command implements ICommand {
     }
 
     public String getFilePath(String path) {
-        return CommandExecuteUtil.getFilePath(this.autoTestConfig, path);
+        return CommandExecuteUtil.getFilePath(ThreadContext.getAutoTestConfig(), path);
     }
 
     public String getFilePath(String options, boolean isCreate) {
-        return CommandExecuteUtil.getFilePath(this.autoTestConfig, options, isCreate);
+        return CommandExecuteUtil.getFilePath(ThreadContext.getAutoTestConfig(), options, isCreate);
     }
 
     public void setVariable(String key, Object value) {
-        this.variableMap.put(key, value);
+        ThreadContext.getVariables().put(key, value);
     }
 
     public Object getVariable(String key) {
-        return this.variableMap.get(key);
+        return ThreadContext.getVariables().get(key);
     }
 
     public String getVariableStr(String key) {
-        return this.variableMap.getStr(key);
+        return ThreadContext.getVariables().getStr(key);
     }
 
     public boolean hasVariable(String key) {
-        return this.variableMap.containsKey(key);
+        return ThreadContext.getVariables().containsKey(key);
     }
 
     public Dict getVariables() {
-        return this.variableMap;
+        return ThreadContext.getVariables();
     }
 }

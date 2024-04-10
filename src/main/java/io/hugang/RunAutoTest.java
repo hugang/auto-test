@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.beust.jcommander.JCommander;
 import io.hugang.bean.AutoTestCommandLineOption;
 import io.hugang.config.AutoTestConfig;
+import io.hugang.util.ThreadContext;
 
 /**
  * entry point to run the program.
@@ -56,7 +57,8 @@ public class RunAutoTest {
         }
         // read the other user properties
         autoTestConfig.readConfigurations();
+        ThreadContext.setAutoTestConfig(autoTestConfig);
         // execute the test
-        basicExecutor.execute(autoTestConfig);
+        basicExecutor.execute();
     }
 }

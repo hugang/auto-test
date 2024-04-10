@@ -1,7 +1,6 @@
 package io.hugang.server;
 
 import cn.hutool.core.io.FileTypeUtil;
-import cn.hutool.core.lang.Dict;
 import cn.hutool.core.net.multipart.UploadFile;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.SimpleServer;
@@ -10,6 +9,7 @@ import cn.hutool.log.Log;
 import io.hugang.BasicExecutor;
 import io.hugang.config.AutoTestConfig;
 import io.hugang.execute.Commands;
+import io.hugang.util.ThreadContext;
 
 import java.io.File;
 import java.util.HashMap;
@@ -41,12 +41,10 @@ public class AutoTestServer {
                         String mode = request.getParam("mode");
                         mode = mode == null ? "xlsx" : mode;
                         AutoTestConfig autoTestConfig = new AutoTestConfig();
-                        Dict variablesMap = new Dict();
-                        List<Commands> result = new BasicExecutor().execute(mode, path, testCases, autoTestConfig, variablesMap);
+                        List<Commands> result = new BasicExecutor().execute(mode, path, testCases);
                         Map<String, Object> resultMap = new HashMap<>();
                         resultMap.put("commands", result);
-                        resultMap.put("configs", autoTestConfig);
-                        resultMap.put("variables", variablesMap);
+                        resultMap.put("variables", ThreadContext.getVariables());
                         response.setContentType("application/json; charset=utf-8");
                         log.info(JSONUtil.toJsonPrettyStr(resultMap));
                         response.write(JSONUtil.toJsonPrettyStr(resultMap));
@@ -82,12 +80,10 @@ public class AutoTestServer {
                             mode = "xlsx";
                         }
                         AutoTestConfig autoTestConfig = new AutoTestConfig();
-                        Dict variablesMap = new Dict();
-                        List<Commands> result = new BasicExecutor().execute(mode, path, testCases, autoTestConfig, variablesMap);
+                        List<Commands> result = new BasicExecutor().execute(mode, path, testCases);
                         Map<String, Object> resultMap = new HashMap<>();
                         resultMap.put("commands", result);
-                        resultMap.put("configs", autoTestConfig);
-                        resultMap.put("variables", variablesMap);
+                        resultMap.put("variables", ThreadContext.getVariables());
                         response.setContentType("application/json; charset=utf-8");
                         log.info(JSONUtil.toJsonPrettyStr(resultMap));
                         response.write(JSONUtil.toJsonPrettyStr(resultMap));

@@ -55,8 +55,6 @@ public class ForEachCommand extends Command implements IConditionCommand {
         boolean result = true;
         for (ICommand subCommand : this.getSubCommands()) {
             try {
-                subCommand.setVariableMap(this.getVariableMap());
-                subCommand.setAutoTestConfig(this.getAutoTestConfig());
                 result = result & subCommand.execute();
             } catch (CommandExecuteException e) {
                 throw new CommandExecuteException(e);

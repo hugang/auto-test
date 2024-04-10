@@ -2,7 +2,6 @@ package io.hugang;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.cron.CronUtil;
@@ -16,6 +15,7 @@ import io.hugang.execute.Commands;
 import io.hugang.execute.ICommand;
 import io.hugang.execute.ext.RecorderCommand;
 import io.hugang.util.CommandParserUtil;
+import io.hugang.util.ThreadContext;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -47,30 +47,30 @@ public class BasicExecutor {
     /**
      * initialize web driver
      */
-    public void init(AutoTestConfig autoTestConfig) {
+    public void init() {
         // create a web driver by webDriver
-        Configuration.browser = autoTestConfig.getWebDriverPath();
+        Configuration.browser = ThreadContext.getAutoTestConfig().getWebDriverPath();
         // set the download path
-        Configuration.reportsFolder = autoTestConfig.getFileDownloadPath();
+        Configuration.reportsFolder = ThreadContext.getAutoTestConfig().getFileDownloadPath();
         // store the browser options
         Map<String, Object> optionsMap = new HashMap<>();
         // set pdf file always open externally
         optionsMap.put("plugins.always_open_pdf_externally", true);
         // set the download path
-        optionsMap.put("download.default_directory", autoTestConfig.getFileDownloadPath());
+        optionsMap.put("download.default_directory", ThreadContext.getAutoTestConfig().getFileDownloadPath());
         // set browser size
-        Dimension targetWindowSize = new Dimension(autoTestConfig.getWidth(), autoTestConfig.getHeight());
+        Dimension targetWindowSize = new Dimension(ThreadContext.getAutoTestConfig().getWidth(), ThreadContext.getAutoTestConfig().getHeight());
 
         WebDriver driver;
         // create chrome webdriver
-        switch (autoTestConfig.getWebDriverName()) {
+        switch (ThreadContext.getAutoTestConfig().getWebDriverName()) {
             case "chrome": {
-                System.setProperty("webdriver.chrome.driver", autoTestConfig.getWebDriverPath());
+                System.setProperty("webdriver.chrome.driver", ThreadContext.getAutoTestConfig().getWebDriverPath());
                 ChromeOptions options = new ChromeOptions();
-                options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
+                options.addArguments("--user-data-dir=" + ThreadContext.getAutoTestConfig().getUserProfilePath());
                 // binary path
-                if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
-                    options.setBinary(autoTestConfig.getBrowserBinaryPath());
+                if (ObjectUtil.isNotEmpty(ThreadContext.getAutoTestConfig().getBrowserBinaryPath())) {
+                    options.setBinary(ThreadContext.getAutoTestConfig().getBrowserBinaryPath());
                 }
                 options.addArguments("--remote-allow-origins=*");
                 options.setExperimentalOption("prefs", optionsMap);
@@ -79,12 +79,12 @@ public class BasicExecutor {
             }
             // create edge webdriver
             case "edge": {
-                System.setProperty("webdriver.edge.driver", autoTestConfig.getWebDriverPath());
+                System.setProperty("webdriver.edge.driver", ThreadContext.getAutoTestConfig().getWebDriverPath());
                 EdgeOptions options = new EdgeOptions();
-                options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
+                options.addArguments("--user-data-dir=" + ThreadContext.getAutoTestConfig().getUserProfilePath());
                 // binary path
-                if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
-                    options.setBinary(autoTestConfig.getBrowserBinaryPath());
+                if (ObjectUtil.isNotEmpty(ThreadContext.getAutoTestConfig().getBrowserBinaryPath())) {
+                    options.setBinary(ThreadContext.getAutoTestConfig().getBrowserBinaryPath());
                 }
                 options.addArguments("--remote-allow-origins=*");
                 options.setExperimentalOption("prefs", optionsMap);
@@ -93,11 +93,11 @@ public class BasicExecutor {
             }
             // create firefox webdriver
             case "firefox": {
-                System.setProperty("webdriver.gecko.driver", autoTestConfig.getWebDriverPath());
+                System.setProperty("webdriver.gecko.driver", ThreadContext.getAutoTestConfig().getWebDriverPath());
                 FirefoxOptions options = new FirefoxOptions();
                 // binary path
-                if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
-                    options.setBinary(autoTestConfig.getBrowserBinaryPath());
+                if (ObjectUtil.isNotEmpty(ThreadContext.getAutoTestConfig().getBrowserBinaryPath())) {
+                    options.setBinary(ThreadContext.getAutoTestConfig().getBrowserBinaryPath());
                 }
                 driver = new FirefoxDriver(options);
                 break;
@@ -114,17 +114,17 @@ public class BasicExecutor {
     /**
      * method to execute the commands
      */
-    private List<Commands> execute(AutoTestConfig autoTestConfig, Dict variablesMap) {
+    List<Commands> execute() {
         AtomicReference<List<Commands>> commands = new AtomicReference<>();
-        if (autoTestConfig.isCronEnabled()) {
+        if (ThreadContext.getAutoTestConfig().isCronEnabled()) {
             ReentrantLock lock = new ReentrantLock();
-            CronUtil.schedule(autoTestConfig.getCronExpression(), (Task) () -> {
+            CronUtil.schedule(ThreadContext.getAutoTestConfig().getCronExpression(), (Task) () -> {
                 try {
                     lock.lock();
                     // parse input to commands list
-                    commands.set(parseCommandsList(autoTestConfig));
+                    commands.set(parseCommandsList());
                     // execute the commands
-                    runCommandsList(commands.get(), autoTestConfig, variablesMap);
+                    runCommandsList(commands.get());
                 } finally {
                     lock.unlock();
                 }
@@ -133,16 +133,11 @@ public class BasicExecutor {
             CronUtil.start();
         } else {
             // parse input to commands list
-            commands.set(parseCommandsList(autoTestConfig));
+            commands.set(parseCommandsList());
             // execute the commands
-            runCommandsList(commands.get(), autoTestConfig, variablesMap);
+            runCommandsList(commands.get());
         }
         return commands.get();
-    }
-
-    public List<Commands> execute(AutoTestConfig autoTestConfig) {
-        Dict variablesMap = new Dict();
-        return this.execute(autoTestConfig, variablesMap);
     }
 
     public List<Commands> execute(String mode, String path) {
@@ -151,7 +146,8 @@ public class BasicExecutor {
         autoTestConfig.setTestMode(mode);
         autoTestConfig.setTestCasePath(path);
         autoTestConfig.readConfigurations();
-        return this.execute(autoTestConfig);
+        ThreadContext.setAutoTestConfig(autoTestConfig);
+        return this.execute();
     }
 
     public List<Commands> execute(String mode, String path, String testCases) {
@@ -161,37 +157,30 @@ public class BasicExecutor {
         autoTestConfig.setTestCasePath(path);
         autoTestConfig.setTestCases(testCases);
         autoTestConfig.readConfigurations();
-        return this.execute(autoTestConfig);
-    }
-
-    public List<Commands> execute(String mode, String path, String testCases, AutoTestConfig autoTestConfig, Dict variablesMap) {
-        autoTestConfig.setTestMode(mode);
-        autoTestConfig.setTestCasePath(path);
-        autoTestConfig.setTestCases(testCases);
-        autoTestConfig.readConfigurations();
-        return this.execute(autoTestConfig, variablesMap);
+        ThreadContext.setAutoTestConfig(autoTestConfig);
+        return this.execute();
     }
 
     /**
      * method to parse input to commands list
      */
-    private List<Commands> parseCommandsList(AutoTestConfig autoTestConfig) {
+    private List<Commands> parseCommandsList() {
         List<Commands> commandsList = new ArrayList<>();
         // get the test case path
-        String testCasePath = autoTestConfig.getTestCasePath();
+        String testCasePath = ThreadContext.getAutoTestConfig().getTestCasePath();
         if (!FileUtil.exist(testCasePath)) {
-            testCasePath = autoTestConfig.getBaseDir().concat(testCasePath);
+            testCasePath = ThreadContext.getAutoTestConfig().getBaseDir().concat(testCasePath);
             if (!FileUtil.exist(testCasePath)) {
                 throw new AutoTestException("test case file not exist");
             }
         }
         log.info("test case path = {} ", testCasePath);
-        switch (autoTestConfig.getTestMode()) {
+        switch (ThreadContext.getAutoTestConfig().getTestMode()) {
             case "xlsx":
                 List<Commands> commandsFromXlsx = CommandParserUtil.getCommandsFromXlsx(testCasePath);
                 List<String> testCasesArray = new ArrayList<>();
-                if (StrUtil.isNotEmpty(autoTestConfig.getTestCases())) {
-                    String[] testCaseArray = autoTestConfig.getTestCases().split(",");
+                if (StrUtil.isNotEmpty(ThreadContext.getAutoTestConfig().getTestCases())) {
+                    String[] testCaseArray = ThreadContext.getAutoTestConfig().getTestCases().split(",");
                     getTestCases(testCasesArray, testCaseArray);
                 }
                 if (CollUtil.isNotEmpty(testCasesArray)) {
@@ -210,7 +199,7 @@ public class BasicExecutor {
             case "json":
                 commandsList.addAll(CommandParserUtil.getCommandsFromJson(testCasePath));
                 // save commandsList to a xlsx file
-                CommandParserUtil.saveCommandsListToXlsx(commandsList, autoTestConfig.getFileDownloadPath());
+                CommandParserUtil.saveCommandsListToXlsx(commandsList, ThreadContext.getAutoTestConfig().getFileDownloadPath());
                 break;
             default:
                 throw new RuntimeException("test mode not supported");
@@ -242,7 +231,7 @@ public class BasicExecutor {
     /**
      * method to execute the commands
      */
-    public void runCommandsList(List<Commands> commandsList, AutoTestConfig autoTestConfig, Dict variablesMap) {
+    public void runCommandsList(List<Commands> commandsList) {
         // check if there is web command
         boolean isWebCommand = false;
         for (Commands commands : commandsList) {
@@ -253,27 +242,27 @@ public class BasicExecutor {
             }
         }
         // init the executor
-        if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
-            this.init(autoTestConfig);
+        if (!ThreadContext.getAutoTestConfig().isRestartWebDriverByCase() && isWebCommand) {
+            this.init();
         }
         // execute the commands
         for (Commands commands : commandsList) {
             try {
                 // init the executor
-                if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
-                    this.init(autoTestConfig);
+                if (ThreadContext.getAutoTestConfig().isRestartWebDriverByCase() && isWebCommand) {
+                    this.init();
                 }
-                variablesMap.set("caseId", commands.getCaseId());
-                this.executeCommands(commands, autoTestConfig, variablesMap);
+                ThreadContext.getVariables().set("caseId", commands.getCaseId());
+                this.executeCommands(commands);
             } finally {
                 // destroy the executor
-                if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
+                if (ThreadContext.getAutoTestConfig().isRestartWebDriverByCase() && isWebCommand) {
                     this.destroy();
                 }
             }
         }
         // destroy the executor
-        if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
+        if (!ThreadContext.getAutoTestConfig().isRestartWebDriverByCase() && isWebCommand) {
             this.destroy();
         }
     }
@@ -288,7 +277,7 @@ public class BasicExecutor {
     /**
      * method to execute the commands
      */
-    public void executeCommands(Commands commands, AutoTestConfig autoTestConfig, Dict variablesMap) {
+    public void executeCommands(Commands commands) {
         boolean result;
         // loop through the commands
         for (ICommand command : commands.getCommands()) {
@@ -296,8 +285,6 @@ public class BasicExecutor {
                 // execute the command
                 log.info("execute command: " + command);
                 if (!command.isSkip()) {
-                    command.setVariableMap(variablesMap);
-                    command.setAutoTestConfig(autoTestConfig);
                     result = command.execute();
                     if (!result) {
                         // write failed result to file
@@ -316,6 +303,6 @@ public class BasicExecutor {
         RecorderCommand.stop();
 
         // log the variables
-        log.info(variablesMap.toString());
+        log.info(ThreadContext.getVariables().toString());
     }
 }

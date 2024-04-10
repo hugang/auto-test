@@ -12,6 +12,7 @@ import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
+import io.hugang.util.ThreadContext;
 
 import java.nio.charset.Charset;
 
@@ -79,11 +80,11 @@ public class CallApiCommand extends Command {
             if (StrUtil.isNotEmpty(proxyUser) && StrUtil.isNotEmpty(proxyPass)) {
                 httpRequest.basicProxyAuth(proxyUser, proxyPass);
             }
-        } else if (this.getAutoTestConfig().getProxyHost() != null && this.getAutoTestConfig().getProxyPort() != 0) {
-            httpRequest.setHttpProxy(this.getAutoTestConfig().getProxyHost(), this.getAutoTestConfig().getProxyPort());
+        } else if (ThreadContext.getAutoTestConfig().getProxyHost() != null && ThreadContext.getAutoTestConfig().getProxyPort() != 0) {
+            httpRequest.setHttpProxy(ThreadContext.getAutoTestConfig().getProxyHost(), ThreadContext.getAutoTestConfig().getProxyPort());
             // set proxy username and password
-            if (StrUtil.isNotEmpty(this.getAutoTestConfig().getProxyUser()) && StrUtil.isNotEmpty(this.getAutoTestConfig().getProxyPassword())) {
-                httpRequest.basicProxyAuth(this.getAutoTestConfig().getProxyUser(), this.getAutoTestConfig().getProxyPassword());
+            if (StrUtil.isNotEmpty(ThreadContext.getAutoTestConfig().getProxyUser()) && StrUtil.isNotEmpty(ThreadContext.getAutoTestConfig().getProxyPassword())) {
+                httpRequest.basicProxyAuth(ThreadContext.getAutoTestConfig().getProxyUser(), ThreadContext.getAutoTestConfig().getProxyPassword());
             }
         }
 
