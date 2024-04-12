@@ -57,7 +57,12 @@ public class ThreadContext {
     }
 
     public static AutoTestConfig getAutoTestConfig() {
-        return (AutoTestConfig) ThreadContext.get("autoTestConfig");
+        AutoTestConfig autoTestConfig = (AutoTestConfig) ThreadContext.get("autoTestConfig");
+        if (autoTestConfig == null) {
+            autoTestConfig = new AutoTestConfig();
+            ThreadContext.put("autoTestConfig", autoTestConfig);
+        }
+        return autoTestConfig;
     }
     public static void setAutoTestConfig(AutoTestConfig config) {
         ThreadContext.put("autoTestConfig", config);

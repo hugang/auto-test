@@ -7,7 +7,6 @@ import cn.hutool.http.server.SimpleServer;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
 import io.hugang.BasicExecutor;
-import io.hugang.config.AutoTestConfig;
 import io.hugang.execute.Commands;
 import io.hugang.util.ThreadContext;
 
@@ -40,7 +39,6 @@ public class AutoTestServer {
                         String testCases = request.getParam("testcases");
                         String mode = request.getParam("mode");
                         mode = mode == null ? "xlsx" : mode;
-                        AutoTestConfig autoTestConfig = new AutoTestConfig();
                         List<Commands> result = new BasicExecutor().execute(mode, path, testCases);
                         Map<String, Object> resultMap = new HashMap<>();
                         resultMap.put("commands", result);
@@ -79,7 +77,6 @@ public class AutoTestServer {
                         } else {
                             mode = "xlsx";
                         }
-                        AutoTestConfig autoTestConfig = new AutoTestConfig();
                         List<Commands> result = new BasicExecutor().execute(mode, path, testCases);
                         Map<String, Object> resultMap = new HashMap<>();
                         resultMap.put("commands", result);

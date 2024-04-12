@@ -1,11 +1,25 @@
 package io.hugang.execute.ext;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.db.DbUtil;
+import cn.hutool.db.meta.MetaUtil;
 import cn.hutool.db.meta.Table;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.DatabaseUtil;
-import io.hugang.util.ThreadContext;
+
+import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class GenerateCodeCommand extends Command {
@@ -21,20 +35,82 @@ public class GenerateCodeCommand extends Command {
 
     @Override
     public boolean _execute() {
+        DbUtil.setDbSettingPathGlobal(DatabaseUtil.getDbSettingPath());
         // get db from config
         String dbName = this.getTarget();
         // parse value to json object
-        Dict dict = new Dict();
-        dict.putAll(this.getVariables());
-        dict.putAll(getDict());
+        Dict dictForTemplateRender = new Dict();
+        //get template path
+        String baseTemplatePath = getFilePath(this.getDictStr("template"));
+        String moduleName = this.getDictStr("module");
+        if (StrUtil.isNotEmpty(moduleName)) {
+            dictForTemplateRender.set("moduleName", moduleName);
+        }else {
+            dictForTemplateRender.set("moduleName", "demo");
+        }
+        // get config.json from template path and parse to json object
+        JSONObject templateConfig = JSONUtil.parseObj(FileUtil.readString(baseTemplatePath + File.separator + "config.json", CharsetUtil.CHARSET_UTF_8));
+        // get project and developer from config.json
 
-        for (String table : dict.getStr("tables").split(",")) {
-            Table tableMeta = DatabaseUtil.getTableMeta(DatabaseUtil.getDb(ThreadContext.getAutoTestConfig(), dbName), table);
-            dict.set("table", tableMeta);
+        Object project = templateConfig.get("project");
+        if (ObjectUtil.isNotEmpty(project)) {
+            JSONObject project1 = (JSONObject) project;
+            // get all key-value from project and set to dictForTemplateRender
+            project1.forEach(dictForTemplateRender::set);
+        }
+        Object developer = templateConfig.get("developer");
+        if (ObjectUtil.isNotEmpty(developer)) {
+            JSONObject developer1 = (JSONObject) developer;
+            // get all key-value from project and set to dictForTemplateRender
+            developer1.forEach(dictForTemplateRender::set);
+        }
+        dictForTemplateRender.putAll(getVariables());
 
-            System.out.println(CommandExecuteUtil.render("${table.tableName} columns : \n" +
-                    "<#list table.columns as column> ${column.name}</#list>", dict));
+        List<Dict> templateMap = new ArrayList<>();
+        JSONArray templates = (JSONArray) templateConfig.get("templates");
+        if (ObjectUtil.isNotEmpty(templates)) {
+            for (Object template : templates) {
+                JSONObject template1 = (JSONObject) template;
+                Dict templatesMap = new Dict();
+                // get all key-value from project and set to dictForTemplateRender
+                template1.forEach(templatesMap::set);
+                templateMap.add(templatesMap);
+            }
+        }
+
+
+        for (String table : this.getDictStr("tables").split(",")) {
+            Table tableMeta = MetaUtil.getTableMeta(DbUtil.getDs(dbName), table);
+            maintainDictForTemplateRender(dictForTemplateRender, tableMeta);
+
+            // loop all templates, get template path and target path
+            for (Dict template : templateMap) {
+                String templateName = template.getStr("templateName");
+                String generatorPath = render(template.getStr("generatorPath"), dictForTemplateRender);
+                // get template path
+                String templatePath = getFilePath(baseTemplatePath + "/" + templateName);
+                // render template
+                String content = CommandExecuteUtil.render(FileUtil.readString(templatePath, CharsetUtil.CHARSET_UTF_8), dictForTemplateRender);
+                // write to target path
+                FileUtil.mkdir(FileUtil.file(generatorPath).getParent());
+                FileUtil.writeString(content, generatorPath, CharsetUtil.CHARSET_UTF_8);
+            }
         }
         return true;
+    }
+
+    private void maintainDictForTemplateRender(Dict dictForTemplateRender, Table tableMeta) {
+        // get table name
+        String tableName = tableMeta.getTableName();
+        // change table name to camel case and set to dictForTemplateRender
+        dictForTemplateRender.set("ClassName", StrUtil.toCamelCase(tableName));
+        // packagePath
+        dictForTemplateRender.set("packagePath", StrUtil.replace(dictForTemplateRender.getStr("packageName"),".","/"));
+        // packageName
+        dictForTemplateRender.set("package", dictForTemplateRender.getStr("packageName"));
+        // table comment
+        dictForTemplateRender.set("tableComment", tableMeta.getComment());
+        // date format to yyyy-MM-dd
+        dictForTemplateRender.set("date", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now()));
     }
 }

@@ -146,7 +146,9 @@ public abstract class Command implements ICommand {
     public String render(String value) {
         return CommandExecuteUtil.render(value, ThreadContext.getVariables());
     }
-
+    public String render(String value, Dict dict) {
+        return CommandExecuteUtil.render(value, dict);
+    }
     private void generateDict() {
         try {
             if (this.target != null) {
