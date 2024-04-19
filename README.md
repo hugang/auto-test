@@ -1,12 +1,25 @@
 ## how to install
 
-1. make sure java.exe in your PATH.
-2. set AUTO_TEST_HOME to the directory of auto-test.bat, and add AUTO_TEST_HOME to your PATH.
-3. download webdriver, and put it in `driver` directory with auto-test.bat.
+folder structure:
+```
+auto-test
+│  auto-server.bat
+│  auto-test.bat
+│  libs
+│  driver
+│  conf
+```
+
+1. Java 17 or newer is required.
+2. set AUTO_TEST_HOME to environment, default is the folder of auto-test.
+3. download webdriver, and put it in `driver` directory.
    - [chrome](https://chromedriver.chromium.org/downloads) for chrome115 or newer [chrome-for-testing](https://googlechromelabs.github.io/chrome-for-testing/)
    - [edge](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
 
 ## how to run
+
+- start auto-server.bat to start the server, and then run the test cases xlsm.
+  there is an example file [[case_template.xlsm]] in test case directory.
 
 - use auto-test.bat to run the test.
 ```
@@ -26,9 +39,6 @@ Usage: auto-test [options]
     -d, --workDir
       work directory to store test case file and test result file.
 ```
-
-- start auto-server.bat to start the server, and then run the test cases xlsm.
-there is an example file [[case_template.xlsm]] in test case directory.
 
 ## commands.md
 

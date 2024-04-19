@@ -35,9 +35,11 @@ public class GenerateCodeCommand extends Command {
 
     @Override
     public boolean _execute() {
+        // set db setting path
         DbUtil.setDbSettingPathGlobal(DatabaseUtil.getDbSettingPath());
-        // get db from config
+        // get db from command target
         String dbName = this.getTarget();
+
         // parse value to json object
         Dict dictForTemplateRender = new Dict();
         //get template path
