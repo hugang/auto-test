@@ -4,6 +4,7 @@ import LogicFlow from '@logicflow/core'
 import '@logicflow/core/dist/style/index.css'
 import NodeRedExtension from './node-red/index'
 import Setting from './node-red/tools/Setting.vue'
+import axios from 'axios'
 
 import './node-red/style.css'
 export default {
@@ -11,9 +12,11 @@ export default {
   setup() {
     const count = ref(0)
     const currentNode = ref(null)
+    const lf = ref(null)
     return {
       count,
-      currentNode
+      currentNode,
+      lf
     }
   },
   mounted() {
@@ -41,9 +44,12 @@ export default {
     this.lf.render({})
     this.lf.on('node-red:start', () => {
       // todo: 让流程跑起来
-      // console.log('我要开始执行流程了')
-      // log graph data
-      console.log(JSON.stringify(this.lf.getGraphData()))
+      console.log('我要开始执行流程了')
+
+      axios.post('http://localhost:9191/data',{}).then(res => {
+        console.log(res)
+      })
+
 
     })
     this.lf.on('vue-node:click', (data) => {
@@ -63,12 +69,6 @@ export default {
       this.lf.setProperties(this.currentNode.id, {
         style
       })
-    },
-    changeProperties (data) {
-      console.log(data.target.value)
-      this.lf.setProperties(this.currentNode.id, {
-        target: data.target.value
-      })
     }
   }
 }
@@ -77,7 +77,7 @@ export default {
 <template>
   <div class="flow-chart">
     <div ref="container" class="container"></div>
-    <Setting v-if="currentNode" @changeProperties="changeProperties" @changeStyle="changeStyle" :nodeData="currentNode" class="setting-panel"></Setting>
+    <Setting v-if="currentNode" @changeStyle="changeStyle" :lf="lf" :nodeData="currentNode" class="setting-panel"></Setting>
   </div>
 </template>
 

@@ -7,7 +7,7 @@
     </div>
 
     <div v-if="nodeData.type === 'open-node'">
-      <input id="openUrl" type="text" :value="nodeData.properties.target" @blur="$emit('changeProperties', $event)">
+      <input id="openUrl" type="text" :value="nodeData.properties.target" @blur="updateNodeData">
     </div>
   </div>
 </template>
@@ -21,7 +21,8 @@ const props = defineProps({
     default: () => {
       return {}
     }
-  }
+  },
+  lf: Object || String
 })
 
 const styleConfig = ref([
@@ -51,6 +52,16 @@ const styleConfig = ref([
     borderWidth: '1px'
   }
 ])
+
+const updateNodeData = (e: any) => {
+  const target = e.target.value
+  props.lf.setProperties(props.nodeData.id, {
+    target: target
+  })
+
+  console.log(JSON.stringify(props.lf.getGraphData()))
+
+}
 
 </script>
 

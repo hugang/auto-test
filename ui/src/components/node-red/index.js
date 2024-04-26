@@ -6,7 +6,6 @@ import FetchNode from "./nodes/FetchNode";
 import DelayNode from "./nodes/DelayNode";
 import FlowLink from "./FlowLink";
 import Palette from './tools/Palette.vue';
-import VueHtmlNode from './nodes/VueHtmlNode';
 import OpenNode from "./nodes/OpenNode";
 
 class NodeRedExtension {
@@ -18,7 +17,6 @@ class NodeRedExtension {
     lf.register(FetchNode);
     lf.register(FlowLink);
     lf.register(DelayNode);
-    lf.register(VueHtmlNode);
 
     lf.register(OpenNode)
 

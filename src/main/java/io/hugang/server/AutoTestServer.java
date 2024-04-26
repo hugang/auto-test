@@ -18,9 +18,16 @@ import java.util.Map;
 public class AutoTestServer {
     private static final Log log = Log.get();
 
+    private static void setCorsHeaders(cn.hutool.http.server.HttpServerResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    }
+
     public static void main(String[] args) {
         SimpleServer server = HttpUtil.createServer(9191);
         server.addAction("/", (request, response) -> {
+                    setCorsHeaders(response);
                     response.setContentType("text/html; charset=utf-8");
                     response.write("""
                             <style> form {width: 300px;margin: 0 auto;}  label {display: block;margin-bottom: 10px;color: #333;font-weight: bold;}  input[type="text"], input[type="file"] {width: 100%;padding: 10px;border: 1px solid #ccc;border-radius: 4px;box-sizing: border-box;margin-bottom: 20px;}  input[type="submit"] {background-color: #4CAF50;color: white;padding: 10px 20px;border: none;border-radius: 4px;cursor: pointer;}  input[type="submit"]:hover {background-color: #45a049;}</style>
@@ -35,6 +42,7 @@ public class AutoTestServer {
                 // run test case from local pc, the test case store in the work folder
                 // e.g. http://localhost:9191/local?testcases=1&path=src/test/resources/recorder/recorder.xlsx
                 .addAction("/local", (request, response) -> {
+                    setCorsHeaders(response);
                     try {
                         String path = request.getParam("path");
                         String testCases = request.getParam("testcases");
@@ -55,6 +63,7 @@ public class AutoTestServer {
                 })
                 // run test case from remote pc, upload test case xlsx
                 .addAction("/remote", (request, response) -> {
+                    setCorsHeaders(response);
                     try {
                         UploadFile file = request.getMultipart().getFile("file");
                         File tempFile = new File(System.currentTimeMillis() + "_" + file.getFileName());

@@ -10,6 +10,7 @@
   "dependencies": {
     "@logicflow/core": "^1.2.26",
     "@logicflow/extension": "^1.2.26",
+    "axios": "^1.6.8",
     "element-plus": "^2.7.1",
     "vue": "^3.4.21"
   },
