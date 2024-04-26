@@ -142,7 +142,7 @@ public class BasicExecutor {
 
     public List<Commands> execute(String mode, String path) {
         // auto test config
-        AutoTestConfig autoTestConfig = new AutoTestConfig();
+        AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
         autoTestConfig.setTestMode(mode);
         autoTestConfig.setTestCasePath(path);
         autoTestConfig.readConfigurations();
@@ -152,7 +152,7 @@ public class BasicExecutor {
 
     public List<Commands> execute(String mode, String path, String testCases) {
         // auto test config
-        AutoTestConfig autoTestConfig = new AutoTestConfig();
+        AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
         autoTestConfig.setTestMode(mode);
         autoTestConfig.setTestCasePath(path);
         autoTestConfig.setTestCases(testCases);

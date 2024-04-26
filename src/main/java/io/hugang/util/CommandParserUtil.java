@@ -390,7 +390,11 @@ public class CommandParserUtil {
         // read json file and parse to json
         JSON json = JSONUtil.readJSON(new File(jsonFilePath), CharsetUtil.CHARSET_UTF_8);
         // get the base url
-        String baseUrl = (String) json.getByPath("url");
+        String baseUrl = StrUtil.EMPTY;
+        Object url = json.getByPath("url");
+        if (!ObjectUtil.isEmpty(url)) {
+            baseUrl = url.toString();
+        }
         // get the test case from json
         JSONArray tests = (JSONArray) json.getByPath("tests");
         List<Commands> commandsList = new ArrayList<>();

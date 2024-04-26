@@ -1,8 +1,10 @@
 package io.hugang.server;
 
 import cn.hutool.core.io.FileTypeUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.net.multipart.UploadFile;
 import cn.hutool.http.HttpUtil;
+import cn.hutool.http.server.HttpServerResponse;
 import cn.hutool.http.server.SimpleServer;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
@@ -49,12 +51,7 @@ public class AutoTestServer {
                         String mode = request.getParam("mode");
                         mode = mode == null ? "xlsx" : mode;
                         List<Commands> result = new BasicExecutor().execute(mode, path, testCases);
-                        Map<String, Object> resultMap = new HashMap<>();
-                        resultMap.put("commands", result);
-                        resultMap.put("variables", ThreadContext.getVariables());
-                        response.setContentType("application/json; charset=utf-8");
-                        log.info(JSONUtil.toJsonPrettyStr(resultMap));
-                        response.write(JSONUtil.toJsonPrettyStr(resultMap));
+                        responseResult(response, result);
                     } catch (Exception ex) {
                         log.error(ex);
                         response.write("ng");
@@ -88,19 +85,46 @@ public class AutoTestServer {
                             mode = "xlsx";
                         }
                         List<Commands> result = new BasicExecutor().execute(mode, path, testCases);
-                        Map<String, Object> resultMap = new HashMap<>();
-                        resultMap.put("commands", result);
-                        resultMap.put("variables", ThreadContext.getVariables());
-                        response.setContentType("application/json; charset=utf-8");
-                        log.info(JSONUtil.toJsonPrettyStr(resultMap));
-                        response.write(JSONUtil.toJsonPrettyStr(resultMap));
+                        responseResult(response, result);
                     } catch (Exception ex) {
                         log.error(ex);
                         response.write("ng");
                     }
                     response.close();
                 })
+                .addAction("/flow", (request, response) -> {
+                    setCorsHeaders(response);
+                    try {
+                        // if not post method, return 204
+                        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+                            response.sendOk();
+                            response.close();
+                            return;
+                        }
+                        // parse request body
+                        String body = request.getBody();
+                        System.out.println(body);
+                        // save body to json file
+                        String path = ThreadContext.getAutoTestConfig().getBaseDir() + System.currentTimeMillis() + ".json";
+                        FileUtil.writeString(body, path, "utf-8");
+                        List<Commands> result = new BasicExecutor().execute("json", path);
+                        responseResult(response, result);
+                    } catch (Exception ex) {
+                        log.error(ex);
+                        response.write("ng");
+                    }
+                })
+
                 .start();
         System.out.println("server started at http://localhost:9191/");
+    }
+
+    private static void responseResult(HttpServerResponse response, List<Commands> result) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("commands", result);
+        resultMap.put("variables", ThreadContext.getVariables());
+        response.setContentType("application/json; charset=utf-8");
+        log.info(JSONUtil.toJsonPrettyStr(resultMap));
+        response.write(JSONUtil.toJsonPrettyStr(resultMap));
     }
 }
