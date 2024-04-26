@@ -67,6 +67,19 @@ const baseNodes = ref([
     text: 'delay',
     background: 'rgb(230, 224, 248)',
     icon: 'images/delay.svg'
+  },
+  // start-node
+  {
+    type: 'start-node',
+    text: 'start',
+    background: 'rgb(255, 255, 255)',
+    icon: 'images/start.svg'
+  },
+  {
+    type: 'open-node',
+    text: 'open',
+    background: 'rgb(255, 255, 255)',
+    icon: 'images/start.svg'
   }
 ])
 

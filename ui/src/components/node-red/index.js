@@ -7,6 +7,7 @@ import DelayNode from "./nodes/DelayNode";
 import FlowLink from "./FlowLink";
 import Palette from './tools/Palette.vue';
 import VueHtmlNode from './nodes/VueHtmlNode';
+import OpenNode from "./nodes/OpenNode";
 
 class NodeRedExtension {
   static pluginName = 'NodeRedExtension'
@@ -18,6 +19,9 @@ class NodeRedExtension {
     lf.register(FlowLink);
     lf.register(DelayNode);
     lf.register(VueHtmlNode);
+
+    lf.register(OpenNode)
+
     lf.setDefaultEdgeType('flow-link');
     this.app = createApp(Palette, {
       lf

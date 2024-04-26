@@ -5,6 +5,10 @@
     <div class="style-wrapper">
       <div class="style-item" @click="$emit('changeStyle', item)" v-for="(item, index) in styleConfig" :key="index" :style="item"></div>
     </div>
+
+    <div v-if="nodeData.type === 'open-node'">
+      <input id="openUrl" type="text" :value="nodeData.properties.target" @blur="$emit('changeProperties', $event)">
+    </div>
   </div>
 </template>
 
@@ -47,6 +51,7 @@ const styleConfig = ref([
     borderWidth: '1px'
   }
 ])
+
 </script>
 
 <style scoped>

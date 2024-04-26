@@ -7,6 +7,7 @@ import Setting from './node-red/tools/Setting.vue'
 
 import './node-red/style.css'
 export default {
+  components: {Setting},
   setup() {
     const count = ref(0)
     const currentNode = ref(null)
@@ -37,117 +38,13 @@ export default {
         NodeRedExtension
       ]
     })
-    this.lf.render({
-      nodes: [
-        {
-          id: 'node_1',
-          type: 'start-node',
-          x: 220,
-          y: 200,
-          text: 'start'
-        },
-         {
-          id: 'node_123_1',
-          type: 'vue-html',
-          x: 720,
-          y: 400,
-          text: '2',
-          properties: {
-            t: 3
-          }
-        },
-        {
-          id: 'node_2',
-          type: 'fetch-node',
-          x: 420,
-          y: 200,
-          text: 'fetch data'
-        },
-        {
-          id: 'node_3',
-          type: 'function-node',
-          x: 620,
-          y: 200,
-          text: 'function'
-        },
-        {
-          id: 'node_4',
-          type: 'delay-node',
-          x: 420,
-          y: 300,
-          text: 'function'
-        },
-        {
-          id: 'node_5',
-          type: 'switch-node',
-          x: 820,
-          y: 200,
-          text: 'switch'
-        },
-        {
-          id: 'node_6',
-          type: 'function-node',
-          x: 1020,
-          y: 200,
-          text: 'function'
-        },
-        {
-          id: 'node_7',
-          type: 'function-node',
-          x: 1020,
-          y: 300,
-          text: 'function'
-        }
-      ],
-      edges: [
-        {
-          type: 'flow-link',
-          sourceNodeId: 'node_1',
-          targetNodeId: 'node_2'
-        },
-        {
-          type: 'flow-link',
-          sourceNodeId: 'node_2',
-          targetNodeId: 'node_3'
-        },
-        {
-          type: 'flow-link',
-          sourceNodeId: 'node_3',
-          startPoint: {
-            x: 680,
-            y: 200
-          },
-          targetNodeId: 'node_4'
-        },
-        {
-          type: 'flow-link',
-          sourceNodeId: 'node_4',
-          startPoint: {
-            x: 360,
-            y: 300
-          },
-          targetNodeId: 'node_2'
-        },
-        {
-          type: 'flow-link',
-          sourceNodeId: 'node_3',
-          targetNodeId: 'node_5'
-        },
-        {
-          type: 'flow-link',
-          sourceNodeId: 'node_5',
-          targetNodeId: 'node_6'
-        },
-        {
-          type: 'flow-link',
-          sourceNodeId: 'node_5',
-          targetNodeId: 'node_7'
-        }
-      ]
-    })
+    this.lf.render({})
     this.lf.on('node-red:start', () => {
       // todo: 让流程跑起来
-      console.log('我要开始执行流程了')
+      // console.log('我要开始执行流程了')
+      // log graph data
+      console.log(JSON.stringify(this.lf.getGraphData()))
+
     })
     this.lf.on('vue-node:click', (data) => {
       this.lf.setProperties(data.id, {
@@ -166,6 +63,12 @@ export default {
       this.lf.setProperties(this.currentNode.id, {
         style
       })
+    },
+    changeProperties (data) {
+      console.log(data.target.value)
+      this.lf.setProperties(this.currentNode.id, {
+        target: data.target.value
+      })
     }
   }
 }
@@ -174,7 +77,7 @@ export default {
 <template>
   <div class="flow-chart">
     <div ref="container" class="container"></div>
-    <Setting v-if="currentNode" @changeStyle="changeStyle" :nodeData="currentNode" class="setting-panel"></Setting>
+    <Setting v-if="currentNode" @changeProperties="changeProperties" @changeStyle="changeStyle" :nodeData="currentNode" class="setting-panel"></Setting>
   </div>
 </template>
 
