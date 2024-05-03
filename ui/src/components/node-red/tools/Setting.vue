@@ -6,8 +6,11 @@
       <div class="style-item" @click="$emit('changeStyle', item)" v-for="(item, index) in styleConfig" :key="index" :style="item"></div>
     </div>
 
-    <div v-if="nodeData.type === 'open-node'">
-      <input id="openUrl" type="text" :value="nodeData.properties.target" @blur="updateNodeData">
+    <div v-if="nodeData.type !== 'start-node'">
+      <div class="setting-item-title">target</div>
+      <input id="target" type="text" :value="nodeData.properties.target" @blur="updateNodeData">
+      <div class="setting-item-title">value</div>
+      <input id="value" type="text" :value="nodeData.properties.value" @blur="updateNodeData">
     </div>
   </div>
 </template>
@@ -55,12 +58,16 @@ const styleConfig = ref([
 
 const updateNodeData = (e: any) => {
   const target = e.target.value
-  props.lf.setProperties(props.nodeData.id, {
-    target: target
-  })
-
+  if (e.target.id === 'value') {
+    props.lf.setProperties(props.nodeData.id, {
+      value: target
+    })
+  }else if (e.target.id === 'target') {
+    props.lf.setProperties(props.nodeData.id, {
+      target: target
+    })
+  }
   console.log(JSON.stringify(props.lf.getGraphData()))
-
 }
 
 </script>

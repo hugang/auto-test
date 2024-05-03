@@ -1,15 +1,15 @@
 <template>
   <div class="demo-collapse">
     <el-collapse v-model="activeNames">
-      <el-collapse-item title="基础节点" name="base" >
+      <el-collapse-item title="基础节点" name="base">
         <div
-          class="red-ui-palette-node ui-draggable ui-draggable-handle"
-          @mousedown="startDrag(item)"
-          v-for="(item, index) in baseNodes"
-          :key="index"
-          :style="{ backgroundColor: item.background }"
+            class="red-ui-palette-node ui-draggable ui-draggable-handle"
+            @mousedown="startDrag(item)"
+            v-for="(item, index) in baseNodes"
+            :key="index"
+            :style="{ backgroundColor: item.background }"
         >
-          <div class="red-ui-palette-label">{{item.text}}</div>
+          <div class="red-ui-palette-label">{{ item.text }}</div>
           <div class="red-ui-palette-icon-container">
             <div class="red-ui-palette-icon" :style="{ backgroundImage: `url(${item.icon})`}"></div>
           </div>
@@ -17,6 +17,13 @@
           <div class="red-ui-palette-port red-ui-palette-port-output"></div>
         </div>
       </el-collapse-item>
+
+      <el-collapse-item title="功能" name="base">
+        <div class="red-ui-palette-node ui-draggable ui-draggable-handle" style="background-color: rgb(253, 208, 162);">
+          <div class="red-ui-palette-label" @click="importLf">导入</div>
+        </div>
+      </el-collapse-item>
+
     </el-collapse>
   </div>
 </template>
@@ -24,7 +31,7 @@
 <script lang="ts" setup>
 import LogicFlow from "@logicflow/core"
 
-import { ref } from 'vue'
+import {ref} from 'vue'
 
 const props = defineProps({
   lf: {
@@ -36,7 +43,7 @@ const props = defineProps({
 const activeNames = ref(['base'])
 
 const startDrag = (item) => {
-  const { lf } = props;
+  const {lf} = props;
   lf.dnd.startDrag({
     type: item.type,
     text: item.text
@@ -45,52 +52,49 @@ const startDrag = (item) => {
 
 const baseNodes = ref([
   {
-    type: 'fetch-node',
-    text: 'fetch',
-    background: 'rgb(231, 231, 174)',
-    icon: 'images/fetch.svg'
-  },
-  {
-    type: 'function-node',
-    text: 'function',
+    type: 'auto-test-node',
+    text: 'node',
     background: 'rgb(253, 208, 162)',
     icon: 'images/function.svg'
-  },
-  {
-    type: 'switch-node',
-    text: 'switch',
-    background: 'rgb(226, 217, 110)',
-    icon: 'images/switch.svg'
-  },
-  {
-    type: 'delay-node',
-    text: 'delay',
-    background: 'rgb(230, 224, 248)',
-    icon: 'images/delay.svg'
-  },
-  // start-node
-  {
-    type: 'start-node',
-    text: 'start',
-    background: 'rgb(255, 255, 255)',
-    icon: 'images/start.svg'
-  },
-  {
-    type: 'open-node',
-    text: 'open',
-    background: 'rgb(255, 255, 255)',
-    icon: 'images/start.svg'
   }
 ])
+
+const importLf = () => {
+  // open import dialog to read a json file , and set to lf graph data
+  let fileInput = document.createElement("input")
+  fileInput.type='file'
+  fileInput.style.display='none'
+  fileInput.id='fileInput'
+  fileInput.onchange=readFile
+  document.body.appendChild(fileInput)
+  fileInput.click()
+
+}
+function readFile(e) {
+  let file = e.target.files[0];
+  if (!file) {
+    return;
+  }
+  let reader = new FileReader();
+  reader.onload = function (e) {
+    const {lf} = props;
+    let contents = e.target.result;
+    document.body.removeChild(document.getElementById('fileInput'))
+    lf.render(JSON.parse(contents))
+  }
+  reader.readAsText(file)
+}
 
 </script>
 <style scoped>
 .demo-collapse {
   width: 150px;
 }
+
 .demo-collapse :deep(.el-collapse-item__header) {
   text-indent: 20px;
 }
+
 .red-ui-palette-node {
   cursor: move;
   background: #fff;
@@ -104,6 +108,7 @@ const baseNodes = ref([
   background-size: contain;
   position: relative;
 }
+
 .red-ui-palette-label {
   color: #333;
   font-size: 13px;
@@ -117,6 +122,7 @@ const baseNodes = ref([
   -ms-user-select: none;
   user-select: none;
 }
+
 .red-ui-palette-icon-container {
   position: absolute;
   text-align: center;
@@ -124,9 +130,10 @@ const baseNodes = ref([
   bottom: 0;
   left: 0;
   width: 30px;
-  border-right: 1px solid rgba(0,0,0,.05);
-  background-color: rgba(0,0,0,.05);
+  border-right: 1px solid rgba(0, 0, 0, .05);
+  background-color: rgba(0, 0, 0, .05);
 }
+
 .red-ui-palette-icon {
   display: inline-block;
   width: 20px;
@@ -135,10 +142,12 @@ const baseNodes = ref([
   background-size: contain;
   background-repeat: no-repeat;
 }
+
 .red-ui-palette-port-output {
   left: auto;
   right: -6px;
 }
+
 .red-ui-palette-port {
   position: absolute;
   top: 8px;
@@ -151,6 +160,7 @@ const baseNodes = ref([
   height: 10px;
   border: 1px solid #999;
 }
+
 .red-ui-palette-port-output {
   left: auto;
   right: -6px;

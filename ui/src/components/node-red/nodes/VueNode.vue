@@ -28,7 +28,6 @@ export default {
   },
   emits: ['btnClick'],
   mounted () {
-    console.log(this)
   },
   watch: {
     'properties.t': {

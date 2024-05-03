@@ -42,7 +42,7 @@ export default {
         NodeRedExtension
       ]
     })
-    this.lf.render({"nodes":[{"id":"dc1b3b0a-c530-4ccc-a9b4-fd9efd38f608","type":"open-node","x":370,"y":220,"properties":{"target":"aaa","ui":"node-red"},"text":{"x":380,"y":220,"value":"open"}},{"id":"adda8faf-9d26-4bc8-91db-05ead3769f8d","type":"start-node","x":250,"y":220,"properties":{"ui":"node-red"},"text":{"x":260,"y":220,"value":"start"}},{"id":"144fa5be-2eec-40fa-abde-a34fea53d578","type":"open-node","x":500,"y":220,"properties":{"target":"bbb","ui":"node-red"},"text":{"x":510,"y":220,"value":"open"}}],"edges":[{"id":"1d0ff359-0cea-4504-b6a8-7299660cfc57","type":"flow-link","sourceNodeId":"adda8faf-9d26-4bc8-91db-05ead3769f8d","targetNodeId":"dc1b3b0a-c530-4ccc-a9b4-fd9efd38f608","startPoint":{"x":300,"y":220},"endPoint":{"x":320,"y":220},"properties":{},"pointsList":[{"x":300,"y":220},{"x":400,"y":220},{"x":220,"y":220},{"x":320,"y":220}]},{"id":"954f7b36-f445-4c03-8a95-66f8c5c034b0","type":"flow-link","sourceNodeId":"dc1b3b0a-c530-4ccc-a9b4-fd9efd38f608","targetNodeId":"144fa5be-2eec-40fa-abde-a34fea53d578","startPoint":{"x":420,"y":220},"endPoint":{"x":450,"y":220},"properties":{},"pointsList":[{"x":420,"y":220},{"x":520,"y":220},{"x":350,"y":220},{"x":450,"y":220}]}]})
+    this.lf.render({"nodes": [{"id": "f676a7d4-ceea-4b4e-8d4c-57863144e061", "type": "start-node", "x": 470, "y": 240, "properties": {"ui": "node-red"}, "text": {"x": 480, "y": 240, "value": "start"}}], "edges": []})
     this.lf.on('node-red:start', () => {
       const commands = []
       const result = {
@@ -55,11 +55,9 @@ export default {
         ]
       }
       let data = this.lf.getGraphData();
-      console.log(JSON.stringify(data))
 
       // Find the start node
       const startNode = data.nodes.find(node => node.type === 'start-node');
-      console.log(JSON.stringify(startNode))
       result.name = startNode.id
 
       // Start executing nodes from the start node
@@ -103,7 +101,7 @@ function executeNode(node, commands) {
     return;
   }
   commands.push({
-    command: node.type.replace('-node', ''),
+    command: node.text.value,
     target: node.properties.target,
     value: node.properties.value
   })
@@ -118,7 +116,6 @@ function executeNodes(nodeId, nodes, edges, commands) {
   // Find the edge for the current node
   const edge = edges.find(edge => edge.sourceNodeId === nodeId);
   if (edge) {
-    console.log(`Executing edge: ${edge.targetNodeId}`)
     // Execute the next node
     executeNodes(edge.targetNodeId, nodes, edges, commands);
   }
