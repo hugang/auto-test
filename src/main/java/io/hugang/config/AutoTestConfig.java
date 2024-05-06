@@ -4,7 +4,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
-import cn.hutool.system.SystemUtil;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -282,8 +281,8 @@ public class AutoTestConfig {
     }
 
     public String getBaseDir() {
-        return StrUtil.isEmpty(baseDir) ? StrUtil.isNotEmpty(SystemUtil.get(AUTO_TEST_HOME)) ?
-                SystemUtil.get(AUTO_TEST_HOME) + File.separator : FileUtils.getFile("").getAbsolutePath().concat(File.separator) : baseDir;
+        return StrUtil.isEmpty(baseDir) ? StrUtil.isNotEmpty(System.getProperty(AUTO_TEST_HOME)) ?
+                System.getProperty(AUTO_TEST_HOME) + File.separator : FileUtils.getFile("").getAbsolutePath().concat(File.separator) : baseDir;
     }
 
     public void setBaseDir(String baseDir) {
