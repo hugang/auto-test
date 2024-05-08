@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
 import cn.hutool.db.ds.DSFactory;
-import cn.hutool.json.JSON;
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
@@ -13,6 +13,7 @@ import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
+import io.hugang.util.DatabaseUtil;
 import io.hugang.util.ThreadContext;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
@@ -34,28 +35,32 @@ public class ExportDbCommand extends Command {
 
     @Override
     public boolean _execute() {
-        // get db from config
-        String target = getTarget();
-        DSFactory dsFactory;
         Setting setting = null;
-        JSON json = null;
-        // config from json
-        try {
-            json = JSONUtil.parse(this.getTarget());
+        // 获取类型
+        String type = getDictStr("type","");
+        String target = getDictStr("target");
+
+        // 类型为json
+        if ("json".equals(type)) {
             setting = new Setting();
-            setting.put("url", json.getByPath("url").toString());
-            setting.put("user", json.getByPath("user").toString());
-            setting.put("pass", json.getByPath("pass").toString());
-            if (ObjectUtil.isNotEmpty(json.getByPath("remark"))) {
-                setting.put("remark", json.getByPath("remark").toString());
+            JSONObject entries = JSONUtil.parseObj(target);
+            setting.put("url", entries.getStr("url"));
+            setting.put("user", entries.getStr("user"));
+            setting.put("pass", entries.getStr("pass"));
+            if (ObjectUtil.isNotEmpty(entries.getStr("remark"))) {
+                setting.put("remark", entries.getStr("remark"));
             }
-        } catch (Exception e) {
-            // not json
         }
-        // config from path
-        if (json == null) {
+        // 类型为文件
+        else if ("file".equals(type)) {
             setting = SettingUtil.get(target);
         }
+        // 配置组
+        else {
+            Setting dbSetting = DatabaseUtil.getDbSetting();
+            setting = dbSetting.getSetting(target);
+        }
+        DSFactory dsFactory;
         dsFactory = DSFactory.create(setting);
         Db db = Db.use(dsFactory.getDataSource());
 
