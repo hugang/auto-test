@@ -21,6 +21,8 @@ auto-test
 - start auto-server.bat to start the server, and then run the test cases xlsm.
   there is an example file [[case_template.xlsm]] in test case directory.
 
+  local server url：[http://localhost:9191](http://localhost:9191)
+
 - use auto-test.bat to run the test.
 ```
 Usage: auto-test [options]

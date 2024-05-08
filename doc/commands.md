@@ -881,8 +881,9 @@ get git history.
 export db by sql.
 
 - arguments
-    - target: The database group which defined in conf/db.conf.
-    - value: sqls.
+    - type: file, json 
+    - target: when type is file, get the db setting defined in target, when type is json, get db setting by keys[url, user, pass], when other, get database group which defined in conf/db.conf.
+    - value: sql list, split by [;].
     - path: the path of the exported file.
 
 ## recorder [〇]
