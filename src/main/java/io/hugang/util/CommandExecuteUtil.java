@@ -122,7 +122,7 @@ public class CommandExecuteUtil {
         return ENGINE.getTemplate(value).render(dict);
     }
 
-    public static String getFilePath(AutoTestConfig autoTestConfig, String path, boolean createIfNotExists) {
+    private static String getFilePath(AutoTestConfig autoTestConfig, String path, boolean createIfNotExists) {
         File file;
         if (FileUtil.isAbsolutePath(path)) {
             file = FileUtil.file(path);
@@ -135,7 +135,13 @@ public class CommandExecuteUtil {
         return file.getAbsolutePath();
     }
 
-    public static String getFilePath(AutoTestConfig autoTestConfig, String path) {
+    public static String getFilePath(String path) {
+        AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
         return getFilePath(autoTestConfig, path, false);
+    }
+
+    public static String getFilePath(String path, boolean createIfNotExists) {
+        AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
+        return getFilePath(autoTestConfig, path, createIfNotExists);
     }
 }

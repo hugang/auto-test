@@ -28,19 +28,7 @@ public class AutoTestServer {
 
     public static void main(String[] args) {
         SimpleServer server = HttpUtil.createServer(9191);
-        server.addAction("/", (request, response) -> {
-                    setCorsHeaders(response);
-                    response.setContentType("text/html; charset=utf-8");
-                    response.write("""
-                            <style> form {width: 300px;margin: 0 auto;}  label {display: block;margin-bottom: 10px;color: #333;font-weight: bold;}  input[type="text"], input[type="file"] {width: 100%;padding: 10px;border: 1px solid #ccc;border-radius: 4px;box-sizing: border-box;margin-bottom: 20px;}  input[type="submit"] {background-color: #4CAF50;color: white;padding: 10px 20px;border: none;border-radius: 4px;cursor: pointer;}  input[type="submit"]:hover {background-color: #45a049;}</style>
-                            <form method="post" action="/remote" enctype="multipart/form-data">
-                                <label for="file">file</label><input type="file" name="file" id="file"><br>
-                                <label for="testcases">testcases</label><input type="text" name="testcases" id="testcases"><br>
-                                <input type="submit" value="submit"><br>
-                            </form>
-                            """);
-                    response.close();
-                })
+        server.setRoot(FileUtil.file("static"))
                 // run test case from local pc, the test case store in the work folder
                 // e.g. http://localhost:9191/local?testcases=1&path=src/test/resources/recorder/recorder.xlsx
                 .addAction("/local", (request, response) -> {

@@ -146,9 +146,11 @@ public abstract class Command implements ICommand {
     public String render(String value) {
         return CommandExecuteUtil.render(value, ThreadContext.getVariables());
     }
+
     public String render(String value, Dict dict) {
         return CommandExecuteUtil.render(value, dict);
     }
+
     private void generateDict() {
         try {
             if (this.target != null) {
@@ -179,11 +181,11 @@ public abstract class Command implements ICommand {
     }
 
     public String getFilePath(String path) {
-        return CommandExecuteUtil.getFilePath(ThreadContext.getAutoTestConfig(), path);
+        return CommandExecuteUtil.getFilePath(path);
     }
 
     public String getFilePath(String options, boolean isCreate) {
-        return CommandExecuteUtil.getFilePath(ThreadContext.getAutoTestConfig(), options, isCreate);
+        return CommandExecuteUtil.getFilePath(options, isCreate);
     }
 
     public void setVariable(String key, Object value) {
