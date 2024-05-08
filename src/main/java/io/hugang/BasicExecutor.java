@@ -13,7 +13,7 @@ import io.hugang.config.AutoTestConfig;
 import io.hugang.exceptions.AutoTestException;
 import io.hugang.execute.Commands;
 import io.hugang.execute.ICommand;
-import io.hugang.execute.ext.RecorderCommand;
+//import io.hugang.execute.ext.RecorderCommand;
 import io.hugang.util.CommandParserUtil;
 import io.hugang.util.ThreadContext;
 import org.openqa.selenium.Dimension;
@@ -300,7 +300,7 @@ public class BasicExecutor {
         }
 
         // stop recorder
-        RecorderCommand.stop();
+        //RecorderCommand.stop();
 
         // log the variables
         log.info(ThreadContext.getVariables().toString());

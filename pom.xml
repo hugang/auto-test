@@ -123,11 +123,11 @@
             <version>15.4</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.bytedeco/javacv-platform -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacv-platform</artifactId>
             <version>1.5.10</version>
-        </dependency>
+        </dependency>-->
         <!-- https://mvnrepository.com/artifact/javax.media/jai_imageio -->
         <dependency>
             <groupId>javax.media</groupId>

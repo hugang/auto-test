@@ -35,7 +35,7 @@ public class ExportDbCommand extends Command {
 
     @Override
     public boolean _execute() {
-        Setting setting = null;
+        Setting setting;
         // 获取类型
         String type = getDictStr("type","");
         String target = getDictStr("target");
