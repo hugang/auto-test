@@ -1,0 +1,31 @@
+[
+  {
+    "url": "/1",
+    "method": "GET",
+    "code": 404,
+    "data": {
+      "name1": "hugang-get",
+      "name2": "hugang",
+      "name3": {
+        "1": "hugang",
+        "2": "hugang",
+        "3": "hugang"
+      }
+    }
+  },
+  {
+    "url": "/2",
+    "param": "name=hugang",
+    "method": "POST",
+    "code": 200,
+    "data": {
+      "name1": "hugang1-post",
+      "name2": "hugang2",
+      "name3": {
+        "1": "hugang31",
+        "2": "hugang32",
+        "3": "hugang36"
+      }
+    }
+  }
+]
