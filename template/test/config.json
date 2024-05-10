@@ -1,0 +1,18 @@
+{
+  "project": {
+    "packageName": "io.hugang.demo",
+    "version": "1.0.0",
+    "backendPath": "/app/backend",
+    "frontendPath": "/app/frontend"
+  },
+  "developer": {
+    "author": "hugang",
+    "email": "admin@hugang.io"
+  },
+  "templates": [
+    {
+      "templateName": "java/Controller.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/controller/${ClassName}Controller.java"
+    }
+  ]
+}

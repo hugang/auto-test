@@ -47,7 +47,7 @@ public class GenerateCodeCommand extends Command {
         String moduleName = this.getDictStr("module");
         if (StrUtil.isNotEmpty(moduleName)) {
             dictForTemplateRender.set("moduleName", moduleName);
-        }else {
+        } else {
             dictForTemplateRender.set("moduleName", "demo");
         }
         // get config.json from template path and parse to json object
@@ -83,6 +83,9 @@ public class GenerateCodeCommand extends Command {
 
         for (String table : this.getDictStr("tables").split(",")) {
             Table tableMeta = MetaUtil.getTableMeta(DbUtil.getDs(dbName), table);
+            if (ObjectUtil.isNull(tableMeta) || ObjectUtil.isEmpty(tableMeta.getColumns())) {
+                continue;
+            }
             maintainDictForTemplateRender(dictForTemplateRender, tableMeta);
 
             // loop all templates, get template path and target path
@@ -104,15 +107,23 @@ public class GenerateCodeCommand extends Command {
     private void maintainDictForTemplateRender(Dict dictForTemplateRender, Table tableMeta) {
         // get table name
         String tableName = tableMeta.getTableName();
+        dictForTemplateRender.set("tableName", tableName);
         // change table name to camel case and set to dictForTemplateRender
-        dictForTemplateRender.set("ClassName", StrUtil.toCamelCase(tableName));
+        String camelCaseTableName = StrUtil.toCamelCase(tableName);
+        dictForTemplateRender.set("ClassName", StrUtil.upperFirst(camelCaseTableName));
+        // class name
+        dictForTemplateRender.set("className", camelCaseTableName);
         // packagePath
-        dictForTemplateRender.set("packagePath", StrUtil.replace(dictForTemplateRender.getStr("packageName"),".","/"));
+        dictForTemplateRender.set("packagePath", StrUtil.replace(dictForTemplateRender.getStr("packageName"), ".", "/"));
         // packageName
         dictForTemplateRender.set("package", dictForTemplateRender.getStr("packageName"));
         // table comment
-        dictForTemplateRender.set("tableComment", tableMeta.getComment());
+        dictForTemplateRender.set("tableComment", ObjectUtil.isEmpty(tableMeta.getComment()) ? tableMeta.getTableName() : tableMeta.getComment());
         // date format to yyyy-MM-dd
         dictForTemplateRender.set("date", DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now()));
+        // function name
+        dictForTemplateRender.set("functionName", camelCaseTableName);
+        // field list
+        dictForTemplateRender.set("fieldList", tableMeta.getColumns());
     }
 }
