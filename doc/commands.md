@@ -832,7 +832,7 @@ call api and set the values of response to environment variables.
         - headers: The headers of the api.
         - body: The body of the api.
         - proxy: The proxy of the api.
-        - store: array, response values to environment variables.
+        - store: [type] json or txt,[keys] the keys of the response to environment variables, split with comma.
 
 ## jenkins job [〇]
 

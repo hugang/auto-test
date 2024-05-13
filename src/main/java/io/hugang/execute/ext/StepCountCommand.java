@@ -14,7 +14,7 @@ import java.nio.file.Files;
  * command for step count
  * <p>
  * <br>target: target src paths, split by ','
- * <br>value: result path
+ * <br>value: result file path
  * <br>fileType: file type, split by ','
  * <br>excludePath: exclude path, split by ','
  * <br>excludeFile: exclude file type, split by ','

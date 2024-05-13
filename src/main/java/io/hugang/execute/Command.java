@@ -159,6 +159,7 @@ public abstract class Command implements ICommand {
             }
         } catch (Exception e) {
             // do nothing if not json
+            log.info("parse value error: {}", e.getMessage());
         }
         try {
             if (this.value != null) {
@@ -167,6 +168,7 @@ public abstract class Command implements ICommand {
             }
         } catch (Exception e) {
             // do nothing if not json
+            log.info("parse value error: {}", e.getMessage());
         }
     }
 

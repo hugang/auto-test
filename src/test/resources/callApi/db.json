@@ -27,5 +27,11 @@
         "3": "hugang36"
       }
     }
+  },
+  {
+    "url": "/3",
+    "method": "POST",
+    "code": 200,
+    "data": "key1=value1&key2=value2"
   }
 ]

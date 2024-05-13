@@ -6,7 +6,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.Method;
-import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
@@ -15,6 +14,8 @@ import io.hugang.execute.Command;
 import io.hugang.util.ThreadContext;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
 
 public class CallApiCommand extends Command {
     private static final Log log = Log.get();
@@ -100,36 +101,44 @@ public class CallApiCommand extends Command {
             }
         }
         try {
-            JSONArray store;
-            JSONObject jsonObject;
+            JSONObject store;
+            JSONObject jsonObject = null;
             try (HttpResponse response = httpRequest.execute()) {
                 log.info("response: {}", response.body());
-                Object o = obj.get("store");
-                if (o == null) {
+                store = obj.getJSONObject("store");
+                if (store == null) {
                     return true;
                 }
-                // the object o is a json array, so we need to loop it
-                store = (JSONArray) o;
                 // get value from response body
-                jsonObject = JSONUtil.parseObj(response.body());
-                for (int i = 0; i < store.size(); i++) {
-                    JSONObject storeObj = store.getJSONObject(i);
-                    String name = storeObj.getStr("name");
-                    String value = storeObj.getStr("value");
-                    String responseKey = storeObj.getStr("responseKey");
-                    if (responseKey != null) {
-                        Object byPath = JSONUtil.getByPath(jsonObject, responseKey);
+                String storeType = store.getStr("type");
+                String storeKeys = store.getStr("keys");
+                // split store keys with comma, and map store keys to List<String>
+                List<String> keyList = Arrays.stream(storeKeys.split(",")).toList();
+
+
+                if (ObjectUtil.isNotEmpty(storeType) && "txt".equals(storeType)) {
+                    // response body sample [key1=value1&key2=value2]
+                    String[] splitTxt = response.body().replaceAll("\"", "").split("&");
+                    for (String s : splitTxt) {
+                        String[] kv = s.split("=");
+                        if (keyList.contains(kv[0])) {
+                            // store value to context
+                            this.setVariable(kv[0], kv[1]);
+                        }
+                    }
+                } else {
+                    jsonObject = JSONUtil.parseObj(response.body());
+                    for (String key : keyList) {
+                        Object byPath = JSONUtil.getByPath(jsonObject, key);
                         String responseValue = "";
                         if (ObjectUtil.isNotEmpty(byPath)) {
                             responseValue = byPath.toString();
                         }
                         // store value to context
-                        this.setVariable(name, responseValue);
-                    } else {
-                        // store value to context
-                        this.setVariable(name, value);
+                        this.setVariable(key, responseValue);
                     }
                 }
+
                 // generate result detail
                 this.appendDict("requestUrl", url);
                 this.appendDict("requestHeader", headers);
