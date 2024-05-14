@@ -1,4 +1,4 @@
-package io.hugang.execute.impl;
+package io.hugang.execute.ext;
 
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
@@ -13,6 +13,11 @@ public class SetPropertyCommand extends Command {
 
     public SetPropertyCommand(String command, String target, String value) {
         super(command, target, value);
+    }
+
+    @Override
+    public String getCommand() {
+        return "setProperty";
     }
 
     @Override

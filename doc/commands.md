@@ -796,6 +796,81 @@ true.
 
 <hr>
 
+## call api [〇]
+
+call api and set the values of response to environment variables.
+
+- arguments
+  - url(target): The url of the api.
+  - value: the json string or json file of the request body.
+    - method: The method of the api. Currently only get and post are supported.
+    - params: The params of the api.
+    - headers: The headers of the api.
+    - body: The body of the api.
+    - proxy: The proxy of the api.
+    - store: [type] json or txt,[keys] the keys of the response to environment variables, split with comma.
+
+## export db [〇]
+
+export db by sql.
+
+- arguments
+  - type: file, json
+  - target: when type is file, get the db setting defined in target, when type is json, get db setting by keys[url, user, pass], when other, get database group which defined in conf/db.conf.
+  - value: sql list, split by [;].
+  - path: the path of the exported file.
+
+## generate code [〇]
+
+generate code for development.
+
+- arguments
+  - target: The database group which defined in conf/db.conf.
+  - value: the json string or json file of the request body.
+    - author: author name.
+    - package: package name.
+    - basePackage: base package name.
+    - tables: split with comma.
+
+## git history [〇]
+
+get git history.
+
+- arguments
+  - path(target): The path of the git repository.
+  - value: the result of the git history, csv format.
+
+## increase number [〇]
+
+increase the number of the variable.
+
+- arguments
+  - target: The variable name.
+  - value: The value to increase.
+
+## jenkins job [〇]
+
+run jenkins job.
+
+- arguments
+  - url(target): The url of the jenkins.
+  - value: the json string or json file of the request body.
+    - job: The job name of the jenkins.
+    - params: The params of the jenkins.
+    - token: The token of the jenkins.
+    - store: array, response values to environment variables.
+
+## ocr [〇]
+
+ocr the image.
+
+- arguments
+  - file path(target): The path of the image file.
+  - result text(value): The result text of the ocr.
+  - tessdata: The tessdata of the image.
+  - lang: The language of the image.
+
+
 ## read properties [〇]
 
 read properties from a file and set them as variables.
@@ -804,6 +879,35 @@ read properties from a file and set them as variables.
     - type(target): The type of the file. Currently only json is supported.
     - file path(value): The path to the json file.
 
+## recorder [〇] **removed**
+
+record the actions of the browser.
+
+- arguments
+  - target: path of the exported file. eg: recorder.mp4
+
+## save properties [〇]
+
+save current environment variables to a file.
+
+- arguments
+  - type(target): The type of the file. Currently only json is supported.
+  - file path(value): The path to the json file.
+
+## scroll [〇]
+
+scroll up or down the page.
+
+- arguments
+  - target: the distance to scroll. eg: 100, -100
+
+## scroll into view [〇]
+
+scroll target element into view.
+
+- arguments
+  - target: The element locator.
+
 ## set property [〇]
 
 set properties to environment variables.
@@ -811,101 +915,6 @@ set properties to environment variables.
 - arguments
     - type(target): The type of the file. Currently only json is supported.
     - value(value): The json string of the variable.
-
-## save properties [〇]
-
-save current environment variables to a file.
-
-- arguments
-    - type(target): The type of the file. Currently only json is supported.
-    - file path(value): The path to the json file.
-
-## call api [〇]
-
-call api and set the values of response to environment variables.
-
-- arguments
-    - url(target): The url of the api.
-    - value: the json string or json file of the request body.
-        - method: The method of the api. Currently only get and post are supported.
-        - params: The params of the api.
-        - headers: The headers of the api.
-        - body: The body of the api.
-        - proxy: The proxy of the api.
-        - store: [type] json or txt,[keys] the keys of the response to environment variables, split with comma.
-
-## jenkins job [〇]
-
-run jenkins job.
-
-- arguments
-    - url(target): The url of the jenkins.
-    - value: the json string or json file of the request body.
-        - job: The job name of the jenkins.
-        - params: The params of the jenkins.
-        - token: The token of the jenkins.
-        - store: array, response values to environment variables.
-
-## ocr [〇]
-
-ocr the image.
-
-- arguments
-    - file path(target): The path of the image file.
-    - result text(value): The result text of the ocr.
-    - tessdata: The tessdata of the image.
-    - lang: The language of the image.
-
-## generate code [〇]
-
-generate code for development.
-
-- arguments
-    - target: The database group which defined in conf/db.conf.
-    - value: the json string or json file of the request body.
-        - author: author name.
-        - package: package name.
-        - basePackage: base package name.
-        - tables: split with comma.
-
-## git history [〇]
-
-get git history.
-
-- arguments
-    - path(target): The path of the git repository.
-    - value: the result of the git history, csv format.
-
-## export db [〇]
-
-export db by sql.
-
-- arguments
-    - type: file, json 
-    - target: when type is file, get the db setting defined in target, when type is json, get db setting by keys[url, user, pass], when other, get database group which defined in conf/db.conf.
-    - value: sql list, split by [;].
-    - path: the path of the exported file.
-
-## recorder [〇]
-
-record the actions of the browser.
-
-- arguments
-    - target: path of the exported file. eg: recorder.mp4
-
-## scroll into view [〇]
-
-scroll target element into view.
-
-- arguments
-    - target: The element locator.
-
-## scroll [〇]
-
-scroll up or down the page.
-
-- arguments
-    - target: the distance to scroll. eg: 100, -100
 
 ## sftp [〇]
 

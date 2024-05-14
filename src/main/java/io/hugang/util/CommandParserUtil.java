@@ -208,7 +208,6 @@ public class CommandParserUtil {
                 default:
                     ICommand normalCommand = parseOriginToCommand(command);
                     // if the command with WebCommand annotation, set the isWeb to true
-                    assert normalCommand != null;
                     if (normalCommand.getClass().isAnnotationPresent(WebCommand.class)) {
                         isWeb = true;
                     }
@@ -292,7 +291,6 @@ public class CommandParserUtil {
             case "selectFrame" -> new SelectFrameCommand(commandName, command.getTarget(), command.getValue());
             case "selectWindow" -> new SelectWindowCommand(commandName, command.getTarget(), command.getValue());
             case "sendKeys" -> new SendKeysCommand(commandName, command.getTarget(), command.getValue());
-            case "setProperty" -> new SetPropertyCommand(commandName, command.getTarget(), command.getValue());
             case "setSpeed" -> new SetSpeedCommand(commandName, command.getTarget(), command.getValue());
             case "setWindowSize" -> new SetWindowSizeCommand(commandName, command.getTarget(), command.getValue());
             case "storeAttribute" -> new StoreAttributeCommand(commandName, command.getTarget(), command.getValue());
