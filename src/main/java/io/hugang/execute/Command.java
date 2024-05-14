@@ -75,7 +75,7 @@ public abstract class Command implements ICommand {
     }
 
     public void afterExecute() {
-        log.info("command: " + this.getCommand() + " execute success");
+        log.debug("command: " + this.getCommand() + " execute success");
         if (ThreadContext.getVariables().containsKey("setSpeed")) {
             try {
                 Thread.sleep(ThreadContext.getVariables().getInt("setSpeed"));
@@ -159,7 +159,7 @@ public abstract class Command implements ICommand {
             }
         } catch (Exception e) {
             // do nothing if not json
-            log.info("parse value error: {}", e.getMessage());
+            log.debug(this.target+" : not a valid json string: {}, process as normal target.", e.getMessage());
         }
         try {
             if (this.value != null) {
@@ -168,7 +168,7 @@ public abstract class Command implements ICommand {
             }
         } catch (Exception e) {
             // do nothing if not json
-            log.info("parse value error: {}", e.getMessage());
+            log.debug(this.value+" : not a valid json string: {}, process as normal value.", e.getMessage());
         }
     }
 
