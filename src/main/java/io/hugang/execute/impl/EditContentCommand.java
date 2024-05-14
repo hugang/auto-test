@@ -7,6 +7,12 @@ import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.JavascriptExecutor;
 
+/**
+ * EditContentCommand
+ * <p>
+ * 注意必须满足contentEditable属性为true的条件，如
+ * <div class="ql-editor" contenteditable="true">
+ */
 @WebCommand
 public class EditContentCommand extends Command {
     public EditContentCommand(String command, String target, String value) {
