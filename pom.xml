@@ -6,7 +6,7 @@
 
     <groupId>io.hugang</groupId>
     <artifactId>auto-test</artifactId>
-    <version>v0.10</version>
+    <version>v1.0</version>
 
     <properties>
         <!--set java language level 17-->

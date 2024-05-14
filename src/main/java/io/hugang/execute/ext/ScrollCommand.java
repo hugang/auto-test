@@ -28,7 +28,7 @@ public class ScrollCommand extends Command {
     public boolean _execute() {
         try {
             // get from variable map
-            String target = this.getVariableStr(this.getTarget());
+            String target = this.render(this.getTarget());
             // use js to scroll, the target is the scroll height
             JavascriptExecutor js = (JavascriptExecutor) WebDriverRunner.getWebDriver();
             js.executeScript("window.scrollTo(0, " + target + ")");

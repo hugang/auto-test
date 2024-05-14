@@ -31,17 +31,25 @@ public class IncreaseNumberCommand extends Command {
     @Override
     public boolean _execute() {
         try {
+            // initialize result
+            int result;
+            int originNumber = 0;
+
             // get from variable map
             String variable = this.getVariableStr(this.getTarget());
-            if (!StrUtil.isNumeric(variable)) {
+            if (StrUtil.isEmpty(variable)) {
+                log.error("increase number command target is empty");
                 return false;
             }
-            int originNumber = NumberUtil.parseInt(variable);
+            if (StrUtil.isNumeric(variable)) {
+                originNumber = NumberUtil.parseInt(variable);
+            }
             String value = this.getDictStr("value");
             if (!StrUtil.isNumeric(value)) {
+                log.error("increase number command value is not a number");
                 return false;
             }
-            int result = originNumber + NumberUtil.parseInt(value);
+            result = originNumber + NumberUtil.parseInt(value);
 
             // write back to variable map
             this.setVariable(this.getTarget(), result);

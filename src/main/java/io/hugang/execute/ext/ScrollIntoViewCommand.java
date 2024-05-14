@@ -28,7 +28,7 @@ public class ScrollIntoViewCommand extends Command {
     public boolean _execute() {
         try {
             // get from variable map
-            String target = this.getVariableStr(this.getTarget());
+            String target = this.render(this.getTarget());
             // get element by target
             SelenideElement element = CommandExecuteUtil.getElement(target);
             // scroll into view
