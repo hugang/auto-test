@@ -14,6 +14,7 @@ import io.hugang.exceptions.AutoTestException;
 import io.hugang.execute.Commands;
 import io.hugang.execute.ICommand;
 //import io.hugang.execute.ext.RecorderCommand;
+import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.CommandParserUtil;
 import io.hugang.util.ThreadContext;
 import org.openqa.selenium.Dimension;
@@ -169,7 +170,7 @@ public class BasicExecutor {
         // get the test case path
         String testCasePath = ThreadContext.getAutoTestConfig().getTestCasePath();
         if (!FileUtil.exist(testCasePath)) {
-            testCasePath = ThreadContext.getAutoTestConfig().getBaseDir().concat(testCasePath);
+            testCasePath = CommandExecuteUtil.getFilePathWithBaseDir(testCasePath);
             if (!FileUtil.exist(testCasePath)) {
                 throw new AutoTestException("test case file not exist");
             }

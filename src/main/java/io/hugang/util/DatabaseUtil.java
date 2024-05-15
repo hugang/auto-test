@@ -10,6 +10,6 @@ public class DatabaseUtil {
     }
 
     public static String getDbSettingPath() {
-        return ThreadContext.getAutoTestConfig().getBaseDir().concat("conf/db.conf");
+        return CommandExecuteUtil.getFilePathWithBaseDir("conf/db.conf");
     }
 }

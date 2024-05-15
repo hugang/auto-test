@@ -7,6 +7,16 @@
     </div>
 
     <div v-if="nodeData.type !== 'start-node'">
+      <div class="setting-item-title">command</div>
+      <select id="command" @change="updateNodeData" :value="nodeData.text.value">
+        <option value="click">click</option>
+        <option value="type">type</option>
+        <option value="wait">wait</option>
+      </select>
+      <div id="tips"></div>
+      <div class="setting-item-title">description</div>
+      <input id="description" type="text" :value="nodeData.properties.description" @blur="updateNodeData">
+      <hr>
       <div class="setting-item-title">target</div>
       <input id="target" type="text" :value="nodeData.properties.target" @blur="updateNodeData">
       <div class="setting-item-title">value</div>
@@ -66,6 +76,22 @@ const updateNodeData = (e: any) => {
     props.lf.setProperties(props.nodeData.id, {
       target: target
     })
+  }else if (e.target.id === 'description') {
+    props.lf.setProperties(props.nodeData.id, {
+      description: target
+    })
+  }else if (e.target.id === 'command') {
+    // update node text
+    props.lf.updateText(props.nodeData.id,target)
+    // show command tips in tips div
+    const tips = document.getElementById('tips')
+    if (target === 'click') {
+      tips.innerHTML = 'click: Clicks on a link, button, checkbox, or radio button.'
+    } else if (target === 'type') {
+      tips.innerHTML = 'type: Types a string of text into the target.'
+    } else if (target === 'wait') {
+      tips.innerHTML = 'wait: Waits for a number of milliseconds.'
+    }
   }
   console.log(JSON.stringify(props.lf.getGraphData()))
 }

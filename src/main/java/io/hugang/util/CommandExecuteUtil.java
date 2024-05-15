@@ -144,4 +144,14 @@ public class CommandExecuteUtil {
         AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
         return getFilePath(autoTestConfig, path, createIfNotExists);
     }
+
+    public static String getFilePathWithBaseDir(String fileName) {
+        AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
+        return FileUtil.file(autoTestConfig.getBaseDir(), fileName).getAbsolutePath();
+    }
+
+    public static File getFileWithBaseDir(String fileName) {
+        AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
+        return FileUtil.file(autoTestConfig.getBaseDir(), fileName);
+    }
 }

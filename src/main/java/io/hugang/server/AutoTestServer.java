@@ -10,6 +10,7 @@ import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
 import io.hugang.BasicExecutor;
 import io.hugang.execute.Commands;
+import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.ThreadContext;
 
 import java.io.File;
@@ -51,7 +52,7 @@ public class AutoTestServer {
                     setCorsHeaders(response);
                     try {
                         UploadFile file = request.getMultipart().getFile("file");
-                        File tempFile = new File(System.currentTimeMillis() + "_" + file.getFileName());
+                        File tempFile = CommandExecuteUtil.getFileWithBaseDir("download/" + System.currentTimeMillis() + "_" + file.getFileName());
                         file.write(tempFile);
                         String fileType = FileTypeUtil.getType(tempFile);
                         log.info("file type: {}", fileType);
@@ -93,7 +94,7 @@ public class AutoTestServer {
                         String body = request.getBody();
                         System.out.println(body);
                         // save body to json file
-                        String path = ThreadContext.getAutoTestConfig().getBaseDir() + System.currentTimeMillis() + ".json";
+                        String path = CommandExecuteUtil.getFilePathWithBaseDir("download/" + System.currentTimeMillis() + ".json");
                         FileUtil.writeString(body, path, "utf-8");
                         List<Commands> result = new BasicExecutor().execute("json", path);
                         responseResult(response, result);

@@ -30,7 +30,7 @@ public class RunAutoTest {
         }
         // if version is not null, print version and return
         if (autoTestCommandLineOption.isVersion()) {
-            System.out.println("auto-test version: v0.10");
+            System.out.println("auto-test version: v1.0");
             return;
         }
 
