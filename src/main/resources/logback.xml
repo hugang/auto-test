@@ -2,24 +2,37 @@
 <configuration>
     <!-- log for console -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%t] %-6p %c{10} %m%n</pattern>
         </encoder>
     </appender>
-
+    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%t] %-6p %c{10} %m%n</pattern>
+        </encoder>
+    </appender>
     <!-- log for file -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>./log/testlog.log</file>
         <encoder>
+            <charset>UTF-8</charset>
             <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
 
-    <logger name="STDOUT" level="info">
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="FILE" level="debug">
+    <root level="debug">
         <appender-ref ref="FILE"/>
-    </logger>
-
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="STDERR"/>
+    </root>
 </configuration>
