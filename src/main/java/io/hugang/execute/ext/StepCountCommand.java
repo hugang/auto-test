@@ -1,6 +1,7 @@
 package io.hugang.execute.ext;
 
 import cn.hutool.core.io.file.FileWriter;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import io.hugang.execute.Command;
 
@@ -52,7 +53,7 @@ public class StepCountCommand extends Command {
     private void listAllFilesAndCountStep(String targetPath, String resultPath, String[] fileType, String[] excludePath, String[] excludeFile, FileWriter fileWriter) {
         // exclude path
         for (String path : excludePath) {
-            if (targetPath.contains(path)) {
+            if (StrUtil.isNotEmpty(path) && targetPath.contains(path)) {
                 return;
             }
         }
@@ -67,7 +68,7 @@ public class StepCountCommand extends Command {
             } else {
                 // exclude file
                 for (String fileStr : excludeFile) {
-                    if (file.getName().endsWith(fileStr)) {
+                    if (StrUtil.isNotEmpty(fileStr) && file.getName().endsWith(fileStr)) {
                         return;
                     }
                 }
