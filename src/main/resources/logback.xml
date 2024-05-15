@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <!-- log for console -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <!-- encoders are assigned the type
-             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%t] %-6p %c{10} %m%n</pattern>
         </encoder>
     </appender>
 
+    <!-- log for file -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>./log/testlog.log</file>
         <encoder>
@@ -15,8 +15,11 @@
         </encoder>
     </appender>
 
-    <root level="info">
-        <appender-ref ref="STDOUT" />
-        <appender-ref ref="FILE" />
-    </root>
+    <logger name="STDOUT" level="info">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="FILE" level="debug">
+        <appender-ref ref="FILE"/>
+    </logger>
+
 </configuration>
