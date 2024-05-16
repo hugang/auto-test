@@ -32,7 +32,7 @@ class VueHtmlNode extends HtmlNode {
 
 class VueHtmlNodeModel extends HtmlNodeModel {
     setAttributes() {
-        this.width = 300;
+        this.width = 250;
         this.height = 100;
         this.text.editable = false;
         this.properties = this.getProperties()
