@@ -22,6 +22,9 @@
         <div class="red-ui-palette-node ui-draggable ui-draggable-handle" style="background-color: rgb(253, 208, 162);">
           <div class="red-ui-palette-label" @click="importLf">导入</div>
         </div>
+        <div class="red-ui-palette-node ui-draggable ui-draggable-handle" style="background-color: rgb(253, 208, 162);">
+          <div class="red-ui-palette-label" @click="exportLf">导出</div>
+        </div>
       </el-collapse-item>
 
     </el-collapse>
@@ -56,8 +59,28 @@ const baseNodes = ref([
     text: 'node',
     background: 'rgb(253, 208, 162)',
     icon: 'images/function.svg'
-  }
+  },
+  {
+    type: 'vue-html',
+    text: 'html',
+    background: 'rgb(253, 208, 162)',
+    icon: 'images/function.svg'
+  },
 ])
+
+// create a function exportLf to export the lf graph data as a json file
+const exportLf = () => {
+  // export lf graph data as a json file
+  const {lf} = props;
+  const data = lf.getGraphData()
+  const blob = new Blob([JSON.stringify(data)], {type: 'text/plain;charset=utf-8'})
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'lf.json'
+  a.click()
+  URL.revokeObjectURL(url)
+}
 
 const importLf = () => {
   // open import dialog to read a json file , and set to lf graph data

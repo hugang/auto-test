@@ -101,7 +101,7 @@ function executeNode(node, commands) {
     return;
   }
   commands.push({
-    command: node.text.value,
+    command: node.properties.command,
     target: node.properties.target,
     value: node.properties.value
   })

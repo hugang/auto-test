@@ -1,6 +1,6 @@
 <template>
   <div class="setting-panel">
-    <div>设置({{nodeData.text.value}})</div>
+    <div>设置({{nodeData.properties.command}})</div>
     <div class="setting-item-title">选择风格</div>
     <div class="style-wrapper">
       <div class="style-item" @click="$emit('changeStyle', item)" v-for="(item, index) in styleConfig" :key="index" :style="item"></div>
@@ -8,19 +8,16 @@
 
     <div v-if="nodeData.type !== 'start-node'">
       <div class="setting-item-title">command</div>
-      <select id="command" @change="updateNodeData" :value="nodeData.text.value">
-        <option value="click">click</option>
-        <option value="type">type</option>
-        <option value="wait">wait</option>
+      <select id="command" @change="updateNodeData" :value="nodeData.properties.command">
+        <option v-for="option in selectOptions" :value="option.value">{{ option.label }}</option>
       </select>
-      <div id="tips"></div>
-      <div class="setting-item-title">description</div>
-      <input id="description" type="text" :value="nodeData.properties.description" @blur="updateNodeData">
       <hr>
       <div class="setting-item-title">target</div>
       <input id="target" type="text" :value="nodeData.properties.target" @blur="updateNodeData">
       <div class="setting-item-title">value</div>
       <input id="value" type="text" :value="nodeData.properties.value" @blur="updateNodeData">
+      <div class="setting-item-title">description</div>
+      <input id="description" type="text" :value="nodeData.properties.description" @blur="updateNodeData">
     </div>
   </div>
 </template>
@@ -37,6 +34,117 @@ const props = defineProps({
   },
   lf: Object || String
 })
+
+const selectOptions = ref([
+  {value: 'addSelection', label: 'addSelection'},
+  {value: 'answerOnNextPrompt', label: 'answerOnNextPrompt'},
+  {value: 'assertAlert', label: 'assertAlert'},
+  {value: 'assertConfirmation', label: 'assertConfirmation'},
+  {value: 'assertPrompt', label: 'assertPrompt'},
+  {value: 'assertChecked', label: 'assertChecked'},
+  {value: 'assert', label: 'assert'},
+  {value: 'assertEditable', label: 'assertEditable'},
+  {value: 'assertElementNotPresent', label: 'assertElementNotPresent'},
+  {value: 'assertElementPresent', label: 'assertElementPresent'},
+  {value: 'assertNotChecked', label: 'assertNotChecked'},
+  {value: 'assertNotEditable', label: 'assertNotEditable'},
+  {value: 'assertNotSelectedLabel', label: 'assertNotSelectedLabel'},
+  {value: 'assertNotSelectedValue', label: 'assertNotSelectedValue'},
+  {value: 'assertNotText', label: 'assertNotText'},
+  {value: 'assertSelectedLabel', label: 'assertSelectedLabel'},
+  {value: 'assertSelectedValue', label: 'assertSelectedValue'},
+  {value: 'assertText', label: 'assertText'},
+  {value: 'assertTitle', label: 'assertTitle'},
+  {value: 'assertValue', label: 'assertValue'},
+  {value: 'check', label: 'check'},
+  {value: 'chooseCancelOnNextConfirmation', label: 'chooseCancelOnNextConfirmation'},
+  {value: 'chooseCancelOnNextPrompt', label: 'chooseCancelOnNextPrompt'},
+  {value: 'chooseOkOnNextConfirmation', label: 'chooseOkOnNextConfirmation'},
+  {value: 'chooseOkOnNextPrompt', label: 'chooseOkOnNextPrompt'},
+  {value: 'clickAt', label: 'clickAt'},
+  {value: 'click', label: 'click'},
+  {value: 'close', label: 'close'},
+  {value: 'doubleClickAt', label: 'doubleClickAt'},
+  {value: 'doubleClick', label: 'doubleClick'},
+  {value: 'dragAndDropToObject', label: 'dragAndDropToObject'},
+  {value: 'echo', label: 'echo'},
+  {value: 'editContent', label: 'editContent'},
+  {value: 'executeAsyncScript', label: 'executeAsyncScript'},
+  {value: 'executeScript', label: 'executeScript'},
+  {value: 'mouseDownAt', label: 'mouseDownAt'},
+  {value: 'mouseDown', label: 'mouseDown'},
+  {value: 'mouseMoveAt', label: 'mouseMoveAt'},
+  {value: 'mouseOut', label: 'mouseOut'},
+  {value: 'mouseOver', label: 'mouseOver'},
+  {value: 'mouseUpAt', label: 'mouseUpAt'},
+  {value: 'mouseUp', label: 'mouseUp'},
+  {value: 'open', label: 'open'},
+  {value: 'pause', label: 'pause'},
+  {value: 'wait', label: 'wait'},
+  {value: 'sleep', label: 'sleep'},
+  {value: 'removeSelection', label: 'removeSelection'},
+  {value: 'runCase', label: 'runCase'},
+  {value: 'run', label: 'run'},
+  {value: 'runScript', label: 'runScript'},
+  {value: 'screenshot', label: 'screenshot'},
+  {value: 'select', label: 'select'},
+  {value: 'selectFrame', label: 'selectFrame'},
+  {value: 'selectWindow', label: 'selectWindow'},
+  {value: 'sendKeys', label: 'sendKeys'},
+  {value: 'setSpeed', label: 'setSpeed'},
+  {value: 'setWindowSize', label: 'setWindowSize'},
+  {value: 'storeAttribute', label: 'storeAttribute'},
+  {value: 'store', label: 'store'},
+  {value: 'storeJson', label: 'storeJson'},
+  {value: 'storeText', label: 'storeText'},
+  {value: 'storeTitle', label: 'storeTitle'},
+  {value: 'storeValue', label: 'storeValue'},
+  {value: 'storeWindowHandle', label: 'storeWindowHandle'},
+  {value: 'storeXpathCount', label: 'storeXpathCount'},
+  {value: 'submit', label: 'submit'},
+  {value: 'type', label: 'type'},
+  {value: 'uncheck', label: 'uncheck'},
+  {value: 'verifyChecked', label: 'verifyChecked'},
+  {value: 'verify', label: 'verify'},
+  {value: 'verifyEditable', label: 'verifyEditable'},
+  {value: 'verifyElementNotPresent', label: 'verifyElementNotPresent'},
+  {value: 'verifyElementPresent', label: 'verifyElementPresent'},
+  {value: 'verifyNotChecked', label: 'verifyNotChecked'},
+  {value: 'verifyNotEditable', label: 'verifyNotEditable'},
+  {value: 'verifyNotSelectedLabel', label: 'verifyNotSelectedLabel'},
+  {value: 'verifyNotSelectedValue', label: 'verifyNotSelectedValue'},
+  {value: 'verifyNotText', label: 'verifyNotText'},
+  {value: 'verifySelectedLabel', label: 'verifySelectedLabel'},
+  {value: 'verifySelectedValue', label: 'verifySelectedValue'},
+  {value: 'verifyText', label: 'verifyText'},
+  {value: 'verifyTitle', label: 'verifyTitle'},
+  {value: 'verifyValue', label: 'verifyValue'},
+  {value: 'waitForElementEditable', label: 'waitForElementEditable'},
+  {value: 'waitForElementNotEditable', label: 'waitForElementNotEditable'},
+  {value: 'waitForElementNotPresent', label: 'waitForElementNotPresent'},
+  {value: 'waitForElementNotVisible', label: 'waitForElementNotVisible'},
+  {value: 'waitForElementPresent', label: 'waitForElementPresent'},
+  {value: 'waitForElementVisible', label: 'waitForElementVisible'},
+  {value: 'waitForText', label: 'waitForText'},
+  {value: 'webdriverAnswerOnVisiblePrompt', label: 'webdriverAnswerOnVisiblePrompt'},
+  {value: 'webdriverChooseCancelOnVisibleConfirmation', label: 'webdriverChooseCancelOnVisibleConfirmation'},
+  {value: 'webdriverChooseCancelOnVisiblePrompt', label: 'webdriverChooseCancelOnVisiblePrompt'},
+  {value: 'webdriverChooseOkOnVisibleConfirmation', label: 'webdriverChooseOkOnVisibleConfirmation'},
+  {value: 'callApi', label: 'callApi'},
+  {value: 'exportDb', label: 'exportDb'},
+  {value: 'generateCode', label: 'generateCode'},
+  {value: 'gitHistory', label: 'gitHistory'},
+  {value: 'increaseNumber', label: 'increaseNumber'},
+  {value: 'jenkinsJob', label: 'jenkinsJob'},
+  {value: 'ocr', label: 'ocr'},
+  {value: 'readProperties', label: 'readProperties'},
+  {value: 'saveProperties', label: 'saveProperties'},
+  {value: 'scroll', label: 'scroll'},
+  {value: 'scrollIntoView', label: 'scrollIntoView'},
+  {value: 'setProperty', label: 'setProperty'},
+  {value: 'sftp', label: 'sftp'},
+  {value: 'stepCount', label: 'stepCount'}
+])
 
 const styleConfig = ref([
   {
@@ -82,18 +190,11 @@ const updateNodeData = (e: any) => {
     })
   }else if (e.target.id === 'command') {
     // update node text
+    props.lf.setProperties(props.nodeData.id, {
+      command: target
+    })
     props.lf.updateText(props.nodeData.id,target)
-    // show command tips in tips div
-    const tips = document.getElementById('tips')
-    if (target === 'click') {
-      tips.innerHTML = 'click: Clicks on a link, button, checkbox, or radio button.'
-    } else if (target === 'type') {
-      tips.innerHTML = 'type: Types a string of text into the target.'
-    } else if (target === 'wait') {
-      tips.innerHTML = 'wait: Waits for a number of milliseconds.'
-    }
   }
-  console.log(JSON.stringify(props.lf.getGraphData()))
 }
 
 </script>

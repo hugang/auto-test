@@ -1,9 +1,14 @@
 <template>
-  <div class="demo-collapse" :style="properties.style">
-    <div>当前值：{{text}}</div>
-    <div class="demo-operator">
-      <el-input @keydown.stop type="text" v-model="increaseFactor" />
-      <el-button @mousedown.stop @click="$emit('btnClick', increaseFactor)">增加</el-button>
+  <div class="vue-node-collapse" :style="properties.style">
+    <div>[{{ properties.command }}]</div>
+    <div class="vue-node-operator">
+      <div>target：{{ properties.target }}</div>
+    </div>
+    <div class="vue-node-operator">
+      <div>value：{{ properties.value }}</div>
+    </div>
+    <div class="vue-node-operator">
+      <div>description：{{ properties.description }}</div>
     </div>
   </div>
 </template>
@@ -17,36 +22,21 @@ export default {
         t: 1,
         style: {}
       })
-    },
-    text: String,
-  },
-  data () {
-    return {
-      showTitle: '',
-      increaseFactor: 0
-    }
-  },
-  emits: ['btnClick'],
-  mounted () {
-  },
-  watch: {
-    'properties.t': {
-      handler (val) {
-        this.increaseFactor = val
-      },
-      immediate: true
     }
   }
 }
 </script>
 <style scoped>
-.demo-collapse {
-  width: 300px;
+.vue-node-collapse {
+  width: 250px;
   height: 100px;
   border: 1px solid #444;
   box-sizing: border-box;
 }
-.demo-operator {
+
+.vue-node-operator {
   display: flex;
+  font-size: 14px;
+  color: #333;
 }
 </style>
