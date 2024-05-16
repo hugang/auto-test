@@ -29,7 +29,11 @@ public class AutoTestServer {
 
     public static void main(String[] args) {
         SimpleServer server = HttpUtil.createServer(9191);
-        server.setRoot(FileUtil.file("static"))
+        String staticResourcePath = FileUtil.file("static").getAbsolutePath();
+        if (staticResourcePath.contains("jar")) {
+            staticResourcePath = new File("libs/static").getAbsolutePath();
+        }
+        server.setRoot(staticResourcePath)
                 // run test case from local pc, the test case store in the work folder
                 // e.g. http://localhost:9191/local?testcases=1&path=src/test/resources/recorder/recorder.xlsx
                 .addAction("/local", (request, response) -> {
