@@ -8,16 +8,15 @@
 
     <div v-if="nodeData.type !== 'start-node'">
       <div class="setting-item-title">command</div>
-      <select id="command" @change="updateNodeData" :value="nodeData.properties.command">
+      <select class="setting-input" id="command" @change="updateNodeData" :value="nodeData.properties.command">
         <option v-for="option in selectOptions" :value="option.value">{{ option.label }}</option>
       </select>
-      <hr>
       <div class="setting-item-title">target</div>
-      <input id="target" type="text" :value="nodeData.properties.target" @blur="updateNodeData">
+      <input class="setting-input" id="target" type="text" :value="nodeData.properties.target" @blur="updateNodeData">
       <div class="setting-item-title">value</div>
-      <input id="value" type="text" :value="nodeData.properties.value" @blur="updateNodeData">
+      <input class="setting-input" id="value" type="text" :value="nodeData.properties.value" @blur="updateNodeData">
       <div class="setting-item-title">description</div>
-      <input id="description" type="text" :value="nodeData.properties.description" @blur="updateNodeData">
+      <input class="setting-input" id="description" type="text" :value="nodeData.properties.description" @blur="updateNodeData">
     </div>
   </div>
 </template>
@@ -205,7 +204,7 @@ const updateNodeData = (e: any) => {
   background: #FFFFFF;
   border-left: 1px solid #dadce0;
   border-bottom: 1px solid #dadce0;
-  width: 200px;
+  width: 400px;
 }
 .style-wrapper {
   display: flex;
@@ -221,5 +220,11 @@ const updateNodeData = (e: any) => {
   font-size: 14px;
   color: #333;
   margin-top: 10px;
+}
+.setting-input {
+  width: 100%;
+  height: 30px;
+  border: 1px solid #dadce0;
+  margin-top: 5px;
 }
 </style>
