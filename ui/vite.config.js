@@ -20,5 +20,14 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
-  ]
+  ],
+  build: {
+    outDir: '../src/main/resources/static', // Output directory
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/[name].js', // js Output file name
+        assetFileNames: 'assets/[name].[ext]', // Other file output name
+      },
+    },
+  }
 })
