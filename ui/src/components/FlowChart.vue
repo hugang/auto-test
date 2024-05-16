@@ -2,6 +2,8 @@
 import {ref} from 'vue'
 import LogicFlow from '@logicflow/core'
 import '@logicflow/core/dist/style/index.css'
+import "@logicflow/extension/lib/style/index.css";
+import {Menu} from '@logicflow/extension';
 import NodeRedExtension from './node-red/index'
 import Setting from './node-red/tools/Setting.vue'
 import axios from 'axios'
@@ -39,10 +41,19 @@ export default {
       },
       // keyboard: true,
       plugins: [
-        NodeRedExtension
+        Menu, NodeRedExtension
       ]
     })
-    this.lf.render({"nodes": [{"id": "f676a7d4-ceea-4b4e-8d4c-57863144e061", "type": "start-node", "x": 470, "y": 240, "properties": {"ui": "node-red"}, "text": {"x": 480, "y": 240, "value": "start"}}], "edges": []})
+    this.lf.render({
+      "nodes": [{
+        "id": "f676a7d4-ceea-4b4e-8d4c-57863144e061",
+        "type": "start-node",
+        "x": 470,
+        "y": 240,
+        "properties": {"ui": "node-red"},
+        "text": {"x": 480, "y": 240, "value": "start"}
+      }], "edges": []
+    })
     this.lf.on('node-red:start', () => {
       const commands = []
       const result = {
@@ -65,12 +76,12 @@ export default {
 
       console.log(JSON.stringify(result))
       axios.post('http://localhost:9191/flow', result)
-        .then(response => {
-          console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => {
+            console.log(error)
+          })
     })
 
     this.lf.on('vue-node:click', (data) => {
