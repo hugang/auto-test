@@ -3,10 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
     <groupId>io.hugang</groupId>
     <artifactId>auto-test</artifactId>
-    <version>v1.0</version>
+    <version>v1.1</version>
 
     <properties>
         <!--set java language level 17-->
@@ -18,6 +23,11 @@
     </properties>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.codeborne/selenide -->
         <dependency>
             <groupId>com.codeborne</groupId>
@@ -30,49 +40,19 @@
             <artifactId>log4j-core</artifactId>
             <version>2.23.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-json -->
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-json</artifactId>
-            <version>5.8.27</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-http -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-http</artifactId>
-            <version>5.8.27</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-extra -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-extra</artifactId>
-            <version>5.8.27</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-poi -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-poi</artifactId>
-            <version>5.8.27</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-db -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-db</artifactId>
-            <version>5.8.27</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-cron -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-cron</artifactId>
-            <version>5.8.27</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-script -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-script</artifactId>
-            <version>5.8.27</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.23.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.27</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -91,7 +71,6 @@
             <artifactId>commons-compress</artifactId>
             <version>1.26.1</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -158,21 +137,12 @@
             <artifactId>org.eclipse.jgit</artifactId>
             <version>6.9.0.202403050737-r</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.5.6</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
     <!-- add dependency plugin-->
     <build>
@@ -180,58 +150,15 @@
         <finalName>auto-test</finalName>
         <!-- copy dependency to libs-->
         <plugins>
-            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.basedir}/libs/static</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/resources/static</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.1</version>
-                <configuration>
-                    <outputDirectory>${project.basedir}/libs</outputDirectory>
-                </configuration>
-            </plugin>
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.6.1</version>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <outputDirectory>${project.basedir}/libs</outputDirectory>
-                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-
     </build>
 </project>
