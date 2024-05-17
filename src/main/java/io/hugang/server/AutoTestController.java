@@ -5,7 +5,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.log.Log;
 import io.hugang.BasicExecutor;
 import io.hugang.execute.Commands;
-import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.ThreadContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +37,7 @@ public class AutoTestController {
 
     @RequestMapping("/remote")
     public Map<String, Object> remote(@RequestParam MultipartFile file, @RequestParam String testcases) throws IOException {
-        File tempFile = CommandExecuteUtil.getFileWithBaseDir("download/" + System.currentTimeMillis() + "_" + file.getOriginalFilename());
+        File tempFile = FileUtil.file(ThreadContext.getAutoTestConfig().getFileDownloadPath().concat("/").concat(System.currentTimeMillis() + "_" + file.getOriginalFilename()));
         // save multipart file to local tempFile
         file.transferTo(tempFile);
         String fileType = FileTypeUtil.getType(tempFile);
@@ -64,7 +63,7 @@ public class AutoTestController {
 
     @RequestMapping("/flow")
     public Map<String, Object> flow(@RequestBody String jsonFlow) {
-        String path = CommandExecuteUtil.getFilePathWithBaseDir("download/" + System.currentTimeMillis() + ".json");
+        String path = ThreadContext.getAutoTestConfig().getFileDownloadPath().concat("/").concat(System.currentTimeMillis() + ".json");
         FileUtil.writeString(jsonFlow, path, "utf-8");
         List<Commands> result = new BasicExecutor().execute("json", path);
         return responseResult(result);
