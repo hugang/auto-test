@@ -4,8 +4,7 @@ folder structure:
 ```
 auto-test
 │  auto-server.bat
-│  auto-test.bat
-│  libs
+│  target\auto-test.jar
 │  driver
 │  conf
 ```
@@ -19,7 +18,7 @@ auto-test
 ## how to run
 
 - start auto-server.bat to start the server, and then run the test cases xlsm.
-  there is an example file [[case_template.xlsm]] in test case directory.
+  there is an example file [[case_template.xlsm]] in [testcases_example](doc%2Ftestcases_example) directory.
 
   local server url：[http://localhost:9191](http://localhost:9191)
 
