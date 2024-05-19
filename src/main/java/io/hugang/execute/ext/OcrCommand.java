@@ -24,10 +24,6 @@ import java.io.IOException;
 public class OcrCommand extends Command {
     private static final Log log = Log.get();
 
-    public OcrCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     @Override
     public String getCommand() {
         return "ocr";

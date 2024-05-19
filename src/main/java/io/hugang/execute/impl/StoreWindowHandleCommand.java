@@ -2,14 +2,14 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import org.openqa.selenium.WebDriver;
 
 @WebCommand
 public class StoreWindowHandleCommand extends Command {
-
-    public StoreWindowHandleCommand(String command, String target, String value) {
-        super(command, target, value);
+    public StoreWindowHandleCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

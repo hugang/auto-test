@@ -3,6 +3,7 @@ package io.hugang.execute.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import io.hugang.BasicExecutor;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.execute.Commands;
@@ -13,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RunCaseCommand extends Command {
-    public RunCaseCommand(String command, String target, String value) {
-        super(command, target, value);
+    public RunCaseCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

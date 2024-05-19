@@ -3,6 +3,7 @@ package io.hugang.execute.impl;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -12,8 +13,8 @@ import static com.codeborne.selenide.Selenide.*;
 public class ScreenshotCommand extends Command {
     private static final Log log = Log.get();
 
-    public ScreenshotCommand(String command, String target, String value) {
-        super(command, target, value);
+    public ScreenshotCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

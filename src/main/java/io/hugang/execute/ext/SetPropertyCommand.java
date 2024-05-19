@@ -11,10 +11,6 @@ public class SetPropertyCommand extends Command {
     public static final String KEY_TYPE = "type";
     public static final String VALUE_TYPE_JSON = "json";
 
-    public SetPropertyCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     @Override
     public String getCommand() {
         return "setProperty";

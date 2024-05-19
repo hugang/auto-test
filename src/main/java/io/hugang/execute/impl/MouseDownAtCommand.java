@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.WebDriver;
@@ -11,8 +12,8 @@ import org.openqa.selenium.interactions.Actions;
 
 @WebCommand
 public class MouseDownAtCommand extends Command {
-    public MouseDownAtCommand(String command, String target, String value) {
-        super(command, target, value);
+    public MouseDownAtCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

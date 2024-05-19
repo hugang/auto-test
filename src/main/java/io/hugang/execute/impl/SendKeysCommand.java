@@ -2,6 +2,7 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.SelenideElement;
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.Keys;
@@ -14,8 +15,8 @@ import org.openqa.selenium.Keys;
  */
 @WebCommand
 public class SendKeysCommand extends Command {
-    public SendKeysCommand(String command, String target, String value) {
-        super(command, target, value);
+    public SendKeysCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     /**

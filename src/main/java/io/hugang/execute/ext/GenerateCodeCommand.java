@@ -24,10 +24,6 @@ import java.util.List;
 
 public class GenerateCodeCommand extends Command {
 
-    public GenerateCodeCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     @Override
     public String getCommand() {
         return "generateCode";

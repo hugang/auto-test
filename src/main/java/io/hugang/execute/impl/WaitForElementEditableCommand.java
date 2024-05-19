@@ -2,6 +2,7 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.WebDriver;
@@ -13,8 +14,8 @@ import java.time.temporal.ChronoUnit;
 
 @WebCommand
 public class WaitForElementEditableCommand extends Command {
-    public WaitForElementEditableCommand(String command, String target, String value) {
-        super(command, target, value);
+    public WaitForElementEditableCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

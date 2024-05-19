@@ -15,10 +15,6 @@ import io.hugang.util.CommandExecuteUtil;
 public class ScrollIntoViewCommand extends Command {
     private static final Log log = Log.get();
 
-    public ScrollIntoViewCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     @Override
     public String getCommand() {
         return "scrollIntoView";

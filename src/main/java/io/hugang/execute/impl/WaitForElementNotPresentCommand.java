@@ -1,6 +1,7 @@
 package io.hugang.execute.impl;
 
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.WebElement;
@@ -9,8 +10,8 @@ import java.util.List;
 
 @WebCommand
 public class WaitForElementNotPresentCommand extends Command {
-    public WaitForElementNotPresentCommand(String command, String target, String value) {
-        super(command, target, value);
+    public WaitForElementNotPresentCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

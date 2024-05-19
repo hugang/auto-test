@@ -1,6 +1,7 @@
 package io.hugang.execute.impl;
 
 import com.codeborne.selenide.SelenideElement;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
@@ -8,9 +9,8 @@ import io.hugang.util.CommandExecuteUtil;
 
 @WebCommand
 public class AssertEditableCommand extends Command {
-
-    public AssertEditableCommand(String command, String target, String value) {
-        super(command, target, value);
+    public AssertEditableCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

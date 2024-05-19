@@ -1,6 +1,7 @@
 package io.hugang.execute.impl;
 
 import com.codeborne.selenide.WebDriverRunner;
+import io.hugang.bean.OriginalCommand;
 import org.openqa.selenium.WebDriver;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
@@ -8,8 +9,8 @@ import io.hugang.execute.Command;
 
 @WebCommand
 public class CloseCommand extends Command {
-    public CloseCommand(String command, String target, String value) {
-        super(command, target, value);
+    public CloseCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

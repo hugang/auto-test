@@ -1,13 +1,14 @@
 package io.hugang.execute.ext;
 
 import cn.hutool.extra.ssh.Sftp;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
 import java.io.File;
 
 public class SftpCommand extends Command {
-    public SftpCommand(String command, String target, String value) {
-        super(command, target, value);
+    public SftpCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

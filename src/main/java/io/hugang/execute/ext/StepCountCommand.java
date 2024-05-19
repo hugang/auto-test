@@ -24,10 +24,6 @@ import java.nio.file.Files;
 public class StepCountCommand extends Command {
     private static final Log log = Log.get();
 
-    public StepCountCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     @Override
     public String getCommand() {
         return "stepCount";

@@ -3,6 +3,7 @@ package io.hugang.execute.ext;
 import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.log.Log;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -34,8 +35,8 @@ import java.util.List;
 public class GitHistoryCommand extends Command {
     private static final Log log = Log.get();
 
-    public GitHistoryCommand(String command, String target, String value) {
-        super(command, target, value);
+    public GitHistoryCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

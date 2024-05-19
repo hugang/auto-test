@@ -15,10 +15,6 @@ import org.openqa.selenium.JavascriptExecutor;
 public class ScrollCommand extends Command {
     private static final Log log = Log.get();
 
-    public ScrollCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     @Override
     public String getCommand() {
         return "scroll";

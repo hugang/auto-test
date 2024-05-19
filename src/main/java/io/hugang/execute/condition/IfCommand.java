@@ -1,6 +1,7 @@
 package io.hugang.execute.condition;
 
 import cn.hutool.core.util.ObjectUtil;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.execute.ICommand;
@@ -15,13 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IfCommand extends Command implements IConditionCommand {
-    public IfCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
 
     // sub commands
     private List<ICommand> subCommands;
     private String uuid;
+
+    public IfCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
 
     @Override
     public boolean _execute() {

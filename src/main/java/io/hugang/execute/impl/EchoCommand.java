@@ -1,15 +1,15 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.log.Log;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
 public class EchoCommand extends Command {
-    private static final Log log = Log.get();
-
-    public EchoCommand(String command, String target, String value) {
-        super(command, target, value);
+    public EchoCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
+    private static final Log log = Log.get();
     @Override
     public boolean _execute() {
         String target = this.getTarget();

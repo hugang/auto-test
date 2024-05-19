@@ -2,14 +2,14 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.SelenideElement;
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 
 @WebCommand
 public class StoreAttributeCommand extends Command {
-
-    public StoreAttributeCommand(String command, String target, String value) {
-        super(command, target, value);
+    public StoreAttributeCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

@@ -2,13 +2,13 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
 @WebCommand
 public class StoreTitleCommand extends Command {
-
-    public StoreTitleCommand(String command, String target, String value) {
-        super(command, target, value);
+    public StoreTitleCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

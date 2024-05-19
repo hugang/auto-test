@@ -1,14 +1,14 @@
 package io.hugang.execute.impl;
 
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 
 @WebCommand
 public class StoreValueCommand extends Command {
-
-    public StoreValueCommand(String command, String target, String value) {
-        super(command, target, value);
+    public StoreValueCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

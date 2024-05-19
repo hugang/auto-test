@@ -1,6 +1,7 @@
 package io.hugang.execute.impl;
 
 import com.codeborne.selenide.WebDriverRunner;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
@@ -15,8 +16,8 @@ import org.openqa.selenium.WebDriver;
  */
 @WebCommand
 public class SetWindowSizeCommand extends Command {
-    public SetWindowSizeCommand(String command, String target, String value) {
-        super(command, target, value);
+    public SetWindowSizeCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     /**

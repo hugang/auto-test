@@ -2,6 +2,7 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
@@ -13,8 +14,8 @@ import java.time.temporal.ChronoUnit;
 
 @WebCommand
 public class WebdriverChooseCancelOnVisibleConfirmationCommand extends Command {
-    public WebdriverChooseCancelOnVisibleConfirmationCommand(String command, String target, String value) {
-        super(command, target, value);
+    public WebdriverChooseCancelOnVisibleConfirmationCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

@@ -18,10 +18,6 @@ public class JenkinsJobCommand extends Command {
     // log
     private static final Log log = Log.get();
 
-    public JenkinsJobCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     @Override
     public String getCommand() {
         return "jenkinsJob";

@@ -18,10 +18,6 @@
 //    public static FrameRecorder recorder;
 //    private static final Log log = Log.get();
 //
-//    public RecorderCommand(String command, String target, String value) {
-//        super(command, target, value);
-//    }
-//
 //    @Override
 //    public String getCommand() {
 //        return "recorder";

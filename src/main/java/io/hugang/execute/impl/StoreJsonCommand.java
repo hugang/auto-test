@@ -1,11 +1,11 @@
 package io.hugang.execute.impl;
 
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
 public class StoreJsonCommand extends Command {
-
-    public StoreJsonCommand(String command, String target, String value) {
-        super(command, target, value);
+    public StoreJsonCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

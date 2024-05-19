@@ -1,5 +1,6 @@
 package io.hugang.execute.impl;
 
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
 /**
@@ -11,11 +12,10 @@ import io.hugang.execute.Command;
  * @author hugang
  */
 public class AssertCommand extends Command {
-
     public static final String VALUE = "value";
 
-    public AssertCommand(String command, String target, String value) {
-        super(command, target, value);
+    public AssertCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

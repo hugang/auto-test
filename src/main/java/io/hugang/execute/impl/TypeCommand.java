@@ -1,6 +1,7 @@
 package io.hugang.execute.impl;
 
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.Keys;
@@ -10,8 +11,8 @@ public class TypeCommand extends Command {
 
     public static final String VALUE = "value";
 
-    public TypeCommand(String command, String target, String value) {
-        super(command, target, value);
+    public TypeCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

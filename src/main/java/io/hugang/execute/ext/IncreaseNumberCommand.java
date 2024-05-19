@@ -14,10 +14,6 @@ import io.hugang.execute.Command;
 public class IncreaseNumberCommand extends Command {
     private static final Log log = Log.get();
 
-    public IncreaseNumberCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     @Override
     public String getCommand() {
         return "increaseNumber";

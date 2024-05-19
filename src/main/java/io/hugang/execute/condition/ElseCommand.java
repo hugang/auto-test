@@ -1,11 +1,12 @@
 package io.hugang.execute.condition;
 
+import io.hugang.bean.OriginalCommand;
 import io.hugang.util.ThreadContext;
 
 public class ElseCommand extends IfCommand {
 
-    public ElseCommand(String command, String target, String value) {
-        super(command, target, value);
+    public ElseCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

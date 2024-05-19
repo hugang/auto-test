@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 
@@ -25,8 +26,8 @@ public class RunCommand extends Command {
     private static final String TYPE_BAT = "bat";
     private static final String TYPE_SH = "sh";
 
-    public RunCommand(String command, String target, String value) {
-        super(command, target, value);
+    public RunCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     /**

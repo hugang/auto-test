@@ -1,5 +1,6 @@
 package io.hugang.execute.condition;
 
+import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.execute.ICommand;
@@ -11,13 +12,13 @@ import java.util.List;
 public class TimesCommand extends Command implements IConditionCommand {
     private int times = -1;
 
-    public TimesCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     // sub commands
     private List<ICommand> subCommands;
     private String uuid;
+
+    public TimesCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
 
     @Override
     public boolean _execute() {

@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.AutoTestException;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.util.CommandExecuteUtil;
@@ -24,16 +25,11 @@ public abstract class Command implements ICommand {
     public Command() {
     }
 
-    public Command(String command, String target) {
-        this.command = command;
-        this.target = target;
-        generateDict();
-    }
-
-    public Command(String command, String target, String value) {
-        this.command = command;
-        this.target = target;
-        this.value = value;
+    public Command(OriginalCommand originalCommand) {
+        this.command = originalCommand.getCommand();
+        this.target = originalCommand.getTarget();
+        this.value = originalCommand.getValue();
+        this.description = originalCommand.getDescription();
         generateDict();
     }
 
@@ -93,6 +89,8 @@ public abstract class Command implements ICommand {
     private String target;
     // value
     private String value;
+    // description
+    private String description;
     // result
     private String result;
 
@@ -101,12 +99,39 @@ public abstract class Command implements ICommand {
         return command;
     }
 
+    @Override
+    public void setCommand(String command) {
+        this.command = command;
+    }
+
+    @Override
     public String getTarget() {
         return this.getDictStr(TARGET, this.target);
     }
 
+    @Override
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    @Override
     public String getValue() {
         return value;
+    }
+
+    @Override
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Dict getDict() {
@@ -151,7 +176,7 @@ public abstract class Command implements ICommand {
         return CommandExecuteUtil.render(value, dict);
     }
 
-    private void generateDict() {
+    public void generateDict() {
         try {
             if (this.target != null) {
                 JSONObject targetObj = (JSONObject) JSONUtil.parse(this.target);
@@ -159,7 +184,7 @@ public abstract class Command implements ICommand {
             }
         } catch (Exception e) {
             // do nothing if not json
-            log.debug(this.target+" : not a valid json string: {}, process as normal target.", e.getMessage());
+            log.debug(this.target + " : not a valid json string: {}, process as normal target.", e.getMessage());
         }
         try {
             if (this.value != null) {
@@ -168,7 +193,7 @@ public abstract class Command implements ICommand {
             }
         } catch (Exception e) {
             // do nothing if not json
-            log.debug(this.value+" : not a valid json string: {}, process as normal value.", e.getMessage());
+            log.debug(this.value + " : not a valid json string: {}, process as normal value.", e.getMessage());
         }
     }
 
@@ -179,7 +204,7 @@ public abstract class Command implements ICommand {
 
     @Override
     public String toString() {
-        return "Command: " + this.getCommand() + "\t" + "options: " + this.getDict() + "\t" + "Target: " + this.getTarget() + "\t" + "Value: " + this.getValue() + "\t";
+        return "Command: " + this.getCommand() + "\t" + "options: " + this.getDict() + "\t" + "Target: " + this.getTarget() + "\t" + "Value: " + this.getValue() + "\t" + "Description: " + this.getDescription();
     }
 
     public String getFilePath(String path) {

@@ -1,5 +1,6 @@
 package io.hugang.execute.impl;
 
+import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
@@ -9,11 +10,10 @@ import org.openqa.selenium.WebElement;
 
 @WebCommand
 public class RemoveSelectionCommand extends Command {
-
     public static final String KEY_VALUE = "value";
 
-    public RemoveSelectionCommand(String command, String target, String value) {
-        super(command, target, value);
+    public RemoveSelectionCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

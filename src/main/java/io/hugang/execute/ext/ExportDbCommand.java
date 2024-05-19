@@ -24,11 +24,6 @@ import java.util.List;
 import java.util.Set;
 
 public class ExportDbCommand extends Command {
-
-    public ExportDbCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     @Override
     public String getCommand() {
         return "exportDb";

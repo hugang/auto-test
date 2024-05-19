@@ -1,6 +1,7 @@
 package io.hugang.execute.impl;
 
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.WebElement;
@@ -9,8 +10,8 @@ import java.util.List;
 
 @WebCommand
 public class WaitForElementVisibleCommand extends Command {
-    public WaitForElementVisibleCommand(String command, String target, String value) {
-        super(command, target, value);
+    public WaitForElementVisibleCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

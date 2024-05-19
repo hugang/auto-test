@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.log.Log;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import org.openqa.selenium.JavascriptExecutor;
@@ -15,8 +16,8 @@ import java.util.List;
 public class VerifyElementPresentCommand extends Command {
     private static final Log log = Log.get();
 
-    public VerifyElementPresentCommand(String command, String target, String value) {
-        super(command, target, value);
+    public VerifyElementPresentCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

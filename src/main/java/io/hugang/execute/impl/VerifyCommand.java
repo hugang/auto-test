@@ -1,6 +1,7 @@
 package io.hugang.execute.impl;
 
 import cn.hutool.log.Log;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
 /**
@@ -14,9 +15,8 @@ import io.hugang.execute.Command;
 public class VerifyCommand extends Command {
     private static final Log log = Log.get();
 
-
-    public VerifyCommand(String command, String target, String value) {
-        super(command, target, value);
+    public VerifyCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

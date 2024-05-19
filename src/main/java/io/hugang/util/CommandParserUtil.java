@@ -11,10 +11,10 @@ import cn.hutool.log.Log;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
+import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.AutoTestException;
 import io.hugang.exceptions.CommandExecuteException;
-import io.hugang.annotation.WebCommand;
-import io.hugang.bean.*;
 import io.hugang.execute.Command;
 import io.hugang.execute.Commands;
 import io.hugang.execute.ICommand;
@@ -101,9 +101,11 @@ public class CommandParserUtil {
         int startLineNo = 0;
         // read the first row
         List<Object> commandRow = reader.readRow(0);
+        List<Object> commentRow = null;
         if (ObjectUtil.isEmpty(commandRow) || ObjectUtil.isEmpty(commandRow.get(0))) {
             // if the first row is comment line, set the start line number to 1
             startLineNo = 1;
+            commentRow = reader.readRow(0);
             commandRow = reader.readRow(startLineNo);
         }
 
@@ -120,6 +122,10 @@ public class CommandParserUtil {
                 List<OriginalCommand> commandList = new ArrayList<>();
                 for (int j = 1; j < commandRow.size(); j++) {
                     OriginalCommand command = new OriginalCommand();
+                    // commentRow
+                    if (ObjectUtil.isNotEmpty(commentRow) && ObjectUtil.isNotEmpty(commentRow.get(j))) {
+                        command.setDescription(commentRow.get(j).toString());
+                    }
                     command.setCommand(commandRow.get(j).toString());
                     if (ObjectUtil.isNotEmpty(targetRow) && ObjectUtil.isNotEmpty(targetRow.get(j))) {
                         command.setTarget(targetRow.get(j).toString());
@@ -148,7 +154,7 @@ public class CommandParserUtil {
             String commandName = command.getCommand();
             switch (commandName) {
                 case "if":
-                    IfCommand ifCommand = new IfCommand(commandName, command.getTarget(), command.getValue());
+                    IfCommand ifCommand = new IfCommand(command);
                     ifCommand.setUuid(UUID.randomUUID().toString());
                     commandStack.push(ifCommand);
                     break;
@@ -157,7 +163,7 @@ public class CommandParserUtil {
                     if (commandStack.empty() || !("if".equals(commandStack.peek().getCommand()) || "elseIf".equals(commandStack.peek().getCommand()))) {
                         throw new CommandExecuteException("elseIf command must be after if or elseIf command");
                     }
-                    ElseIfCommand elseIfCommand = new ElseIfCommand(commandName, command.getTarget(), command.getValue());
+                    ElseIfCommand elseIfCommand = new ElseIfCommand(command);
                     elseIfCommand.setUuid(commandStack.peek().getUuid());
 
                     IConditionCommand popElseIf = commandStack.pop();
@@ -174,7 +180,7 @@ public class CommandParserUtil {
                     if (commandStack.empty() || !("if".equals(commandStack.peek().getCommand()) || "elseIf".equals(commandStack.peek().getCommand()))) {
                         throw new CommandExecuteException("else command must be after if or elseIf command");
                     }
-                    ElseCommand elseCommand = new ElseCommand(commandName, command.getTarget(), command.getValue());
+                    ElseCommand elseCommand = new ElseCommand(command);
                     elseCommand.setUuid(commandStack.peek().getUuid());
 
                     IConditionCommand popElse = commandStack.pop();
@@ -186,15 +192,15 @@ public class CommandParserUtil {
                     commandStack.push(elseCommand);
                     break;
                 case "times":
-                    TimesCommand timesCommand = new TimesCommand(commandName, command.getTarget(), command.getValue());
+                    TimesCommand timesCommand = new TimesCommand(command);
                     commandStack.push(timesCommand);
                     break;
                 case "while":
-                    WhileCommand whileCommand = new WhileCommand(commandName, command.getTarget(), command.getValue());
+                    WhileCommand whileCommand = new WhileCommand(command);
                     commandStack.push(whileCommand);
                     break;
                 case "forEach":
-                    ForEachCommand forEachCommand = new ForEachCommand(commandName, command.getTarget(), command.getValue());
+                    ForEachCommand forEachCommand = new ForEachCommand(command);
                     commandStack.push(forEachCommand);
                     break;
                 case "end":
@@ -228,137 +234,107 @@ public class CommandParserUtil {
         String commandName = command.getCommand();
         return switch (commandName) {
             // normal command from selenium ide
-            case "addSelection" -> new AddSelectionCommand(commandName, command.getTarget(), command.getValue());
-            case "answerOnNextPrompt" ->
-                    new AnswerOnNextPromptCommand(commandName, command.getTarget(), command.getValue());
-            case "assertAlert", "assertConfirmation", "assertPrompt" ->
-                    new AssertAlertCommand(commandName, command.getTarget(), command.getValue());
-            case "assertChecked" -> new AssertCheckedCommand(commandName, command.getTarget(), command.getValue());
-            case "assert" -> new AssertCommand(commandName, command.getTarget(), command.getValue());
-            case "assertEditable" -> new AssertEditableCommand(commandName, command.getTarget(), command.getValue());
-            case "assertElementNotPresent" ->
-                    new AssertElementNotPresentCommand(commandName, command.getTarget(), command.getValue());
-            case "assertElementPresent" ->
-                    new AssertElementPresentCommand(commandName, command.getTarget(), command.getValue());
-            case "assertNotChecked" ->
-                    new AssertNotCheckedCommand(commandName, command.getTarget(), command.getValue());
-            case "assertNotEditable" ->
-                    new AssertNotEditableCommand(commandName, command.getTarget(), command.getValue());
-            case "assertNotSelectedLabel" ->
-                    new AssertNotSelectedLabelCommand(commandName, command.getTarget(), command.getValue());
-            case "assertNotSelectedValue" ->
-                    new AssertNotSelectedValueCommand(commandName, command.getTarget(), command.getValue());
-            case "assertNotText" -> new AssertNotTextCommand(commandName, command.getTarget(), command.getValue());
-            case "assertSelectedLabel" ->
-                    new AssertSelectedLabelCommand(commandName, command.getTarget(), command.getValue());
-            case "assertSelectedValue" ->
-                    new AssertSelectedValueCommand(commandName, command.getTarget(), command.getValue());
-            case "assertText" -> new AssertTextCommand(commandName, command.getTarget(), command.getValue());
-            case "assertTitle" -> new AssertTitleCommand(commandName, command.getTarget(), command.getValue());
-            case "assertValue" -> new AssertValueCommand(commandName, command.getTarget(), command.getValue());
-            case "check" -> new CheckCommand(commandName, command.getTarget(), command.getValue());
+            case "addSelection" -> new AddSelectionCommand(command);
+            case "answerOnNextPrompt" -> new AnswerOnNextPromptCommand(command);
+            case "assertAlert", "assertConfirmation", "assertPrompt" -> new AssertAlertCommand(command);
+            case "assertChecked" -> new AssertCheckedCommand(command);
+            case "assert" -> new AssertCommand(command);
+            case "assertEditable" -> new AssertEditableCommand(command);
+            case "assertElementNotPresent" -> new AssertElementNotPresentCommand(command);
+            case "assertElementPresent" -> new AssertElementPresentCommand(command);
+            case "assertNotChecked" -> new AssertNotCheckedCommand(command);
+            case "assertNotEditable" -> new AssertNotEditableCommand(command);
+            case "assertNotSelectedLabel" -> new AssertNotSelectedLabelCommand(command);
+            case "assertNotSelectedValue" -> new AssertNotSelectedValueCommand(command);
+            case "assertNotText" -> new AssertNotTextCommand(command);
+            case "assertSelectedLabel" -> new AssertSelectedLabelCommand(command);
+            case "assertSelectedValue" -> new AssertSelectedValueCommand(command);
+            case "assertText" -> new AssertTextCommand(command);
+            case "assertTitle" -> new AssertTitleCommand(command);
+            case "assertValue" -> new AssertValueCommand(command);
+            case "check" -> new CheckCommand(command);
             case "chooseCancelOnNextConfirmation", "chooseCancelOnNextPrompt" ->
-                    new ChooseCancelOnNextConfirmationCommand(commandName, command.getTarget(), command.getValue());
-            case "chooseOkOnNextConfirmation", "chooseOkOnNextPrompt" ->
-                    new ChooseOkOnNextConfirmationCommand(commandName, command.getTarget(), command.getValue());
-            case "clickAt" -> new ClickAtCommand(commandName, command.getTarget(), command.getValue());
-            case "click" -> new ClickCommand(commandName, command.getTarget(), command.getValue());
-            case "close" -> new CloseCommand(commandName, command.getTarget(), command.getValue());
-            case "doubleClickAt" -> new DoubleClickAtCommand(commandName, command.getTarget(), command.getValue());
-            case "doubleClick" -> new DoubleClickCommand(commandName, command.getTarget(), command.getValue());
-            case "dragAndDropToObject" ->
-                    new DragAndDropToObjectCommand(commandName, command.getTarget(), command.getValue());
-            case "echo" -> new EchoCommand(commandName, command.getTarget(), command.getValue());
-            case "editContent" -> new EditContentCommand(commandName, command.getTarget(), command.getValue());
-            case "executeAsyncScript" ->
-                    new ExecuteAsyncScriptCommand(commandName, command.getTarget(), command.getValue());
-            case "executeScript" -> new ExecuteScriptCommand(commandName, command.getTarget(), command.getValue());
-            case "mouseDownAt" -> new MouseDownAtCommand(commandName, command.getTarget(), command.getValue());
-            case "mouseDown" -> new MouseDownCommand(commandName, command.getTarget(), command.getValue());
-            case "mouseMoveAt" -> new MouseMoveAtCommand(commandName, command.getTarget(), command.getValue());
-            case "mouseOut" -> new MouseOutCommand(commandName, command.getTarget(), command.getValue());
-            case "mouseOver" -> new MouseOverCommand(commandName, command.getTarget(), command.getValue());
-            case "mouseUpAt" -> new MouseUpAtCommand(commandName, command.getTarget(), command.getValue());
-            case "mouseUp" -> new MouseUpCommand(commandName, command.getTarget(), command.getValue());
-            case "open" -> new OpenCommand(commandName, command.getTarget(), command.getValue());
-            case "pause", "wait", "sleep" -> new PauseCommand(commandName, command.getTarget(), command.getValue());
-            case "removeSelection" -> new RemoveSelectionCommand(commandName, command.getTarget(), command.getValue());
-            case "runCase" -> new RunCaseCommand(commandName, command.getTarget(), command.getValue());
-            case "run" -> new RunCommand(commandName, command.getTarget(), command.getValue());
-            case "runScript" -> new RunScriptCommand(commandName, command.getTarget(), command.getValue());
-            case "screenshot" -> new ScreenshotCommand(commandName, command.getTarget(), command.getValue());
-            case "select" -> new SelectCommand(commandName, command.getTarget(), command.getValue());
-            case "selectFrame" -> new SelectFrameCommand(commandName, command.getTarget(), command.getValue());
-            case "selectWindow" -> new SelectWindowCommand(commandName, command.getTarget(), command.getValue());
-            case "sendKeys" -> new SendKeysCommand(commandName, command.getTarget(), command.getValue());
-            case "setSpeed" -> new SetSpeedCommand(commandName, command.getTarget(), command.getValue());
-            case "setWindowSize" -> new SetWindowSizeCommand(commandName, command.getTarget(), command.getValue());
-            case "storeAttribute" -> new StoreAttributeCommand(commandName, command.getTarget(), command.getValue());
-            case "store" -> new StoreCommand(commandName, command.getTarget(), command.getValue());
-            case "storeJson" -> new StoreJsonCommand(commandName, command.getTarget(), command.getValue());
-            case "storeText" -> new StoreTextCommand(commandName, command.getTarget(), command.getValue());
-            case "storeTitle" -> new StoreTitleCommand(commandName, command.getTarget(), command.getValue());
-            case "storeValue" -> new StoreValueCommand(commandName, command.getTarget(), command.getValue());
-            case "storeWindowHandle" ->
-                    new StoreWindowHandleCommand(commandName, command.getTarget(), command.getValue());
-            case "storeXpathCount" -> new StoreXpathCountCommand(commandName, command.getTarget(), command.getValue());
-            case "submit" -> new SubmitCommand(commandName, command.getTarget(), command.getValue());
-            case "type" -> new TypeCommand(commandName, command.getTarget(), command.getValue());
-            case "uncheck" -> new UncheckCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyChecked" -> new VerifyCheckedCommand(commandName, command.getTarget(), command.getValue());
-            case "verify" -> new VerifyCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyEditable" -> new VerifyEditableCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyElementNotPresent" ->
-                    new VerifyElementNotPresentCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyElementPresent" ->
-                    new VerifyElementPresentCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyNotChecked" ->
-                    new VerifyNotCheckedCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyNotEditable" ->
-                    new VerifyNotEditableCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyNotSelectedLabel" ->
-                    new VerifyNotSelectedLabelCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyNotSelectedValue" ->
-                    new VerifyNotSelectedValueCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyNotText" -> new VerifyNotTextCommand(commandName, command.getTarget(), command.getValue());
-            case "verifySelectedLabel" ->
-                    new VerifySelectedLabelCommand(commandName, command.getTarget(), command.getValue());
-            case "verifySelectedValue" ->
-                    new VerifySelectedValueCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyText" -> new VerifyTextCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyTitle" -> new VerifyTitleCommand(commandName, command.getTarget(), command.getValue());
-            case "verifyValue" -> new VerifyValueCommand(commandName, command.getTarget(), command.getValue());
-            case "waitForElementEditable" ->
-                    new WaitForElementEditableCommand(commandName, command.getTarget(), command.getValue());
-            case "waitForElementNotEditable" ->
-                    new WaitForElementNotEditableCommand(commandName, command.getTarget(), command.getValue());
-            case "waitForElementNotPresent" ->
-                    new WaitForElementNotPresentCommand(commandName, command.getTarget(), command.getValue());
-            case "waitForElementNotVisible" ->
-                    new WaitForElementNotVisibleCommand(commandName, command.getTarget(), command.getValue());
-            case "waitForElementPresent" ->
-                    new WaitForElementPresentCommand(commandName, command.getTarget(), command.getValue());
-            case "waitForElementVisible" ->
-                    new WaitForElementVisibleCommand(commandName, command.getTarget(), command.getValue());
-            case "waitForText" -> new WaitForTextCommand(commandName, command.getTarget(), command.getValue());
-            case "webdriverAnswerOnVisiblePrompt" ->
-                    new WebdriverAnswerOnVisiblePromptCommand(commandName, command.getTarget(), command.getValue());
+                    new ChooseCancelOnNextConfirmationCommand(command);
+            case "chooseOkOnNextConfirmation", "chooseOkOnNextPrompt" -> new ChooseOkOnNextConfirmationCommand(command);
+            case "clickAt" -> new ClickAtCommand(command);
+            case "click" -> new ClickCommand(command);
+            case "close" -> new CloseCommand(command);
+            case "doubleClickAt" -> new DoubleClickAtCommand(command);
+            case "doubleClick" -> new DoubleClickCommand(command);
+            case "dragAndDropToObject" -> new DragAndDropToObjectCommand(command);
+            case "echo" -> new EchoCommand(command);
+            case "editContent" -> new EditContentCommand(command);
+            case "executeAsyncScript" -> new ExecuteAsyncScriptCommand(command);
+            case "executeScript" -> new ExecuteScriptCommand(command);
+            case "mouseDownAt" -> new MouseDownAtCommand(command);
+            case "mouseDown" -> new MouseDownCommand(command);
+            case "mouseMoveAt" -> new MouseMoveAtCommand(command);
+            case "mouseOut" -> new MouseOutCommand(command);
+            case "mouseOver" -> new MouseOverCommand(command);
+            case "mouseUpAt" -> new MouseUpAtCommand(command);
+            case "mouseUp" -> new MouseUpCommand(command);
+            case "open" -> new OpenCommand(command);
+            case "pause", "wait", "sleep" -> new PauseCommand(command);
+            case "removeSelection" -> new RemoveSelectionCommand(command);
+            case "runCase" -> new RunCaseCommand(command);
+            case "run" -> new RunCommand(command);
+            case "runScript" -> new RunScriptCommand(command);
+            case "screenshot" -> new ScreenshotCommand(command);
+            case "select" -> new SelectCommand(command);
+            case "selectFrame" -> new SelectFrameCommand(command);
+            case "selectWindow" -> new SelectWindowCommand(command);
+            case "sendKeys" -> new SendKeysCommand(command);
+            case "setSpeed" -> new SetSpeedCommand(command);
+            case "setWindowSize" -> new SetWindowSizeCommand(command);
+            case "storeAttribute" -> new StoreAttributeCommand(command);
+            case "store" -> new StoreCommand(command);
+            case "storeJson" -> new StoreJsonCommand(command);
+            case "storeText" -> new StoreTextCommand(command);
+            case "storeTitle" -> new StoreTitleCommand(command);
+            case "storeValue" -> new StoreValueCommand(command);
+            case "storeWindowHandle" -> new StoreWindowHandleCommand(command);
+            case "storeXpathCount" -> new StoreXpathCountCommand(command);
+            case "submit" -> new SubmitCommand(command);
+            case "type" -> new TypeCommand(command);
+            case "uncheck" -> new UncheckCommand(command);
+            case "verifyChecked" -> new VerifyCheckedCommand(command);
+            case "verify" -> new VerifyCommand(command);
+            case "verifyEditable" -> new VerifyEditableCommand(command);
+            case "verifyElementNotPresent" -> new VerifyElementNotPresentCommand(command);
+            case "verifyElementPresent" -> new VerifyElementPresentCommand(command);
+            case "verifyNotChecked" -> new VerifyNotCheckedCommand(command);
+            case "verifyNotEditable" -> new VerifyNotEditableCommand(command);
+            case "verifyNotSelectedLabel" -> new VerifyNotSelectedLabelCommand(command);
+            case "verifyNotSelectedValue" -> new VerifyNotSelectedValueCommand(command);
+            case "verifyNotText" -> new VerifyNotTextCommand(command);
+            case "verifySelectedLabel" -> new VerifySelectedLabelCommand(command);
+            case "verifySelectedValue" -> new VerifySelectedValueCommand(command);
+            case "verifyText" -> new VerifyTextCommand(command);
+            case "verifyTitle" -> new VerifyTitleCommand(command);
+            case "verifyValue" -> new VerifyValueCommand(command);
+            case "waitForElementEditable" -> new WaitForElementEditableCommand(command);
+            case "waitForElementNotEditable" -> new WaitForElementNotEditableCommand(command);
+            case "waitForElementNotPresent" -> new WaitForElementNotPresentCommand(command);
+            case "waitForElementNotVisible" -> new WaitForElementNotVisibleCommand(command);
+            case "waitForElementPresent" -> new WaitForElementPresentCommand(command);
+            case "waitForElementVisible" -> new WaitForElementVisibleCommand(command);
+            case "waitForText" -> new WaitForTextCommand(command);
+            case "webdriverAnswerOnVisiblePrompt" -> new WebdriverAnswerOnVisiblePromptCommand(command);
             case "webdriverChooseCancelOnVisibleConfirmation", "webdriverChooseCancelOnVisiblePrompt" ->
-                    new WebdriverChooseCancelOnVisibleConfirmationCommand(commandName, command.getTarget(), command.getValue());
-            case "webdriverChooseOkOnVisibleConfirmation" ->
-                    new WebdriverChooseOkOnVisibleConfirmationCommand(commandName, command.getTarget(), command.getValue());
+                    new WebdriverChooseCancelOnVisibleConfirmationCommand(command);
+            case "webdriverChooseOkOnVisibleConfirmation" -> new WebdriverChooseOkOnVisibleConfirmationCommand(command);
 
             // ext command
-            default -> parseExtCommand(commandName, command.getTarget(), command.getValue());
+            default -> parseExtCommand(command);
         };
     }
 
-    private static ICommand parseExtCommand(String commandName, String target, String value) {
+    private static ICommand parseExtCommand(OriginalCommand command) {
         if (ObjectUtil.isEmpty(EXT_COMMAND_CLASS_MAP)) {
             ClassUtil.scanPackage("io.hugang.execute.ext").forEach(
                     clazz -> {
                         try {
-                            ICommand cmdInstance = (ICommand) clazz.getConstructor(String.class, String.class, String.class).newInstance(null, null, null);
+                            ICommand cmdInstance = (ICommand) clazz.getConstructor(OriginalCommand.class).newInstance(new OriginalCommand());
                             EXT_COMMAND_CLASS_MAP.put(cmdInstance.getCommand(), clazz);
                         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                                  IllegalAccessException ignored) {
@@ -366,16 +342,16 @@ public class CommandParserUtil {
                     });
         }
 
-        Class<?> clazz = EXT_COMMAND_CLASS_MAP.get(commandName);
+        Class<?> clazz = EXT_COMMAND_CLASS_MAP.get(command.getCommand());
         if (ObjectUtil.isNotEmpty(clazz)) {
             try {
-                return (ICommand) clazz.getConstructor(String.class, String.class, String.class).newInstance(commandName, target, value);
+                return (ICommand) clazz.getConstructor(OriginalCommand.class).newInstance(command);
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                      IllegalAccessException e) {
                 throw new AutoTestException(e);
             }
         }
-        throw new AutoTestException("command not found: " + commandName);
+        throw new AutoTestException("command not found: " + command.getCommand());
     }
 
     /**
@@ -410,6 +386,10 @@ public class CommandParserUtil {
                 if (ObjectUtil.isNotEmpty(jsonCommand.getByPath("value"))) {
                     command.setValue(jsonCommand.getByPath("value").toString());
                 }
+                // description
+                if (ObjectUtil.isNotEmpty(jsonCommand.getByPath("description"))) {
+                    command.setDescription(jsonCommand.getByPath("description").toString());
+                }
                 if (command.getCommand().equals("open")) {
                     command.setTarget(baseUrl + command.getTarget());
                 }
@@ -436,17 +416,30 @@ public class CommandParserUtil {
             ExcelWriter writer = ExcelUtil.getWriter(destFilePath);
             Commands commands = commandsList.get(i);
 
-            writer.writeCellValue(0, 0, "TestCase");
-            writer.writeCellValue(0, 2, i + 1);
+            boolean hasDescription = false;
+            for (ICommand command : commands.getCommands()) {
+                Command c1 = (Command) command;
+                if (StrUtil.isNotEmpty(c1.getDescription())) {
+                    hasDescription = true;
+                    break;
+                }
+            }
+
+            int beginRow = hasDescription ? 1 : 0;
+            writer.writeCellValue(0, beginRow, "TestCase");
+            writer.writeCellValue(0, beginRow+2, i + 1);
 
             for (int i1 = 0; i1 < commands.getCommands().size(); i1++) {
                 Command command = (Command) commands.getCommands().get(i1);
+                if (hasDescription) {
+                    writer.writeCellValue(i1 + 1, 0, command.getDescription());
+                }
                 // write command to first row
-                writer.writeCellValue(i1 + 1, 0, command.getCommand());
+                writer.writeCellValue(i1 + 1, beginRow, command.getCommand());
                 // write target to second row
-                writer.writeCellValue(i1 + 1, 1, command.getTarget());
+                writer.writeCellValue(i1 + 1, beginRow + 1, command.getTarget());
                 // write value to third row
-                writer.writeCellValue(i1 + 1, 2, command.getValue());
+                writer.writeCellValue(i1 + 1, beginRow + 2, command.getValue());
             }
             writer.flush();
             writer.close();

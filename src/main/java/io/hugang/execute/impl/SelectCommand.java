@@ -1,6 +1,7 @@
 package io.hugang.execute.impl;
 
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 
@@ -12,8 +13,8 @@ import io.hugang.util.CommandExecuteUtil;
  */
 @WebCommand
 public class SelectCommand extends Command {
-    public SelectCommand(String command, String target, String value) {
-        super(command, target, value);
+    public SelectCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     /**

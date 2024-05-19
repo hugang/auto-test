@@ -2,6 +2,7 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
@@ -21,8 +22,8 @@ import org.openqa.selenium.WebDriver;
  */
 @WebCommand
 public class AnswerOnNextPromptCommand extends Command {
-    public AnswerOnNextPromptCommand(String command, String target, String value) {
-        super(command, target, value);
+    public AnswerOnNextPromptCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

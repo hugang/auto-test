@@ -20,10 +20,6 @@ import java.util.List;
 public class CallApiCommand extends Command {
     private static final Log log = Log.get();
 
-    public CallApiCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     @Override
     public String getCommand() {
         return "callApi";

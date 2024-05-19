@@ -21,10 +21,6 @@ public class ReadPropertiesCommand extends Command {
     public static final String VALUE_TYPE_JSON = "json";
     public static final String VALUE_TYPE_PROPERTIES = "properties";
 
-    public ReadPropertiesCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     @Override
     public String getCommand() {
         return "readProperties";

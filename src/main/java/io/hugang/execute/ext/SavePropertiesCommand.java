@@ -16,10 +16,6 @@ import java.nio.charset.Charset;
  * @author hugang
  */
 public class SavePropertiesCommand extends Command {
-    public SavePropertiesCommand(String command, String target, String value) {
-        super(command, target, value);
-    }
-
     @Override
     public String getCommand() {
         return "saveProperties";

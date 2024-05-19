@@ -2,6 +2,7 @@ package io.hugang.execute.impl;
 
 import cn.hutool.log.Log;
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 
@@ -9,8 +10,8 @@ import io.hugang.util.CommandExecuteUtil;
 public class VerifyNotCheckedCommand extends Command {
     private static final Log log = Log.get();
 
-    public VerifyNotCheckedCommand(String command, String target, String value) {
-        super(command, target, value);
+    public VerifyNotCheckedCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

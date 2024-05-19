@@ -3,6 +3,7 @@ package io.hugang.execute.impl;
 import cn.hutool.core.util.StrUtil;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import org.openqa.selenium.WebDriver;
 
@@ -10,8 +11,8 @@ import java.util.Set;
 
 @WebCommand
 public class SelectWindowCommand extends Command {
-    public SelectWindowCommand(String command, String target, String value) {
-        super(command, target, value);
+    public SelectWindowCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override

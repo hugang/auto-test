@@ -2,12 +2,13 @@ package io.hugang.execute.impl;
 
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.annotation.WebCommand;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
 @WebCommand
 public class ChooseOkOnNextConfirmationCommand extends Command {
-    public ChooseOkOnNextConfirmationCommand(String command, String target, String value) {
-        super(command, target, value);
+    public ChooseOkOnNextConfirmationCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
     }
 
     @Override
