@@ -31,6 +31,17 @@ class VueHtmlNode extends HtmlNode {
 }
 
 class VueHtmlNodeModel extends HtmlNodeModel {
+    initNodeData(data) {
+        super.initNodeData(data);
+        this.setProperties({
+            "style": {
+                "backgroundColor": "rgb(255, 255, 255)",
+                "borderColor": "rgb(42, 42, 42)",
+                "borderWidth": "1px"
+            }
+        })
+    }
+
     setAttributes() {
         this.width = 250;
         this.height = 100;
