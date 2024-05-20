@@ -106,30 +106,31 @@ export default {
 }
 
 // Function to execute a node
-function executeNode(node, commands) {
+function executeNode(node, commands, edgeComment) {
   // skip start node
   if (node.type === 'start-node') {
     return;
   }
+  let description = node.properties.description || edgeComment;
   commands.push({
     command: node.properties.command,
     target: node.properties.target,
     value: node.properties.value,
-    description: node.properties.description
+    description: description
   })
 }
 
 // Recursive function to execute nodes
-function executeNodes(nodeId, nodes, edges, commands) {
+function executeNodes(nodeId, nodes, edges, commands, edgeComment) {
   // Find and execute the current node
   const node = nodes.find(node => node.id === nodeId);
-  executeNode(node, commands);
+  executeNode(node, commands, edgeComment);
 
   // Find the edge for the current node
   const edge = edges.find(edge => edge.sourceNodeId === nodeId);
   if (edge) {
     // Execute the next node
-    executeNodes(edge.targetNodeId, nodes, edges, commands);
+    executeNodes(edge.targetNodeId, nodes, edges, commands, edge.text.value);
   }
 }
 

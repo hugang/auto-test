@@ -4,6 +4,9 @@ import FlowLink from "./FlowLink";
 import Palette from './tools/Palette.vue';
 import VueHtmlNode from "./nodes/VueHtmlNode";
 import AutoTestNode from "./nodes/AutoTestNode";
+import OpenNode from "./nodes/OpenNode";
+import TypeNode from "./nodes/TypeNode";
+import ClickNode from "./nodes/ClickNode";
 
 class NodeRedExtension {
   static pluginName = 'NodeRedExtension'
@@ -11,6 +14,9 @@ class NodeRedExtension {
     lf.register(StartNode);
     lf.register(FlowLink);
     lf.register(AutoTestNode)
+    lf.register(OpenNode)
+    lf.register(TypeNode)
+    lf.register(ClickNode)
     lf.register(VueHtmlNode);
     lf.setDefaultEdgeType('flow-link');
     this.app = createApp(Palette, {

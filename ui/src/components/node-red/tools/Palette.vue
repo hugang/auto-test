@@ -1,11 +1,29 @@
 <template>
   <div class="demo-collapse">
-    <el-collapse v-model="activeNodes">
+    <el-collapse v-model="activeNormalNodes">
       <el-collapse-item title="基础节点" name="base">
         <div
             class="red-ui-palette-node ui-draggable ui-draggable-handle"
             @mousedown="startDrag(item)"
-            v-for="(item, index) in baseNodes"
+            v-for="(item, index) in normalNodes"
+            :key="index"
+            :style="{ backgroundColor: item.background }"
+        >
+          <div class="red-ui-palette-label">{{ item.text }}</div>
+          <div class="red-ui-palette-icon-container">
+            <div class="red-ui-palette-icon" :style="{ backgroundImage: `url(${item.icon})`}"></div>
+          </div>
+          <div class="red-ui-palette-port red-ui-palette-port-input"></div>
+          <div class="red-ui-palette-port red-ui-palette-port-output"></div>
+        </div>
+      </el-collapse-item>
+    </el-collapse>
+    <el-collapse v-model="activeHtmlNodes">
+      <el-collapse-item title="Html节点" name="base">
+        <div
+            class="red-ui-palette-node ui-draggable ui-draggable-handle"
+            @mousedown="startDrag(item)"
+            v-for="(item, index) in htmlNodes"
             :key="index"
             :style="{ backgroundColor: item.background }"
         >
@@ -43,7 +61,8 @@ const props = defineProps({
   }
 })
 
-const activeNodes = ref(['base'])
+const activeNormalNodes = ref(['base'])
+const activeHtmlNodes = ref(['base'])
 const activeButtons = ref(['base'])
 
 const startDrag = (item) => {
@@ -54,13 +73,31 @@ const startDrag = (item) => {
   })
 }
 
-const baseNodes = ref([
+const normalNodes = ref([
   {
     type: 'auto-test-node',
     text: 'node',
-    background: 'rgb(253, 208, 162)',
+    background: 'rgb(231, 231, 174)',
     icon: 'images/function.svg'
   },
+  {
+    type: 'open-node',
+    text: 'open',
+    background: 'rgb(231, 231, 174)',
+    icon: 'images/function.svg'
+  },  {
+    type: 'type-node',
+    text: 'type',
+    background: 'rgb(231, 231, 174)',
+    icon: 'images/function.svg'
+  },  {
+    type: 'click-node',
+    text: 'click',
+    background: 'rgb(231, 231, 174)',
+    icon: 'images/function.svg'
+  },
+])
+const htmlNodes = ref([
   {
     type: 'vue-html',
     text: 'html',
@@ -69,7 +106,7 @@ const baseNodes = ref([
   },
 ])
 
-// create a function exportLf to export the lf graph data as a json file
+// export the lf graph data to a json file
 const exportLf = () => {
   // export lf graph data as a json file
   const {lf} = props;

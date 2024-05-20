@@ -1,7 +1,7 @@
 import { h } from '@logicflow/core'
 import BaseNode from "./BaseNode"
 
-class AutoTestNode extends BaseNode.view {
+class TypeNode extends BaseNode.view {
   getIcon () {
     const {
       width,
@@ -17,15 +17,20 @@ class AutoTestNode extends BaseNode.view {
   }
 }
 
-class AutoTestNodeModel extends BaseNode.model {
+class TypeNodeModel extends BaseNode.model {
   initNodeData (data) {
     super.initNodeData(data)
     this.defaultFill = 'rgb(231, 231, 174)'
   }
+  getData () {
+    const data = super.getData()
+    data.properties.command = 'type'
+    return data
+  }
 }
 
 export default {
-  type: 'auto-test-node',
-  model: AutoTestNodeModel,
-  view: AutoTestNode
+  type: 'type-node',
+  model: TypeNodeModel,
+  view: TypeNode
 }
