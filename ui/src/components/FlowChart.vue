@@ -130,7 +130,7 @@ function executeNodes(nodeId, nodes, edges, commands, edgeComment) {
   const edge = edges.find(edge => edge.sourceNodeId === nodeId);
   if (edge) {
     // Execute the next node
-    executeNodes(edge.targetNodeId, nodes, edges, commands, edge.text.value);
+    executeNodes(edge.targetNodeId, nodes, edges, commands, edge.text ? edge.text.value : undefined);
   }
 }
 
