@@ -1,6 +1,6 @@
 <template>
   <div class="demo-collapse">
-    <el-collapse v-model="activeNames">
+    <el-collapse v-model="activeNodes">
       <el-collapse-item title="基础节点" name="base">
         <div
             class="red-ui-palette-node ui-draggable ui-draggable-handle"
@@ -17,16 +17,16 @@
           <div class="red-ui-palette-port red-ui-palette-port-output"></div>
         </div>
       </el-collapse-item>
-
+    </el-collapse>
+    <el-collapse v-model="activeButtons">
       <el-collapse-item title="功能" name="base">
-        <div class="red-ui-palette-node ui-draggable ui-draggable-handle" style="background-color: rgb(253, 208, 162);">
+        <div class="red-ui-palette-node ui-draggable ui-draggable-handle cursor-pointer" style="background-color: rgb(240, 240, 240);">
           <div class="red-ui-palette-label" @click="importLf">导入</div>
         </div>
-        <div class="red-ui-palette-node ui-draggable ui-draggable-handle" style="background-color: rgb(253, 208, 162);">
+        <div class="red-ui-palette-node ui-draggable ui-draggable-handle cursor-pointer" style="background-color: rgb(240, 240, 240);">
           <div class="red-ui-palette-label" @click="exportLf">导出</div>
         </div>
       </el-collapse-item>
-
     </el-collapse>
   </div>
 </template>
@@ -43,7 +43,8 @@ const props = defineProps({
   }
 })
 
-const activeNames = ref(['base'])
+const activeNodes = ref(['base'])
+const activeButtons = ref(['base'])
 
 const startDrag = (item) => {
   const {lf} = props;
@@ -187,5 +188,9 @@ function readFile(e) {
 .red-ui-palette-port-output {
   left: auto;
   right: -6px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>
