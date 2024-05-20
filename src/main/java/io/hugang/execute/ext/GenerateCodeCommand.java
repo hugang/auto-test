@@ -11,6 +11,7 @@ import cn.hutool.db.meta.Table;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.DatabaseUtil;
@@ -23,6 +24,9 @@ import java.util.List;
 
 
 public class GenerateCodeCommand extends Command {
+    public GenerateCodeCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
 
     @Override
     public String getCommand() {

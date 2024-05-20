@@ -3,6 +3,7 @@ package io.hugang.execute.ext;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
 /**
@@ -13,6 +14,10 @@ import io.hugang.execute.Command;
  */
 public class IncreaseNumberCommand extends Command {
     private static final Log log = Log.get();
+
+    public IncreaseNumberCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
 
     @Override
     public String getCommand() {

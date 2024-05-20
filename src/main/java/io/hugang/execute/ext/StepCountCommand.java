@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileTypeUtil;
 import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
 import java.io.BufferedReader;
@@ -23,6 +24,10 @@ import java.nio.file.Files;
  */
 public class StepCountCommand extends Command {
     private static final Log log = Log.get();
+
+    public StepCountCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
 
     @Override
     public String getCommand() {

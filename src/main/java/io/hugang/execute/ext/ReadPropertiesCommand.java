@@ -6,6 +6,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 
@@ -20,6 +21,10 @@ public class ReadPropertiesCommand extends Command {
     public static final String KEY_FILE = "value";
     public static final String VALUE_TYPE_JSON = "json";
     public static final String VALUE_TYPE_PROPERTIES = "properties";
+
+    public ReadPropertiesCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
 
     @Override
     public String getCommand() {

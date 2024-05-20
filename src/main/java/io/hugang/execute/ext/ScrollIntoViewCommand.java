@@ -2,6 +2,7 @@ package io.hugang.execute.ext;
 
 import cn.hutool.log.Log;
 import com.codeborne.selenide.SelenideElement;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 
@@ -14,6 +15,10 @@ import io.hugang.util.CommandExecuteUtil;
  */
 public class ScrollIntoViewCommand extends Command {
     private static final Log log = Log.get();
+
+    public ScrollIntoViewCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
 
     @Override
     public String getCommand() {

@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
 import java.io.File;
@@ -16,6 +17,10 @@ import java.nio.charset.Charset;
  * @author hugang
  */
 public class SavePropertiesCommand extends Command {
+    public SavePropertiesCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
+
     @Override
     public String getCommand() {
         return "saveProperties";

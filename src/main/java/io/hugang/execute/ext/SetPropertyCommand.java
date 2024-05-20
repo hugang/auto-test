@@ -2,6 +2,7 @@ package io.hugang.execute.ext;
 
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
 import java.util.Map;
@@ -10,6 +11,10 @@ public class SetPropertyCommand extends Command {
     private static final Log log = Log.get();
     public static final String KEY_TYPE = "type";
     public static final String VALUE_TYPE_JSON = "json";
+
+    public SetPropertyCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
 
     @Override
     public String getCommand() {

@@ -9,6 +9,7 @@ import cn.hutool.http.Method;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.util.ThreadContext;
@@ -19,6 +20,10 @@ import java.util.List;
 
 public class CallApiCommand extends Command {
     private static final Log log = Log.get();
+
+    public CallApiCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
 
     @Override
     public String getCommand() {

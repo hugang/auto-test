@@ -2,8 +2,8 @@
   "project": {
     "packageName": "io.hugang.demo",
     "version": "1.0.0",
-    "backendPath": "/app/backend",
-    "frontendPath": "/app/frontend"
+    "backendPath": "C:/app/backend",
+    "frontendPath": "C:/app/frontend"
   },
   "developer": {
     "author": "hugang",

@@ -29,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -331,13 +332,16 @@ public class CommandParserUtil {
 
     private static ICommand parseExtCommand(OriginalCommand command) {
         if (ObjectUtil.isEmpty(EXT_COMMAND_CLASS_MAP)) {
-            ClassUtil.scanPackage("io.hugang.execute.ext").forEach(
+            Set<Class<?>> classes = ClassUtil.scanPackage("io.hugang.execute.ext");
+            classes.forEach(
                     clazz -> {
                         try {
-                            ICommand cmdInstance = (ICommand) clazz.getConstructor(OriginalCommand.class).newInstance(new OriginalCommand());
+                            Constructor<?> constructor = clazz.getConstructor(OriginalCommand.class);
+                            ICommand cmdInstance = (ICommand) constructor.newInstance(new OriginalCommand());
                             EXT_COMMAND_CLASS_MAP.put(cmdInstance.getCommand(), clazz);
                         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                                  IllegalAccessException ignored) {
+                            log.error("parse ext command error: {}", clazz.getName());
                         }
                     });
         }

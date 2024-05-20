@@ -11,11 +11,11 @@ import cn.hutool.poi.excel.ExcelWriter;
 import cn.hutool.poi.excel.StyleSet;
 import cn.hutool.setting.Setting;
 import cn.hutool.setting.SettingUtil;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.DatabaseUtil;
-import io.hugang.util.ThreadContext;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 
@@ -24,6 +24,10 @@ import java.util.List;
 import java.util.Set;
 
 public class ExportDbCommand extends Command {
+    public ExportDbCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
+
     @Override
     public String getCommand() {
         return "exportDb";

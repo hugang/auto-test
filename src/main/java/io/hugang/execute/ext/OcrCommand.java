@@ -2,6 +2,7 @@ package io.hugang.execute.ext;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.log.Log;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
@@ -23,6 +24,10 @@ import java.io.IOException;
  */
 public class OcrCommand extends Command {
     private static final Log log = Log.get();
+
+    public OcrCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
 
     @Override
     public String getCommand() {

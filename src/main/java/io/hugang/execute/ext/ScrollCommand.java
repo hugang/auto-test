@@ -2,6 +2,7 @@ package io.hugang.execute.ext;
 
 import cn.hutool.log.Log;
 import com.codeborne.selenide.WebDriverRunner;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import org.openqa.selenium.JavascriptExecutor;
 
@@ -14,6 +15,10 @@ import org.openqa.selenium.JavascriptExecutor;
  */
 public class ScrollCommand extends Command {
     private static final Log log = Log.get();
+
+    public ScrollCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
 
     @Override
     public String getCommand() {

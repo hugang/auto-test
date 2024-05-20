@@ -6,6 +6,7 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
+import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
 /**
@@ -17,6 +18,10 @@ import io.hugang.execute.Command;
 public class JenkinsJobCommand extends Command {
     // log
     private static final Log log = Log.get();
+
+    public JenkinsJobCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
 
     @Override
     public String getCommand() {
