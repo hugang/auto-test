@@ -1,2 +1,2 @@
 @echo off
-java -jar target/auto-test.jar
+java -jar libs/auto-test.jar

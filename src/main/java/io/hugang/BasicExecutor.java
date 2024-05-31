@@ -49,29 +49,32 @@ public class BasicExecutor {
      * initialize web driver
      */
     public void init() {
+        AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
         // create a web driver by webDriver
-        Configuration.browser = ThreadContext.getAutoTestConfig().getWebDriverPath();
+        Configuration.browser = autoTestConfig.getWebDriverPath();
         // set the download path
-        Configuration.reportsFolder = ThreadContext.getAutoTestConfig().getFileDownloadPath();
+        Configuration.reportsFolder = autoTestConfig.getFileDownloadPath();
         // store the browser options
         Map<String, Object> optionsMap = new HashMap<>();
         // set pdf file always open externally
         optionsMap.put("plugins.always_open_pdf_externally", true);
         // set the download path
-        optionsMap.put("download.default_directory", ThreadContext.getAutoTestConfig().getFileDownloadPath());
+        optionsMap.put("download.default_directory", autoTestConfig.getFileDownloadPath());
         // set browser size
-        Dimension targetWindowSize = new Dimension(ThreadContext.getAutoTestConfig().getWidth(), ThreadContext.getAutoTestConfig().getHeight());
+        Dimension targetWindowSize = new Dimension(autoTestConfig.getWidth(), autoTestConfig.getHeight());
 
         WebDriver driver;
         // create chrome webdriver
-        switch (ThreadContext.getAutoTestConfig().getWebDriverName()) {
+        switch (autoTestConfig.getWebDriverName()) {
             case "chrome": {
-                System.setProperty("webdriver.chrome.driver", ThreadContext.getAutoTestConfig().getWebDriverPath());
+                System.setProperty("webdriver.chrome.driver", autoTestConfig.getWebDriverPath());
                 ChromeOptions options = new ChromeOptions();
-                options.addArguments("--user-data-dir=" + ThreadContext.getAutoTestConfig().getUserProfilePath());
+                if (StrUtil.isNotEmpty(autoTestConfig.getUserProfilePath())){
+                    options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
+                }
                 // binary path
-                if (ObjectUtil.isNotEmpty(ThreadContext.getAutoTestConfig().getBrowserBinaryPath())) {
-                    options.setBinary(ThreadContext.getAutoTestConfig().getBrowserBinaryPath());
+                if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
+                    options.setBinary(autoTestConfig.getBrowserBinaryPath());
                 }
                 options.addArguments("--remote-allow-origins=*");
                 options.setExperimentalOption("prefs", optionsMap);
@@ -80,12 +83,14 @@ public class BasicExecutor {
             }
             // create edge webdriver
             case "edge": {
-                System.setProperty("webdriver.edge.driver", ThreadContext.getAutoTestConfig().getWebDriverPath());
+                System.setProperty("webdriver.edge.driver", autoTestConfig.getWebDriverPath());
                 EdgeOptions options = new EdgeOptions();
-                options.addArguments("--user-data-dir=" + ThreadContext.getAutoTestConfig().getUserProfilePath());
+                if (StrUtil.isNotEmpty(autoTestConfig.getUserProfilePath())){
+                    options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
+                }
                 // binary path
-                if (ObjectUtil.isNotEmpty(ThreadContext.getAutoTestConfig().getBrowserBinaryPath())) {
-                    options.setBinary(ThreadContext.getAutoTestConfig().getBrowserBinaryPath());
+                if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
+                    options.setBinary(autoTestConfig.getBrowserBinaryPath());
                 }
                 options.addArguments("--remote-allow-origins=*");
                 options.setExperimentalOption("prefs", optionsMap);
@@ -94,11 +99,11 @@ public class BasicExecutor {
             }
             // create firefox webdriver
             case "firefox": {
-                System.setProperty("webdriver.gecko.driver", ThreadContext.getAutoTestConfig().getWebDriverPath());
+                System.setProperty("webdriver.gecko.driver", autoTestConfig.getWebDriverPath());
                 FirefoxOptions options = new FirefoxOptions();
                 // binary path
-                if (ObjectUtil.isNotEmpty(ThreadContext.getAutoTestConfig().getBrowserBinaryPath())) {
-                    options.setBinary(ThreadContext.getAutoTestConfig().getBrowserBinaryPath());
+                if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
+                    options.setBinary(autoTestConfig.getBrowserBinaryPath());
                 }
                 driver = new FirefoxDriver(options);
                 break;
@@ -167,8 +172,9 @@ public class BasicExecutor {
      */
     private List<Commands> parseCommandsList() {
         List<Commands> commandsList = new ArrayList<>();
+        AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
         // get the test case path
-        String testCasePath = ThreadContext.getAutoTestConfig().getTestCasePath();
+        String testCasePath = autoTestConfig.getTestCasePath();
         if (!FileUtil.exist(testCasePath)) {
             testCasePath = CommandExecuteUtil.getFilePathWithBaseDir(testCasePath);
             if (!FileUtil.exist(testCasePath)) {
@@ -176,12 +182,12 @@ public class BasicExecutor {
             }
         }
         log.info("test case path = {} ", testCasePath);
-        switch (ThreadContext.getAutoTestConfig().getTestMode()) {
+        switch (autoTestConfig.getTestMode()) {
             case "xlsx":
                 List<Commands> commandsFromXlsx = CommandParserUtil.getCommandsFromXlsx(testCasePath);
                 List<String> testCasesArray = new ArrayList<>();
-                if (StrUtil.isNotEmpty(ThreadContext.getAutoTestConfig().getTestCases())) {
-                    String[] testCaseArray = ThreadContext.getAutoTestConfig().getTestCases().split(",");
+                if (StrUtil.isNotEmpty(autoTestConfig.getTestCases())) {
+                    String[] testCaseArray = autoTestConfig.getTestCases().split(",");
                     getTestCases(testCasesArray, testCaseArray);
                 }
                 if (CollUtil.isNotEmpty(testCasesArray)) {
@@ -200,7 +206,7 @@ public class BasicExecutor {
             case "json":
                 commandsList.addAll(CommandParserUtil.getCommandsFromJson(testCasePath));
                 // save commandsList to a xlsx file
-                CommandParserUtil.saveCommandsListToXlsx(commandsList, ThreadContext.getAutoTestConfig().getFileDownloadPath());
+                CommandParserUtil.saveCommandsListToXlsx(commandsList, autoTestConfig.getFileDownloadPath());
                 break;
             default:
                 throw new RuntimeException("test mode not supported");
@@ -233,6 +239,8 @@ public class BasicExecutor {
      * method to execute the commands
      */
     public void runCommandsList(List<Commands> commandsList) {
+        AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
+
         // check if there is web command
         boolean isWebCommand = false;
         for (Commands commands : commandsList) {
@@ -243,27 +251,27 @@ public class BasicExecutor {
             }
         }
         // init the executor
-        if (!ThreadContext.getAutoTestConfig().isRestartWebDriverByCase() && isWebCommand) {
+        if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
             this.init();
         }
         // execute the commands
         for (Commands commands : commandsList) {
             try {
                 // init the executor
-                if (ThreadContext.getAutoTestConfig().isRestartWebDriverByCase() && isWebCommand) {
+                if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
                     this.init();
                 }
                 ThreadContext.getVariables().set("caseId", commands.getCaseId());
                 this.executeCommands(commands);
             } finally {
                 // destroy the executor
-                if (ThreadContext.getAutoTestConfig().isRestartWebDriverByCase() && isWebCommand) {
+                if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
                     this.destroy();
                 }
             }
         }
         // destroy the executor
-        if (!ThreadContext.getAutoTestConfig().isRestartWebDriverByCase() && isWebCommand) {
+        if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
             this.destroy();
         }
     }

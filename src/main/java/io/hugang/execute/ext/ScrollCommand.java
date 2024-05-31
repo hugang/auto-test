@@ -35,7 +35,7 @@ public class ScrollCommand extends Command {
             js.executeScript("window.scrollTo(0, " + target + ")");
             return true;
         } catch (Exception e) {
-            log.error("increase number command execute error", e);
+            log.error("scroll command execute error", e);
             return false;
         }
     }

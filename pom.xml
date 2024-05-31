@@ -52,7 +52,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.27</version>
+            <version>5.8.28</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <dependency>

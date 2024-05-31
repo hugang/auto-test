@@ -35,7 +35,9 @@ public class AutoTestConfig {
         }
         Setting setting = SettingUtil.get(file.getAbsolutePath());
         String userProfilePath = setting.get(GROUP_BROWSER, "user.profile.path");
-        this.setUserProfilePath(getAbsolutePath(userProfilePath));
+        if (StrUtil.isNotEmpty(userProfilePath)){
+            this.setUserProfilePath(getAbsolutePath(userProfilePath));
+        }
 
         String webDriverName = setting.get(GROUP_BROWSER, "web.driver");
         if (webDriverName != null) {
