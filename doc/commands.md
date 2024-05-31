@@ -925,6 +925,18 @@ sftp file.
     - from(target): the target file path. download: remote path. upload: local path.
     - to(value): the value file path. download: local path. upload: remote path.
 
+
+## ssh [〇]
+
+ssh command.
+
+- argument
+    - host: The host of the ssh.
+    - port: The port of the ssh.
+    - user: The user of the ssh.
+    - password: The password of the ssh.
+    - command: The command of the ssh.
+
 ## step count [〇]
 
 count the steps of src.

@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.AutoTestException;
 import io.hugang.exceptions.CommandExecuteException;
@@ -21,6 +22,7 @@ public abstract class Command implements ICommand {
     protected static final Log log = Log.get();
 
     public static final String TARGET = "target";
+    public static final String VALUE = "value";
 
     public Command() {
     }
@@ -231,6 +233,7 @@ public abstract class Command implements ICommand {
         return ThreadContext.getVariables().containsKey(key);
     }
 
+    @JsonIgnore
     public Dict getVariables() {
         return ThreadContext.getVariables();
     }

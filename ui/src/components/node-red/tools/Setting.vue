@@ -142,6 +142,7 @@ const selectOptions = ref([
   {value: 'scrollIntoView', label: 'scrollIntoView'},
   {value: 'setProperty', label: 'setProperty'},
   {value: 'sftp', label: 'sftp'},
+  {value: 'ssh', label: 'ssh'},
   {value: 'stepCount', label: 'stepCount'}
 ])
 
