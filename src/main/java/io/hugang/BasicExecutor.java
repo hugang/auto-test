@@ -68,7 +68,6 @@ public class BasicExecutor {
             case "chrome": {
                 System.setProperty("webdriver.chrome.driver", autoTestConfig.getWebDriverPath());
                 ChromeOptions options = new ChromeOptions();
-                options.addArguments("--no-sandbox");
                 if (StrUtil.isNotEmpty(autoTestConfig.getUserProfilePath())) {
                     options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
                 }

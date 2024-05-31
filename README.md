@@ -41,6 +41,16 @@ Usage: auto-test [options]
       work directory to store test case file and test result file.
 ```
 
+## screenshots
+
+- design test cases in web ui
+
+![design.png](doc/design.png)
+
+- execute test cases in web ui
+
+![execute.gif](doc/execute.gif)
+
 ## commands.md
 
 refer to [commands](doc/commands.md) for the commands supported by auto-test.
