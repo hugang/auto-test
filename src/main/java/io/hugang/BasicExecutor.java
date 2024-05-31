@@ -13,7 +13,6 @@ import io.hugang.config.AutoTestConfig;
 import io.hugang.exceptions.AutoTestException;
 import io.hugang.execute.Commands;
 import io.hugang.execute.ICommand;
-//import io.hugang.execute.ext.RecorderCommand;
 import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.CommandParserUtil;
 import io.hugang.util.ThreadContext;
@@ -40,7 +39,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class BasicExecutor {
     private static final Log log = Log.get();
-
+    private static final ReentrantLock lock = new ReentrantLock();
 
     public BasicExecutor() {
     }
@@ -69,7 +68,8 @@ public class BasicExecutor {
             case "chrome": {
                 System.setProperty("webdriver.chrome.driver", autoTestConfig.getWebDriverPath());
                 ChromeOptions options = new ChromeOptions();
-                if (StrUtil.isNotEmpty(autoTestConfig.getUserProfilePath())){
+                options.addArguments("--no-sandbox");
+                if (StrUtil.isNotEmpty(autoTestConfig.getUserProfilePath())) {
                     options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
                 }
                 // binary path
@@ -85,7 +85,7 @@ public class BasicExecutor {
             case "edge": {
                 System.setProperty("webdriver.edge.driver", autoTestConfig.getWebDriverPath());
                 EdgeOptions options = new EdgeOptions();
-                if (StrUtil.isNotEmpty(autoTestConfig.getUserProfilePath())){
+                if (StrUtil.isNotEmpty(autoTestConfig.getUserProfilePath())) {
                     options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
                 }
                 // binary path
@@ -120,30 +120,30 @@ public class BasicExecutor {
     /**
      * method to execute the commands
      */
-    List<Commands> execute() {
-        AtomicReference<List<Commands>> commands = new AtomicReference<>();
-        if (ThreadContext.getAutoTestConfig().isCronEnabled()) {
-            ReentrantLock lock = new ReentrantLock();
-            CronUtil.schedule(ThreadContext.getAutoTestConfig().getCronExpression(), (Task) () -> {
-                try {
-                    lock.lock();
+    public List<Commands> execute() {
+        try {
+            // only one thread can execute the commands
+            lock.lock();
+            AtomicReference<List<Commands>> commands = new AtomicReference<>();
+            if (ThreadContext.getAutoTestConfig().isCronEnabled()) {
+                CronUtil.schedule(ThreadContext.getAutoTestConfig().getCronExpression(), (Task) () -> {
                     // parse input to commands list
                     commands.set(parseCommandsList());
                     // execute the commands
                     runCommandsList(commands.get());
-                } finally {
-                    lock.unlock();
-                }
-            });
-            CronUtil.setMatchSecond(true);
-            CronUtil.start();
-        } else {
-            // parse input to commands list
-            commands.set(parseCommandsList());
-            // execute the commands
-            runCommandsList(commands.get());
+                });
+                CronUtil.setMatchSecond(true);
+                CronUtil.start();
+            } else {
+                // parse input to commands list
+                commands.set(parseCommandsList());
+                // execute the commands
+                runCommandsList(commands.get());
+            }
+            return commands.get();
+        } finally {
+            lock.unlock();
         }
-        return commands.get();
     }
 
     public List<Commands> execute(String mode, String path) {
