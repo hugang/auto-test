@@ -4,7 +4,7 @@ folder structure:
 ```
 auto-test
 │  auto-server.bat
-│  target\auto-test.jar
+│  libs\auto-test.jar
 │  driver
 │  conf
 ```

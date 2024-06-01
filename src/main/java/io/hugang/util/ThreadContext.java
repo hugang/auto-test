@@ -63,9 +63,11 @@ public class ThreadContext {
     }
 
     public static AutoTestConfig getAutoTestConfig() {
+        // 如果从命令行启动,则直接返回命令行中初始化的配置
         if (RunAutoTest.AUTO_TEST_CONFIG.getInitialized()){
             return RunAutoTest.AUTO_TEST_CONFIG;
         }
+        // 如果通过API调用,则从ThreadContext中获取配置
         AutoTestConfig autoTestConfig = (AutoTestConfig) ThreadContext.get("autoTestConfig");
         if (autoTestConfig == null) {
             autoTestConfig = new AutoTestConfig();
