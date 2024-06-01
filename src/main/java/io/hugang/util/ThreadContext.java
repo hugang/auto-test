@@ -2,6 +2,7 @@ package io.hugang.util;
 
 
 import cn.hutool.core.lang.Dict;
+import io.hugang.RunAutoTest;
 import io.hugang.config.AutoTestConfig;
 
 public class ThreadContext {
@@ -53,10 +54,18 @@ public class ThreadContext {
     }
 
     public static Dict getVariables() {
+        Dict dict = variables.get();
+        if (dict == null) {
+            dict = new Dict();
+            ThreadContext.variables.set(dict);
+        }
         return variables.get();
     }
 
     public static AutoTestConfig getAutoTestConfig() {
+        if (RunAutoTest.AUTO_TEST_CONFIG.getInitialized()){
+            return RunAutoTest.AUTO_TEST_CONFIG;
+        }
         AutoTestConfig autoTestConfig = (AutoTestConfig) ThreadContext.get("autoTestConfig");
         if (autoTestConfig == null) {
             autoTestConfig = new AutoTestConfig();

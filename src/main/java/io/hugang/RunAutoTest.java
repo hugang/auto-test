@@ -14,6 +14,8 @@ import io.hugang.util.ThreadContext;
  * @author hugang
  */
 public class RunAutoTest {
+    public static final AutoTestConfig AUTO_TEST_CONFIG = new AutoTestConfig();
+
     public static void main(String[] args) {
         // parse command line options
         AutoTestCommandLineOption autoTestCommandLineOption = new AutoTestCommandLineOption();
@@ -42,22 +44,21 @@ public class RunAutoTest {
 
         BasicExecutor basicExecutor = new BasicExecutor();
         // set to autoTestConfig if not null
-        AutoTestConfig autoTestConfig = new AutoTestConfig();
         if (StrUtil.isNotEmpty(autoTestCommandLineOption.getMode())) {
-            autoTestConfig.setTestMode(autoTestCommandLineOption.getMode());
+            AUTO_TEST_CONFIG.setTestMode(autoTestCommandLineOption.getMode());
         }
         if (StrUtil.isNotEmpty(autoTestCommandLineOption.getCases())) {
-            autoTestConfig.setTestCases(autoTestCommandLineOption.getCases());
+            AUTO_TEST_CONFIG.setTestCases(autoTestCommandLineOption.getCases());
         }
         if (StrUtil.isNotEmpty(autoTestCommandLineOption.getFilePath())) {
-            autoTestConfig.setTestCasePath(autoTestCommandLineOption.getFilePath());
+            AUTO_TEST_CONFIG.setTestCasePath(autoTestCommandLineOption.getFilePath());
         }
         if (StrUtil.isNotEmpty(autoTestCommandLineOption.getBaseDir())) {
-            autoTestConfig.setBaseDir(autoTestCommandLineOption.getBaseDir());
+            AUTO_TEST_CONFIG.setBaseDir(autoTestCommandLineOption.getBaseDir());
         }
         // read the other user properties
-        autoTestConfig.readConfigurations();
-        ThreadContext.setAutoTestConfig(autoTestConfig);
+        AUTO_TEST_CONFIG.readConfigurations();
+        ThreadContext.setAutoTestConfig(AUTO_TEST_CONFIG);
         // execute the test
         basicExecutor.execute();
     }

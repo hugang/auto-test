@@ -35,7 +35,7 @@ public class AutoTestConfig {
         }
         Setting setting = SettingUtil.get(file.getAbsolutePath());
         String userProfilePath = setting.get(GROUP_BROWSER, "user.profile.path");
-        if (StrUtil.isNotEmpty(userProfilePath)){
+        if (StrUtil.isNotEmpty(userProfilePath)) {
             this.setUserProfilePath(getAbsolutePath(userProfilePath));
         }
 
@@ -112,6 +112,8 @@ public class AutoTestConfig {
         if (proxyPassword != null) {
             this.setProxyPassword(proxyPassword);
         }
+
+        this.setInitialized(true);
     }
 
     /**
@@ -177,6 +179,8 @@ public class AutoTestConfig {
     private String proxyUser;
     // proxy password
     private String proxyPassword;
+
+    private Boolean initialized = false;
 
     public String getUserProfilePath() {
         return userProfilePath;
@@ -321,5 +325,13 @@ public class AutoTestConfig {
 
     public void setProxyPassword(String proxyPassword) {
         this.proxyPassword = proxyPassword;
+    }
+
+    public Boolean getInitialized() {
+        return initialized;
+    }
+
+    public void setInitialized(Boolean initialized) {
+        this.initialized = initialized;
     }
 }

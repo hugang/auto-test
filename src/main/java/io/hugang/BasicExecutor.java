@@ -120,29 +120,25 @@ public class BasicExecutor {
      * method to execute the commands
      */
     public List<Commands> execute() {
-        try {
-            // only one thread can execute the commands
-            lock.lock();
-            AtomicReference<List<Commands>> commands = new AtomicReference<>();
-            if (ThreadContext.getAutoTestConfig().isCronEnabled()) {
-                CronUtil.schedule(ThreadContext.getAutoTestConfig().getCronExpression(), (Task) () -> {
-                    // parse input to commands list
-                    commands.set(parseCommandsList());
-                    // execute the commands
-                    runCommandsList(commands.get());
-                });
-                CronUtil.setMatchSecond(true);
-                CronUtil.start();
-            } else {
+
+        AtomicReference<List<Commands>> commands = new AtomicReference<>();
+        if (ThreadContext.getAutoTestConfig().isCronEnabled()) {
+            CronUtil.schedule(ThreadContext.getAutoTestConfig().getCronExpression(), (Task) () -> {
                 // parse input to commands list
                 commands.set(parseCommandsList());
                 // execute the commands
                 runCommandsList(commands.get());
-            }
-            return commands.get();
-        } finally {
-            lock.unlock();
+            });
+            CronUtil.setMatchSecond(true);
+            CronUtil.start();
+        } else {
+            // parse input to commands list
+            commands.set(parseCommandsList());
+            // execute the commands
+            runCommandsList(commands.get());
         }
+        return commands.get();
+
     }
 
     public List<Commands> execute(String mode, String path) {
@@ -238,40 +234,46 @@ public class BasicExecutor {
      * method to execute the commands
      */
     public void runCommandsList(List<Commands> commandsList) {
-        AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
+        try {
+            // only one thread can execute the commands
+            lock.lock();
+            AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
 
-        // check if there is web command
-        boolean isWebCommand = false;
-        for (Commands commands : commandsList) {
-            // init the executor
-            if (commands.isWebCommand()) {
-                isWebCommand = true;
-                break;
-            }
-        }
-        // init the executor
-        if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
-            this.init();
-        }
-        // execute the commands
-        for (Commands commands : commandsList) {
-            try {
+            // check if there is web command
+            boolean isWebCommand = false;
+            for (Commands commands : commandsList) {
                 // init the executor
-                if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
-                    this.init();
-                }
-                ThreadContext.getVariables().set("caseId", commands.getCaseId());
-                this.executeCommands(commands);
-            } finally {
-                // destroy the executor
-                if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
-                    this.destroy();
+                if (commands.isWebCommand()) {
+                    isWebCommand = true;
+                    break;
                 }
             }
-        }
-        // destroy the executor
-        if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
-            this.destroy();
+            // init the executor
+            if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
+                this.init();
+            }
+            // execute the commands
+            for (Commands commands : commandsList) {
+                try {
+                    // init the executor
+                    if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
+                        this.init();
+                    }
+                    ThreadContext.getVariables().set("caseId", commands.getCaseId());
+                    this.executeCommands(commands);
+                } finally {
+                    // destroy the executor
+                    if (autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
+                        this.destroy();
+                    }
+                }
+            }
+            // destroy the executor
+            if (!autoTestConfig.isRestartWebDriverByCase() && isWebCommand) {
+                this.destroy();
+            }
+        } finally {
+            lock.unlock();
         }
     }
 
