@@ -13,6 +13,9 @@ import io.hugang.util.CommandParserUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 用于调用子命令集
+ */
 public class RunCaseCommand extends Command {
     public RunCaseCommand(OriginalCommand originalCommand) {
         super(originalCommand);
@@ -20,38 +23,43 @@ public class RunCaseCommand extends Command {
 
     @Override
     public boolean _execute() {
-        List<Commands> commandsFromXlsx;
+        List<Commands> subCommandsList;
         String path = this.getFilePath(this.getTarget());
+        // 获取子命令集类型
         String type = this.getDictStr("type", "xlsx");
+        // 可以指定执行的行id
         String testCase = this.getDictStr("value", null);
         switch (type) {
             case "xlsx":
-                commandsFromXlsx = CommandParserUtil.getCommandsFromXlsx(path);
+                subCommandsList = CommandParserUtil.getCommandsFromXlsx(path);
                 List<String> testCasesArray = new ArrayList<>();
                 List<Commands> executeCommands = new ArrayList<>();
                 if (StrUtil.isNotEmpty(testCase)) {
                     String[] testCaseArray = testCase.split(",");
-                    BasicExecutor.getTestCases(testCasesArray, testCaseArray);
+                    testCasesArray.addAll(BasicExecutor.getTestCases(testCaseArray));
                 }
                 if (CollUtil.isNotEmpty(testCasesArray)) {
-                    for (Commands fromXlsx : commandsFromXlsx) {
+                    for (Commands fromXlsx : subCommandsList) {
                         if (testCasesArray.contains(fromXlsx.getCaseId())) {
                             executeCommands.add(fromXlsx);
                         }
                     }
                 }
                 if (CollUtil.isNotEmpty(executeCommands)) {
-                    commandsFromXlsx = executeCommands;
+                    subCommandsList = executeCommands;
                 }
                 break;
             case "csv":
-                commandsFromXlsx = CommandParserUtil.getCommandsFromCsv(path);
+                subCommandsList = CommandParserUtil.getCommandsFromCsv(path);
+                break;
+            case "json":
+                subCommandsList = CommandParserUtil.getCommandsFromJson(path);
                 break;
             default:
                 throw new CommandExecuteException("not support type: " + type);
         }
 
-        for (Commands commands : commandsFromXlsx) {
+        for (Commands commands : subCommandsList) {
             for (ICommand command : commands.getCommands()) {
                 if (!command.execute()) {
                     return false;

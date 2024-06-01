@@ -51,15 +51,7 @@ public class SshCommand extends Command {
                     System.out.println("exit-status: " + channel.getExitStatus());
                     break;
                 }
-                try {
-                    Thread.sleep(1000);
-                } catch (Exception ee) {
-                }
-            }
-
-            // Wait for the command to finish
-            while (!channel.isClosed()) {
-                Thread.sleep(100);
+                Thread.sleep(1000);
             }
 
             channel.disconnect();

@@ -431,7 +431,7 @@ public class CommandParserUtil {
 
             int beginRow = hasDescription ? 1 : 0;
             writer.writeCellValue(0, beginRow, "TestCase");
-            writer.writeCellValue(0, beginRow+2, i + 1);
+            writer.writeCellValue(0, beginRow + 2, i + 1);
 
             for (int i1 = 0; i1 < commands.getCommands().size(); i1++) {
                 Command command = (Command) commands.getCommands().get(i1);

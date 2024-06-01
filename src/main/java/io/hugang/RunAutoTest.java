@@ -42,7 +42,6 @@ public class RunAutoTest {
             return;
         }
 
-        BasicExecutor basicExecutor = new BasicExecutor();
         // set to autoTestConfig if not null
         if (StrUtil.isNotEmpty(autoTestCommandLineOption.getMode())) {
             AUTO_TEST_CONFIG.setTestMode(autoTestCommandLineOption.getMode());
@@ -60,6 +59,6 @@ public class RunAutoTest {
         AUTO_TEST_CONFIG.readConfigurations();
         ThreadContext.setAutoTestConfig(AUTO_TEST_CONFIG);
         // execute the test
-        basicExecutor.execute();
+        BasicExecutor.create().execute();
     }
 }

@@ -103,7 +103,7 @@ public class CallApiCommand extends Command {
         }
         try {
             JSONObject store;
-            JSONObject jsonObject = null;
+            JSONObject jsonObject;
             try (HttpResponse response = httpRequest.execute()) {
                 log.info("response: {}", response.body());
                 store = obj.getJSONObject("store");

@@ -1,6 +1,5 @@
 package io.hugang.execute.ext;
 
-import cn.hutool.core.io.FileTypeUtil;
 import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
@@ -133,7 +132,7 @@ public class StepCountCommand extends Command {
 
             } else {
                 String contentType = Files.probeContentType(file.toPath());
-                if (contentType != null && contentType.startsWith("text")){
+                if (contentType != null && contentType.startsWith("text")) {
                     fileWriter.append(file.getAbsolutePath() + "," + Files.lines(file.toPath(), Charset.defaultCharset()).count() + ",0,0\n");
                 }
             }

@@ -34,14 +34,22 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * main executor class
+ * 主程序入口:
+ * 1 通过命令行启动 see {@link RunAutoTest}
+ * 2 通过WEB API调用 see {@link io.hugang.server.AutoTestServer}
  *
  * @author hugang
  */
 public class BasicExecutor {
     private static final Log log = Log.get();
+    // 控制同时执行1个driver
     private static final ReentrantLock lock = new ReentrantLock();
 
-    public BasicExecutor() {
+    private BasicExecutor() {
+    }
+
+    public static BasicExecutor create() {
+        return new BasicExecutor();
     }
 
     /**
@@ -117,7 +125,7 @@ public class BasicExecutor {
     }
 
     /**
-     * method to execute the commands
+     * execute the commands
      */
     public List<Commands> execute() {
 
@@ -163,7 +171,7 @@ public class BasicExecutor {
     }
 
     /**
-     * method to parse input to commands list
+     * parse input to commands list
      */
     private List<Commands> parseCommandsList() {
         List<Commands> commandsList = new ArrayList<>();
@@ -183,7 +191,7 @@ public class BasicExecutor {
                 List<String> testCasesArray = new ArrayList<>();
                 if (StrUtil.isNotEmpty(autoTestConfig.getTestCases())) {
                     String[] testCaseArray = autoTestConfig.getTestCases().split(",");
-                    getTestCases(testCasesArray, testCaseArray);
+                    testCasesArray.addAll(getTestCases(testCaseArray));
                 }
                 if (CollUtil.isNotEmpty(testCasesArray)) {
                     for (Commands fromXlsx : commandsFromXlsx) {
@@ -212,10 +220,11 @@ public class BasicExecutor {
     /**
      * get test cases
      *
-     * @param testCasesArray test cases array for result
-     * @param testCaseArray  test case array
+     * @param testCaseArray test case array
+     * @return test cases
      */
-    public static void getTestCases(List<String> testCasesArray, String[] testCaseArray) {
+    public static List<String> getTestCases(String[] testCaseArray) {
+        List<String> testCasesArray = new ArrayList<>();
         for (String testCase : testCaseArray) {
             if (testCase.indexOf("-") > 0) {
                 String[] testCaseRange = testCase.split("-");
@@ -228,10 +237,11 @@ public class BasicExecutor {
                 testCasesArray.add(testCase);
             }
         }
+        return testCasesArray;
     }
 
     /**
-     * method to execute the commands
+     * execute the commands
      */
     public void runCommandsList(List<Commands> commandsList) {
         try {
