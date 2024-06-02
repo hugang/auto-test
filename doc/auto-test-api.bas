@@ -13,7 +13,7 @@ Sub run()
     ' use vba to access url and get the response
     Dim http As Object
     Set http = CreateObject("MSXML2.ServerXMLHTTP")
-    http.SetTimeouts 100000, 100000, 100000, 100000
+    http.SetTimeouts -1, -1, -1, -1
 
     Dim url As String
     url = "http://localhost:9191/local?mode=xlsx&testcases=" & testcases & "&path=" & replace(Replace(ThisWorkbook.Path & "\" & ThisWorkbook.Name, "\", "%5C"),":", "%3A")
