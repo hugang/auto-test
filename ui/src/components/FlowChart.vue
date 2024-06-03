@@ -63,9 +63,9 @@ export default {
         "id": "f676a7d4-ceea-4b4e-8d4c-57863144e061",
         "type": "start-node",
         "x": 470,
-        "y": 240,
+        "y": 120,
         "properties": {"ui": "node-red"},
-        "text": {"x": 480, "y": 240, "value": "start"}
+        "text": {"x": 480, "y": 120, "value": "start"}
       }], "edges": []
     })
     this.lf.on('node-red:start', () => {

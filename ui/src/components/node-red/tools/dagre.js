@@ -61,7 +61,7 @@ export default class Dagre {
             align: 'DR',
             nodesep,
             ranksep,
-            begin: [120, 120],
+            begin: [470, 120],
             ...option,
         };
         const layoutInstance = new DagreLayout(this.option);
