@@ -1,4 +1,4 @@
-import { h } from '@logicflow/core'
+import {h} from '@logicflow/core'
 import BaseNode from "./BaseNode"
 
 class OpenNode extends BaseNode.view {
@@ -21,12 +21,9 @@ class OpenNodeModel extends BaseNode.model {
   initNodeData (data) {
     super.initNodeData(data)
     this.defaultFill = 'rgb(231, 231, 174)'
-  }
-
-  getData () {
-    const data = super.getData()
-    data.properties.command = 'open'
-    return data
+    this.setProperties({
+      command: 'open'
+    })
   }
 }
 

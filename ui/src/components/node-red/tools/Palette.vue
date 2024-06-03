@@ -77,7 +77,7 @@ const normalNodes = ref([
   {
     type: 'auto-test-node',
     text: 'node',
-    background: 'rgb(231, 231, 174)',
+    background: 'rgb(218, 232, 252)',
     icon: 'images/function.svg'
   },
   {

@@ -33,7 +33,9 @@ export default class Dagre {
     /**
      * option: {
      *   rankdir: "TB", // layout 方向, 可选 TB, BT, LR, RL
+     *     TB - 从上到下, BT - 从下到上, LR - 从左到右, RL - 从右到左
      *   align: undefined, // 节点对齐方式，可选 UL, UR, DL, DR
+     *     UL - 节点左对齐, UR - 节点右对齐, DL - 节点左对齐, DR - 节点右对齐
      *   nodeSize: undefined, // 节点大小
      *   nodesepFunc: undefined, // 节点水平间距(px)
      *   ranksepFunc: undefined, // 每一层节点之间间距
@@ -58,7 +60,7 @@ export default class Dagre {
             rankdir: 'TB',
             // align: 'UL',
             // align: 'UR',
-            align: 'DR',
+            align: 'DL',
             nodesep,
             ranksep,
             begin: [470, 120],

@@ -20,7 +20,7 @@ class AutoTestNode extends BaseNode.view {
 class AutoTestNodeModel extends BaseNode.model {
   initNodeData (data) {
     super.initNodeData(data)
-    this.defaultFill = 'rgb(231, 231, 174)'
+    this.defaultFill = 'rgb(218, 232, 252)'
   }
 }
 

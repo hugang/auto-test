@@ -21,11 +21,9 @@ class TypeNodeModel extends BaseNode.model {
   initNodeData (data) {
     super.initNodeData(data)
     this.defaultFill = 'rgb(231, 231, 174)'
-  }
-  getData () {
-    const data = super.getData()
-    data.properties.command = 'type'
-    return data
+    this.setProperties({
+      command: 'type'
+    })
   }
 }
 

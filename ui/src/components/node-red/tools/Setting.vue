@@ -1,6 +1,6 @@
 <template>
   <div class="setting-panel">
-    <div>设置({{nodeData.properties.command}})</div>
+    <div>设置({{nodeData.properties.command || nodeData.text.value}})</div>
     <div class="setting-item-title">选择风格</div>
     <div class="style-wrapper">
       <div class="style-item" @click="$emit('changeStyle', item)" v-for="(item, index) in styleConfig" :key="index" :style="item"></div>
