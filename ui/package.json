@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@antv/layout": "^0.3.25",
     "@logicflow/core": "^1.2.27",
     "@logicflow/extension": "^1.2.27",
     "axios": "^1.7.2",

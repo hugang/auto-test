@@ -3,8 +3,9 @@ import {ref} from 'vue'
 import LogicFlow from '@logicflow/core'
 import '@logicflow/core/dist/style/index.css'
 import "@logicflow/extension/lib/style/index.css";
-import {Menu} from '@logicflow/extension';
+import {Control, Menu} from '@logicflow/extension';
 import NodeRedExtension from './node-red/index'
+import Dagre from "./node-red/tools/dagre";
 import Setting from './node-red/tools/Setting.vue'
 import axios from 'axios'
 
@@ -41,9 +42,22 @@ export default {
       },
       // keyboard: true,
       plugins: [
-        Menu, NodeRedExtension
+        Menu,Control, NodeRedExtension,Dagre
       ]
     })
+
+    this.lf.extension.control.addItem({
+      iconClass: "beautify-flow",
+      title: "",
+      text: "一键美化",
+      onClick: (lf, ev) => {
+        lf.extension.dagre && this.lf.extension.dagre.layout({
+          nodesep: 20,
+          ranksep: 20,
+        });
+      }
+    });
+
     this.lf.render({
       "nodes": [{
         "id": "f676a7d4-ceea-4b4e-8d4c-57863144e061",
@@ -137,7 +151,7 @@ function executeNodes(nodeId, nodes, edges, commands, edgeComment) {
 </script>
 
 <template>
-  <div class="flow-chart">
+  <div class="flow-chart beautify-chart">
     <div ref="container" class="container"></div>
     <Setting v-if="currentNode" @changeStyle="changeStyle" :lf="lf" :nodeData="currentNode"
              class="setting-panel"></Setting>

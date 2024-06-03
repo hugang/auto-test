@@ -21,3 +21,9 @@
   cursor: pointer;
   pointer-events: all;
 }
+
+.beautify-chart .beautify-flow {
+  background-image: url('/images/beautify.svg');
+  width: 20px;
+  height: 20px;
+}
