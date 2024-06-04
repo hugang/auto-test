@@ -336,6 +336,10 @@ public class CommandParserUtil {
             classes.forEach(
                     clazz -> {
                         try {
+                            // if clazz extends Command
+                            if (!Command.class.isAssignableFrom(clazz)) {
+                                return;
+                            }
                             Constructor<?> constructor = clazz.getConstructor(OriginalCommand.class);
                             ICommand cmdInstance = (ICommand) constructor.newInstance(new OriginalCommand());
                             EXT_COMMAND_CLASS_MAP.put(cmdInstance.getCommand(), clazz);

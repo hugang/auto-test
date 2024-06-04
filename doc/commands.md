@@ -796,6 +796,14 @@ true.
 
 <hr>
 
+## calc [〇]
+
+calculate the javascript expression, and store the result to a variable.
+
+- arguments
+  - expression(target): The expression to calculate.
+  - variable name(value): The name of the variable without brackets.
+
 ## call api [〇]
 
 call api and set the values of response to environment variables.
