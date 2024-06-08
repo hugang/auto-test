@@ -129,6 +129,7 @@ const selectOptions = ref([
   {value: 'webdriverChooseCancelOnVisibleConfirmation', label: 'webdriverChooseCancelOnVisibleConfirmation'},
   {value: 'webdriverChooseCancelOnVisiblePrompt', label: 'webdriverChooseCancelOnVisiblePrompt'},
   {value: 'webdriverChooseOkOnVisibleConfirmation', label: 'webdriverChooseOkOnVisibleConfirmation'},
+  {value: 'calc', label: 'calc'},
   {value: 'callApi', label: 'callApi'},
   {value: 'exportDb', label: 'exportDb'},
   {value: 'generateCode', label: 'generateCode'},

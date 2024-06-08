@@ -798,7 +798,8 @@ true.
 
 ## calc [〇]
 
-calculate the javascript expression, and store the result to a variable.
+calculate the expression, and store the result to a variable.
+see https://github.com/alibaba/QLExpress
 
 - arguments
   - expression(target): The expression to calculate.
