@@ -17,10 +17,12 @@ export default {
     const count = ref(0)
     const currentNode = ref(null)
     const lf = ref(null)
+    const isLoading = ref(false)
     return {
       count,
       currentNode,
-      lf
+      lf,
+      isLoading
     }
   },
   mounted() {
@@ -42,7 +44,7 @@ export default {
       },
       // keyboard: true,
       plugins: [
-        Menu,Control, NodeRedExtension,Dagre
+        Menu, Control, NodeRedExtension, Dagre
       ]
     })
 
@@ -89,12 +91,16 @@ export default {
       executeNodes(startNode.id, data.nodes, data.edges, commands);
 
       console.log(JSON.stringify(result))
+
+      this.isLoading = true; // Show loading div
       axios.post('http://localhost:9191/flow', result)
           .then(response => {
             console.log(response)
+            this.isLoading = false; // Hide loading div
           })
           .catch(error => {
             console.log(error)
+            this.isLoading = false; // Hide loading div
           })
     })
 
@@ -156,6 +162,7 @@ function executeNodes(nodeId, nodes, edges, commands, edgeComment) {
     <Setting v-if="currentNode" @changeStyle="changeStyle" :lf="lf" :nodeData="currentNode"
              class="setting-panel"></Setting>
   </div>
+  <div v-if="isLoading" class="loading">Loading...</div>
 </template>
 
 <style scoped>
@@ -189,5 +196,19 @@ function executeNodes(nodeId, nodes, edges, commands, edgeComment) {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
 }
 </style>
