@@ -3,6 +3,7 @@ package io.hugang.execute.ext;
 import cn.hutool.log.Log;
 import com.ql.util.express.DefaultContext;
 import com.ql.util.express.ExpressRunner;
+import com.ql.util.express.config.QLExpressRunStrategy;
 import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 
@@ -24,7 +25,11 @@ public class CalcCommand extends Command {
     @Override
     public boolean _execute() {
         // create express runner, set precise to true
-        ExpressRunner runner = new ExpressRunner(true,false);
+        ExpressRunner runner = new ExpressRunner(true, false);
+        // forbid invoke security risk constructors and methods
+        QLExpressRunStrategy.setForbidInvokeSecurityRiskConstructors(true);
+        QLExpressRunStrategy.setForbidInvokeSecurityRiskMethods(true);
+
         DefaultContext<String, Object> context = new DefaultContext<String, Object>();
 
         // put variables into context
@@ -39,7 +44,8 @@ public class CalcCommand extends Command {
 
         // execute javascript expression
         try {
-            Object result = runner.execute(calcExpression, context, null, true, false);
+            // set timeout to 1000ms to avoid infinite loop
+            Object result = runner.execute(calcExpression, context, null, true, false, 1000);
             this.setVariable(variableName, result);
         } catch (Exception e) {
             log.error("calc error", e);
