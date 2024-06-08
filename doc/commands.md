@@ -956,3 +956,12 @@ count the steps of src.
     - type: file type, split with comma.
     - excludePath: The exclude path, split with comma.
     - excludeFile: The exclude file, split with comma.
+
+## write to file [〇]
+
+write the content to the file.
+
+- argument
+    - target: The file path.
+    - value: The content to write.
+    - type: The type of the file, append or write. default is append.
