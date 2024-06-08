@@ -144,7 +144,8 @@ const selectOptions = ref([
   {value: 'setProperty', label: 'setProperty'},
   {value: 'sftp', label: 'sftp'},
   {value: 'ssh', label: 'ssh'},
-  {value: 'stepCount', label: 'stepCount'}
+  {value: 'stepCount', label: 'stepCount'},
+  {value: 'writeToFile', label: 'writeToFile'}
 ])
 
 const styleConfig = ref([
