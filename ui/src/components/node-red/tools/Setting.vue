@@ -12,7 +12,7 @@
         <option v-for="option in selectOptions" :value="option.value">{{ option.label }}</option>
       </select>
       <div class="setting-item-title">target</div>
-      <input class="setting-input" id="target" type="text" :value="nodeData.properties.target" @blur="updateNodeData">
+      <v-ace-editor ref="targetRef" :value="content" lang="json" theme="chrome" style="height: 300px" @blur="updateNodeDataByJson"/>
       <div class="setting-item-title">value</div>
       <input class="setting-input" id="value" type="text" :value="nodeData.properties.value" @blur="updateNodeData">
       <div class="setting-item-title">description</div>
@@ -22,6 +22,15 @@
 </template>
 
 <script lang="ts" setup>
+import { VAceEditor } from 'vue3-ace-editor';
+import ace from 'ace-builds';
+import modeJsonUrl from 'ace-builds/src-noconflict/mode-json?url';
+import themeChromeUrl from 'ace-builds/src-noconflict/theme-chrome?url';
+import extSearchboxUrl from 'ace-builds/src-noconflict/ext-searchbox?url';
+ace.config.setModuleUrl('ace/mode/json', modeJsonUrl);
+ace.config.setModuleUrl('ace/theme/chrome', themeChromeUrl);
+ace.config.setModuleUrl('ace/ext/searchbox', extSearchboxUrl);
+
 // type NodeData = {}
 import { ref } from 'vue'
 const props = defineProps({
@@ -33,6 +42,35 @@ const props = defineProps({
   },
   lf: Object || String
 })
+
+const content = ref(JSON.stringify(props.nodeData.properties.target ||{target:"",value:""}, null, 2))
+const targetRef = ref(null)
+
+const updateNodeDataByJson = (e:any) => {
+  props.lf.setProperties(props.nodeData.id, {
+    target: JSON.parse(targetRef.value.getAceInstance().getValue())
+  })
+}
+
+const updateNodeData = (e: any) => {
+  const target = e.target.value
+  
+  if (e.target.id === 'value') {
+    props.lf.setProperties(props.nodeData.id, {
+      value: target
+    })
+  }else if (e.target.id === 'description') {
+    props.lf.setProperties(props.nodeData.id, {
+      description: target
+    })
+  }else if (e.target.id === 'command') {
+    // update node text
+    props.lf.setProperties(props.nodeData.id, {
+      command: target
+    })
+    props.lf.updateText(props.nodeData.id,target)
+  }
+}
 
 const selectOptions = ref([
   {value: 'addSelection', label: 'addSelection'},
@@ -175,30 +213,6 @@ const styleConfig = ref([
     borderWidth: '1px'
   }
 ])
-
-const updateNodeData = (e: any) => {
-  const target = e.target.value
-  if (e.target.id === 'value') {
-    props.lf.setProperties(props.nodeData.id, {
-      value: target
-    })
-  }else if (e.target.id === 'target') {
-    props.lf.setProperties(props.nodeData.id, {
-      target: target
-    })
-  }else if (e.target.id === 'description') {
-    props.lf.setProperties(props.nodeData.id, {
-      description: target
-    })
-  }else if (e.target.id === 'command') {
-    // update node text
-    props.lf.setProperties(props.nodeData.id, {
-      command: target
-    })
-    props.lf.updateText(props.nodeData.id,target)
-  }
-}
-
 </script>
 
 <style scoped>
