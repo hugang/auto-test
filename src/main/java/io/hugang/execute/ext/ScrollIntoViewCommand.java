@@ -36,7 +36,7 @@ public class ScrollIntoViewCommand extends Command {
             element.scrollIntoView(true);
             return true;
         } catch (Exception e) {
-            log.error("increase number command execute error", e);
+            log.error("scroll into view error", e);
             return false;
         }
     }

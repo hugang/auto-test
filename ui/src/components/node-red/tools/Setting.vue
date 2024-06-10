@@ -134,7 +134,6 @@ const selectOptions = ref([
   {value: 'exportDb', label: 'exportDb'},
   {value: 'generateCode', label: 'generateCode'},
   {value: 'gitHistory', label: 'gitHistory'},
-  {value: 'increaseNumber', label: 'increaseNumber'},
   {value: 'jenkinsJob', label: 'jenkinsJob'},
   {value: 'ocr', label: 'ocr'},
   {value: 'readProperties', label: 'readProperties'},

@@ -849,13 +849,13 @@ get git history.
   - path(target): The path of the git repository.
   - value: the result of the git history, csv format.
 
-## increase number [〇]
+~~## increase number [〇]~~
 
-increase the number of the variable.
+~~increase the number of the variable.~~
 
-- arguments
-  - target: The variable name.
-  - value: The value to increase.
+~~- arguments~~
+  ~~- target: The variable name.~~
+  ~~- value: The value to increase.~~
 
 ## jenkins job [〇]
 
