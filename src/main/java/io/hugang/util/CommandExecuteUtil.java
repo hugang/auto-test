@@ -39,7 +39,7 @@ public class CommandExecuteUtil {
     public static SelenideElement getElement(String target) {
         int indexOf = target.indexOf("=");
         String commandType = target.substring(0, indexOf);
-        String commandValue = target.substring(indexOf + 1);
+        String commandValue = removeOuterQuotesOrParentheses(target.substring(indexOf + 1));
         SelenideElement $ = null;
         switch (commandType) {
             case "id": {
@@ -80,7 +80,7 @@ public class CommandExecuteUtil {
     public static List<WebElement> findElements(String target) {
         int indexOf = target.indexOf("=");
         String commandType = target.substring(0, indexOf);
-        String commandValue = target.substring(indexOf + 1);
+        String commandValue = removeOuterQuotesOrParentheses(target.substring(indexOf + 1));
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         List<WebElement> $ = null;
         switch (commandType) {
@@ -153,5 +153,17 @@ public class CommandExecuteUtil {
     public static File getFileWithBaseDir(String fileName) {
         AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
         return FileUtil.file(autoTestConfig.getBaseDir(), fileName);
+    }
+
+    private static String removeOuterQuotesOrParentheses(String str) {
+        // Check and remove outer single quotes
+        if (str.startsWith("'") && str.endsWith("'")) {
+            return str.substring(1, str.length() - 1);
+        }
+        // Check and remove outer double quotes
+        if (str.startsWith("\"") && str.endsWith("\"")) {
+            return str.substring(1, str.length() - 1);
+        }
+        return str;
     }
 }
