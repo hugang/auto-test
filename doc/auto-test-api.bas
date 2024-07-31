@@ -1,4 +1,3 @@
-Attribute VB_Name = "runAutoTest"
 ' entry point
 Sub run()
     Dim command As String
@@ -11,19 +10,24 @@ Sub run()
         Exit Sub
     End If
     ' use vba to access url and get the response
-    Dim http As Object
-    Set http = CreateObject("MSXML2.ServerXMLHTTP")
-    http.SetTimeouts -1, -1, -1, -1
+    Set xmlhttp = CreateObject("MSXML2.ServerXMLHTTP")
+    xmlhttp.setTimeouts -1, -1, -1, -1
 
     Dim url As String
-    url = "http://localhost:9191/local?mode=xlsx&testcases=" & testcases & "&path=" & replace(Replace(ThisWorkbook.Path & "\" & ThisWorkbook.Name, "\", "%5C"),":", "%3A")
-
-    http.Open "GET", url, False
-    http.send ""
-
-    Dim response As String
-    response = http.responseText
-
-    ' write the response
-    msgbox response
+    url = "http://localhost:9191/local"
+    Dim body As String
+     body = "{""mode"":""xlsx"",""testcases"":""" & testcases & """,""path"":""" & Replace(ThisWorkbook.Path & "\" & ThisWorkbook.Name, "\", "/") & """}"
+    ' Open the connection to the URL
+    xmlhttp.Open "POST", url, False
+    ' Set the request headers
+    xmlhttp.setRequestHeader "Content-Type", "application/json"
+    ' Send the request with the body
+    xmlhttp.send body
+    ' Get the response text
+    response = xmlhttp.responseText
+    ' Output the response (you can handle it as needed)
+    MsgBox response
+    ' Clean up
+    Set xmlhttp = Nothing
 End Sub
+

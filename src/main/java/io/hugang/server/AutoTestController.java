@@ -6,10 +6,7 @@ import cn.hutool.log.Log;
 import io.hugang.BasicExecutor;
 import io.hugang.execute.Commands;
 import io.hugang.util.ThreadContext;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -23,8 +20,11 @@ import java.util.Map;
 public class AutoTestController {
     private static final Log log = Log.get();
 
-    @RequestMapping("/local")
-    public Map<String, Object> local(@RequestParam String path, @RequestParam String testcases, @RequestParam(required = false) String mode) {
+    @PostMapping("/local")
+    public Map<String, Object> local(@RequestBody Map<String,String> map) {
+        String path=map.get("path");
+        String testcases=map.get("testcases");
+        String mode=map.get("mode");
         mode = mode == null ? "xlsx" : mode;
         List<Commands> result = BasicExecutor.create().execute(mode, path, testcases);
         return responseResult(result);

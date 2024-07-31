@@ -1,5 +1,4 @@
 'deprecated, use auto-test-api instead
-Attribute VB_Name = "runAutoTest"
 ' entry point
 Sub run()
     Dim command As String
