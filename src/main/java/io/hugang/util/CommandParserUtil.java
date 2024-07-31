@@ -123,11 +123,12 @@ public class CommandParserUtil {
                 List<OriginalCommand> commandList = new ArrayList<>();
                 for (int j = 1; j < commandRow.size(); j++) {
                     // skip blank command
-                    if (ObjectUtil.isEmpty(commandRow.get(j))){
+                    if (ObjectUtil.isEmpty(commandRow.get(j))) {
                         continue;
                     }
                     OriginalCommand command = new OriginalCommand();
                     // commentRow
+                    assert commentRow != null;
                     if (ObjectUtil.isNotEmpty(commentRow) && ObjectUtil.isNotEmpty(commentRow.get(j))) {
                         command.setDescription(commentRow.get(j).toString());
                     }
