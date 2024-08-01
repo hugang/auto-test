@@ -129,14 +129,20 @@ public class CommandParserUtil {
                     OriginalCommand command = new OriginalCommand();
                     // commentRow
                     assert commentRow != null;
-                    if (ObjectUtil.isNotEmpty(commentRow) && ObjectUtil.isNotEmpty(commentRow.get(j))) {
+                    if (ObjectUtil.isNotEmpty(commentRow) &&
+                            commentRow.size() > j &&
+                            ObjectUtil.isNotEmpty(commentRow.get(j))) {
                         command.setDescription(commentRow.get(j).toString());
                     }
                     command.setCommand(commandRow.get(j).toString());
-                    if (ObjectUtil.isNotEmpty(targetRow) && ObjectUtil.isNotEmpty(targetRow.get(j))) {
+                    if (ObjectUtil.isNotEmpty(targetRow) &&
+                            targetRow.size() > j &&
+                            ObjectUtil.isNotEmpty(targetRow.get(j))) {
                         command.setTarget(targetRow.get(j).toString());
                     }
-                    if (ObjectUtil.isNotEmpty(valueRow) && ObjectUtil.isNotEmpty(valueRow.get(j))) {
+                    if (ObjectUtil.isNotEmpty(valueRow) &&
+                            valueRow.size() > j &&
+                            ObjectUtil.isNotEmpty(valueRow.get(j))) {
                         command.setValue(valueRow.get(j).toString());
                     }
                     commandList.add(command);
