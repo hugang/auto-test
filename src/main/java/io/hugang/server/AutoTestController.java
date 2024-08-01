@@ -21,10 +21,10 @@ public class AutoTestController {
     private static final Log log = Log.get();
 
     @PostMapping("/local")
-    public Map<String, Object> local(@RequestBody Map<String,String> map) {
-        String path=map.get("path");
-        String testcases=map.get("testcases");
-        String mode=map.get("mode");
+    public Map<String, Object> local(@RequestBody Map<String, String> map) {
+        String path = map.get("path");
+        String testcases = map.get("testcases");
+        String mode = map.get("mode");
         mode = mode == null ? "xlsx" : mode;
         List<Commands> result = BasicExecutor.create().execute(mode, path, testcases);
         return responseResult(result);
@@ -39,13 +39,14 @@ public class AutoTestController {
         log.info("file type: {}", fileType);
         // only support xlsx, csv and json file
         if (!("zip".equals(fileType) && tempFile.getName().endsWith("xlsm"))
-                && !"xlsx".equals(fileType) && !"csv".equals(fileType) && !"json".equals(fileType)) {
+                && !"xlsx".equals(fileType) && !"csv".equals(fileType)
+                && !"json".equals(fileType) && !"side".equals(fileType)) {
             log.error("not support file type: " + fileType);
             return null;
         }
         String path = tempFile.getAbsolutePath();
         String mode;
-        if ("json".equals(fileType)) {
+        if ("json".equals(fileType) || "side".equals(fileType)) {
             mode = "json";
         } else if ("csv".equals(fileType)) {
             mode = "csv";
