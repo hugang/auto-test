@@ -410,7 +410,12 @@ public class CommandParserUtil {
                     command.setComment(jsonCommand.getByPath("comment").toString());
                 }
                 if (command.getCommand().equals("open")) {
-                    command.setTarget(baseUrl + command.getTarget());
+                    // if target starts with https or http, don't join base url
+                    if (StrUtil.startWith(command.getTarget(),"https://") || StrUtil.startWith(command.getTarget(),"http://")){
+                        command.setTarget(command.getTarget());
+                    }else {
+                        command.setTarget(baseUrl + command.getTarget());
+                    }
                 }
                 commandList.add(command);
             }
