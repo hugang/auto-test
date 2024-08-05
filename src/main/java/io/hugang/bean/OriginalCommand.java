@@ -17,8 +17,8 @@ public class OriginalCommand {
     private String target;
     // value
     private String value;
-    // description
-    private String description;
+    // comment
+    private String comment;
 
     public String getCommand() {
         return command;
@@ -44,12 +44,12 @@ public class OriginalCommand {
         this.value = value;
     }
 
-    public String getDescription() {
-        return description;
+    public String getComment() {
+        return comment;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class OriginalCommand {
                 "command='" + command + '\'' +
                 ", target='" + target + '\'' +
                 ", value='" + value + '\'' +
-                ", description='" + description + '\'' +
+                ", comment='" + comment + '\'' +
                 '}';
     }
 }

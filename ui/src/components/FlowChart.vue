@@ -131,12 +131,12 @@ function executeNode(node, commands, edgeComment) {
   if (node.type === 'start-node') {
     return;
   }
-  let description = node.properties.description || edgeComment;
+  let comment = node.properties.comment || edgeComment;
   commands.push({
     command: node.properties.command,
     target: node.properties.target,
     value: node.properties.value,
-    description: description
+    comment: comment
   })
 }
 

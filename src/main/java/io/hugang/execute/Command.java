@@ -31,7 +31,7 @@ public abstract class Command implements ICommand {
         this.command = originalCommand.getCommand();
         this.target = originalCommand.getTarget();
         this.value = originalCommand.getValue();
-        this.description = originalCommand.getDescription();
+        this.comment = originalCommand.getComment();
         generateDict();
     }
 
@@ -91,8 +91,8 @@ public abstract class Command implements ICommand {
     private String target;
     // value
     private String value;
-    // description
-    private String description;
+    // comment
+    private String comment;
     // result
     private String result;
 
@@ -127,13 +127,13 @@ public abstract class Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return description;
+    public String getComment() {
+        return comment;
     }
 
     @Override
-    public void setDescription(String description) {
-        this.description = description;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Dict getDict() {
@@ -206,7 +206,7 @@ public abstract class Command implements ICommand {
 
     @Override
     public String toString() {
-        return "Command: " + this.getCommand() + "\t" + "options: " + this.getDict() + "\t" + "Target: " + this.getTarget() + "\t" + "Value: " + this.getValue() + "\t" + "Description: " + this.getDescription();
+        return "Command: " + this.getCommand() + "\t" + "options: " + this.getDict() + "\t" + "Target: " + this.getTarget() + "\t" + "Value: " + this.getValue() + "\t" + "comment: " + this.getComment();
     }
 
     public String getFilePath(String path) {

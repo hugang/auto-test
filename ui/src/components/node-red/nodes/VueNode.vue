@@ -8,7 +8,7 @@
       <div>value：{{ properties.value }}</div>
     </div>
     <div class="vue-node-operator">
-      <div>description：{{ properties.description }}</div>
+      <div>comment：{{ properties.comment }}</div>
     </div>
   </div>
 </template>

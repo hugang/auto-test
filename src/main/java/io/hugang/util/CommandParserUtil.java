@@ -132,7 +132,7 @@ public class CommandParserUtil {
                     if (ObjectUtil.isNotEmpty(commentRow) &&
                             commentRow.size() > j &&
                             ObjectUtil.isNotEmpty(commentRow.get(j))) {
-                        command.setDescription(commentRow.get(j).toString());
+                        command.setComment(commentRow.get(j).toString());
                     }
                     command.setCommand(commandRow.get(j).toString());
                     if (ObjectUtil.isNotEmpty(targetRow) &&
@@ -405,9 +405,9 @@ public class CommandParserUtil {
                 if (ObjectUtil.isNotEmpty(jsonCommand.getByPath("value"))) {
                     command.setValue(jsonCommand.getByPath("value").toString());
                 }
-                // description
-                if (ObjectUtil.isNotEmpty(jsonCommand.getByPath("description"))) {
-                    command.setDescription(jsonCommand.getByPath("description").toString());
+                // comment
+                if (ObjectUtil.isNotEmpty(jsonCommand.getByPath("comment"))) {
+                    command.setComment(jsonCommand.getByPath("comment").toString());
                 }
                 if (command.getCommand().equals("open")) {
                     command.setTarget(baseUrl + command.getTarget());
@@ -438,7 +438,7 @@ public class CommandParserUtil {
             boolean hasDescription = false;
             for (ICommand command : commands.getCommands()) {
                 Command c1 = (Command) command;
-                if (StrUtil.isNotEmpty(c1.getDescription())) {
+                if (StrUtil.isNotEmpty(c1.getComment())) {
                     hasDescription = true;
                     break;
                 }
@@ -451,7 +451,7 @@ public class CommandParserUtil {
             for (int i1 = 0; i1 < commands.getCommands().size(); i1++) {
                 Command command = (Command) commands.getCommands().get(i1);
                 if (hasDescription) {
-                    writer.writeCellValue(i1 + 1, 0, command.getDescription());
+                    writer.writeCellValue(i1 + 1, 0, command.getComment());
                 }
                 // write command to first row
                 writer.writeCellValue(i1 + 1, beginRow, command.getCommand());

@@ -14,6 +14,6 @@ public interface ICommand {
     String getTarget();
     void setValue(String value);
     String getValue();
-    void setDescription(String description);
-    String getDescription();
+    void setComment(String comment);
+    String getComment();
 }

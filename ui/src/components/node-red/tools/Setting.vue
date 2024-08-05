@@ -15,8 +15,8 @@
       <input class="setting-input" id="target" type="text" :value="nodeData.properties.target" @blur="updateNodeData">
       <div class="setting-item-title">value</div>
       <input class="setting-input" id="value" type="text" :value="nodeData.properties.value" @blur="updateNodeData">
-      <div class="setting-item-title">description</div>
-      <input class="setting-input" id="description" type="text" :value="nodeData.properties.description" @blur="updateNodeData">
+      <div class="setting-item-title">comment</div>
+      <input class="setting-input" id="comment" type="text" :value="nodeData.properties.comment" @blur="updateNodeData">
     </div>
   </div>
 </template>
@@ -185,9 +185,9 @@ const updateNodeData = (e: any) => {
     props.lf.setProperties(props.nodeData.id, {
       target: target
     })
-  }else if (e.target.id === 'description') {
+  }else if (e.target.id === 'comment') {
     props.lf.setProperties(props.nodeData.id, {
-      description: target
+      comment: target
     })
   }else if (e.target.id === 'command') {
     // update node text
