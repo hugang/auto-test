@@ -54,3 +54,9 @@ Usage: auto-test [options]
 ## commands.md
 
 refer to [commands](doc/commands.md) for the commands supported by auto-test.
+
+## additional tool
+
+- selenium-ide
+
+[selenium-ide](https://github.com/SeleniumHQ/selenium-ide/releases)
