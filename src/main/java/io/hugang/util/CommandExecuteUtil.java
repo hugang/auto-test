@@ -59,6 +59,9 @@ public class CommandExecuteUtil {
                 $ = $(By.xpath(commandValue));
                 break;
             }
+            case "name": {
+                $ = $(By.name(commandValue));
+            }
         }
         assert $ != null;
         if (!$.exists() && spendTime > TIMEOUT) {

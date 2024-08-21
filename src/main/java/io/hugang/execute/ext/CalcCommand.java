@@ -30,7 +30,7 @@ public class CalcCommand extends Command {
         QLExpressRunStrategy.setForbidInvokeSecurityRiskConstructors(true);
         QLExpressRunStrategy.setForbidInvokeSecurityRiskMethods(true);
 
-        DefaultContext<String, Object> context = new DefaultContext<String, Object>();
+        DefaultContext<String, Object> context = new DefaultContext<>();
 
         // put variables into context
         for (String key : this.getVariables().keySet()) {

@@ -250,14 +250,14 @@ public class BasicExecutor {
             AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
 
             // check if there is web command
-            boolean isWebCommand = false;
-            for (Commands commands : commandsList) {
-                // init the executor
-                if (commands.isWebCommand()) {
-                    isWebCommand = true;
-                    break;
-                }
-            }
+            // boolean isWebCommand = false;
+            // for (Commands commands : commandsList) {
+            //     // init the executor
+            //     if (commands.isWebCommand()) {
+            //         isWebCommand = true;
+            //         break;
+            //     }
+            // }
             // init the executor
             if (!autoTestConfig.isRestartWebDriverByCase()) {
                 this.init();

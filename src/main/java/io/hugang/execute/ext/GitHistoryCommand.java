@@ -83,7 +83,6 @@ public class GitHistoryCommand extends Command {
 
             Git git = new Git(repository);
             Iterable<RevCommit> logs = git.log().call();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             RevCommit prevCommit = null;
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             try (DiffFormatter format = new DiffFormatter(outputStream)) {
@@ -93,40 +92,35 @@ public class GitHistoryCommand extends Command {
                         AbstractTreeIterator newTree = getCanonicalTreeParser(prevCommit, repository);
                         AbstractTreeIterator oldTree = getCanonicalTreeParser(commit, repository);
                         List<DiffEntry> entries = format.scan(oldTree, newTree);
-                        for (DiffEntry entry : entries) {
-                            GitHistory gitHistory = new GitHistory();
-                            gitHistory.setCommit(prevCommit.getName());
-                            gitHistory.setAuthor(prevCommit.getAuthorIdent().getName());
-                            gitHistory.setDate(sdf.format(prevCommit.getAuthorIdent().getWhen()));
-                            gitHistory.setMessage(prevCommit.getShortMessage());
-                            gitHistory.setType(entry.getChangeType().name());
-                            gitHistory.setOldPath(entry.getOldPath());
-                            gitHistory.setNewPath(entry.getNewPath());
-                            gitHistories.add(gitHistory);
-                        }
+                        generateEntries(entries, prevCommit, gitHistories);
                     }
                     prevCommit = commit;
                 }
                 assert prevCommit != null;
                 // initial commit
                 List<DiffEntry> initialEntries = format.scan(new EmptyTreeIterator(), getCanonicalTreeParser(prevCommit, repository));
-                for (DiffEntry entry : initialEntries) {
-                    GitHistory gitHistory = new GitHistory();
-                    gitHistory.setCommit(prevCommit.getName());
-                    gitHistory.setAuthor(prevCommit.getAuthorIdent().getName());
-                    gitHistory.setDate(sdf.format(prevCommit.getAuthorIdent().getWhen()));
-                    gitHistory.setMessage(prevCommit.getShortMessage());
-                    gitHistory.setType(entry.getChangeType().name());
-                    gitHistory.setOldPath(entry.getOldPath());
-                    gitHistory.setNewPath(entry.getNewPath());
-                    gitHistories.add(gitHistory);
-                }
+                generateEntries(initialEntries, prevCommit, gitHistories);
             }
             git.close();
         } catch (IOException | GitAPIException e) {
             throw new RuntimeException(e);
         }
         return gitHistories;
+    }
+
+    private static void generateEntries(List<DiffEntry> entries, RevCommit prevCommit, List<GitHistory> gitHistories) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (DiffEntry entry : entries) {
+            GitHistory gitHistory = new GitHistory();
+            gitHistory.setCommit(prevCommit.getName());
+            gitHistory.setAuthor(prevCommit.getAuthorIdent().getName());
+            gitHistory.setDate(sdf.format(prevCommit.getAuthorIdent().getWhen()));
+            gitHistory.setMessage(prevCommit.getShortMessage());
+            gitHistory.setType(entry.getChangeType().name());
+            gitHistory.setOldPath(entry.getOldPath());
+            gitHistory.setNewPath(entry.getNewPath());
+            gitHistories.add(gitHistory);
+        }
     }
 
     private AbstractTreeIterator getCanonicalTreeParser(RevCommit prevCommit, Repository repository) throws IOException {

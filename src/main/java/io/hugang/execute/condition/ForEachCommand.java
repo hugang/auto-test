@@ -38,7 +38,7 @@ public class ForEachCommand extends Command implements IConditionCommand {
                     this.setVariable(value, s);
                     result.set(result.get() & this.runSubCommands());
                 });
-            } else if (target instanceof List<?> list && !((List<?>) target).isEmpty()) {
+            } else if (target instanceof List<?> list && !list.isEmpty()) {
                 list.forEach(s -> {
                     this.setVariable(value, s);
                     result.set(result.get() & this.runSubCommands());
