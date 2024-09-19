@@ -26,12 +26,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * updateDbChangeLog command
+ * updateChangeLog command
  * To apply database change log to other database, by liquibase.
  */
-public class UpdateDbChangeLogCommand extends Command {
+public class UpdateChangeLogCommand extends Command {
 
-    public UpdateDbChangeLogCommand(OriginalCommand originalCommand) {
+    public UpdateChangeLogCommand(OriginalCommand originalCommand) {
         super(originalCommand);
     }
 
@@ -44,7 +44,7 @@ public class UpdateDbChangeLogCommand extends Command {
     public boolean _execute() {
         Setting setting;
         // 获取类型
-        String type = getDictStr("type","");
+        String type = getDictStr("type", "");
         String target = getDictStr("target");
 
         // 类型为json
@@ -74,6 +74,11 @@ public class UpdateDbChangeLogCommand extends Command {
         String path = this.getDictStr("path");
         path = CommandExecuteUtil.getFilePathWithBaseDir(render(path));
 
+        updateTableChangeLog(db, path);
+        return true;
+    }
+
+    private static void updateTableChangeLog(Db db, String path) {
         Connection connection;
         try {
             // 1. Establish database connection
@@ -94,7 +99,5 @@ public class UpdateDbChangeLogCommand extends Command {
         } catch (SQLException | LiquibaseException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-        return true;
     }
 }
