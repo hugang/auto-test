@@ -37,7 +37,7 @@ public class SendKeysCommand extends Command {
      * @param $ selenide element
      */
     private void execute(SelenideElement $, String keys) {
-        if ($.isDisplayed() && $.isEnabled()) {
+        if ($.isEnabled()) {
             if (keys.startsWith("${KEY_") && keys.endsWith("}")) {
                 $.sendKeys(Keys.valueOf(keys.replace("${KEY_", "").replace("}", "")));
             } else {
