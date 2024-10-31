@@ -62,7 +62,7 @@ public class GenerateChangeLogCommand extends Command {
         Setting setting;
         // 获取类型
         String type = getDictStr("type", "");
-        String target = getDictStr("target");
+        String target = getTarget();
 
         // 类型为json
         if ("json".equals(type)) {
