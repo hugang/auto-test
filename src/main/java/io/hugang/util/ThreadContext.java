@@ -103,5 +103,10 @@ public class ThreadContext {
     public static void setTestCases(String cases) {
         ThreadContext.put("testCases", cases);
     }
-
+    public static String getReportPath() {
+        return (String) ThreadContext.get("reportPath");
+    }
+    public static void setReportPath(String path) {
+        ThreadContext.put("reportPath", path);
+    }
 }

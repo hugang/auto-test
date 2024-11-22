@@ -8,6 +8,7 @@ import cn.hutool.cron.CronUtil;
 import cn.hutool.cron.task.Task;
 import cn.hutool.log.Log;
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import io.hugang.config.AutoTestConfig;
 import io.hugang.exceptions.AutoTestException;
@@ -61,6 +62,7 @@ public class BasicExecutor {
         Configuration.browser = autoTestConfig.getWebDriverPath();
         // set the download path
         Configuration.reportsFolder = autoTestConfig.getFileDownloadPath();
+        ThreadContext.setReportPath(autoTestConfig.getFileDownloadPath());
         // store the browser options
         Map<String, Object> optionsMap = new HashMap<>();
         // set pdf file always open externally
@@ -291,7 +293,8 @@ public class BasicExecutor {
      * destroy the executor
      */
     private void destroy() {
-        WebDriverRunner.closeWebDriver();
+        // Deprecated WebDriverRunner.closeWebDriver();
+        Selenide.closeWebDriver();
     }
 
     /**

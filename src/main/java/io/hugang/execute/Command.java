@@ -1,6 +1,9 @@
 package io.hugang.execute;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -11,6 +14,13 @@ import io.hugang.exceptions.AutoTestException;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.ThreadContext;
+
+import java.io.File;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * base command
@@ -23,6 +33,9 @@ public abstract class Command implements ICommand {
 
     public static final String TARGET = "target";
     public static final String VALUE = "value";
+
+    public static final String RESULT_TYPE_MSG = "msg";
+    public static final String RESULT_TYPE_IMG = "img";
 
     public Command() {
     }
@@ -81,6 +94,25 @@ public abstract class Command implements ICommand {
                 throw new CommandExecuteException(e);
             }
         }
+
+        // generate report
+        if (ObjectUtil.isNotEmpty(this.getReport())) {
+
+            String reportPath = ThreadContext.getReportPath().concat("/").concat(this.getReportPath());
+            File reportFile = FileUtil.mkdir(reportPath);
+            FileUtil.appendString("## ".concat(this.getCommand()).concat("\n\n"), reportFile.getAbsolutePath().concat("/report.md"), Charset.defaultCharset());
+
+            for (CommandReport commandReport : this.getReport()) {
+                if (RESULT_TYPE_MSG.equals(commandReport.getType())) {
+                    FileUtil.appendString("- ".concat(commandReport.getInfo()).concat("\n\n"), reportFile.getAbsolutePath().concat("/report.md"), Charset.defaultCharset());
+                }
+                if (RESULT_TYPE_IMG.equals(commandReport.getType())) {
+                    FileUtil.appendString("![".concat(commandReport.getInfo()).concat("]")
+                                    .concat("(").concat(commandReport.getInfo()).concat(")").concat("\n\n"),
+                            reportFile.getAbsolutePath().concat("/report.md"), Charset.defaultCharset());
+                }
+            }
+        }
     }
 
     // command
@@ -95,6 +127,10 @@ public abstract class Command implements ICommand {
     private String comment;
     // result
     private String result;
+    // report
+    private List<CommandReport> report;
+    // UID
+    private String uid;
 
     @Override
     public String getCommand() {
@@ -160,6 +196,36 @@ public abstract class Command implements ICommand {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public List<CommandReport> getReport() {
+        return report;
+    }
+
+    public void setReport(List<CommandReport> report) {
+        this.report = report;
+    }
+
+    public void appendReport(String type, String info) {
+        if (this.report == null) {
+            this.report = new ArrayList<>();
+        }
+        CommandReport report = new CommandReport();
+        report.setType(type);
+        report.setInfo(info);
+        this.report.add(report);
+    }
+
+    public String getReportPath() {
+
+        if (this.uid == null) {
+            this.uid = DatePattern.PURE_DATETIME_MS_FORMAT.format(new Date()).concat("_").concat(UUID.randomUUID().toString());
+        }
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public void appendDict(Dict dict) {
@@ -236,5 +302,26 @@ public abstract class Command implements ICommand {
     @JsonIgnore
     public Dict getVariables() {
         return ThreadContext.getVariables();
+    }
+
+    public static class CommandReport {
+        private String type;
+        private String info;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+
+        public void setInfo(String info) {
+            this.info = info;
+        }
     }
 }
