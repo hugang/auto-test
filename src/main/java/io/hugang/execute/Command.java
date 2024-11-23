@@ -1,6 +1,5 @@
 package io.hugang.execute;
 
-import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
@@ -18,9 +17,7 @@ import io.hugang.util.ThreadContext;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * base command
@@ -129,8 +126,6 @@ public abstract class Command implements ICommand {
     private String result;
     // report
     private List<CommandReport> report;
-    // UID
-    private String uid;
 
     @Override
     public String getCommand() {
@@ -217,15 +212,7 @@ public abstract class Command implements ICommand {
     }
 
     public String getReportPath() {
-
-        if (this.uid == null) {
-            this.uid = DatePattern.PURE_DATETIME_MS_FORMAT.format(new Date()).concat("_").concat(UUID.randomUUID().toString());
-        }
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
+        return ThreadContext.getReportUuid().concat("_").concat(this.getVariableStr("caseId"));
     }
 
     public void appendDict(Dict dict) {

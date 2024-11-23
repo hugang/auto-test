@@ -1,9 +1,14 @@
 package io.hugang.util;
 
 
+import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.StrUtil;
 import io.hugang.RunAutoTest;
 import io.hugang.config.AutoTestConfig;
+
+import java.util.Date;
+import java.util.UUID;
 
 public class ThreadContext {
 
@@ -108,5 +113,11 @@ public class ThreadContext {
     }
     public static void setReportPath(String path) {
         ThreadContext.put("reportPath", path);
+    }
+    public static String getReportUuid() {
+        if (StrUtil.isEmpty((String) ThreadContext.get("__uuid__"))){
+            ThreadContext.put("__uuid__", DatePattern.PURE_DATETIME_MS_FORMAT.format(new Date()).concat("_").concat(UUID.randomUUID().toString()));
+        }
+        return (String) ThreadContext.get("__uuid__");
     }
 }

@@ -27,17 +27,17 @@ public class OpenCommand extends Command {
             }
             String realUrl = render(url);
             open(realUrl);
-            generateReportData(realUrl);
+            generateReportData();
             return true;
         } catch (Exception e) {
             throw new CommandExecuteException(e);
         }
     }
 
-    private void generateReportData(String realUrl) {
-        this.appendReport(RESULT_TYPE_MSG, realUrl);
+    private void generateReportData() {
+        this.appendReport(RESULT_TYPE_MSG, render(this.getDictStr(KEY_URL)));
         String reportImageName = UUID.randomUUID().toString();
-        String screenshot = screenshot(this.getReportPath().concat("/").concat(reportImageName));
+        screenshot(this.getReportPath().concat("/").concat(reportImageName));
         this.appendReport(RESULT_TYPE_IMG, "./".concat(reportImageName).concat(".png"));
     }
 }
