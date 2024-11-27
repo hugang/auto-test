@@ -56,6 +56,7 @@ public class WhileCommand extends Command implements IConditionCommand {
         } else {
             this.setResult(this.getCommand() + ":skip");
         }
+        this.appendReport(RESULT_TYPE_MSG, this.getResult());
         return evaluate;
     }
 

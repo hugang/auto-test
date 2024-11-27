@@ -46,6 +46,7 @@ public class CalcCommand extends Command {
         try {
             // set timeout to 1000ms to avoid infinite loop
             Object result = runner.execute(calcExpression, context, null, true, false, 1000);
+            this.appendReport(RESULT_TYPE_MSG, result.toString());
             this.setVariable(variableName, result);
         } catch (Exception e) {
             log.error("calc error", e);
