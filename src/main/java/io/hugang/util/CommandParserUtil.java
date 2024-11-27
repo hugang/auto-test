@@ -391,8 +391,11 @@ public class CommandParserUtil {
         // get the test case from json
         JSONArray tests = (JSONArray) json.getByPath("tests");
         List<Commands> commandsList = new ArrayList<>();
+        int index = 0;
         for (Object o : tests) {
             Commands commands = new Commands();
+            index++;
+            commands.setCaseId(""+index);
             List<OriginalCommand> commandList = new ArrayList<>();
             JSONArray test = (JSONArray) ((JSON) o).getByPath("commands");
             for (Object value : test) {

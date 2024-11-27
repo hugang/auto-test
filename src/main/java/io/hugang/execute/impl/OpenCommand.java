@@ -35,7 +35,6 @@ public class OpenCommand extends Command {
     }
 
     private void generateReportData() {
-        this.appendReport(RESULT_TYPE_MSG, render(this.getDictStr(KEY_URL)));
         String reportImageName = UUID.randomUUID().toString();
         screenshot(this.getReportPath().concat("/").concat(reportImageName));
         this.appendReport(RESULT_TYPE_IMG, "./".concat(reportImageName).concat(".png"));
