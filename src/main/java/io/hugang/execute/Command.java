@@ -79,7 +79,6 @@ public abstract class Command implements ICommand {
     public abstract boolean _execute() throws CommandExecuteException;
 
     public void beforeExecute() {
-
     }
 
     public void afterExecute() {
@@ -91,14 +90,20 @@ public abstract class Command implements ICommand {
                 throw new CommandExecuteException(e);
             }
         }
-
         // generate report
+        String reportPath = ThreadContext.getReportPath().concat("/").concat(this.getReportPath());
+        File reportFile = FileUtil.mkdir(reportPath);
+        FileUtil.appendString("## ".concat(this.getCommand()).concat("\n\n"), reportFile.getAbsolutePath().concat("/report.md"), Charset.defaultCharset());
+
+        Dict resultDict = Dict.create();
+        resultDict.put(VALUE, this.getValue());
+        resultDict.put(TARGET, this.getTarget());
+        resultDict.put("comment", this.getComment());
+
+        FileUtil.appendString("```json\n".concat(JSONUtil.toJsonPrettyStr(resultDict)).concat("\n```\n\n"), reportFile.getAbsolutePath().concat("/report.md"), Charset.defaultCharset());
+
+        // additional report
         if (ObjectUtil.isNotEmpty(this.getReport())) {
-
-            String reportPath = ThreadContext.getReportPath().concat("/").concat(this.getReportPath());
-            File reportFile = FileUtil.mkdir(reportPath);
-            FileUtil.appendString("## ".concat(this.getCommand()).concat("\n\n"), reportFile.getAbsolutePath().concat("/report.md"), Charset.defaultCharset());
-
             for (CommandReport commandReport : this.getReport()) {
                 if (RESULT_TYPE_MSG.equals(commandReport.getType())) {
                     FileUtil.appendString("- ".concat(commandReport.getInfo()).concat("\n\n"), reportFile.getAbsolutePath().concat("/report.md"), Charset.defaultCharset());
@@ -290,6 +295,8 @@ public abstract class Command implements ICommand {
     public Dict getVariables() {
         return ThreadContext.getVariables();
     }
+
+
 
     public static class CommandReport {
         private String type;
