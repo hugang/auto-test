@@ -15,6 +15,12 @@ auto-test
    - [chrome](https://chromedriver.chromium.org/downloads) for chrome115 or newer [chrome-for-testing](https://googlechromelabs.github.io/chrome-for-testing/)
    - [edge](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
 
+```
+#for manual download
+https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json
+```
+
+
 ## how to run
 
 - start auto-server.bat to start the server, and then run the test cases xlsm.
