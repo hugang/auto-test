@@ -20,7 +20,7 @@ public class RunScriptCommand extends Command {
     @Override
     public boolean _execute() {
         try {
-            String value = this.getDictStr("value", this.getValue());
+            String value = render(getDictStr("value", this.getValue()));
             JavascriptExecutor driver = (JavascriptExecutor) WebDriverRunner.getWebDriver();
             if (this.getTarget() == null) {
                 driver.executeScript(value);
