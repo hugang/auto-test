@@ -58,6 +58,14 @@ public class BasicExecutor {
      */
     public void init() {
         AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
+        // 检查浏览器驱动路径是否有效
+        if (StrUtil.isEmpty(autoTestConfig.getWebDriverPath())) {
+            throw new AutoTestException("WebDriver 路径未配置或为空");
+        }
+        if (!FileUtil.exist(autoTestConfig.getWebDriverPath())) {
+            throw new AutoTestException("WebDriver 路径无效或文件不存在: " + autoTestConfig.getWebDriverPath());
+        }
+
         // create a web driver by webDriver
         Configuration.browser = autoTestConfig.getWebDriverPath();
         // set the download path
