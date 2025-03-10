@@ -251,7 +251,7 @@ public abstract class Command implements ICommand {
      * @return 报告文件路径
      */
     public String getReportPath() {
-        return ThreadContext.getReportUuid().concat("_").concat(this.getVariableStr("caseId"));
+        return "CaseId".concat(this.getVariableStr("caseId")).concat("_").concat(ThreadContext.getReportUuid());
     }
 
     /**
