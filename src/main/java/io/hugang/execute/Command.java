@@ -63,24 +63,25 @@ public abstract class Command implements ICommand {
             return true;
         }
 
+        this.beforeExecute(); // 执行前的准备工作
+        boolean result=false;
         try {
-            this.beforeExecute(); // 执行前的准备工作
-            boolean result = this._execute(); // 执行具体命令逻辑
-            this.afterExecute();  // 执行后的清理工作
-
-            // 如果结果为空，根据执行结果设置成功或失败
-            if (StrUtil.isEmpty(this.getResult())) {
-                if (result) {
-                    this.setResult(cmd.concat(":success")); // 设置成功结果
-                } else {
-                    this.setResult(cmd.concat(":fail")); // 设置失败结果
-                }
-            }
-            return result;
+            result = this._execute(); // 执行具体命令逻辑
         } catch (CommandExecuteException e) {
             this.setResult(cmd.concat(":" + e.getMessage())); // 设置异常结果
-            throw new AutoTestException(e); // 抛出自动化测试异常
+            this.appendReport(RESULT_TYPE_MSG,e.getMessage());
         }
+        this.afterExecute();  // 执行后的清理工作
+
+        // 如果结果为空，根据执行结果设置成功或失败
+        if (StrUtil.isEmpty(this.getResult())) {
+            if (result) {
+                this.setResult(cmd.concat(":success")); // 设置成功结果
+            } else {
+                this.setResult(cmd.concat(":fail")); // 设置失败结果
+            }
+        }
+        return result;
     }
 
     /**
