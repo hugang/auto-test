@@ -70,6 +70,7 @@ public class BasicExecutor {
         Configuration.browser = autoTestConfig.getWebDriverPath();
         // set the download path
         Configuration.reportsFolder = autoTestConfig.getFileDownloadPath();
+        Configuration.savePageSource = false;
         ThreadContext.setReportPath(autoTestConfig.getFileDownloadPath());
         // store the browser options
         Map<String, Object> optionsMap = new HashMap<>();
