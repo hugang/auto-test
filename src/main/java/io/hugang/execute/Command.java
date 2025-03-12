@@ -8,8 +8,8 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.hugang.annotation.ReportCommand;
 import io.hugang.bean.OriginalCommand;
-import io.hugang.exceptions.AutoTestException;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.util.CommandExecuteUtil;
 import io.hugang.util.ThreadContext;
@@ -18,6 +18,9 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import static com.codeborne.selenide.Selenide.screenshot;
 
 /**
  * 基础命令类，所有具体命令的父类。
@@ -104,6 +107,12 @@ public abstract class Command implements ICommand {
     public void afterExecute() {
         log.debug("command: " + this.getCommand() + " execute success"); // 记录日志
 
+        // 生成报告
+        if (this.getClass().isAnnotationPresent(ReportCommand.class)){
+            String reportImageName = UUID.randomUUID().toString();
+            screenshot(this.getReportSubPath().concat("/").concat(reportImageName));
+            this.appendReport(RESULT_TYPE_IMG, "./".concat(reportImageName).concat(".png"));        }
+
         // 如果设置了执行速度，则休眠相应时间
         if (ThreadContext.getVariables().containsKey("setSpeed")) {
             try {
@@ -114,7 +123,7 @@ public abstract class Command implements ICommand {
         }
 
         // 生成报告
-        String reportPath = ThreadContext.getReportPath().concat("/").concat(this.getReportPath());
+        String reportPath = ThreadContext.getReportPath().concat("/").concat(this.getReportSubPath());
         File reportFile = FileUtil.mkdir(reportPath); // 创建报告目录
         FileUtil.appendString("## ".concat(this.getCommand()).concat("\n\n"), reportFile.getAbsolutePath().concat("/report.md"), Charset.defaultCharset());
 
@@ -251,7 +260,7 @@ public abstract class Command implements ICommand {
      *
      * @return 报告文件路径
      */
-    public String getReportPath() {
+    public String getReportSubPath() {
         return "CaseId".concat(this.getVariableStr("caseId")).concat("_").concat(ThreadContext.getReportUuid());
     }
 
@@ -418,4 +427,5 @@ public abstract class Command implements ICommand {
             this.info = info;
         }
     }
+
 }

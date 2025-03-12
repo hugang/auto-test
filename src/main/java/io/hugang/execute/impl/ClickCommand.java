@@ -1,16 +1,14 @@
 package io.hugang.execute.impl;
 
 import com.codeborne.selenide.SelenideElement;
+import io.hugang.annotation.ReportCommand;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 
-import java.util.UUID;
-
-import static com.codeborne.selenide.Selenide.screenshot;
-
 @WebCommand
+@ReportCommand
 public class ClickCommand extends Command {
     public ClickCommand(OriginalCommand originalCommand) {
         super(originalCommand);
@@ -19,7 +17,6 @@ public class ClickCommand extends Command {
     @Override
     public boolean _execute() {
         execute(CommandExecuteUtil.getElement(render(getTarget())));
-        generateReportData();
         return true;
     }
 
@@ -27,11 +24,5 @@ public class ClickCommand extends Command {
         if ($.isDisplayed() && $.isEnabled()) {
             $.click();
         }
-    }
-
-    private void generateReportData() {
-        String reportImageName = UUID.randomUUID().toString();
-        screenshot(this.getReportPath().concat("/").concat(reportImageName));
-        this.appendReport(RESULT_TYPE_IMG, "./".concat(reportImageName).concat(".png"));
     }
 }

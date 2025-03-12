@@ -319,12 +319,11 @@ public class BasicExecutor {
                 if (!command.isSkip()) {
                     result = command.execute();
                     if (!result) {
-                        // write failed result to file
                         log.error("execute command failed, command={}", command);
+                        throw new AutoTestException("execute command failed, command=" + command);
                     }
                 }
             } catch (AutoTestException e) {
-                // write failed result to file
                 log.error("execute command failed, command={}", command);
                 log.error("execute command failed detail", e);
                 break;

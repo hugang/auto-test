@@ -1,16 +1,16 @@
 package io.hugang.execute.impl;
 
+import io.hugang.annotation.ReportCommand;
 import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
 
-import java.util.UUID;
 
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.screenshot;
 
 @WebCommand
+@ReportCommand
 public class OpenCommand extends Command {
     public static final String KEY_URL = "url";
 
@@ -27,16 +27,9 @@ public class OpenCommand extends Command {
             }
             String realUrl = render(url);
             open(realUrl);
-            generateReportData();
             return true;
         } catch (Exception e) {
             throw new CommandExecuteException(e);
         }
-    }
-
-    private void generateReportData() {
-        String reportImageName = UUID.randomUUID().toString();
-        screenshot(this.getReportPath().concat("/").concat(reportImageName));
-        this.appendReport(RESULT_TYPE_IMG, "./".concat(reportImageName).concat(".png"));
     }
 }

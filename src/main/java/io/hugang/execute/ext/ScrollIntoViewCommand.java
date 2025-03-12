@@ -2,13 +2,11 @@ package io.hugang.execute.ext;
 
 import cn.hutool.log.Log;
 import com.codeborne.selenide.SelenideElement;
+import io.hugang.annotation.ReportCommand;
+import io.hugang.annotation.WebCommand;
 import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
-
-import java.util.UUID;
-
-import static com.codeborne.selenide.Selenide.screenshot;
 
 /**
  * scroll into view command
@@ -17,6 +15,8 @@ import static com.codeborne.selenide.Selenide.screenshot;
  * <br>
  * usage: scrollIntoView | target
  */
+@WebCommand
+@ReportCommand
 public class ScrollIntoViewCommand extends Command {
     private static final Log log = Log.get();
 
@@ -38,18 +38,10 @@ public class ScrollIntoViewCommand extends Command {
             SelenideElement element = CommandExecuteUtil.getElement(target);
             // scroll into view
             element.scrollIntoView(true);
-
-            generateReportData();
             return true;
         } catch (Exception e) {
             log.error("scroll into view error", e);
             return false;
         }
-    }
-
-    private void generateReportData() {
-        String reportImageName = UUID.randomUUID().toString();
-        screenshot(this.getReportPath().concat("/").concat(reportImageName));
-        this.appendReport(RESULT_TYPE_IMG, "./".concat(reportImageName).concat(".png"));
     }
 }
