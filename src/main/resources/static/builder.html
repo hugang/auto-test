@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selenium Command Builder</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .command-builder {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+        }
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+        .btn-success {
+            background-color: #10b981;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        .btn-success:hover {
+            background-color: #059669;
+        }
+        .command-flow {
+            background-color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            min-height: 60px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+        .flow-start {
+            background-color: #d1d5db;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        .flow-arrow {
+            color: #6b7280;
+            font-weight: bold;
+            position: relative;
+        }
+        .insert-point {
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #10b981;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            text-align: center;
+            line-height: 24px;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .flow-arrow:hover .insert-point {
+            display: block;
+        }
+        .flow-command {
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .flow-command.blue {
+            background-color: #dbeafe;
+        }
+        .flow-command.yellow {
+            background-color: #fef3c7;
+        }
+        .flow-command.selected {
+            outline: 2px solid #3b82f6;
+        }
+        .command-remove {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 18px;
+            height: 18px;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .empty-message {
+            color: #6b7280;
+            font-style: italic;
+        }
+        .command-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .command-table th, .command-table td {
+            text-align: left;
+            padding: 8px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .command-table thead {
+            background-color: #f3f4f6;
+        }
+        .command-table tbody tr {
+            cursor: pointer;
+        }
+        .command-table tbody tr:hover {
+            background-color: #f3f4f6;
+        }
+        .command-table tbody tr.selected {
+            background-color: #dbeafe;
+        }
+        .json-output {
+            position: relative;
+        }
+        .output-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .json-container {
+            background-color: #1f2937;
+            color: #4ade80;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: monospace;
+            white-space: pre;
+        }
+        .action-label {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .action-label.insert {
+            background-color: #10b981;
+            color: white;
+        }
+        .action-label.edit {
+            background-color: #3b82f6;
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .form-group {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Selenium Command Builder</h1>
+
+    <!-- Command Builder Form -->
+    <div class="command-builder">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="command-type">Command</label>
+                <select id="command-type" class="form-control">
+                    <option value="open" selected>open</option>
+                    <option value="type">type</option>
+                    <option value="click">click</option>
+                    <option value="wait">wait</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="command-target">Target</label>
+                <input type="text" id="command-target" class="form-control" placeholder="Target to type">
+            </div>
+
+            <div class="form-group" id="value-group" style="display:none;">
+                <label for="command-value">Value</label>
+                <input type="text" id="command-value" class="form-control" placeholder="Text to type">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <button id="add-command" class="btn btn-primary">Add Command</button>
+                <span id="mode-indicator"></span>
+            </div>
+            <div class="form-group" style="justify-content: flex-end; display: flex;">
+                <button id="cancel-edit" class="btn btn-secondary" style="display:none;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Command Flow Display -->
+    <h2>Command Flow</h2>
+    <div class="command-flow" id="command-flow">
+        <div class="empty-message">No commands added yet</div>
+    </div>
+
+    <!-- Command Details Table -->
+    <div id="command-details" style="display:none;">
+        <h2>Command Details</h2>
+        <table class="command-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Command</th>
+                <th>Target</th>
+                <th>Value</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="command-table-body">
+            </tbody>
+        </table>
+    </div>
+
+    <!-- JSON Output -->
+    <div class="json-output">
+        <div class="output-actions">
+            <h2>JSON Output</h2>
+            <button id="clear-all" class="btn btn-danger">Clear All</button>
+            <button id="export-json" class="btn btn-success">Export JSON</button>
+            <input type="file" id="import-json" class="btn btn-secondary" accept=".json">
+        </div>
+        <div class="json-container" id="json-output">
+            [
+            // Commands will appear here
+            ]
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Elements
+        const commandTypeSelect = document.getElementById('command-type');
+        const commandTargetInput = document.getElementById('command-target');
+        const commandValueInput = document.getElementById('command-value');
+        const valueGroup = document.getElementById('value-group');
+        const addCommandBtn = document.getElementById('add-command');
+        const cancelEditBtn = document.getElementById('cancel-edit');
+        const commandFlowDiv = document.getElementById('command-flow');
+        const commandDetailsDiv = document.getElementById('command-details');
+        const commandTableBody = document.getElementById('command-table-body');
+        const jsonOutputDiv = document.getElementById('json-output');
+        const clearAllBtn = document.getElementById('clear-all');
+        const modeIndicator = document.getElementById('mode-indicator');
+        const exportJsonBtn = document.getElementById('export-json');
+        const importJsonInput = document.getElementById('import-json');
+
+        // State
+        let commands = [];
+        let editingIndex = -1;
+        let isEditing = false;
+        let isInserting = false;
+        let insertIndex = -1;
+
+        // Event Listeners
+        commandTypeSelect.addEventListener('change', function() {
+            valueGroup.style.display = this.value === 'type' ? 'block' : 'none';
+        });
+
+        addCommandBtn.addEventListener('click', function() {
+            if (!commandTargetInput.value.trim()) {
+                alert('Please enter a target');
+                return;
+            }
+
+            if (commandTypeSelect.value === 'type' && !commandValueInput.value.trim()) {
+                alert('Please enter a value for the type command');
+                return;
+            }
+
+            if (isEditing) {
+                updateCommand();
+            } else if (isInserting) {
+                insertCommand();
+            } else {
+                addCommand();
+            }
+        });
+
+        cancelEditBtn.addEventListener('click', function() {
+            resetForm();
+        });
+
+        clearAllBtn.addEventListener('click', function() {
+            clearAll();
+        });
+
+        // Export JSON functionality
+        exportJsonBtn.addEventListener('click', function() {
+            const jsonBlob = new Blob([JSON.stringify(commands, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(jsonBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'commands.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // Import JSON functionality
+        importJsonInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedCommands = JSON.parse(e.target.result);
+                    if (Array.isArray(importedCommands)) {
+                        commands = importedCommands;
+                        updateUI();
+                    } else {
+                        alert('Invalid JSON format!');
+                    }
+                } catch (error) {
+                    alert('Error parsing JSON file!');
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Functions
+        function addCommand() {
+            const newCommand = {
+                command: commandTypeSelect.value,
+                target: commandTargetInput.value
+            };
+
+            if (commandTypeSelect.value === 'type') {
+                newCommand.value = commandValueInput.value;
+            }
+
+            commands.push(newCommand);
+            updateUI();
+            resetForm();
+        }
+
+        function insertCommand() {
+            if (insertIndex >= 0 && insertIndex <= commands.length) {
+                const newCommand = {
+                    command: commandTypeSelect.value,
+                    target: commandTargetInput.value
+                };
+
+                if (commandTypeSelect.value === 'type') {
+                    newCommand.value = commandValueInput.value;
+                }
+
+                commands.splice(insertIndex, 0, newCommand);
+
+                // Adjust editing index if needed
+                if (editingIndex >= insertIndex) {
+                    editingIndex++;
+                }
+
+                updateUI();
+                resetForm();
+            }
+        }
+
+        function updateCommand() {
+            if (editingIndex >= 0 && editingIndex < commands.length) {
+                commands[editingIndex] = {
+                    command: commandTypeSelect.value,
+                    target: commandTargetInput.value
+                };
+
+                if (commandTypeSelect.value === 'type') {
+                    commands[editingIndex].value = commandValueInput.value;
+                }
+            }
+
+            updateUI();
+            resetForm();
+        }
+
+        function editCommand(index) {
+            if (index >= 0 && index < commands.length) {
+                const cmd = commands[index];
+                commandTypeSelect.value = cmd.command;
+                commandTargetInput.value = cmd.target;
+                commandValueInput.value = cmd.value || '';
+                valueGroup.style.display = cmd.command === 'type' ? 'block' : 'none';
+
+                editingIndex = index;
+                isEditing = true;
+                isInserting = false;
+                insertIndex = -1;
+
+                addCommandBtn.textContent = 'Update Command';
+                modeIndicator.innerHTML = '<span class="action-label edit">Editing #' + (index + 1) + '</span>';
+                cancelEditBtn.style.display = 'inline-block';
+
+                // Update visual selection state
+                updateSelectionState();
+            }
+        }
+
+        function setInsertMode(index) {
+            resetForm();
+
+            insertIndex = index;
+            isInserting = true;
+            isEditing = false;
+            editingIndex = -1;
+
+            addCommandBtn.textContent = 'Insert Command';
+            modeIndicator.innerHTML = '<span class="action-label insert">Inserting at position ' + (index + 1) + '</span>';
+            cancelEditBtn.style.display = 'inline-block';
+
+            updateSelectionState();
+        }
+
+        function removeCommand(index) {
+            if (index >= 0 && index < commands.length) {
+                commands.splice(index, 1);
+
+                if (editingIndex === index) {
+                    resetForm();
+                } else if (editingIndex > index) {
+                    editingIndex--;
+                }
+
+                if (insertIndex > index) {
+                    insertIndex--;
+                }
+
+                updateUI();
+            }
+        }
+
+        function resetForm() {
+            commandTypeSelect.value = 'open';
+            commandTargetInput.value = '';
+            commandValueInput.value = '';
+            valueGroup.style.display = 'none';
+
+            editingIndex = -1;
+            isEditing = false;
+            isInserting = false;
+            insertIndex = -1;
+
+            addCommandBtn.textContent = 'Add Command';
+            modeIndicator.innerHTML = '';
+            cancelEditBtn.style.display = 'none';
+
+            updateSelectionState();
+        }
+
+        function clearAll() {
+            commands = [];
+            resetForm();
+            updateUI();
+        }
+
+        function updateUI() {
+            // Update command flow
+            if (commands.length > 0) {
+                commandFlowDiv.innerHTML = '';
+
+                const startElem = document.createElement('div');
+                startElem.className = 'flow-start';
+                startElem.textContent = 'Start';
+                commandFlowDiv.appendChild(startElem);
+
+                // Insert point before first command
+                const firstArrow = document.createElement('div');
+                firstArrow.className = 'flow-arrow';
+                firstArrow.textContent = '→';
+
+                const firstInsertPoint = document.createElement('div');
+                firstInsertPoint.className = 'insert-point';
+                firstInsertPoint.textContent = '+';
+                firstInsertPoint.title = 'Insert command here';
+                firstInsertPoint.dataset.position = 0;
+                firstInsertPoint.addEventListener('click', function() {
+                    setInsertMode(parseInt(this.dataset.position));
+                });
+
+                firstArrow.appendChild(firstInsertPoint);
+                commandFlowDiv.appendChild(firstArrow);
+
+                commands.forEach((cmd, index) => {
+                    // Command
+                    const cmdElem = document.createElement('div');
+                    cmdElem.className = 'flow-command ' +
+                        (cmd.command === 'node' || cmd.command === 'wait' ? 'blue' : 'yellow');
+                    if (editingIndex === index) {
+                        cmdElem.classList.add('selected');
+                    }
+                    cmdElem.textContent = cmd.command;
+                    cmdElem.dataset.index = index;
+                    cmdElem.addEventListener('click', function() {
+                        editCommand(parseInt(this.dataset.index));
+                    });
+
+                    // Remove button
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'command-remove';
+                    removeBtn.textContent = '×';
+                    removeBtn.dataset.index = index;
+                    removeBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        removeCommand(parseInt(this.dataset.index));
+                    });
+
+                    cmdElem.appendChild(removeBtn);
+                    commandFlowDiv.appendChild(cmdElem);
+
+                    // Only add arrow and insert point if not the last command
+                    if (index < commands.length - 1) {
+                        const arrowElem = document.createElement('div');
+                        arrowElem.className = 'flow-arrow';
+                        arrowElem.textContent = '→';
+
+                        const insertPoint = document.createElement('div');
+                        insertPoint.className = 'insert-point';
+                        insertPoint.textContent = '+';
+                        insertPoint.title = 'Insert command here';
+                        insertPoint.dataset.position = index + 1;
+                        insertPoint.addEventListener('click', function() {
+                            setInsertMode(parseInt(this.dataset.position));
+                        });
+
+                        arrowElem.appendChild(insertPoint);
+                        commandFlowDiv.appendChild(arrowElem);
+                    }
+                });
+
+                // Show command details
+                commandDetailsDiv.style.display = 'block';
+                commandTableBody.innerHTML = '';
+
+                commands.forEach((cmd, index) => {
+                    const row = document.createElement('tr');
+                    if (editingIndex === index) {
+                        row.className = 'selected';
+                    }
+
+                    const insertBefore = document.createElement('button');
+                    insertBefore.className = 'btn btn-success';
+                    insertBefore.textContent = 'Insert Before';
+                    insertBefore.dataset.position = index;
+                    insertBefore.style.padding = '4px 8px';
+                    insertBefore.style.fontSize = '12px';
+                    insertBefore.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        setInsertMode(parseInt(this.dataset.position));
+                    });
+
+                    const insertAfter = document.createElement('button');
+                    insertAfter.className = 'btn btn-success';
+                    insertAfter.textContent = 'Insert After';
+                    insertAfter.dataset.position = index + 1;
+                    insertAfter.style.padding = '4px 8px';
+                    insertAfter.style.fontSize = '12px';
+                    insertAfter.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        setInsertMode(parseInt(this.dataset.position));
+                    });
+
+                    const actionsCell = document.createElement('td');
+                    actionsCell.appendChild(insertBefore);
+                    actionsCell.appendChild(document.createTextNode(' '));
+                    actionsCell.appendChild(insertAfter);
+
+                    row.innerHTML = `
+              <td>${index + 1}</td>
+              <td>${cmd.command}</td>
+              <td>${cmd.target}</td>
+              <td>${cmd.value || '-'}</td>
+            `;
+                    row.appendChild(actionsCell);
+
+                    row.dataset.index = index;
+                    row.addEventListener('click', function(e) {
+                        if (e.target.tagName !== 'BUTTON') {
+                            editCommand(parseInt(this.dataset.index));
+                        }
+                    });
+
+                    commandTableBody.appendChild(row);
+                });
+            } else {
+                commandFlowDiv.innerHTML = '<div class="empty-message">No commands added yet</div>';
+                commandDetailsDiv.style.display = 'none';
+            }
+
+            // Update JSON output
+            jsonOutputDiv.textContent = JSON.stringify(commands, null, 2);
+        }
+
+        function updateSelectionState() {
+            // Update flow command selection state
+            const flowCommands = commandFlowDiv.querySelectorAll('.flow-command');
+            flowCommands.forEach((elem, index) => {
+                if (parseInt(elem.dataset.index) === editingIndex) {
+                    elem.classList.add('selected');
+                } else {
+                    elem.classList.remove('selected');
+                }
+            });
+
+            // Update table row selection state
+            const tableRows = commandTableBody.querySelectorAll('tr');
+            tableRows.forEach((row, index) => {
+                if (parseInt(row.dataset.index) === editingIndex) {
+                    row.classList.add('selected');
+                } else {
+                    row.classList.remove('selected');
+                }
+            });
+        }
+
+        // Initialize
+        updateUI();
+    });
+</script>
+</body>
+</html>
