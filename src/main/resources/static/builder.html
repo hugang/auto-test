@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selenium Command Builder</title>
+    <title>Auto Test Command Builder</title>
     <style>
         * {
             box-sizing: border-box;
@@ -241,7 +241,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Selenium Command Builder</h1>
+    <h1>Auto Test Command Builder</h1>
 
     <!-- Command Builder Form -->
     <div class="command-builder">
@@ -264,6 +264,11 @@
             <div class="form-group" id="value-group" style="display:none;">
                 <label for="command-value">Value</label>
                 <input type="text" id="command-value" class="form-control" placeholder="Text to type">
+            </div>
+
+            <div class="form-group" id="comment-group">
+                <label for="command-comment">Comment</label>
+                <input type="text" id="command-comment" class="form-control" placeholder="Comment to type">
             </div>
         </div>
 
@@ -294,6 +299,7 @@
                 <th>Command</th>
                 <th>Target</th>
                 <th>Value</th>
+                <th>Comment</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -308,6 +314,7 @@
             <h2>JSON Output</h2>
             <button id="clear-all" class="btn btn-danger">Clear All</button>
             <button id="export-json" class="btn btn-success">Export JSON</button>
+            <button id="run-script" class="btn btn-success">Run</button>
             <input type="file" id="import-json" class="btn btn-secondary" accept=".json">
         </div>
         <div class="json-container" id="json-output">
@@ -324,6 +331,7 @@
         const commandTypeSelect = document.getElementById('command-type');
         const commandTargetInput = document.getElementById('command-target');
         const commandValueInput = document.getElementById('command-value');
+        const commandCommentInput = document.getElementById('command-comment');
         const valueGroup = document.getElementById('value-group');
         const addCommandBtn = document.getElementById('add-command');
         const cancelEditBtn = document.getElementById('cancel-edit');
@@ -334,6 +342,7 @@
         const clearAllBtn = document.getElementById('clear-all');
         const modeIndicator = document.getElementById('mode-indicator');
         const exportJsonBtn = document.getElementById('export-json');
+        const runScriptBtn = document.getElementById('run-script');
         const importJsonInput = document.getElementById('import-json');
 
         // State
@@ -376,6 +385,38 @@
             clearAll();
         });
 
+        // Function to call API and export JSON
+        async function callRunScriptApi() {
+            const jsonBody = {
+                "name": "test",
+                "tests": [
+                    {
+                        "name": "test1",
+                        "commands": commands
+                    }
+                ]
+            };
+            try {
+                const response = await fetch('/flow', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(jsonBody)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                } else {
+                    alert('Success');
+                }
+            } catch (error) {
+                alert('Failed to export JSON: ' + error.message);
+            }
+        }
+        // run Script
+        runScriptBtn.addEventListener('click', callRunScriptApi);
+
         // Export JSON functionality
         exportJsonBtn.addEventListener('click', function() {
             const jsonBlob = new Blob([JSON.stringify(commands, null, 2)], { type: 'application/json' });
@@ -388,6 +429,7 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         });
+
 
         // Import JSON functionality
         importJsonInput.addEventListener('change', function(event) {
@@ -415,7 +457,8 @@
         function addCommand() {
             const newCommand = {
                 command: commandTypeSelect.value,
-                target: commandTargetInput.value
+                target: commandTargetInput.value,
+                comment: commandCommentInput.value
             };
 
             if (commandTypeSelect.value === 'type') {
@@ -431,7 +474,8 @@
             if (insertIndex >= 0 && insertIndex <= commands.length) {
                 const newCommand = {
                     command: commandTypeSelect.value,
-                    target: commandTargetInput.value
+                    target: commandTargetInput.value,
+                    comment: commandCommentInput.value
                 };
 
                 if (commandTypeSelect.value === 'type') {
@@ -454,7 +498,8 @@
             if (editingIndex >= 0 && editingIndex < commands.length) {
                 commands[editingIndex] = {
                     command: commandTypeSelect.value,
-                    target: commandTargetInput.value
+                    target: commandTargetInput.value,
+                    comment: commandCommentInput.value
                 };
 
                 if (commandTypeSelect.value === 'type') {
@@ -472,6 +517,7 @@
                 commandTypeSelect.value = cmd.command;
                 commandTargetInput.value = cmd.target;
                 commandValueInput.value = cmd.value || '';
+                commandCommentInput.value = cmd.comment;
                 valueGroup.style.display = cmd.command === 'type' ? 'block' : 'none';
 
                 editingIndex = index;
@@ -525,6 +571,7 @@
             commandTypeSelect.value = 'open';
             commandTargetInput.value = '';
             commandValueInput.value = '';
+            commandCommentInput.value = '';
             valueGroup.style.display = 'none';
 
             editingIndex = -1;
@@ -660,7 +707,9 @@
               <td>${index + 1}</td>
               <td>${cmd.command}</td>
               <td>${cmd.target}</td>
-              <td>${cmd.value || '-'}</td>
+              <td>${cmd.value || '-'}
+              <td>${cmd.comment}</td>
+              </td>
             `;
                     row.appendChild(actionsCell);
 
