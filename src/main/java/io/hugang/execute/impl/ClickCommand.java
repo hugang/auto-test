@@ -8,7 +8,7 @@ import io.hugang.execute.Command;
 import io.hugang.util.CommandExecuteUtil;
 
 @WebCommand
-@ReportCommand
+@ReportCommand("before") // 点击之前保存图片
 public class ClickCommand extends Command {
     public ClickCommand(OriginalCommand originalCommand) {
         super(originalCommand);

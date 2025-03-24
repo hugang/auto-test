@@ -99,6 +99,7 @@ public abstract class Command implements ICommand {
      * 命令执行前的准备工作，默认实现为空。
      */
     public void beforeExecute() {
+        generateReportImage("before"); // 生成报告用图片
     }
 
     /**
@@ -107,11 +108,7 @@ public abstract class Command implements ICommand {
     public void afterExecute() {
         log.debug("command: " + this.getCommand() + " execute success"); // 记录日志
 
-        // 生成报告
-        if (this.getClass().isAnnotationPresent(ReportCommand.class)){
-            String reportImageName = UUID.randomUUID().toString();
-            screenshot(this.getReportSubPath().concat("/").concat(reportImageName));
-            this.appendReport(RESULT_TYPE_IMG, "./".concat(reportImageName).concat(".png"));        }
+        generateReportImage("after"); // 生成报告用图片
 
         // 如果设置了执行速度，则休眠相应时间
         if (ThreadContext.getVariables().containsKey("setSpeed")) {
@@ -147,6 +144,19 @@ public abstract class Command implements ICommand {
                             reportFile.getAbsolutePath().concat("/report.md"), Charset.defaultCharset());
                 }
             }
+        }
+    }
+
+    private void generateReportImage(String type) {
+        // 生成报告用图片
+        if (this.getClass().isAnnotationPresent(ReportCommand.class)){
+            String reportType = this.getClass().getAnnotation(ReportCommand.class).value();
+            if (!type.equals(reportType)) {
+                return;
+            }
+            String reportImageName = UUID.randomUUID().toString();
+            screenshot(this.getReportSubPath().concat("/").concat(reportImageName));
+            this.appendReport(RESULT_TYPE_IMG, "./".concat(reportImageName).concat(".png"));
         }
     }
 
