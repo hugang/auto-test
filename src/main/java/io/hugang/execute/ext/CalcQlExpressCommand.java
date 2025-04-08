@@ -10,16 +10,16 @@ import io.hugang.execute.Command;
 /**
  * calc command
  */
-public class CalcCommand extends Command {
+public class CalcQlExpressCommand extends Command {
     private static final Log log = Log.get();
 
-    public CalcCommand(OriginalCommand originalCommand) {
+    public CalcQlExpressCommand(OriginalCommand originalCommand) {
         super(originalCommand);
     }
 
     @Override
     public String getCommand() {
-        return "calc";
+        return "calc.ql";
     }
 
     @Override
