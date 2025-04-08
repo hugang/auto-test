@@ -796,14 +796,23 @@ true.
 
 <hr>
 
-## calc [〇]
+## calc.js [〇]
 
-calculate the expression, and store the result to a variable.
+calculate the ES5 syntax expression, and store the result to a variable.
+
+- arguments
+  - expression(target): The expression to calculate.
+  - variable name(value): The name of the variable without brackets.
+
+## calc.ql [〇]
+
+calculate the ql expression, and store the result to a variable.
 see https://github.com/alibaba/QLExpress
 
 - arguments
   - expression(target): The expression to calculate.
   - variable name(value): The name of the variable without brackets.
+
 
 ## call api [〇]
 
