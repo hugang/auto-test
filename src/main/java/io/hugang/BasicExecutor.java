@@ -54,85 +54,97 @@ public class BasicExecutor {
     }
 
     /**
-     * initialize web driver
+     * Initialize the web driver with configurations from AutoTestConfig.
      */
     public void init() {
         AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
-        // 检查浏览器驱动路径是否有效
+
+        // Validate WebDriver path
         if (StrUtil.isEmpty(autoTestConfig.getWebDriverPath())) {
-            throw new AutoTestException("WebDriver 路径未配置或为空");
+            throw new AutoTestException("WebDriver path is not configured or empty");
         }
         if (!FileUtil.exist(autoTestConfig.getWebDriverPath())) {
-            throw new AutoTestException("WebDriver 路径无效或文件不存在: " + autoTestConfig.getWebDriverPath());
+            throw new AutoTestException("Invalid WebDriver path or file does not exist: " + autoTestConfig.getWebDriverPath());
         }
 
-        // create a web driver by webDriver
+        // Configure Selenide settings
         Configuration.browser = autoTestConfig.getWebDriverPath();
-        // set the download path
         Configuration.reportsFolder = autoTestConfig.getFileDownloadPath();
         Configuration.savePageSource = false;
         ThreadContext.setReportPath(autoTestConfig.getFileDownloadPath());
-        // store the browser options
+
+        // Browser options setup
         Map<String, Object> optionsMap = new HashMap<>();
-        // set pdf file always open externally
         optionsMap.put("plugins.always_open_pdf_externally", true);
-        // set the download path
         optionsMap.put("download.default_directory", autoTestConfig.getFileDownloadPath());
-        // set browser size
         Dimension targetWindowSize = new Dimension(autoTestConfig.getWidth(), autoTestConfig.getHeight());
 
         WebDriver driver;
-        // create chrome webdriver
+
+        // Initialize WebDriver based on browser type
         switch (autoTestConfig.getWebDriverName()) {
-            case "chrome": {
-                System.setProperty("webdriver.chrome.driver", autoTestConfig.getWebDriverPath());
-                ChromeOptions options = new ChromeOptions();
-                if (StrUtil.isNotEmpty(autoTestConfig.getUserProfilePath())) {
-                    options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
-                }
-                // binary path
-                if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
-                    options.setBinary(autoTestConfig.getBrowserBinaryPath());
-                }
-                options.addArguments("--remote-allow-origins=*");
-                options.setExperimentalOption("prefs", optionsMap);
-                driver = new ChromeDriver(options);
+            case "chrome":
+                driver = initializeChromeDriver(autoTestConfig, optionsMap);
                 break;
-            }
-            // create edge webdriver
-            case "edge": {
-                System.setProperty("webdriver.edge.driver", autoTestConfig.getWebDriverPath());
-                EdgeOptions options = new EdgeOptions();
-                if (StrUtil.isNotEmpty(autoTestConfig.getUserProfilePath())) {
-                    options.addArguments("--user-data-dir=" + autoTestConfig.getUserProfilePath());
-                }
-                // binary path
-                if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
-                    options.setBinary(autoTestConfig.getBrowserBinaryPath());
-                }
-                options.addArguments("--remote-allow-origins=*");
-                options.setExperimentalOption("prefs", optionsMap);
-                driver = new EdgeDriver(options);
+            case "edge":
+                driver = initializeEdgeDriver(autoTestConfig, optionsMap);
                 break;
-            }
-            // create firefox webdriver
-            case "firefox": {
-                System.setProperty("webdriver.gecko.driver", autoTestConfig.getWebDriverPath());
-                FirefoxOptions options = new FirefoxOptions();
-                // binary path
-                if (ObjectUtil.isNotEmpty(autoTestConfig.getBrowserBinaryPath())) {
-                    options.setBinary(autoTestConfig.getBrowserBinaryPath());
-                }
-                driver = new FirefoxDriver(options);
+            case "firefox":
+                driver = initializeFirefoxDriver(autoTestConfig);
                 break;
-            }
             default:
-                throw new RuntimeException("web driver not supported");
+                throw new RuntimeException("Unsupported WebDriver");
         }
-        // set the browser size
+
+        // Set browser window size and WebDriver
         driver.manage().window().setSize(targetWindowSize);
-        // set the driver
         WebDriverRunner.setWebDriver(driver);
+    }
+
+    /**
+     * Initialize Chrome WebDriver.
+     */
+    private WebDriver initializeChromeDriver(AutoTestConfig config, Map<String, Object> optionsMap) {
+        System.setProperty("webdriver.chrome.driver", config.getWebDriverPath());
+        ChromeOptions options = new ChromeOptions();
+        if (StrUtil.isNotEmpty(config.getUserProfilePath())) {
+            options.addArguments("--user-data-dir=" + config.getUserProfilePath());
+        }
+        if (ObjectUtil.isNotEmpty(config.getBrowserBinaryPath())) {
+            options.setBinary(config.getBrowserBinaryPath());
+        }
+        options.addArguments("--remote-allow-origins=*");
+        options.setExperimentalOption("prefs", optionsMap);
+        return new ChromeDriver(options);
+    }
+
+    /**
+     * Initialize Edge WebDriver.
+     */
+    private WebDriver initializeEdgeDriver(AutoTestConfig config, Map<String, Object> optionsMap) {
+        System.setProperty("webdriver.edge.driver", config.getWebDriverPath());
+        EdgeOptions options = new EdgeOptions();
+        if (StrUtil.isNotEmpty(config.getUserProfilePath())) {
+            options.addArguments("--user-data-dir=" + config.getUserProfilePath());
+        }
+        if (ObjectUtil.isNotEmpty(config.getBrowserBinaryPath())) {
+            options.setBinary(config.getBrowserBinaryPath());
+        }
+        options.addArguments("--remote-allow-origins=*");
+        options.setExperimentalOption("prefs", optionsMap);
+        return new EdgeDriver(options);
+    }
+
+    /**
+     * Initialize Firefox WebDriver.
+     */
+    private WebDriver initializeFirefoxDriver(AutoTestConfig config) {
+        System.setProperty("webdriver.gecko.driver", config.getWebDriverPath());
+        FirefoxOptions options = new FirefoxOptions();
+        if (ObjectUtil.isNotEmpty(config.getBrowserBinaryPath())) {
+            options.setBinary(config.getBrowserBinaryPath());
+        }
+        return new FirefoxDriver(options);
     }
 
     /**
@@ -182,50 +194,66 @@ public class BasicExecutor {
     }
 
     /**
-     * parse input to commands list
+     * Parse input to commands list based on test mode.
      */
     private List<Commands> parseCommandsList() {
         List<Commands> commandsList = new ArrayList<>();
         AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
-        // get the test case path
-        String testCasePath = autoTestConfig.getTestCasePath();
-        if (!FileUtil.exist(testCasePath)) {
-            testCasePath = CommandExecuteUtil.getFilePathWithBaseDir(testCasePath);
-            if (!FileUtil.exist(testCasePath)) {
-                throw new AutoTestException("test case file not exist");
-            }
-        }
-        log.info("test case path = {} ", testCasePath);
+        String testCasePath = validateTestCasePath(autoTestConfig);
+
+        log.info("Test case path = {}", testCasePath);
+
         switch (autoTestConfig.getTestMode()) {
             case "xlsx":
-                List<Commands> commandsFromXlsx = CommandParserUtil.getCommandsFromXlsx(testCasePath);
-                List<String> testCasesArray = new ArrayList<>();
-                if (StrUtil.isNotEmpty(autoTestConfig.getTestCases())) {
-                    String[] testCaseArray = autoTestConfig.getTestCases().split(",");
-                    testCasesArray.addAll(getTestCases(testCaseArray));
-                }
-                if (CollUtil.isNotEmpty(testCasesArray)) {
-                    for (Commands fromXlsx : commandsFromXlsx) {
-                        if (testCasesArray.contains(fromXlsx.getCaseId())) {
-                            commandsList.add(fromXlsx);
-                        }
-                    }
-                } else {
-                    commandsList.addAll(commandsFromXlsx);
-                }
+                commandsList = parseXlsxCommands(autoTestConfig, testCasePath);
                 break;
             case "csv":
                 commandsList.addAll(CommandParserUtil.getCommandsFromCsv(testCasePath));
                 break;
             case "json":
                 commandsList.addAll(CommandParserUtil.getCommandsFromJson(testCasePath));
-                // save commandsList to a xlsx file
                 CommandParserUtil.saveCommandsListToXlsx(commandsList, autoTestConfig.getFileDownloadPath());
                 break;
             default:
-                throw new RuntimeException("test mode not supported");
+                throw new RuntimeException("Unsupported test mode");
         }
         return commandsList;
+    }
+
+    /**
+     * Validate and retrieve the test case path.
+     */
+    private String validateTestCasePath(AutoTestConfig config) {
+        String testCasePath = config.getTestCasePath();
+        if (!FileUtil.exist(testCasePath)) {
+            testCasePath = CommandExecuteUtil.getFilePathWithBaseDir(testCasePath);
+            if (!FileUtil.exist(testCasePath)) {
+                throw new AutoTestException("Test case file does not exist");
+            }
+        }
+        return testCasePath;
+    }
+
+    /**
+     * Parse commands from XLSX file.
+     */
+    private List<Commands> parseXlsxCommands(AutoTestConfig config, String testCasePath) {
+        List<Commands> commandsFromXlsx = CommandParserUtil.getCommandsFromXlsx(testCasePath);
+        List<String> testCasesArray = new ArrayList<>();
+        if (StrUtil.isNotEmpty(config.getTestCases())) {
+            String[] testCaseArray = config.getTestCases().split(",");
+            testCasesArray.addAll(getTestCases(testCaseArray));
+        }
+        if (CollUtil.isNotEmpty(testCasesArray)) {
+            List<Commands> filteredCommands = new ArrayList<>();
+            for (Commands command : commandsFromXlsx) {
+                if (testCasesArray.contains(command.getCaseId())) {
+                    filteredCommands.add(command);
+                }
+            }
+            return filteredCommands;
+        }
+        return commandsFromXlsx;
     }
 
     /**
