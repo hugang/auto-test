@@ -1,6 +1,8 @@
-## how to install
+# Auto-Test Documentation
 
-folder structure:
+## Installation
+
+### Folder Structure
 ```
 auto-test
 │  auto-server.bat
@@ -9,60 +11,64 @@ auto-test
 │  conf
 ```
 
-1. Java 17 or newer is required.
-2. set AUTO_TEST_HOME to environment, default is the folder of auto-test.
-3. download webdriver, and put it in `driver` directory.
-   - [chrome](https://chromedriver.chromium.org/downloads) for chrome115 or newer [chrome-for-testing](https://googlechromelabs.github.io/chrome-for-testing/)
-   - [edge](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
+### Prerequisites
+1. **Java 17 or newer** is required.
+2. Set the `AUTO_TEST_HOME` environment variable (default is the `auto-test` folder).
+3. Download the appropriate WebDriver and place it in the `driver` directory:
+   - [Chrome WebDriver](https://chromedriver.chromium.org/downloads) for Chrome 115 or newer ([Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/)).
+   - [Edge WebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/).
 
+For manual downloads, refer to:
 ```
-#for manual download
 https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json
 ```
 
+---
 
-## how to run
+## Running Auto-Test
 
-- start auto-server.bat to start the server, and then run the test cases xlsm.
-  there is an example file [[case_template.xlsm]] in [testcases_example](doc%2Ftestcases_example) directory.
+### Starting the Server
+1. Run `auto-server.bat` to start the server.
+2. Use the local server URL: [http://localhost:9191](http://localhost:9191).
+3. Test cases (e.g., `case_template.xlsm`) can be found in the [testcases_example](doc/testcases_example) directory.
 
-  local server url：[http://localhost:9191](http://localhost:9191)
-
-- use auto-test.bat to run the test.
+### Running Tests in cli
+Use `auto-test.bat` to execute test cases:
 ```
 Usage: auto-test [options]
   Options:
     -b, --baseDir
-      base directory of the program.
+      Base directory of the program.
     -c, --cases
-      the test cases to be executed, split by comma. eg. 1-2,13
+      Test cases to execute, separated by commas (e.g., 1-2,13).
     -f, --file
-      the test case file to be executed, specific absolute path,  if relative
-      path, it will look for the file in the work directory.
+      Path to the test case file (absolute or relative to the work directory).
     -h, --help
-      help message
+      Display help message.
     -m, --mode
-      test mode, default is xlsx, optional: xlsx, csv, json.
+      Test mode (default: xlsx). Options: xlsx, csv, json.
     -d, --workDir
-      work directory to store test case file and test result file.
+      Directory to store test case and result files.
 ```
 
-## screenshots
+---
 
-- design test cases in web ui
+## Features
 
-![design.png](doc/design.png)
+### Design Test Cases in Web UI
+![Design Test Cases](doc/design.png)
 
-- execute test cases in web ui
+### Execute Test Cases in Web UI
+![Execute Test Cases](doc/execute.gif)
 
-![execute.gif](doc/execute.gif)
+---
 
-## commands.md
+## Commands
 
-refer to [commands](doc/commands.md) for the commands supported by auto-test.
+Refer to the [Commands Documentation](doc/commands.md) for a list of supported commands.
 
-## additional tool
+---
 
-- selenium-ide
+## Additional Tools
 
-[selenium-ide](https://github.com/SeleniumHQ/selenium-ide/releases)
+- **Selenium IDE**: [Download Selenium IDE](https://github.com/SeleniumHQ/selenium-ide/releases)
