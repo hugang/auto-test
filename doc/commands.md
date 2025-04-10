@@ -917,7 +917,8 @@ save current environment variables to a file.
 scroll up or down the page.
 
 - arguments
-  - target: the distance to scroll. eg: 100, -100
+  - target: The element locator.
+  - value: the distance to scroll. eg: 100, -100
 
 ## scroll into view [〇]
 
