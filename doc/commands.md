@@ -975,3 +975,15 @@ write the content to the file.
     - target: The file path.
     - value: The content to write.
     - type: The type of the file, append or write. default is append.
+
+## mail [〇]
+
+send mail.
+
+- argument
+    - target: provider of the mail.
+    - value: The value of the mail.
+        - mailTo: The to of the sendmail.
+        - mailCc: The cc of the sendmail.
+        - subject: The subject of the sendmail.
+        - body: The body of the sendmail.
