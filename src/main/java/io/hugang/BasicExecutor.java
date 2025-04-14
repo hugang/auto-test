@@ -26,6 +26,8 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,46 +61,81 @@ public class BasicExecutor {
     public void init() {
         AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
 
-        // Validate WebDriver path
+        validateWebDriverPath(autoTestConfig);
+        configureProxySettings(autoTestConfig);
+        configureSelenideSettings(autoTestConfig);
+
+        WebDriver driver = initializeWebDriver(autoTestConfig);
+        configureBrowserWindow(driver, autoTestConfig);
+
+        WebDriverRunner.setWebDriver(driver);
+    }
+
+    /**
+     * Validate the WebDriver path.
+     */
+    private void validateWebDriverPath(AutoTestConfig autoTestConfig) {
         if (StrUtil.isEmpty(autoTestConfig.getWebDriverPath())) {
             throw new AutoTestException("WebDriver path is not configured or empty");
         }
         if (!FileUtil.exist(autoTestConfig.getWebDriverPath())) {
             throw new AutoTestException("Invalid WebDriver path or file does not exist: " + autoTestConfig.getWebDriverPath());
         }
+    }
 
-        // Configure Selenide settings
+    /**
+     * Configure proxy settings if provided.
+     */
+    private void configureProxySettings(AutoTestConfig autoTestConfig) {
+        if (StrUtil.isNotEmpty(autoTestConfig.getProxyHost()) && StrUtil.isNotEmpty(String.valueOf(autoTestConfig.getProxyPort()))) {
+            System.setProperty("http.proxyHost", autoTestConfig.getProxyHost());
+            System.setProperty("http.proxyPort", String.valueOf(autoTestConfig.getProxyPort()));
+            System.setProperty("https.proxyHost", autoTestConfig.getProxyHost());
+            System.setProperty("https.proxyPort", String.valueOf(autoTestConfig.getProxyPort()));
+
+            if (StrUtil.isNotEmpty(autoTestConfig.getProxyUser()) && StrUtil.isNotEmpty(autoTestConfig.getProxyPassword())) {
+                Authenticator.setDefault(new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(autoTestConfig.getProxyUser(), autoTestConfig.getProxyPassword().toCharArray());
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * Configure Selenide settings.
+     */
+    private void configureSelenideSettings(AutoTestConfig autoTestConfig) {
         Configuration.browser = autoTestConfig.getWebDriverPath();
         Configuration.reportsFolder = autoTestConfig.getFileDownloadPath();
         Configuration.savePageSource = false;
         ThreadContext.setReportPath(autoTestConfig.getFileDownloadPath());
+    }
 
-        // Browser options setup
+    /**
+     * Initialize the appropriate WebDriver based on the configuration.
+     */
+    private WebDriver initializeWebDriver(AutoTestConfig autoTestConfig) {
         Map<String, Object> optionsMap = new HashMap<>();
         optionsMap.put("plugins.always_open_pdf_externally", true);
         optionsMap.put("download.default_directory", autoTestConfig.getFileDownloadPath());
+
+        return switch (autoTestConfig.getWebDriverName()) {
+            case "chrome" -> initializeChromeDriver(autoTestConfig, optionsMap);
+            case "edge" -> initializeEdgeDriver(autoTestConfig, optionsMap);
+            case "firefox" -> initializeFirefoxDriver(autoTestConfig);
+            default -> throw new RuntimeException("Unsupported WebDriver");
+        };
+    }
+
+    /**
+     * Configure the browser window size.
+     */
+    private void configureBrowserWindow(WebDriver driver, AutoTestConfig autoTestConfig) {
         Dimension targetWindowSize = new Dimension(autoTestConfig.getWidth(), autoTestConfig.getHeight());
-
-        WebDriver driver;
-
-        // Initialize WebDriver based on browser type
-        switch (autoTestConfig.getWebDriverName()) {
-            case "chrome":
-                driver = initializeChromeDriver(autoTestConfig, optionsMap);
-                break;
-            case "edge":
-                driver = initializeEdgeDriver(autoTestConfig, optionsMap);
-                break;
-            case "firefox":
-                driver = initializeFirefoxDriver(autoTestConfig);
-                break;
-            default:
-                throw new RuntimeException("Unsupported WebDriver");
-        }
-
-        // Set browser window size and WebDriver
         driver.manage().window().setSize(targetWindowSize);
-        WebDriverRunner.setWebDriver(driver);
     }
 
     /**
