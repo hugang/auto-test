@@ -45,13 +45,13 @@ public class StepCountCommand extends Command {
         fileWriter.write("file,codeLines,commentLines,blankLines\n");
 
         for (String targetPath : targetPaths) {
-            listAllFilesAndCountStep(targetPath, resultPath, fileType, excludePath, excludeFile, fileWriter);
+            listAllFilesAndCountStep(targetPath, fileType, excludePath, excludeFile, fileWriter);
         }
         this.appendDict("resultPath", resultPath);
         return true;
     }
 
-    private void listAllFilesAndCountStep(String targetPath, String resultPath, String[] fileType, String[] excludePath, String[] excludeFile, FileWriter fileWriter) {
+    private void listAllFilesAndCountStep(String targetPath, String[] fileType, String[] excludePath, String[] excludeFile, FileWriter fileWriter) {
         // exclude path
         for (String path : excludePath) {
             if (StrUtil.isNotEmpty(path) && targetPath.contains(path)) {
@@ -65,13 +65,18 @@ public class StepCountCommand extends Command {
         }
         for (File file : files) {
             if (file.isDirectory()) {
-                listAllFilesAndCountStep(file.getAbsolutePath(), resultPath, fileType, excludePath, excludeFile, fileWriter);
+                listAllFilesAndCountStep(file.getAbsolutePath(), fileType, excludePath, excludeFile, fileWriter);
             } else {
                 // exclude file
+                boolean isExcluded = false;
                 for (String fileStr : excludeFile) {
                     if (StrUtil.isNotEmpty(fileStr) && file.getName().endsWith(fileStr)) {
-                        return;
+                        isExcluded = true;
+                        break;
                     }
+                }
+                if (isExcluded) {
+                    continue; // 次のファイルを処理
                 }
                 // file type
                 boolean isFileType = false;
@@ -92,42 +97,49 @@ public class StepCountCommand extends Command {
 
     private static void countFileStep(FileWriter fileWriter, File file, boolean isFileType) {
         try {
-            if (isFileType && (file.getName().endsWith(".java")
-                    || file.getName().endsWith(".js")
-                    || file.getName().endsWith(".go"))) {
+            if (isFileType) {
                 // count code steps
                 String line;
                 int codeLines = 0;
                 int commentLines = 0;
                 int blankLines = 0;
 
-                BufferedReader reader = new BufferedReader(new FileReader(file));
-                boolean inComment = false;
-                while ((line = reader.readLine()) != null) {
-                    line = line.trim();
+                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                    boolean inComment = false;
+                    while ((line = reader.readLine()) != null) {
+                        line = line.trim();
 
-                    // start of comment
-                    if (line.startsWith("/*")) {
-                        inComment = true;
-                    }
-                    // code lines
-                    if (!inComment && !line.startsWith("//") && !line.isEmpty()) {
-                        codeLines++;
-                    }
-                    // blank lines
-                    else if (!inComment && line.isEmpty()) {
-                        blankLines++;
-                    }
-                    // comment lines
-                    else {
-                        commentLines++;
-                    }
-                    // end of comment
-                    if (line.endsWith("*/")) {
-                        inComment = false;
+                        // start of comment
+                        if (line.startsWith("/*")) {
+                            inComment = true;
+                            commentLines++;
+                            if (line.endsWith("*/")) {
+                                inComment = false;
+                            }
+                            continue;
+                        }
+                        // end of comment
+                        if (inComment) {
+                            commentLines++;
+                            if (line.endsWith("*/")) {
+                                inComment = false;
+                            }
+                            continue;
+                        }
+                        // single-line comment
+                        if (line.startsWith("//")) {
+                            commentLines++;
+                        }
+                        // blank lines
+                        else if (line.isEmpty()) {
+                            blankLines++;
+                        }
+                        // code lines
+                        else {
+                            codeLines++;
+                        }
                     }
                 }
-                reader.close();
                 fileWriter.append(file.getAbsolutePath() + "," + codeLines + "," + commentLines + "," + blankLines + "\n");
 
             } else {
@@ -141,6 +153,4 @@ public class StepCountCommand extends Command {
             log.error(e);
         }
     }
-
-
 }
