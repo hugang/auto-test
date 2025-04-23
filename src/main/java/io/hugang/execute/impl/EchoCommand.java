@@ -10,14 +10,21 @@ public class EchoCommand extends Command {
     }
 
     private static final Log log = Log.get();
+
     @Override
     public boolean _execute() {
         String target = this.getTarget();
-        if (target == null) {
-            log.error("echo target is null");
+        String value = this.getValue();
+
+        if (target != null) {
+            log.info(render(target));
+            return true;
+        } else if (value != null) {
+            log.info(render(value));
+            return true;
+        } else {
+            log.error("Both target and value are null");
             return false;
         }
-        log.info(render(target));
-        return true;
     }
 }
