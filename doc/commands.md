@@ -247,10 +247,10 @@ Drags an element and drops it on another element.
 
 ## echo [〇]
 
-Prints the specified message into the third table cell in your Selenese tables. Useful for debugging.
+Prints the specified message into log4j file. Useful for debugging.
 
 - arguments
-    - message(target): The message to print.
+    - message(target or value): The message to print.
 
 ## edit content [〇]
 
