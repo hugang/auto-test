@@ -87,11 +87,6 @@ public class AutoTestConfig {
         if (browserBinaryPath != null) {
             this.setBrowserBinaryPath(browserBinaryPath);
         }
-        // restart driver by case
-        String restartDriverByCase = setting.get(GROUP_BROWSER, "web.driver.restartByCase");
-        if (restartDriverByCase != null) {
-            this.setRestartWebDriverByCase(Boolean.parseBoolean(restartDriverByCase));
-        }
         // proxy host
         String proxyHost = setting.get(GROUP_PROXY, "proxy.host");
         if (proxyHost != null) {
@@ -167,8 +162,6 @@ public class AutoTestConfig {
     private String cronExpression;
     // browser binary path
     private String browserBinaryPath;
-    // restart web driver by case
-    private boolean restartWebDriverByCase;
     // base dir
     private String baseDir;
     // proxy host
@@ -276,14 +269,6 @@ public class AutoTestConfig {
 
     public void setBrowserBinaryPath(String browserBinaryPath) {
         this.browserBinaryPath = browserBinaryPath;
-    }
-
-    public boolean isRestartWebDriverByCase() {
-        return restartWebDriverByCase;
-    }
-
-    public void setRestartWebDriverByCase(boolean restartWebDriverByCase) {
-        this.restartWebDriverByCase = restartWebDriverByCase;
     }
 
     public String getBaseDir() {

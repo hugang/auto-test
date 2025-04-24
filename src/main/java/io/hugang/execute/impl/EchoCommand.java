@@ -17,10 +17,14 @@ public class EchoCommand extends Command {
         String value = this.getValue();
 
         if (target != null) {
-            log.info(render(target));
+            String renderedTarget = render(target);
+            log.info(renderedTarget);
+            this.appendReport(RESULT_TYPE_MSG,renderedTarget);
             return true;
         } else if (value != null) {
-            log.info(render(value));
+            String renderedValue = render(value);
+            log.info(renderedValue);
+            this.appendReport(RESULT_TYPE_MSG,renderedValue);
             return true;
         } else {
             log.error("Both target and value are null");

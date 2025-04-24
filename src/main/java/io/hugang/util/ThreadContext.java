@@ -120,4 +120,7 @@ public class ThreadContext {
         }
         return (String) ThreadContext.get("__uuid__");
     }
+    public static void setIsWebCommand() {
+        ThreadContext.put("__isWebCommand__", "__isWebCommand__");
+    }
 }

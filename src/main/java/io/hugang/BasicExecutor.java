@@ -10,6 +10,7 @@ import cn.hutool.log.Log;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
+import io.hugang.annotation.WebCommand;
 import io.hugang.config.AutoTestConfig;
 import io.hugang.exceptions.AutoTestException;
 import io.hugang.execute.Commands;
@@ -111,7 +112,6 @@ public class BasicExecutor {
         Configuration.browser = autoTestConfig.getWebDriverPath();
         Configuration.reportsFolder = autoTestConfig.getFileDownloadPath();
         Configuration.savePageSource = false;
-        ThreadContext.setReportPath(autoTestConfig.getFileDownloadPath());
     }
 
     /**
@@ -324,39 +324,18 @@ public class BasicExecutor {
             // only one thread can execute the commands
             lock.lock();
             AutoTestConfig autoTestConfig = ThreadContext.getAutoTestConfig();
-
-            // check if there is web command
-            // boolean isWebCommand = false;
-            // for (Commands commands : commandsList) {
-            //     // init the executor
-            //     if (commands.isWebCommand()) {
-            //         isWebCommand = true;
-            //         break;
-            //     }
-            // }
-            // init the executor
-            if (!autoTestConfig.isRestartWebDriverByCase()) {
-                this.init();
-            }
             // execute the commands
             for (Commands commands : commandsList) {
                 try {
-                    // init the executor
-                    if (autoTestConfig.isRestartWebDriverByCase()) {
-                        this.init();
-                    }
+                    ThreadContext.setReportPath(autoTestConfig.getFileDownloadPath());
                     ThreadContext.getVariables().set("caseId", commands.getCaseId());
                     this.executeCommands(commands);
                 } finally {
                     // destroy the executor
-                    if (autoTestConfig.isRestartWebDriverByCase()) {
+                    if (ThreadContext.containsKey("__isWebCommand__")) {
                         this.destroy();
                     }
                 }
-            }
-            // destroy the executor
-            if (!autoTestConfig.isRestartWebDriverByCase()) {
-                this.destroy();
             }
         } finally {
             lock.unlock();
@@ -382,6 +361,13 @@ public class BasicExecutor {
                 // execute the command
                 log.info("execute command: " + command);
                 if (!command.isSkip()) {
+                    // if the command is a web command, and not initialized, then initialize the web driver
+                    boolean isWebCommand = command.getClass().isAnnotationPresent(WebCommand.class);
+                    if (isWebCommand && !ThreadContext.containsKey("__isWebCommand__") ) {
+                        this.init();
+                        ThreadContext.setIsWebCommand();
+                    }
+
                     result = command.execute();
                     if (!result) {
                         log.error("execute command failed, command={}", command);
