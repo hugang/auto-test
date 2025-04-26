@@ -51,6 +51,6 @@ public class NetworkAccessLog {
         accessMap.put("request", requestWillBeSent.getRequest());
         accessMap.put("response", responseReceived.getResponse());
         accessMap.put("responseBody", responseBody);
-        return JSONUtil.toJsonStr(accessMap);
+        return JSONUtil.toJsonPrettyStr(accessMap);
     }
 }

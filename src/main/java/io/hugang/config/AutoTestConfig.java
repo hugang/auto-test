@@ -22,6 +22,7 @@ public class AutoTestConfig {
     public static final String GROUP_BASE = "base";
     // config group of proxy
     public static final String GROUP_PROXY = "proxy";
+    public static final String GROUP_LOG = "log";
     public static final String AUTO_TEST_HOME = "AUTO_TEST_HOME";
 
     /**
@@ -46,6 +47,11 @@ public class AutoTestConfig {
 
         String webDriverPath = setting.get(GROUP_BROWSER, "web.driver.path");
         this.setWebDriverPath(getAbsolutePath(webDriverPath, this.getBaseDir()));
+
+        String logApi = setting.get(GROUP_LOG, "log.api");
+        if (logApi != null) {
+            this.setLogApi(logApi);
+        }
 
         if (StrUtil.isEmpty(this.getTestCasePath())) {
             String testCasePath = setting.get(GROUP_TEST_CASE, "test.case.path");
@@ -144,6 +150,8 @@ public class AutoTestConfig {
     private String webDriverName;
     // web driver path
     private String webDriverPath;
+    // log api
+    private String logApi;
     // xlsx file path
     private String testCasePath;
     // test cases to be executed
@@ -197,6 +205,14 @@ public class AutoTestConfig {
 
     public void setWebDriverPath(String webDriverPath) {
         this.webDriverPath = webDriverPath;
+    }
+
+    public String getLogApi() {
+        return logApi;
+    }
+
+    public void setLogApi(String logApi) {
+        this.logApi = logApi;
     }
 
     public String getTestCasePath() {

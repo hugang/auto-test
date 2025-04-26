@@ -25,6 +25,7 @@ import org.springframework.http.HttpHeaders;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -129,11 +130,13 @@ public class WebDriverUtil {
         options.addArguments("--remote-allow-origins=*");
         options.setExperimentalOption("prefs", optionsMap);
         ChromeDriver chromeDriver = new ChromeDriver(options);
-        initializeDevtoolForChrome(chromeDriver);
+        if (config.getLogApi() != null) {
+            initializeDevtoolForChrome(config, chromeDriver);
+        }
         return chromeDriver;
     }
 
-    private void initializeDevtoolForChrome(ChromeDriver chromeDriver) {
+    private void initializeDevtoolForChrome(AutoTestConfig config, ChromeDriver chromeDriver) {
         // 获取 DevTools 实例
         DevTools devTools = chromeDriver.getDevTools();
         devTools.createSession();
@@ -141,8 +144,13 @@ public class WebDriverUtil {
         // 启用网络监听
         devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
 
+        String[] logApi = config.getLogApi().split(",");
         // 添加监听器，捕获请求
         devTools.addListener(Network.requestWillBeSent(), request -> {
+            String url = request.getRequest().getUrl();
+            if (StrUtil.isEmpty(url) || Arrays.stream(logApi).noneMatch(api -> StrUtil.isNotEmpty(api) && url.contains(api))) {
+                return;
+            }
             RequestId requestId = request.getRequestId();
             NetworkAccessLog networkAccessLog = NetworkAccessLogMap.get(requestId.toString());
             if (networkAccessLog == null) {
@@ -152,13 +160,17 @@ public class WebDriverUtil {
             networkAccessLog.setRequestWillBeSent(request);
             if (networkAccessLog.getRequestWillBeSent() != null && networkAccessLog.getResponseReceived() != null) {
                 generateAccessLog(networkAccessLog);
-            }else{
+            } else {
                 NetworkAccessLogMap.put(requestId.toString(), networkAccessLog);
             }
         });
 
         // 添加监听器，捕获响应事件
         devTools.addListener(Network.responseReceived(), response -> {
+            String url = response.getResponse().getUrl();
+            if (StrUtil.isEmpty(url) || Arrays.stream(logApi).noneMatch(api -> StrUtil.isNotEmpty(api) && url.contains(api))) {
+                return;
+            }
             // 获取响应的 RequestId
             RequestId requestId = response.getRequestId();
             NetworkAccessLog networkAccessLog = NetworkAccessLogMap.get(requestId.toString());
@@ -183,7 +195,7 @@ public class WebDriverUtil {
 
     private void generateAccessLog(NetworkAccessLog networkAccessLog) {
         // output access log
-        FileUtil.appendString(networkAccessLog.toString()+"\n", ThreadContext.getAutoTestConfig().getFileDownloadPath() + "/access.log", CharsetUtil.CHARSET_UTF_8);
+        FileUtil.appendString(networkAccessLog.toString() + "\n", ThreadContext.getAutoTestConfig().getFileDownloadPath() + "/access.log", CharsetUtil.CHARSET_UTF_8);
         // remove
         NetworkAccessLogMap.remove(networkAccessLog.getRequestId());
     }
