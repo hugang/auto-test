@@ -1,10 +1,15 @@
-package io.hugang;
+package io.hugang.execute.ext;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.log.Log;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import io.hugang.bean.OriginalCommand;
+import io.hugang.execute.Command;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,37 +20,64 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 生成二维码并在下方添加文字 TODO experiment
+ * qr code command
  */
-public class QRCodeWithText {
-    public static void main(String[] args) {
-        String inputText = "https://github.com/copilot/c/852fda11-b2be-4feb-9782-12f26900ae83"; // 输入的文字
+public class QrCodeCommand extends Command {
+    private static final Log log = Log.get();
+
+    public QrCodeCommand(OriginalCommand originalCommand) {
+        super(originalCommand);
+    }
+
+    @Override
+    public String getCommand() {
+        return "qrCode";
+    }
+
+    @Override
+    public boolean _execute() {
+
+        String target = this.render(this.getTarget());
+        String value = this.render(this.getDictStr("value", this.getValue()));
+        String size = this.getDictStr("size", "400x400");
+        String centerText = this.getDictStr("centerText");
+        String footerText = this.getDictStr("footerText");
+
         int qrWidth = 450;  // 二维码图片宽度
         int qrHeight = 400; // 二维码图片高度
-        int totalHeight = 450; // 最终图片高度（含文字部分）
+
+        String[] sizeArray = size.split("x");
+        if (sizeArray.length == 2) {
+            qrWidth = Integer.parseInt(sizeArray[0]);
+            qrHeight = Integer.parseInt(sizeArray[1]);
+        }
+        int totalHeight = qrHeight + 50; // 最终图片高度（含文字部分）
 
         try {
             // 配置二维码参数
             Map<EncodeHintType, Object> hints = new HashMap<>();
             hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
             hints.put(EncodeHintType.MARGIN, 1); // 边距
-            hints.put(EncodeHintType.ERROR_CORRECTION, com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.H);
-
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
             // 生成二维码图片
-            BufferedImage qrCodeImage = generateQRCodeImage(inputText, qrWidth, qrHeight, hints);
-
+            BufferedImage qrCodeImage = generateQRCodeImage(target, qrWidth, qrHeight, hints);
             // 在二维码中间添加文字
-            BufferedImage tempImage = addCenterText(qrCodeImage, "1234567890");
-
+            BufferedImage tempImage = null;
+            if (StrUtil.isNotEmpty(centerText)) {
+                tempImage = addCenterText(qrCodeImage, centerText);
+            }
             // 在二维码下方添加文字
-            BufferedImage finalImage = addTextBelowImage(tempImage, inputText, totalHeight);
-
+            BufferedImage finalImage = null;
+            if (StrUtil.isNotEmpty(footerText)) {
+                finalImage = addTextBelowImage(tempImage == null ? qrCodeImage : tempImage, target, totalHeight);
+            }
             // 保存最终图片
-            ImageIO.write(finalImage, "png", new File("qrcode_with_text.png"));
-            System.out.println("二维码图片已生成，并保存为 qrcode_with_text.png");
+            ImageIO.write(finalImage == null ? (tempImage == null ? qrCodeImage : tempImage) : finalImage, "png", new File(this.getFilePath(value)));
         } catch (WriterException | IOException e) {
-            e.printStackTrace();
+            log.error(e);
+            return false;
         }
+        return true;
     }
 
     /**
@@ -57,7 +89,7 @@ public class QRCodeWithText {
      * @return 生成的二维码图片
      * @throws WriterException 如果生成二维码失败
      */
-    private static BufferedImage generateQRCodeImage(String text, int width, int height, Map<EncodeHintType, ?> hint) throws WriterException {
+    private BufferedImage generateQRCodeImage(String text, int width, int height, Map<EncodeHintType, ?> hint) throws WriterException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height, hint);
 
@@ -77,7 +109,7 @@ public class QRCodeWithText {
      * @param centerText 中间要显示的文字
      * @return 带有中间文字的二维码图片
      */
-    private static BufferedImage addCenterText(BufferedImage image, String centerText) {
+    private BufferedImage addCenterText(BufferedImage image, String centerText) {
         int width = image.getWidth();
         int height = image.getHeight();
 
@@ -115,7 +147,7 @@ public class QRCodeWithText {
      * @param totalHeight 最终图片高度
      * @return 带有文字的图片
      */
-    private static BufferedImage addTextBelowImage(BufferedImage image, String text, int totalHeight) {
+    private BufferedImage addTextBelowImage(BufferedImage image, String text, int totalHeight) {
         int width = image.getWidth();
         BufferedImage newImage = new BufferedImage(width, totalHeight, BufferedImage.TYPE_INT_RGB);
 
@@ -141,7 +173,7 @@ public class QRCodeWithText {
         for (char c : text.toCharArray()) {
             String testLine = line.toString() + c;
             int textWidth = fontMetrics.stringWidth(testLine);
-            if (textWidth > width-20) {
+            if (textWidth > width - 20) {
                 // 绘制当前行并换行
                 int x = (width - fontMetrics.stringWidth(line.toString())) / 2; // 水平居中
                 g2d.drawString(line.toString(), x, y);

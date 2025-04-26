@@ -987,3 +987,14 @@ send mail.
         - mailCc: The cc of the sendmail.
         - subject: The subject of the sendmail.
         - body: The body of the sendmail.
+
+## qr code [〇]
+
+generate qr code.
+
+- argument
+    - target: The content of the qr code.
+    - value: The path of the qr code.
+    - size: The size of the qr code.
+    - centerText: The center text of the qr code.
+    - footerText: The footer text of the qr code.
