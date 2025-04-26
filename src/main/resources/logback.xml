@@ -31,6 +31,7 @@
     </appender>
     <!-- log level -->
     <logger name="org.springframework" level="INFO"/>
+    <logger name="org.openqa.selenium" level="ERROR"/>
     <logger name="io.hugang" level="debug"/>
     <!-- root log level -->
     <root level="debug">
