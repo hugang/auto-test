@@ -191,6 +191,7 @@ public class BasicExecutor {
                 } finally {
                     // destroy the executor
                     if (ThreadContext.containsKey("__isWebCommand__")) {
+                        ThreadContext.remove("__isWebCommand__");
                         webDriverUtil.destroy();
                     }
                 }
