@@ -998,3 +998,21 @@ generate qr code.
     - size: The size of the qr code.
     - centerText: The center text of the qr code.
     - footerText: The footer text of the qr code.
+
+## click if present [〇]
+
+Clicks on a target element if present (e.g., a link, button, checkbox, or radio button).
+
+- arguments
+  - locator(target): An element locator.
+
+
+## type if present [〇]
+
+Sets the value of an input field if present, as though you typed it in. Can also be used to set the value of combo boxes, check
+boxes, etc. In these cases, value should be the value of the option selected, not the visible text. Chrome only: If a
+file path is given it will be uploaded to the input (for type=file), NOTE: XPath locators are not supported.
+
+- arguments
+  - locator(target): An element locator.
+  - value: The value to input.
