@@ -33,8 +33,7 @@ public class SetPropertyCommand extends Command {
         } else if (StrUtil.isNotEmpty(type)) {
             log.info("setProperty {}: {}", type, this.getDictStr("value", this.getValue()));
             this.setVariable(type, this.render(this.getDictStr("value", this.getValue())));
-            return true;
         }
-        return false;
+        return true;
     }
 }
