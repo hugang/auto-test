@@ -462,24 +462,6 @@ public class CommandParserUtil {
             writer.writeCellValue(0, beginRow + 2, i + 1);
             for (ICommand command : commands.getCommands()) {
                 beginColumn = writeCommandToExcel(command, hasDescription, writer, beginColumn, beginRow);
-
-                // write sub commands
-                if (command instanceof IConditionCommand conditionCommand) {
-                    List<ICommand> subCommands = conditionCommand.getSubCommands();
-                    if (ObjectUtil.isNotEmpty(subCommands)) {
-                        for (ICommand subCommand : subCommands) {
-                            beginColumn = writeCommandToExcel(subCommand, hasDescription, writer, beginColumn, beginRow);
-                        }
-                        // add end command for condition command
-                        if (hasDescription) {
-                            writer.writeCellValue(beginColumn, 0, "end");
-                        }
-                        writer.writeCellValue(beginColumn, beginRow, "end");
-                        writer.writeCellValue(beginColumn, beginRow + 1, "");
-                        writer.writeCellValue(beginColumn, beginRow + 2, "");
-                        beginColumn++;
-                    }
-                }
             }
 
             writer.flush();
@@ -498,6 +480,25 @@ public class CommandParserUtil {
         // write value to third row
         writer.writeCellValue(beginColumn, beginRow + 2, command.getValue());
         beginColumn++;
+
+        // write sub commands
+        if (command instanceof IConditionCommand conditionCommand) {
+            List<ICommand> subCommands = conditionCommand.getSubCommands();
+            if (ObjectUtil.isNotEmpty(subCommands)) {
+                for (ICommand subCommand : subCommands) {
+                    beginColumn = writeCommandToExcel(subCommand, hasDescription, writer, beginColumn, beginRow);
+                }
+                // add end command for condition command
+                if (hasDescription) {
+                    writer.writeCellValue(beginColumn, 0, "end");
+                }
+                writer.writeCellValue(beginColumn, beginRow, "end");
+                writer.writeCellValue(beginColumn, beginRow + 1, "");
+                writer.writeCellValue(beginColumn, beginRow + 2, "");
+                beginColumn++;
+            }
+        }
+
         return beginColumn;
     }
 }
