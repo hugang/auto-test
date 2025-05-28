@@ -75,7 +75,7 @@ public class CommandParserUtil {
         Commands commands = new Commands();
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
-            CSVParser csvRecords = new CSVParser(br, CSVFormat.DEFAULT.builder().setQuote('"').build());
+            CSVParser csvRecords = CSVParser.builder().setFormat(CSVFormat.DEFAULT.builder().setQuote('"').get()).setReader(br).get();
             for (CSVRecord csvRecord : csvRecords) {
                 commandList.add(CommandParserUtil.getCommand(csvRecord));
             }
