@@ -207,6 +207,10 @@ public class CommandParserUtil {
                     TimesCommand timesCommand = new TimesCommand(command);
                     commandStack.push(timesCommand);
                     break;
+                case "section":
+                    SectionCommand sectionCommand = new SectionCommand(command);
+                    commandStack.push(sectionCommand);
+                    break;
                 case "while":
                     WhileCommand whileCommand = new WhileCommand(command);
                     commandStack.push(whileCommand);
