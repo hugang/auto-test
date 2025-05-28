@@ -457,21 +457,47 @@ public class CommandParserUtil {
             }
 
             int beginRow = hasDescription ? 1 : 0;
+            int beginColumn = 1;
             writer.writeCellValue(0, beginRow, "TestCase");
             writer.writeCellValue(0, beginRow + 2, i + 1);
-
-            for (int i1 = 0; i1 < commands.getCommands().size(); i1++) {
-                Command command = (Command) commands.getCommands().get(i1);
+            for (ICommand command : commands.getCommands()) {
                 if (hasDescription) {
-                    writer.writeCellValue(i1 + 1, 0, command.getComment());
+                    writer.writeCellValue(beginColumn, 0, command.getComment());
+                    beginRow++;
                 }
                 // write command to first row
-                writer.writeCellValue(i1 + 1, beginRow, command.getCommand());
+                writer.writeCellValue(beginColumn, beginRow, command.getCommand());
                 // write target to second row
-                writer.writeCellValue(i1 + 1, beginRow + 1, command.getTarget());
+                writer.writeCellValue(beginColumn, beginRow+1, command.getTarget());
                 // write value to third row
-                writer.writeCellValue(i1 + 1, beginRow + 2, command.getValue());
+                writer.writeCellValue(beginColumn, beginRow + 2, command.getValue());
+                beginColumn++;
+
+                // write sub commands
+                if (command instanceof IConditionCommand conditionCommand) {
+                    List<ICommand> subCommands = conditionCommand.getSubCommands();
+                    if (ObjectUtil.isNotEmpty(subCommands)) {
+                        for (ICommand subCommand : subCommands) {
+                            if (hasDescription) {
+                                writer.writeCellValue(beginColumn, 0, subCommand.getComment());
+                            }
+                            writer.writeCellValue(beginColumn, beginRow, subCommand.getCommand());
+                            writer.writeCellValue(beginColumn, beginRow + 1, subCommand.getTarget());
+                            writer.writeCellValue(beginColumn, beginRow + 2, subCommand.getValue());
+                            beginColumn++;
+                        }
+                        // add end command for condition command
+                        if (hasDescription) {
+                            writer.writeCellValue(beginColumn, 0, "end");
+                        }
+                        writer.writeCellValue(beginColumn, beginRow, "end");
+                        writer.writeCellValue(beginColumn, beginRow + 1, "");
+                        writer.writeCellValue(beginColumn, beginRow + 2, "");
+                        beginColumn++;
+                    }
+                }
             }
+
             writer.flush();
             writer.close();
         }
