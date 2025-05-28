@@ -389,9 +389,12 @@ const App = () => {
                 <PlaceHolder node={node} depth={depth} />
               )}
               render={(node, { depth, isOpen, onToggle }) => {
-                const text = node.data && (node.data.command || node.data.comment)
-                  ? `${node.data.command || ''} ${node.data.comment || ''}`.trim()
-                  : node.text;
+                const textDetails = node.data && (node.data.target || node.data.value)
+                    ? `（${node.data.target || ''} ${node.data.value || ''}）`
+                    : '';
+                const text = node.data
+                    ? `${node.data.command || ''} ${node.data.comment || ''} ${textDetails}`.trim()
+                    : node.text;
 
                 // 判断是否是当前选中的节点
                 const isSelected = node.id === selectedNodeId;
