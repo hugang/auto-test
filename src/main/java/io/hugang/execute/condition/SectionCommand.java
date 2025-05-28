@@ -21,8 +21,8 @@ public class SectionCommand extends Command implements IConditionCommand {
     @Override
     public boolean _execute() {
         boolean result = true;
-        while (inCondition()) {
-            result = result & runSubCommands();
+        if (inCondition()) {
+            result = runSubCommands();
         }
         return result;
     }
