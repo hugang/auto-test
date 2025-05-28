@@ -9,6 +9,7 @@ import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.hugang.annotation.ReportCommand;
+import io.hugang.annotation.WebCommand;
 import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
 import io.hugang.util.CommandExecuteUtil;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.codeborne.selenide.Selenide.screenshot;
+import static io.hugang.BasicExecutor.webDriverUtil;
 
 /**
  * 基础命令类，所有具体命令的父类。
@@ -56,6 +58,13 @@ public abstract class Command implements ICommand {
      * @return 命令执行结果，true 表示成功，false 表示失败
      */
     public boolean execute() {
+        // if the command is a web command, and not initialized, then initialize the web driver
+        boolean isWebCommand = this.getClass().isAnnotationPresent(WebCommand.class);
+        if (isWebCommand && !ThreadContext.containsKey("__isWebCommand__") ) {
+            webDriverUtil.init();
+            ThreadContext.setIsWebCommand();
+        }
+
         String cmd = this.getCommand();
 
         // 如果命令是 click、open 等，并且 value 为 "0" 或 "skip"，则跳过执行

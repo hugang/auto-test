@@ -33,7 +33,7 @@ public class BasicExecutor {
     private static final Log log = Log.get();
     // 控制同时执行1个driver
     private static final ReentrantLock lock = new ReentrantLock();
-    private static final WebDriverUtil webDriverUtil = new WebDriverUtil();
+    public static final WebDriverUtil webDriverUtil = new WebDriverUtil();
 
     private BasicExecutor() {
     }
@@ -212,13 +212,6 @@ public class BasicExecutor {
                 // execute the command
                 log.info("execute command: " + command);
                 if (!command.isSkip()) {
-                    // if the command is a web command, and not initialized, then initialize the web driver
-                    boolean isWebCommand = command.getClass().isAnnotationPresent(WebCommand.class);
-                    if (isWebCommand && !ThreadContext.containsKey("__isWebCommand__") ) {
-                        webDriverUtil.init();
-                        ThreadContext.setIsWebCommand();
-                    }
-
                     result = command.execute();
                     if (!result) {
                         log.error("execute command failed, command={}", command);
