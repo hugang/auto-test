@@ -6,7 +6,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.cron.CronUtil;
 import cn.hutool.cron.task.Task;
 import cn.hutool.log.Log;
-import io.hugang.annotation.WebCommand;
 import io.hugang.config.AutoTestConfig;
 import io.hugang.exceptions.AutoTestException;
 import io.hugang.execute.Commands;
