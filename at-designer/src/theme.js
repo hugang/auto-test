@@ -46,6 +46,17 @@ const theme = createTheme({
     },
   },
   typography: {
+    fontFamily: [
+      'Noto Sans SC',
+      'Noto Sans TC',
+      'Noto Sans JP',
+      'Microsoft YaHei',
+      'PingFang SC',
+      'Hiragino Sans',
+      'Hiragino Kaku Gothic Pro',
+      'Meiryo',
+      'sans-serif'
+    ].join(','),
     allVariants: {
       color: '#222222',
     },

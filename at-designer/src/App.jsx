@@ -7,15 +7,47 @@ import {Alert, Box, Button, Container, Dialog, IconButton, Paper, Snackbar, Tool
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import CodeIcon from '@mui/icons-material/Code';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import DownloadIcon from '@mui/icons-material/Download';
 import CopyIcon from '@mui/icons-material/FileCopy';
 import shortUUID from 'short-uuid';
+import './theme.js';
+import './global.css';
+
+// 动态插入 Google Fonts 字体
+if (typeof document !== 'undefined') {
+  const fontLink = document.createElement('link');
+  fontLink.rel = 'stylesheet';
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+TC:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap';
+  document.head.appendChild(fontLink);
+}
 
 const DROPPABLE_COMMANDS = ['if', 'times', 'section'];
+
+// 公共导出数据函数
+function getExportData(treeData) {
+  function flattenCommands(node) {
+    let result = [];
+    if (!node.data) return result;
+    if (node.droppable) {
+      result.push({ ...node.data });
+      const children = treeData.filter(n => n.parent === node.id);
+      for (const child of children) {
+        result = result.concat(flattenCommands(child));
+      }
+      result.push({ command: 'end', comment: `end ${node.data.command || ''}` });
+    } else {
+      result.push({ ...node.data });
+    }
+    return result;
+  }
+  const rootNodes = treeData.filter(n => n.parent === 0);
+  let commandsArray = [];
+  for (const root of rootNodes) {
+    commandsArray = commandsArray.concat(flattenCommands(root));
+  }
+  return {name: shortUUID.generate(), tests: [{name: shortUUID.generate(), commands: commandsArray}]};
+}
 
 const App = () => {
   const [treeData, setTreeData] = useState([]);
@@ -287,30 +319,7 @@ const App = () => {
             startIcon={<DownloadIcon />}
             size="small"
             onClick={() => {
-              // 递归平铺并自动补end节点，按树结构顺序
-              function flattenCommands(node) {
-                let result = [];
-                if (!node.data) return result;
-                if (node.droppable) {
-                  result.push({ ...node.data });
-                  // 找到所有子节点，按treeData顺序递归
-                  const children = treeData.filter(n => n.parent === node.id);
-                  for (const child of children) {
-                    result = result.concat(flattenCommands(child));
-                  }
-                  result.push({ command: 'end', comment: `end ${node.data.command || ''}` });
-                } else {
-                  result.push({ ...node.data });
-                }
-                return result;
-              }
-              // 只处理所有parent为0的根节点，按treeData顺序
-              const rootNodes = treeData.filter(n => n.parent === 0);
-              let commandsArray = [];
-              for (const root of rootNodes) {
-                commandsArray = commandsArray.concat(flattenCommands(root));
-              }
-              const exportData = {name: 'test', tests: [{name: 'test', commands: commandsArray}]};
+              const exportData = getExportData(treeData);
               const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
               const url = URL.createObjectURL(blob);
               const a = document.createElement('a');
@@ -322,6 +331,28 @@ const App = () => {
             }}
           >
             导出节点data
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            style={{ marginLeft: 8 }}
+            onClick={async () => {
+              const exportData = getExportData(treeData);
+              try {
+                const resp = await fetch('http://localhost:9191/flow', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(exportData)
+                });
+                const result = await resp.json();
+                showMessage('命令执行成功: ' + (result.message || '已提交'), 'success');
+              } catch (e) {
+                showMessage('命令执行失败: ' + (e.message || e), 'error');
+              }
+            }}
+          >
+            执行命令
           </Button>
           <Button
             variant="outlined"
@@ -386,19 +417,8 @@ const App = () => {
                       },
                     }}
                   >
-                    {node.droppable ? (
-                      <IconButton
-                        size="small"
-                        onClick={(e) => {
-                          e.stopPropagation(); // 防止触发节点点击事件
-                          onToggle();
-                        }}
-                        sx={{ mr: 1 }}
-                      >
-                        {isOpen ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
-                      </IconButton>
-                    ) : (
-                      <CodeIcon color="action" sx={{ mr: 1, fontSize: 20 }} />
+                    {node.droppable && (
+                        <span onClick={onToggle}>{isOpen ? "[-]" : "[+]"}</span>
                     )}
 
                     <Typography
