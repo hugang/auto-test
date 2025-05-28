@@ -461,30 +461,14 @@ public class CommandParserUtil {
             writer.writeCellValue(0, beginRow, "TestCase");
             writer.writeCellValue(0, beginRow + 2, i + 1);
             for (ICommand command : commands.getCommands()) {
-                if (hasDescription) {
-                    writer.writeCellValue(beginColumn, 0, command.getComment());
-                    beginRow++;
-                }
-                // write command to first row
-                writer.writeCellValue(beginColumn, beginRow, command.getCommand());
-                // write target to second row
-                writer.writeCellValue(beginColumn, beginRow+1, command.getTarget());
-                // write value to third row
-                writer.writeCellValue(beginColumn, beginRow + 2, command.getValue());
-                beginColumn++;
+                beginColumn = writeCommandToExcel(command, hasDescription, writer, beginColumn, beginRow);
 
                 // write sub commands
                 if (command instanceof IConditionCommand conditionCommand) {
                     List<ICommand> subCommands = conditionCommand.getSubCommands();
                     if (ObjectUtil.isNotEmpty(subCommands)) {
                         for (ICommand subCommand : subCommands) {
-                            if (hasDescription) {
-                                writer.writeCellValue(beginColumn, 0, subCommand.getComment());
-                            }
-                            writer.writeCellValue(beginColumn, beginRow, subCommand.getCommand());
-                            writer.writeCellValue(beginColumn, beginRow + 1, subCommand.getTarget());
-                            writer.writeCellValue(beginColumn, beginRow + 2, subCommand.getValue());
-                            beginColumn++;
+                            beginColumn = writeCommandToExcel(subCommand, hasDescription, writer, beginColumn, beginRow);
                         }
                         // add end command for condition command
                         if (hasDescription) {
@@ -501,5 +485,19 @@ public class CommandParserUtil {
             writer.flush();
             writer.close();
         }
+    }
+
+    private static int writeCommandToExcel(ICommand command, boolean hasDescription, ExcelWriter writer, int beginColumn, int beginRow) {
+        if (hasDescription) {
+            writer.writeCellValue(beginColumn, 0, command.getComment());
+        }
+        // write command to first row
+        writer.writeCellValue(beginColumn, beginRow, command.getCommand());
+        // write target to second row
+        writer.writeCellValue(beginColumn, beginRow +1, command.getTarget());
+        // write value to third row
+        writer.writeCellValue(beginColumn, beginRow + 2, command.getValue());
+        beginColumn++;
+        return beginColumn;
     }
 }
