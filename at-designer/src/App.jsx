@@ -293,6 +293,30 @@ const App = () => {
     showMessage(`已删除 "${nodeToDelete.text}" 命令${idsToDelete.length > 1 ? '及其子命令' : ''}`, 'success');
   };
 
+  // 校验 if/elseIf/else 语法结构
+  function checkIfElseStructure(nodes) {
+    let lastType = null;
+    for (let i = 0; i < nodes.length; i++) {
+      const cmd = nodes[i]?.data?.command;
+      if (cmd === 'elseIf') {
+        if (lastType !== 'if' && lastType !== 'elseIf') {
+          return `elseIf 必须紧跟在 if 或 elseIf 之后 (第${i + 1}个命令)`;
+        }
+        lastType = 'elseIf';
+      } else if (cmd === 'else') {
+        if (lastType !== 'if' && lastType !== 'elseIf') {
+          return `else 必须紧跟在 if 或 elseIf 之后 (第${i + 1}个命令)`;
+        }
+        lastType = 'else';
+      } else if (cmd === 'if') {
+        lastType = 'if';
+      } else {
+        lastType = null;
+      }
+    }
+    return null;
+  }
+
   return (
     <Container maxWidth="md">
       <Box sx={{ my: 3 }}>
@@ -335,6 +359,12 @@ const App = () => {
             startIcon={<DownloadIcon />}
             size="small"
             onClick={() => {
+              const rootNodes = treeData.filter(n => n.parent === 0);
+              const err = checkIfElseStructure(rootNodes);
+              if (err) {
+                showMessage(err, 'error');
+                return;
+              }
               const blob = new Blob([JSON.stringify(treeData, null, 2)], { type: 'application/json' });
               const url = URL.createObjectURL(blob);
               const a = document.createElement('a');
@@ -353,6 +383,12 @@ const App = () => {
             startIcon={<DownloadIcon />}
             size="small"
             onClick={() => {
+              const rootNodes = treeData.filter(n => n.parent === 0);
+              const err = checkIfElseStructure(rootNodes);
+              if (err) {
+                showMessage(err, 'error');
+                return;
+              }
               const exportData = getExportData(treeData);
               const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
               const url = URL.createObjectURL(blob);
