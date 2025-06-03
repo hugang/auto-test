@@ -22,10 +22,23 @@ if (typeof document !== 'undefined') {
   document.head.appendChild(fontLink);
 }
 
-const DROPPABLE_COMMANDS = ['if', 'times', 'section'];
+const DROPPABLE_COMMANDS = ['if', 'elseIf', 'else', 'times', 'section'];
 
 // 公共导出数据函数
 function getExportData(treeData) {
+  // if/elseIf/elseグループを1つのendで閉じて重複しないよう修正
+  function flattenIfGroup(groupNodes) {
+    let result = [];
+    for (const gn of groupNodes) {
+      result.push({ ...gn.data });
+      const children = treeData.filter(n => n.parent === gn.id);
+      for (const child of children) {
+        result = result.concat(flattenCommands(child));
+      }
+    }
+    result.push({ command: 'end', comment: 'end if' });
+    return result;
+  }
   function flattenCommands(node) {
     let result = [];
     if (!node.data) return result;
@@ -43,8 +56,26 @@ function getExportData(treeData) {
   }
   const rootNodes = treeData.filter(n => n.parent === 0);
   let commandsArray = [];
-  for (const root of rootNodes) {
-    commandsArray = commandsArray.concat(flattenCommands(root));
+  let i = 0;
+  while (i < rootNodes.length) {
+    const node = rootNodes[i];
+    if (node.data && node.data.command === 'if') {
+      // ifグループをまとめてflatten（重複しないように）
+      const group = [node];
+      let j = i + 1;
+      while (j < rootNodes.length && rootNodes[j].data && ['elseIf', 'else'].includes(rootNodes[j].data.command)) {
+        group.push(rootNodes[j]);
+        j++;
+      }
+      commandsArray = commandsArray.concat(flattenIfGroup(group));
+      i = j;
+    } else if (node.data && ['elseIf', 'else'].includes(node.data.command)) {
+      // すでにifグループで処理済みなのでスキップ
+      i++;
+    } else {
+      commandsArray = commandsArray.concat(flattenCommands(node));
+      i++;
+    }
   }
   return {name: shortUUID.generate(), tests: [{name: shortUUID.generate(), commands: commandsArray}]};
 }
@@ -182,7 +213,7 @@ const App = () => {
     if (editMode === 'add' && editNode) {
       // 新增子节点
       const newId = shortUUID.generate();
-      const droppable = DROPPABLE_COMMANDS.includes((formData.command || '').toLowerCase());
+      const droppable = DROPPABLE_COMMANDS.includes((formData.command || '').toLowerCase()) || DROPPABLE_COMMANDS.includes(formData.command);
       const newNode = {
         id: newId,
         parent: editNode.id,
@@ -193,12 +224,12 @@ const App = () => {
       setTreeData([...treeData, newNode]);
     } else if (editMode === 'edit' && editNode) {
       // 编辑节点
-      const droppable = DROPPABLE_COMMANDS.includes((formData.command || '').toLowerCase());
+      const droppable = DROPPABLE_COMMANDS.includes((formData.command || '').toLowerCase()) || DROPPABLE_COMMANDS.includes(formData.command);
       setTreeData(treeData.map(n => n.id === editNode.id ? { ...n, data: { ...formData }, text: formData.command || n.text, droppable } : n));
     } else if (editMode === 'add-root') {
       // 新增一级节点
       const newId = shortUUID.generate();
-      const droppable = DROPPABLE_COMMANDS.includes((formData.command || '').toLowerCase());
+      const droppable = DROPPABLE_COMMANDS.includes((formData.command || '').toLowerCase()) || DROPPABLE_COMMANDS.includes(formData.command);
       setTreeData([
         ...treeData,
         {

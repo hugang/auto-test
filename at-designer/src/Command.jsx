@@ -14,6 +14,8 @@ import {
 // 预定义的命令列表
 const commonCommands = [
     'if',
+    'elseIf', // 追加
+    'else',   // 追加
     'times',
     'section',
     'click',
