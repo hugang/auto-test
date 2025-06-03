@@ -3,7 +3,7 @@ import {getBackendOptions, MultiBackend, Tree,} from "@minoru/react-dnd-treeview
 import {DndProvider} from "react-dnd";
 import PlaceHolder from "./PlaceHolder";
 import Command from "./Command";
-import {Alert, Box, Button, Container, Dialog, IconButton, Paper, Snackbar, Tooltip, Typography} from '@mui/material';
+import {Alert, Box, Button, Container, Dialog, IconButton, Paper, Snackbar, Tooltip, Typography, CircularProgress, Backdrop} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -65,6 +65,9 @@ const App = () => {
     message: '',
     severity: 'success'
   });
+
+  // 新增：执行命令loading状态
+  const [isExecuting, setIsExecuting] = useState(false);
 
   // 关闭提示消息
   const handleCloseSnackbar = () => {
@@ -338,6 +341,7 @@ const App = () => {
             size="small"
             style={{ marginLeft: 8 }}
             onClick={async () => {
+              setIsExecuting(true);
               const exportData = getExportData(treeData);
               try {
                 const resp = await fetch('http://localhost:9191/flow', {
@@ -349,6 +353,8 @@ const App = () => {
                 showMessage('命令执行成功: ' + (result.message || '已提交'), 'success');
               } catch (e) {
                 showMessage('命令执行失败: ' + (e.message || e), 'error');
+              } finally {
+                setIsExecuting(false);
               }
             }}
           >
@@ -541,6 +547,14 @@ const App = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
+
+      {/* 画面全体を覆う実行中ローディング */}
+      <Backdrop open={isExecuting} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <CircularProgress color="inherit" size={60} thickness={4} />
+          <Typography variant="h6" sx={{ mt: 3, letterSpacing: 2 }}>正在执行命令，请稍候...</Typography>
+        </Box>
+      </Backdrop>
     </Container>
   );
 }
