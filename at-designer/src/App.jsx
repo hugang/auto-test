@@ -26,12 +26,12 @@ const DROPPABLE_COMMANDS = ['if', 'elseIf', 'else', 'times', 'section'];
 
 // 公共导出数据函数
 function getExportData(treeData) {
-  // if/elseIf/elseグループを1つのendで閉じて重複しないよう修正
-  function flattenIfGroup(groupNodes) {
+  // 修正：同级if/elseIf/else组只用一个end结束
+  function flattenIfElseGroup(nodes) {
     let result = [];
-    for (const gn of groupNodes) {
-      result.push({ ...gn.data });
-      const children = treeData.filter(n => n.parent === gn.id);
+    for (const node of nodes) {
+      result.push({ ...node.data });
+      const children = treeData.filter(n => n.parent === node.id);
       for (const child of children) {
         result = result.concat(flattenCommands(child));
       }
@@ -43,12 +43,41 @@ function getExportData(treeData) {
     let result = [];
     if (!node.data) return result;
     if (node.droppable) {
-      result.push({ ...node.data });
-      const children = treeData.filter(n => n.parent === node.id);
-      for (const child of children) {
-        result = result.concat(flattenCommands(child));
+      // 处理if/elseIf/else组
+      if (['if', 'elseIf', 'else'].includes(node.data.command)) {
+        // 只处理if为起点的组
+        if (node.data.command === 'if') {
+          // 找到同级的if/elseIf/else组
+          const parent = node.parent;
+          const siblings = treeData.filter(n => n.parent === parent);
+          const group = [];
+          let found = false;
+          for (let i = 0; i < siblings.length; i++) {
+            if (siblings[i].id === node.id) found = true;
+            if (found && siblings[i].data && ['if', 'elseIf', 'else'].includes(siblings[i].data.command)) {
+              group.push(siblings[i]);
+            } else if (found) {
+              break;
+            }
+          }
+          // 只处理一次，跳过组内其他分支
+          if (group.length > 0 && group[0].id === node.id) {
+            return flattenIfElseGroup(group);
+          }
+          return [];
+        } else {
+          // elseIf/else由if分支统一处理，这里跳过
+          return [];
+        }
+      } else {
+        // 普通可嵌套命令
+        result.push({ ...node.data });
+        const children = treeData.filter(n => n.parent === node.id);
+        for (const child of children) {
+          result = result.concat(flattenCommands(child));
+        }
+        result.push({ command: 'end', comment: `end ${node.data.command || ''}` });
       }
-      result.push({ command: 'end', comment: `end ${node.data.command || ''}` });
     } else {
       result.push({ ...node.data });
     }
@@ -56,26 +85,8 @@ function getExportData(treeData) {
   }
   const rootNodes = treeData.filter(n => n.parent === 0);
   let commandsArray = [];
-  let i = 0;
-  while (i < rootNodes.length) {
-    const node = rootNodes[i];
-    if (node.data && node.data.command === 'if') {
-      // ifグループをまとめてflatten（重複しないように）
-      const group = [node];
-      let j = i + 1;
-      while (j < rootNodes.length && rootNodes[j].data && ['elseIf', 'else'].includes(rootNodes[j].data.command)) {
-        group.push(rootNodes[j]);
-        j++;
-      }
-      commandsArray = commandsArray.concat(flattenIfGroup(group));
-      i = j;
-    } else if (node.data && ['elseIf', 'else'].includes(node.data.command)) {
-      // すでにifグループで処理済みなのでスキップ
-      i++;
-    } else {
-      commandsArray = commandsArray.concat(flattenCommands(node));
-      i++;
-    }
+  for (let i = 0; i < rootNodes.length; i++) {
+    commandsArray = commandsArray.concat(flattenCommands(rootNodes[i]));
   }
   return {name: shortUUID.generate(), tests: [{name: shortUUID.generate(), commands: commandsArray}]};
 }
