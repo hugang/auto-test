@@ -80,6 +80,7 @@ public abstract class Command implements ICommand {
         try {
             result = this._execute(); // 执行具体命令逻辑
         } catch (CommandExecuteException e) {
+            log.error(e);
             this.setResult(cmd.concat(":" + e.getMessage())); // 设置异常结果
             this.appendReport(RESULT_TYPE_MSG,e.getMessage());
         }
