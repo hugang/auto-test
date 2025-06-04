@@ -305,25 +305,32 @@ const App = () => {
     showMessage(`已删除 "${nodeToDelete.text}" 命令${idsToDelete.length > 1 ? '及其子命令' : ''}`, 'success');
   };
 
-  // 校验 if/elseIf/else 语法结构
+  // 校验 if/elseIf/else 语法结构（递归校验所有节点及其子节点）
+  // 返回 { error, nodeId }，如无错则返回 null
   function checkIfElseStructure(nodes) {
     let lastType = null;
     for (let i = 0; i < nodes.length; i++) {
       const cmd = nodes[i]?.data?.command;
       if (cmd === 'elseIf') {
         if (lastType !== 'if' && lastType !== 'elseIf') {
-          return `elseIf 必须紧跟在 if 或 elseIf 之后 (第${i + 1}个命令)`;
+          return { error: `elseIf 必须紧跟在 if 或 elseIf 之后 (第${i + 1}个命令)`, nodeId: nodes[i].id };
         }
         lastType = 'elseIf';
       } else if (cmd === 'else') {
         if (lastType !== 'if' && lastType !== 'elseIf') {
-          return `else 必须紧跟在 if 或 elseIf 之后 (第${i + 1}个命令)`;
+          return { error: `else 必须紧跟在 if 或 elseIf 之后 (第${i + 1}个命令)`, nodeId: nodes[i].id };
         }
         lastType = 'else';
       } else if (cmd === 'if') {
         lastType = 'if';
       } else {
         lastType = null;
+      }
+      // 递归校验子节点
+      const children = nodes[i].id ? treeData.filter(n => n.parent === nodes[i].id) : [];
+      if (children.length > 0) {
+        const err = checkIfElseStructure(children);
+        if (err) return err;
       }
     }
     return null;
@@ -382,7 +389,8 @@ const App = () => {
               const rootNodes = treeData.filter(n => n.parent === 0);
               const err = checkIfElseStructure(rootNodes);
               if (err) {
-                showMessage(err, 'error');
+                setSelectedNodeId(err.nodeId);
+                showMessage(err.error, 'error');
                 return;
               }
               const blob = new Blob([JSON.stringify(treeData, null, 2)], { type: 'application/json' });
@@ -406,7 +414,8 @@ const App = () => {
               const rootNodes = treeData.filter(n => n.parent === 0);
               const err = checkIfElseStructure(rootNodes);
               if (err) {
-                showMessage(err, 'error');
+                setSelectedNodeId(err.nodeId);
+                showMessage(err.error, 'error');
                 return;
               }
               const exportData = getExportData(treeData);
