@@ -464,7 +464,6 @@ public class CommandParserUtil {
             for (int j = 0; j < topCommands.size(); j++) {
                 ICommand command = topCommands.get(j);
                 // if current command is if/elseIf and next command is elseIf/else, skip end in writeCommandToExcel
-                boolean skipEnd = false;
                 if (("if".equals(command.getCommand()) || "elseIf".equals(command.getCommand())) && j + 1 < topCommands.size()) {
                     String nextCmd = topCommands.get(j + 1).getCommand();
                     if ("elseIf".equals(nextCmd) || "else".equals(nextCmd)) {
@@ -495,7 +494,6 @@ public class CommandParserUtil {
             if (ObjectUtil.isNotEmpty(subCommands)) {
                 for (int i = 0; i < subCommands.size(); i++) {
                     ICommand subCommand = subCommands.get(i);
-                    boolean skipEnd = false;
                     if (("if".equals(subCommand.getCommand()) || "elseIf".equals(subCommand.getCommand())) && i + 1 < subCommands.size()) {
                         String nextCmd = subCommands.get(i + 1).getCommand();
                         if ("elseIf".equals(nextCmd) || "else".equals(nextCmd)) {
@@ -531,7 +529,6 @@ public class CommandParserUtil {
             if (ObjectUtil.isNotEmpty(subCommands)) {
                 for (int i = 0; i < subCommands.size(); i++) {
                     ICommand subCommand = subCommands.get(i);
-                    boolean skipEnd = false;
                     if (("if".equals(subCommand.getCommand()) || "elseIf".equals(subCommand.getCommand())) && i + 1 < subCommands.size()) {
                         String nextCmd = subCommands.get(i + 1).getCommand();
                         if ("elseIf".equals(nextCmd) || "else".equals(nextCmd)) {
