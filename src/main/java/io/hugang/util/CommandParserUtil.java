@@ -460,7 +460,19 @@ public class CommandParserUtil {
             int beginColumn = 1;
             writer.writeCellValue(0, beginRow, "TestCase");
             writer.writeCellValue(0, beginRow + 2, i + 1);
-            for (ICommand command : commands.getCommands()) {
+            List<ICommand> topCommands = commands.getCommands();
+            for (int j = 0; j < topCommands.size(); j++) {
+                ICommand command = topCommands.get(j);
+                // if current command is if/elseIf and next command is elseIf/else, skip end in writeCommandToExcel
+                boolean skipEnd = false;
+                if (("if".equals(command.getCommand()) || "elseIf".equals(command.getCommand())) && j + 1 < topCommands.size()) {
+                    String nextCmd = topCommands.get(j + 1).getCommand();
+                    if ("elseIf".equals(nextCmd) || "else".equals(nextCmd)) {
+                        // wrap writeCommandToExcel to skip end
+                        beginColumn = writeCommandToExcelSkipEnd(command, hasDescription, writer, beginColumn, beginRow);
+                        continue;
+                    }
+                }
                 beginColumn = writeCommandToExcel(command, hasDescription, writer, beginColumn, beginRow);
             }
 
@@ -473,19 +485,24 @@ public class CommandParserUtil {
         if (hasDescription) {
             writer.writeCellValue(beginColumn, 0, command.getComment());
         }
-        // write command to first row
         writer.writeCellValue(beginColumn, beginRow, command.getCommand());
-        // write target to second row
         writer.writeCellValue(beginColumn, beginRow +1, command.getTarget());
-        // write value to third row
         writer.writeCellValue(beginColumn, beginRow + 2, command.getValue());
         beginColumn++;
 
-        // write sub commands
         if (command instanceof IConditionCommand conditionCommand) {
             List<ICommand> subCommands = conditionCommand.getSubCommands();
             if (ObjectUtil.isNotEmpty(subCommands)) {
-                for (ICommand subCommand : subCommands) {
+                for (int i = 0; i < subCommands.size(); i++) {
+                    ICommand subCommand = subCommands.get(i);
+                    boolean skipEnd = false;
+                    if (("if".equals(subCommand.getCommand()) || "elseIf".equals(subCommand.getCommand())) && i + 1 < subCommands.size()) {
+                        String nextCmd = subCommands.get(i + 1).getCommand();
+                        if ("elseIf".equals(nextCmd) || "else".equals(nextCmd)) {
+                            beginColumn = writeCommandToExcelSkipEnd(subCommand, hasDescription, writer, beginColumn, beginRow);
+                            continue;
+                        }
+                    }
                     beginColumn = writeCommandToExcel(subCommand, hasDescription, writer, beginColumn, beginRow);
                 }
                 // add end command for condition command
@@ -498,7 +515,35 @@ public class CommandParserUtil {
                 beginColumn++;
             }
         }
+        return beginColumn;
+    }
 
+    private static int writeCommandToExcelSkipEnd(ICommand command, boolean hasDescription, ExcelWriter writer, int beginColumn, int beginRow) {
+        if (hasDescription) {
+            writer.writeCellValue(beginColumn, 0, command.getComment());
+        }
+        writer.writeCellValue(beginColumn, beginRow, command.getCommand());
+        writer.writeCellValue(beginColumn, beginRow +1, command.getTarget());
+        writer.writeCellValue(beginColumn, beginRow + 2, command.getValue());
+        beginColumn++;
+        if (command instanceof IConditionCommand conditionCommand) {
+            List<ICommand> subCommands = conditionCommand.getSubCommands();
+            if (ObjectUtil.isNotEmpty(subCommands)) {
+                for (int i = 0; i < subCommands.size(); i++) {
+                    ICommand subCommand = subCommands.get(i);
+                    boolean skipEnd = false;
+                    if (("if".equals(subCommand.getCommand()) || "elseIf".equals(subCommand.getCommand())) && i + 1 < subCommands.size()) {
+                        String nextCmd = subCommands.get(i + 1).getCommand();
+                        if ("elseIf".equals(nextCmd) || "else".equals(nextCmd)) {
+                            beginColumn = writeCommandToExcelSkipEnd(subCommand, hasDescription, writer, beginColumn, beginRow);
+                            continue;
+                        }
+                    }
+                    beginColumn = writeCommandToExcel(subCommand, hasDescription, writer, beginColumn, beginRow);
+                }
+                // endを出力しない
+            }
+        }
         return beginColumn;
     }
 }
