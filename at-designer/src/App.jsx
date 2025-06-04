@@ -10,6 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import DownloadIcon from '@mui/icons-material/Download';
 import CopyIcon from '@mui/icons-material/FileCopy';
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import shortUUID from 'short-uuid';
 import './theme.js';
 import './global.css';
@@ -334,6 +335,14 @@ const App = () => {
         <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
           <Button
             variant="outlined"
+            startIcon={<AddIcon />}
+            onClick={handleAddRootNode}
+            size="small"
+          >
+            新增根节点
+          </Button>
+          <Button
+            variant="outlined"
             startIcon={<UploadFileIcon />}
             component="label"
             size="small"
@@ -414,8 +423,8 @@ const App = () => {
             导出节点data
           </Button>
           <Button
-            variant="contained"
-            color="primary"
+            variant="outlined"
+            startIcon={<DoneOutlineIcon />}
             size="small"
             style={{ marginLeft: 8 }}
             onClick={async () => {
@@ -437,14 +446,6 @@ const App = () => {
             }}
           >
             执行命令
-          </Button>
-          <Button
-            variant="outlined"
-            startIcon={<AddIcon />}
-            onClick={handleAddRootNode}
-            size="small"
-          >
-            新增根节点
           </Button>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
