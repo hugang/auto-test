@@ -3,20 +3,7 @@ import {getBackendOptions, MultiBackend, Tree,} from "@minoru/react-dnd-treeview
 import {DndProvider} from "react-dnd";
 import PlaceHolder from "./PlaceHolder";
 import Command from "./Command";
-import {
-  Alert,
-  Backdrop,
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  Dialog,
-  IconButton,
-  Paper,
-  Snackbar,
-  Tooltip,
-  Typography
-} from '@mui/material';
+import {Alert, Box, Button, Container, Dialog, IconButton, Paper, Snackbar, Tooltip, Typography, CircularProgress, Backdrop} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -427,33 +414,8 @@ const App = () => {
                   try {
                     const json = JSON.parse(evt.target.result);
                     if (Array.isArray(json)) {
-                      // 追加方式导入
-                      let importedNodes = json;
-                      // 生成新ID，避免冲突
-                      const idMap = {};
-                      const genNewIds = (nodes = {}) => {
-                        return nodes.map(node => {
-                          const newId = shortUUID.generate();
-                          idMap[node.id] = newId;
-                          return {
-                            ...node,
-                            id: newId,
-                            parent: node.parent === 0 ? 0 : (idMap[node.parent] || 0),
-                          };
-                        });
-                      };
-                      importedNodes = genNewIds(importedNodes);
-                      // 如果有选中节点且可嵌套，则导入为其子节点
-                      if (selectedNodeId) {
-                        const selNode = treeData.find(n => n.id === selectedNodeId);
-                        if (selNode && selNode.droppable) {
-                          // 只导入根节点，parent设为选中节点
-                          const importedRootIds = json.filter(n => n.parent === 0).map(n => n.id);
-                          importedNodes = importedNodes.map(n => importedRootIds.includes(n.id) ? { ...n, parent: selNode.id } : n);
-                        }
-                      }
-                      setTreeData([...treeData, ...importedNodes]);
-                      showMessage('导入成功，已追加到当前节点', 'success');
+                      setTreeData(json);
+                      showMessage('导入成功', 'success');
                     } else {
                       showMessage('导入的文件格式不正确', 'error');
                     }
