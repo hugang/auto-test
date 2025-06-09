@@ -112,6 +112,9 @@ const App = () => {
   // 新增：执行命令loading状态
   const [isExecuting, setIsExecuting] = useState(false);
 
+  // クリップボード用state
+  const [copiedNode, setCopiedNode] = useState(null);
+
   // 关闭提示消息
   const handleCloseSnackbar = () => {
     setSnackbar(prev => ({ ...prev, open: false }));
@@ -144,9 +147,53 @@ const App = () => {
   // 处理键盘快捷键
   useEffect(() => {
     const handleKeyDown = (event) => {
-      // 对话框打开时不处理快捷键
+      // 対話ダイアログが開いている場合は無効
       if (dialogOpen) return;
 
+      // Ctrl+C: コピー
+      if (event.ctrlKey && event.key.toLowerCase() === 'c') {
+        if (selectedNodeId) {
+          const node = treeData.find(n => n.id === selectedNodeId);
+          if (node) {
+            setCopiedNode(node);
+            showMessage('命令已复制到剪贴板', 'success');
+          }
+        }
+        return;
+      }
+      // Ctrl+V: 貼り付け
+      if (event.ctrlKey && event.key.toLowerCase() === 'v') {
+        if (copiedNode) {
+          let pasteParent = 0;
+          if (selectedNodeId) {
+            const selNode = treeData.find(n => n.id === selectedNodeId);
+            if (selNode && selNode.droppable) {
+              pasteParent = selNode.id;
+            }
+          }
+          // 子孫も再帰的にコピー
+          const copySubtree = (node, newParentId) => {
+            const thisId = shortUUID.generate();
+            const newNode = {
+              ...node,
+              id: thisId,
+              parent: newParentId,
+              text: node.text + ' (粘贴)',
+            };
+            // 子供を再帰コピー
+            const children = treeData.filter(n => n.parent === node.id);
+            let all = [newNode];
+            for (const child of children) {
+              all = all.concat(copySubtree(child, thisId));
+            }
+            return all;
+          };
+          const pastedNodes = copySubtree(copiedNode, pasteParent);
+          setTreeData([...treeData, ...pastedNodes]);
+          showMessage('命令已粘贴', 'success');
+        }
+        return;
+      }
       // Alt + 组合键
       if (event.altKey) {
         // Alt+N: 添加节点
@@ -197,7 +244,7 @@ const App = () => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [treeData, selectedNodeId, dialogOpen]); // 依赖项包括treeData, selectedNodeId和dialogOpen
+  }, [treeData, selectedNodeId, dialogOpen, copiedNode]); // copiedNodeも依存に追加
 
   // 打开新增或编辑弹窗
   const openCommandDialog = (mode, node) => {
