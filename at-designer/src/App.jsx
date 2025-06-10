@@ -194,6 +194,15 @@ const App = () => {
         }
         return;
       }
+      // Deleteキー: 削除
+      if (event.key === 'Delete') {
+        if (selectedNodeId) {
+          handleDeleteNode(selectedNodeId);
+        } else {
+          showMessage('请先选择要删除的命令', 'warning');
+        }
+        return;
+      }
       // Alt + 组合键
       if (event.altKey) {
         // Alt+N: 添加节点
