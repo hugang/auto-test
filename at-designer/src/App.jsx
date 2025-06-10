@@ -413,12 +413,44 @@ const App = () => {
                 reader.onload = evt => {
                   try {
                     const json = JSON.parse(evt.target.result);
-                    if (Array.isArray(json)) {
-                      setTreeData(json);
-                      showMessage('导入成功', 'success');
-                    } else {
+                    if (!Array.isArray(json)) {
                       showMessage('导入的文件格式不正确', 'error');
+                      return;
                     }
+                    // 生成新ID，保持父子结构
+                    const idMap = {};
+                    const generateNewTree = (nodes, parentId) => {
+                      let result = [];
+                      nodes.forEach(node => {
+                        const newId = shortUUID.generate();
+                        idMap[node.id] = newId;
+                        const newNode = {
+                          ...node,
+                          id: newId,
+                          parent: parentId,
+                          text: node.text + ' (导入)',
+                        };
+                        result.push(newNode);
+                        // 子ノードを再帰的に追加
+                        const children = json.filter(n => n.parent === node.id);
+                        if (children.length > 0) {
+                          result = result.concat(generateNewTree(children, newId));
+                        }
+                      });
+                      return result;
+                    };
+                    let insertParent = 0;
+                    if (selectedNodeId) {
+                      const selNode = treeData.find(n => n.id === selectedNodeId);
+                      if (selNode && selNode.droppable) {
+                        insertParent = selNode.id;
+                      }
+                    }
+                    // rootとして扱うノード
+                    const importRootNodes = json.filter(n => n.parent === 0);
+                    const imported = generateNewTree(importRootNodes, insertParent);
+                    setTreeData(prev => [...prev, ...imported]);
+                    showMessage('导入成功', 'success');
                   } catch {
                     showMessage('导入失败，文件内容不是有效的JSON', 'error');
                   }
