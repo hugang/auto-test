@@ -584,6 +584,7 @@ const App = () => {
                 return (
                   <Box
                     onClick={() => handleNodeClick(node)}
+                    onDoubleClick={() => openCommandDialog('edit', node)}
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
@@ -699,9 +700,6 @@ const App = () => {
       <Dialog
         open={dialogOpen}
         onClose={handleCancel}
-        PaperProps={{
-          sx: { borderRadius: 2 }
-        }}
       >
         <Command
           command={formData.command}
