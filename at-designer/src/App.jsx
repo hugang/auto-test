@@ -700,6 +700,16 @@ const App = () => {
       <Dialog
         open={dialogOpen}
         onClose={handleCancel}
+        slotProps={{
+          paper: {
+            sx: {
+              width: '90%',
+              maxWidth: '600px',
+              borderRadius: 2,
+              padding: 2,
+            }
+          }
+        }}
       >
         <Command
           command={formData.command}
