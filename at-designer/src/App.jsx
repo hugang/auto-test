@@ -194,6 +194,11 @@ const App = () => {
         }
         return;
       }
+      // Escape: ノード選択解除
+      if (event.key === 'Escape') {
+        setSelectedNodeId(null);
+        return;
+      }
       // Deleteキー: 削除
       if (event.key === 'Delete') {
         if (selectedNodeId) {
