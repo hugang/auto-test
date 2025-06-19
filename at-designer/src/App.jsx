@@ -249,6 +249,69 @@ const App = () => {
           }
         }
       }
+
+      // 方向键处理
+      if (["ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"].includes(event.key)) {
+        event.preventDefault();
+        // 找到当前选中节点
+        const selectedNode = treeData.find(n => n.id === selectedNodeId);
+        if (event.key === "ArrowDown") {
+          // 选中同级下一个节点
+          let siblings = [];
+          let idx = -1;
+          if (selectedNode) {
+            siblings = treeData.filter(n => n.parent === selectedNode.parent);
+            idx = siblings.findIndex(n => n.id === selectedNodeId);
+            if (idx !== -1 && idx < siblings.length - 1) {
+              setSelectedNodeId(siblings[idx + 1].id);
+            } else if (siblings.length > 0) {
+              setSelectedNodeId(siblings[0].id); // 循环到第一个
+            }
+          } else {
+            // 没有选中则选中第一个根节点
+            const roots = treeData.filter(n => n.parent === 0);
+            if (roots.length > 0) setSelectedNodeId(roots[0].id);
+          }
+        } else if (event.key === "ArrowUp") {
+          // 选中同级上一个节点
+          let siblings = [];
+          let idx = -1;
+          if (selectedNode) {
+            siblings = treeData.filter(n => n.parent === selectedNode.parent);
+            idx = siblings.findIndex(n => n.id === selectedNodeId);
+            if (idx > 0) {
+              setSelectedNodeId(siblings[idx - 1].id);
+            } else if (siblings.length > 0) {
+              setSelectedNodeId(siblings[siblings.length - 1].id); // 循环到最后一个
+            }
+          } else {
+            // 没有选中则选中最后一个根节点
+            const roots = treeData.filter(n => n.parent === 0);
+            if (roots.length > 0) setSelectedNodeId(roots[roots.length - 1].id);
+          }
+        } else if (event.key === "ArrowLeft") {
+          // 收拢展开的节点
+          if (selectedNode && selectedNode.droppable) {
+            // 需要找到Tree组件的open/close状态
+            // 这里通过模拟点击onToggle
+            const treeBox = document.activeElement;
+            // 直接触发onToggle逻辑
+            // 由于Tree组件的open状态在内部维护，建议通过onToggle回调
+            // 这里可以触发自定义事件或用ref方式实现
+            // 简单做法：触发点击[-]/[+]按钮
+            // 但如未暴露ref则只能提示用户
+            // 可选：如有isOpen属性可用，建议用受控模式
+            // 这里只能留注释，具体实现需Tree组件支持
+          }
+        } else if (event.key === "ArrowRight") {
+          // 展开收拢的节点
+          if (selectedNode && selectedNode.droppable) {
+            // 同上，建议用受控open状态
+            // 这里只能留注释，具体实现需Tree组件支持
+          }
+        }
+        return;
+      }
     };
 
     // 添加事件监听器
