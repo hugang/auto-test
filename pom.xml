@@ -181,6 +181,13 @@
             <artifactId>javase</artifactId>
             <version>3.5.3</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>3.0.25</version>
+            <type>pom</type>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>
