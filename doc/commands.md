@@ -813,6 +813,14 @@ see https://github.com/alibaba/QLExpress
   - expression(target): The expression to calculate.
   - variable name(value): The name of the variable without brackets.
 
+## calc.groovy [〇]
+
+calculate the groovy expression, and store the result to a variable.
+see https://groovy-lang.org/
+
+- arguments
+  - expression(target): The expression to calculate.
+  - variable name(value): The name of the variable without brackets.
 
 ## call api [〇]
 

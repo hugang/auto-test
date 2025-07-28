@@ -28,7 +28,7 @@ public class CalcGroovyCommand extends Command {
             // javascript expression to calculate
             String calcExpression = getTarget();
             // replace $$name with ThreadContext.get("name")
-            calcExpression = calcExpression.replaceAll("\\$\\$([A-Za-z0-9_]+)", "io.hugang.util.ThreadContext.get(\"$1\")");
+            calcExpression = calcExpression.replaceAll("\\$\\$", "io.hugang.util.ThreadContext");
             calcExpression = "import io.hugang.util.ThreadContext\n" + calcExpression;
 
             // result variable name

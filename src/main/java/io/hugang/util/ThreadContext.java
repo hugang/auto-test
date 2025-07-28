@@ -23,6 +23,10 @@ public class ThreadContext {
         dict.set(key, value);
     }
 
+    public static void set(String key, Object value) {
+        put(key, value);
+    }
+
     public static Object get(String key) {
         Dict dict = variables.get();
         if (dict == null) {
