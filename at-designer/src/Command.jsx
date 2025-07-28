@@ -78,6 +78,8 @@ const Command = ({command, target, value, comment, onChange, onOk, onCancel}) =>
                     size="small"
                     value={target}
                     onChange={e => onChange('target', e.target.value)}
+                    multiline
+                    minRows={3}
                 />
                 <TextField
                     fullWidth
