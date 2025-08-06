@@ -1,7 +1,6 @@
 package io.hugang.execute.ext;
 
 import com.codeborne.selenide.SelenideElement;
-import io.hugang.annotation.ReportCommand;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
@@ -13,7 +12,6 @@ import java.util.List;
 import static com.codeborne.selenide.Selenide.$;
 
 @WebCommand
-@ReportCommand("before") // 点击之前保存图片
 public class ClickIfPresentCommand extends Command {
     public ClickIfPresentCommand(OriginalCommand originalCommand) {
         super(originalCommand);

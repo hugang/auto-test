@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.Log;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
-import io.hugang.annotation.ReportCommand;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
@@ -19,7 +18,6 @@ import org.openqa.selenium.JavascriptExecutor;
  * usage: scroll | target
  */
 @WebCommand
-@ReportCommand
 public class ScrollCommand extends Command {
     private static final Log log = Log.get();
 

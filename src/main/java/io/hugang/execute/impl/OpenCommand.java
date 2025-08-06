@@ -1,16 +1,13 @@
 package io.hugang.execute.impl;
 
-import io.hugang.annotation.ReportCommand;
+import io.hugang.annotation.WebCommand;
 import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
-import io.hugang.annotation.WebCommand;
 import io.hugang.execute.Command;
-
 
 import static com.codeborne.selenide.Selenide.open;
 
 @WebCommand
-@ReportCommand
 public class OpenCommand extends Command {
     public static final String KEY_URL = "url";
 

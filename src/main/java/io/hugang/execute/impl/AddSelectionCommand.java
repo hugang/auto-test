@@ -1,6 +1,5 @@
 package io.hugang.execute.impl;
 
-import io.hugang.annotation.ReportCommand;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.OriginalCommand;
 import io.hugang.exceptions.CommandExecuteException;
@@ -10,7 +9,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 @WebCommand
-@ReportCommand
 public class AddSelectionCommand extends Command {
 
     public static final String KEY_VALUE = "value";

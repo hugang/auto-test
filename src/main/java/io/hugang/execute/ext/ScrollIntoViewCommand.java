@@ -2,7 +2,6 @@ package io.hugang.execute.ext;
 
 import cn.hutool.log.Log;
 import com.codeborne.selenide.SelenideElement;
-import io.hugang.annotation.ReportCommand;
 import io.hugang.annotation.WebCommand;
 import io.hugang.bean.OriginalCommand;
 import io.hugang.execute.Command;
@@ -16,7 +15,6 @@ import io.hugang.util.CommandExecuteUtil;
  * usage: scrollIntoView | target
  */
 @WebCommand
-@ReportCommand
 public class ScrollIntoViewCommand extends Command {
     private static final Log log = Log.get();
 
