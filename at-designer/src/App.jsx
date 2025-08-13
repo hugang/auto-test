@@ -161,37 +161,68 @@ const App = () => {
         }
         return;
       }
-      // Ctrl+V: 貼り付け
-      if (event.ctrlKey && event.key.toLowerCase() === 'v') {
-        if (copiedNode) {
-          let pasteParent = 0;
-          if (selectedNodeId) {
-            const selNode = treeData.find(n => n.id === selectedNodeId);
-            if (selNode && selNode.droppable) {
-              pasteParent = selNode.id;
-            }
-          }
-          // 子孫も再帰的にコピー
-          const copySubtree = (node, newParentId) => {
-            const thisId = shortUUID.generate();
-            const newNode = {
-              ...node,
-              id: thisId,
-              parent: newParentId,
-              text: node.text + ' (粘贴)',
-            };
-            // 子供を再帰コピー
-            const children = treeData.filter(n => n.parent === node.id);
-            let all = [newNode];
-            for (const child of children) {
-              all = all.concat(copySubtree(child, thisId));
-            }
-            return all;
-          };
-          const pastedNodes = copySubtree(copiedNode, pasteParent);
-          setTreeData([...treeData, ...pastedNodes]);
-          showMessage('命令已粘贴', 'success');
+      // Ctrl+V: 貼り付け（Windows: Ctrl+V / macOS: Cmd+V）
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'v') {
+        const t = event.target;
+        // 入力系にフォーカスがある場合はネイティブの貼り付けを優先
+        if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) {
+          return;
         }
+        event.preventDefault();
+
+        if (!copiedNode) return;
+
+        let pasteParent = 0;
+        let insertIndex = -1;
+
+        if (selectedNodeId) {
+          const selNode = treeData.find(n => n.id === selectedNodeId);
+          if (selNode && selNode.droppable) {
+            pasteParent = selNode.id;
+          } else if (selNode) {
+            pasteParent = selNode.parent;
+            const siblings = treeData.filter(n => n.parent === pasteParent);
+            const idx = siblings.findIndex(n => n.id === selectedNodeId);
+            insertIndex = idx >= 0 ? idx + 1 : siblings.length; // 見つからなければ末尾に
+          }
+        }
+
+        // 子孫も再帰的にディープコピー（dataは浅いクローンで分離）
+        const copySubtree = (node, newParentId) => {
+          const thisId = shortUUID.generate();
+          const newNode = {
+            ...node,
+            id: thisId,
+            parent: newParentId,
+            text: (node.text || '') + ' (粘贴)',
+            data: node.data ? {...node.data} : undefined,
+          };
+          const children = treeData.filter(n => n.parent === node.id);
+          return [newNode, ...children.flatMap(child => copySubtree(child, thisId))];
+        };
+
+        const pastedNodes = copySubtree(copiedNode, pasteParent);
+
+        if (insertIndex >= 0) {
+          // 同一親配下の順序を保ちつつ、貼り付けルートのみを所定位置へ
+          const siblings = treeData.filter(n => n.parent === pasteParent);
+          const others = treeData.filter(n => n.parent !== pasteParent);
+          const pastedRoot = pastedNodes.filter(n => n.parent === pasteParent);
+          const descendants = pastedNodes.filter(n => n.parent !== pasteParent);
+
+          const newSiblings = [
+            ...siblings.slice(0, insertIndex),
+            ...pastedRoot,
+            ...siblings.slice(insertIndex),
+          ];
+
+          setTreeData([...others, ...newSiblings, ...descendants]);
+        } else {
+          // 末尾追加（グローバル配列の末尾に連結）
+          setTreeData([...treeData, ...pastedNodes]);
+        }
+
+        showMessage('命令已粘贴', 'success');
         return;
       }
       // Escape: ノード選択解除
