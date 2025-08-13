@@ -28,6 +28,24 @@ const commonCommands = [
     'scroll',
 ];
 
+// 命令对应的提示信息映射
+const commandHints = {
+    if: '执行条件判断，如果满足条件则执行。',
+    elseIf: '条件判断，如果前面的 if 条件不满足，则执行。',
+    else: '如果前面的条件都不满足时执行。',
+    times: '重复执行指定次数。',
+    section: '定义一个步骤块。',
+    click: '点击指定元素。',
+    type: '在指定元素输入文本。',
+    wait: '等待指定时间。目标或者值：等待时间毫秒”',
+    open: '打开指定 URL。',
+    setProperty: '设置元素属性。',
+    setWindowSize: '调整浏览器窗口大小。',
+    select: '在下拉框中选择值。',
+    scroll: '滚动页面至指定位置。',
+    log: '记录画面信息到报告。不需要目标或值。',
+};
+
 const Command = ({command, target, value, comment, onChange, onOk, onCancel}) => {
     // 添加键盘事件处理
     useEffect(() => {
@@ -46,6 +64,9 @@ const Command = ({command, target, value, comment, onChange, onOk, onCancel}) =>
             document.removeEventListener('keydown', handleKeyDown);
         };
     }, [onOk]); // 依赖项包括onOk函数
+
+    // 当前命令提示
+    const hint = commandHints[command];
 
     return (
         <Paper elevation={0} sx={{padding: 3, minWidth: 350}}>
@@ -71,6 +92,11 @@ const Command = ({command, target, value, comment, onChange, onOk, onCancel}) =>
                         />
                     )}
                 />
+                {hint && (
+                    <Typography variant="caption" color="text.secondary">
+                        {hint}
+                    </Typography>
+                )}
                 <TextField
                     fullWidth
                     label="目标"

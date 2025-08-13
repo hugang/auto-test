@@ -282,7 +282,7 @@ public abstract class Command implements ICommand {
      */
     @JsonIgnore
     public String getReportSubPath() {
-        return "CaseId".concat(this.getVariableStr("caseId")).concat("_").concat(ThreadContext.getReportUuid());
+        return ThreadContext.getReportUuid();
     }
 
     /**
