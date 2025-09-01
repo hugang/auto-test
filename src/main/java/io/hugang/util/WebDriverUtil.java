@@ -128,6 +128,7 @@ public class WebDriverUtil {
             options.setBinary(config.getBrowserBinaryPath());
         }
         options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--disable-blink-features=AutomationControlled");
         options.setExperimentalOption("prefs", optionsMap);
         ChromeDriver chromeDriver = new ChromeDriver(options);
         if (config.getLogApi() != null) {
