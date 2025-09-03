@@ -7,7 +7,7 @@
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>io.hugang</groupId>
@@ -39,14 +39,14 @@
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
-            <version>7.9.4</version>
+            <version>7.10.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-devtools-v137 -->
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-devtools-v137</artifactId>
-            <version>4.33.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.seleniumhq.selenium</groupId>-->
+<!--            <artifactId>selenium-devtools-v137</artifactId>-->
+<!--            <version>4.33.0</version>-->
+<!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -64,7 +64,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.39</version>
+            <version>5.8.40</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <dependency>
@@ -82,13 +82,13 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.27.1</version>
+            <version>1.28.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
-            <version>1.14.0</version>
+            <version>1.14.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <dependency>
@@ -106,7 +106,7 @@
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>9.3.0</version>
+            <version>9.4.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
         <dependency>
@@ -118,7 +118,7 @@
         <dependency>
             <groupId>org.openjdk.nashorn</groupId>
             <artifactId>nashorn-core</artifactId>
-            <version>15.6</version>
+            <version>15.7</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.bytedeco/javacv-platform -->
         <!--<dependency>
@@ -136,14 +136,14 @@
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>jakarta.mail</artifactId>
-            <version>2.0.1</version>
+            <version>2.0.2</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
         <dependency>
             <groupId>commons-net</groupId>
             <artifactId>commons-net</artifactId>
-            <version>3.11.1</version>
+            <version>3.12.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
         <dependency>
@@ -167,7 +167,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>qlexpress4</artifactId>
-            <version>4.0.0-beta.9</version>
+            <version>4.0.2</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.google.zxing/core -->
         <dependency>
