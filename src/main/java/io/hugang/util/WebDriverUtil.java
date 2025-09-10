@@ -131,9 +131,9 @@ public class WebDriverUtil {
         options.addArguments("--disable-blink-features=AutomationControlled");
         options.setExperimentalOption("prefs", optionsMap);
         ChromeDriver chromeDriver = new ChromeDriver(options);
-        if (config.getLogApi() != null) {
-            initializeDevtoolForChrome(config, chromeDriver);
-        }
+//        if (config.getLogApi() != null) {
+//            initializeDevtoolForChrome(config, chromeDriver);
+//        }
         return chromeDriver;
     }
 
