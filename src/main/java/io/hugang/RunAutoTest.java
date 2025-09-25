@@ -1,10 +1,14 @@
 package io.hugang;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.beust.jcommander.JCommander;
 import io.hugang.bean.AutoTestCommandLineOption;
 import io.hugang.config.AutoTestConfig;
+import io.hugang.execute.Commands;
 import io.hugang.util.ThreadContext;
+
+import java.util.List;
 
 /**
  * entry point to run the program.
@@ -61,4 +65,11 @@ public class RunAutoTest {
         // execute the test
         BasicExecutor.create().execute();
     }
+
+    public static List<Commands> execute(String jsonFlow) {
+        String path = ThreadContext.getAutoTestConfig().getFileDownloadPath().concat("/").concat(System.currentTimeMillis() + ".json");
+        FileUtil.writeString(jsonFlow, path, "utf-8");
+        return BasicExecutor.create().execute("json", path);
+    }
+
 }
