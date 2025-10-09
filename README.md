@@ -85,10 +85,60 @@ The **at-designer** is a modern React-based visual test case designer that allow
 6. Export your test flow using the "导出节点data" (Export Node Data) button
 7. Execute your test flow directly using the "执行命令" (Execute Commands) button
 
+#### Supported Commands in at-designer:
+The at-designer supports all standard auto-test commands, including:
+
+**Control Flow Commands** (can contain child commands):
+- `if`: Conditional execution based on conditions
+- `elseIf`: Alternative condition when previous if/elseIf fails
+- `else`: Execute when all previous conditions fail
+- `times`: Loop execution for a specified number of times
+- `section`: Organize commands into logical blocks
+
+**Action Commands**:
+- `click`: Click on an element
+- `type`: Type text into an element
+- `open`: Open a URL
+- `wait`: Wait for a specified time (in milliseconds)
+- `setProperty`: Set element properties
+- `setWindowSize`: Adjust browser window size
+- `select`: Select option from dropdown
+- `scroll`: Scroll page to a position
+- `log`: Record information to the report
+
+For a complete list of supported commands and their parameters, refer to the [Commands Documentation](doc/commands.md).
+
 ![Design Test Cases](doc/design.png)
 
 ### Execute Test Cases in Web UI
 ![Execute Test Cases](doc/execute.gif)
+
+---
+
+## Development
+
+### Building at-designer
+
+The at-designer is a React-based application that needs to be built before deployment:
+
+```bash
+cd at-designer
+npm install
+npm run build
+```
+
+The build output will be generated in `dist/` directory and can be deployed to the `src/main/resources/static` directory for integration with the auto-test server.
+
+### Running at-designer in Development Mode
+
+To run the at-designer in development mode with hot reload:
+
+```bash
+cd at-designer
+npm run dev
+```
+
+This will start a development server at `http://localhost:3000` (or the next available port).
 
 ---
 
