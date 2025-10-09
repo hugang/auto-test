@@ -55,7 +55,36 @@ Usage: auto-test [options]
 
 ## Features
 
-### Design Test Cases in Web UI
+### Design Test Cases in Web UI (at-designer)
+
+The **at-designer** is a modern React-based visual test case designer that allows you to create and manage test flows through an intuitive drag-and-drop tree interface.
+
+#### Key Features:
+- **Visual Flow Design**: Create test cases using a tree-based structure with drag-and-drop support
+- **Command Library**: Access common test commands (click, type, open, wait, etc.)
+- **Control Flow**: Support for conditional statements (if/elseIf/else), loops (times), and sections
+- **Real-time Editing**: Add, edit, delete, copy, and paste commands with keyboard shortcuts
+- **Import/Export**: Save and load test cases in JSON format
+- **Direct Execution**: Execute test flows directly from the designer
+- **Keyboard Shortcuts**: 
+  - `Alt+N`: Add new command
+  - `Alt+E`: Edit selected command
+  - `Alt+D`: Delete selected command
+  - `Ctrl+C`: Copy command
+  - `Ctrl+V`: Paste command
+  - `Delete`: Delete selected command
+  - `Arrow keys`: Navigate through commands
+  - `Escape`: Clear selection
+
+#### Getting Started with at-designer:
+1. Start the server using `auto-server.bat`
+2. Navigate to [http://localhost:9191](http://localhost:9191) to access the at-designer UI
+3. Use the "新增根节点" (Add Root Node) button to start creating your test flow
+4. Add commands by clicking the "+" icon on droppable nodes
+5. Edit commands by double-clicking or using the edit button
+6. Export your test flow using the "导出节点data" (Export Node Data) button
+7. Execute your test flow directly using the "执行命令" (Execute Commands) button
+
 ![Design Test Cases](doc/design.png)
 
 ### Execute Test Cases in Web UI
